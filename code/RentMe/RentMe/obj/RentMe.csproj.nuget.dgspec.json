@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\csuser\\source\\repos\\RentMe\\RentMe\\RentMe.csproj": {}
+    "C:\\Users\\csuser\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {}
   },
   "projects": {
-    "C:\\Users\\csuser\\source\\repos\\RentMe\\RentMe\\RentMe.csproj": {
+    "C:\\Users\\csuser\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\csuser\\source\\repos\\RentMe\\RentMe\\RentMe.csproj",
+        "projectUniqueName": "C:\\Users\\csuser\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
         "projectName": "RentMe",
-        "projectPath": "C:\\Users\\csuser\\source\\repos\\RentMe\\RentMe\\RentMe.csproj",
+        "projectPath": "C:\\Users\\csuser\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
         "packagesPath": "C:\\Users\\csuser\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\csuser\\source\\repos\\RentMe\\RentMe\\obj\\",
+        "outputPath": "C:\\Users\\csuser\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
