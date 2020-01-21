@@ -1,1 +1,0 @@
-Class diagram, ER diagram, Use Case diagram, and Use Case scenarios
