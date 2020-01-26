@@ -22,6 +22,12 @@ namespace RentMe.Controllers
 			return View();
 		}
 
+		public IActionResult Browse()
+		{
+			ViewData["Message"] = "Your application browse page.";
+			return View();
+		}
+
 		public IActionResult Contact()
 		{
 			ViewData["Message"] = "Your contact page.";
@@ -42,18 +48,41 @@ namespace RentMe.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Register(Customer customer)
+		public IActionResult Register(RegisteringCustomer customer)
 		{
 
 			if (ModelState.IsValid)
 			{
-				return RedirectToAction("Index");
+				ModelState.Clear();
+				ViewBag.SuccessMessage = "You're Registered!";
+				return View("Register", new RegisteringCustomer());
 			}
 			else
 			{
 				return View(customer);
 			}
 			
+		}
+
+		[HttpGet]
+		public IActionResult Login()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult Login(Customer customer)
+		{
+			if (ModelState.IsValid)
+			{
+				ModelState.Clear();
+				return View("Browse");
+				
+			} 
+			else
+			{
+				return View("Index");
+			}
 		}
 
 

@@ -65,3 +65,4 @@ C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcor
 C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.pdb
 C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csproj.CopyComplete
 C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Register.cshtml.g.cs
+C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Browse.cshtml.g.cs
