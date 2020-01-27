@@ -1,7 +1,26 @@
-﻿
+﻿@model IEnumerable<RentMe.Models.MediaModel>
+
 @{
     ViewData["Title"] = "Browse";
 }
 
 <h2>Browse</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+    </tr>
+
+        @foreach (var item in Model)
+               {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                </tr>
+                }
+}
+</table>
 

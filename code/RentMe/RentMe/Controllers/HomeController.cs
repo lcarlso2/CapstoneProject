@@ -22,10 +22,18 @@ namespace RentMe.Controllers
 			return View();
 		}
 
+        
 		public IActionResult Browse()
 		{
-			ViewData["Message"] = "Your application browse page.";
-			return View();
+			
+            List<MediaModel> media = new List<MediaModel>
+            {
+                new MediaModel { Title = "Lord of the Rings" },
+                new MediaModel { Title = "Little Women" },
+                new MediaModel { Title = "Star Wars" }
+            };
+
+            return View(media);
 		}
 
 		public IActionResult Contact()
@@ -76,7 +84,13 @@ namespace RentMe.Controllers
 			if (ModelState.IsValid)
 			{
 				ModelState.Clear();
-				return View("Browse");
+                List<MediaModel> media = new List<MediaModel>
+            {
+                new MediaModel { Title = "Lord of the Rings" },
+                new MediaModel { Title = "Little Women" },
+                new MediaModel { Title = "Star Wars" }
+            };
+                return View("Browse", media);
 				
 			} 
 			else
