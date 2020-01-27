@@ -26,5 +26,15 @@ namespace RentMeDesktop.View
         {
             this.InitializeComponent();
         }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void updateButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
     }
 }
