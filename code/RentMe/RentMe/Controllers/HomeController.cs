@@ -28,9 +28,9 @@ namespace RentMe.Controllers
 			
             List<MediaModel> media = new List<MediaModel>
             {
-                new MediaModel { Title = "Lord of the Rings" },
-                new MediaModel { Title = "Little Women" },
-                new MediaModel { Title = "Star Wars" }
+                new MediaModel { Title = "Lord of the Rings", Category = "Book" },
+                new MediaModel { Title = "Little Women", Category = "Book"  },
+                new MediaModel { Title = "Star Wars", Category = "Movie"  }
             };
 
             return View(media);
