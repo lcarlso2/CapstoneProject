@@ -25,9 +25,9 @@
 						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 						<div class="form-group row">
-							@Html.LabelFor(customer => customer.First, htmlAttributes: new { @class = "control-label col-md-2"})
+							@Html.LabelFor(customer => customer.First, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.First, new { htmlAttributes = new { @class = "form-control",  placeholder= "First name"  } })
+								@Html.EditorFor(customer => customer.First, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
 								@Html.ValidationMessageFor(customer => customer.First, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -35,7 +35,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.Last, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.Last, new { htmlAttributes = new { @class = "form-control",  placeholder= "Last name" } })
+								@Html.EditorFor(customer => customer.Last, new { htmlAttributes = new { @class = "form-control", placeholder = "Last name" } })
 								@Html.ValidationMessageFor(customer => customer.Last, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control",  placeholder= "Email" } })
+								@Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
 								@Html.ValidationMessageFor(customer => customer.Email, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -51,7 +51,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.ConfirmEmail, new { htmlAttributes = new { @class = "form-control",  placeholder= "Confirm Email" } })
+								@Html.EditorFor(customer => customer.ConfirmEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirm Email" } })
 								@Html.ValidationMessageFor(customer => customer.ConfirmEmail, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -59,7 +59,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.Password, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.Password, new { htmlAttributes = new { @class = "form-control",  placeholder= "Password" } })
+								@Html.EditorFor(customer => customer.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
 								@Html.ValidationMessageFor(customer => customer.Password, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -67,7 +67,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.ConfirmPassword, new { htmlAttributes = new { @class = "form-control",  placeholder= "Confirm Password" } })
+								@Html.EditorFor(customer => customer.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirm Password" } })
 								@Html.ValidationMessageFor(customer => customer.ConfirmPassword, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -75,7 +75,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.Address, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.Address, new { htmlAttributes = new { @class = "form-control",  placeholder= "Address" } })
+								@Html.EditorFor(customer => customer.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
 								@Html.ValidationMessageFor(customer => customer.Address, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.State, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.State, new { htmlAttributes = new { @class = "form-control",  placeholder= "State" } })
+								@Html.EditorFor(customer => customer.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
 								@Html.ValidationMessageFor(customer => customer.State, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -91,7 +91,7 @@
 						<div class="form-group row">
 							@Html.LabelFor(customer => customer.Zip, htmlAttributes: new { @class = "control-label col-md-2" })
 							<div class="col-md-10">
-								@Html.EditorFor(customer => customer.Zip, new { htmlAttributes = new { @class = "form-control",  placeholder= "Zip" } })
+								@Html.EditorFor(customer => customer.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip" } })
 								@Html.ValidationMessageFor(customer => customer.Zip, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -105,6 +105,12 @@
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-2">
 								<label class=" label-success">@ViewBag.SuccessMessage</label>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-offset-2 col-md-2">
+								<label class=" label-danger">@ViewBag.ErrorMessage</label>
 							</div>
 						</div>
 					</div>

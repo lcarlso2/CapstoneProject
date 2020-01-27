@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RentMe.DAL;
 using RentMe.Models;
 
 namespace RentMe.Controllers
@@ -61,15 +62,26 @@ namespace RentMe.Controllers
 
 			if (ModelState.IsValid)
 			{
+				try
+				{
+					CustomerDal.RegisterCustomer(customer);
+				}
+				catch (Exception ex)
+				{
+					ViewBag.ErrorMessage = ex.Message;
+					return View(customer);
+				}
+
 				ModelState.Clear();
 				ViewBag.SuccessMessage = "You're Registered!";
+
 				return View("Register", new RegisteringCustomer());
 			}
 			else
 			{
 				return View(customer);
 			}
-			
+
 		}
 
 		[HttpGet]
