@@ -93,17 +93,20 @@ namespace RentMe.Controllers
 		[HttpPost]
 		public IActionResult Login(Customer customer)
 		{
-			if (ModelState.IsValid)
+			try
 			{
-				ModelState.Clear();
-           
-                return RedirectToAction("Browse");
-				
-			} 
-			else
+				if (ModelState.IsValid && CustomerDal.Authenticate(customer.Email, customer.Password) == 1)
+				{
+					return RedirectToAction("Browse");
+				}
+			} catch (Exception ex)
 			{
-				return View("Index");
+				ViewBag.Error = "Whoops, try again. Something went wrong.";
+				return View("Index");	
 			}
+
+			ViewBag.Error = "Invalid login";
+			return View("Index"); 
 		}
 
 

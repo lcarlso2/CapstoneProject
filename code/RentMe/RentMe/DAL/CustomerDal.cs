@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace RentMe.DAL
 {
+    /// <summary>
+    /// The customer dal class repsonsible for communicating with the DB for customer related things 
+    /// </summary>
 	public class CustomerDal
 	{
         /// <summary>
@@ -24,7 +27,7 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select count(*) from customer where email = @email and password = @password";
+                    var query = "select count(*) from Customer where Email = @Email and Password = @Password";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@Email", MySqlDbType.VarChar);
