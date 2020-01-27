@@ -84,13 +84,8 @@ namespace RentMe.Controllers
 			if (ModelState.IsValid)
 			{
 				ModelState.Clear();
-                List<MediaModel> media = new List<MediaModel>
-            {
-                new MediaModel { Title = "Lord of the Rings" },
-                new MediaModel { Title = "Little Women" },
-                new MediaModel { Title = "Star Wars" }
-            };
-                return View("Browse", media);
+           
+                return RedirectToAction("Browse");
 				
 			} 
 			else

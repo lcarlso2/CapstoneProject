@@ -76,7 +76,6 @@ C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\bin\Debug\
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\bin\Debug\netcoreapp2.1\RentMe.pdb
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\bin\Debug\netcoreapp2.1\RentMe.Views.dll
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\bin\Debug\netcoreapp2.1\RentMe.Views.pdb
-C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csprojAssemblyReference.cache
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.RazorAssemblyInfo.cache
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.RazorAssemblyInfo.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.AssemblyInfoInputs.cache
@@ -102,3 +101,4 @@ C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.dll
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.pdb
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csproj.CopyComplete
+C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csprojAssemblyReference.cache
