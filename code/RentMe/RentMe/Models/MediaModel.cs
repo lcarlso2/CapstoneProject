@@ -31,7 +31,6 @@ namespace RentMe.Models
         /// </summary>
         public MediaModel()
         {
-
         }
     }
 }

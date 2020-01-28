@@ -83,11 +83,8 @@ C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.TagHelpers.input.cache
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.TagHelpers.output.cache
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.RazorCoreGenerate.cache
-C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\About.cshtml.g.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Browse.cshtml.g.cs
-C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.cshtml.g.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\Register.cshtml.g.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
@@ -140,3 +137,4 @@ C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\Re
 C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csproj.CopyComplete
 C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\ConfirmBorrow.cshtml.g.cs
 C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\ConfirmBorrow.cshtml.g.cs
+C:\Users\Carson\Source\Repos\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\ConfirmBorrow.cshtml.g.cs
