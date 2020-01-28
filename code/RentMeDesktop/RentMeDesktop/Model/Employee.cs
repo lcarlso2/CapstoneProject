@@ -8,6 +8,15 @@ namespace RentMeDesktop.Model
 {
    public class Employee
     {
+
+        /// <summary>
+        /// Gets or sets the username
+        /// </summary>
+        /// <value>
+        /// The username
+        /// </value>
+        public string Username { get; set; }
+
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
@@ -44,5 +53,7 @@ namespace RentMeDesktop.Model
             this.LastName = lastName;
             this.IsManager = false;
         }
+
+        public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username}";
     }
 }

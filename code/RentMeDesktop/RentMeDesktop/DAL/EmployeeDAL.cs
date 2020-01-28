@@ -11,6 +11,59 @@ namespace RentMeDesktop.DAL
     public class EmployeeDAL
     {
         /// <summary>
+        /// Gets the employees
+        /// </summary>
+        /// <returns>the employees </returns>
+        public static List<Employee> GetEmployees(Employee currentEmployee)
+        {
+            List<Employee> employees = new List<Employee>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select * from Employee";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            var usernameOrdinal = reader.GetOrdinal("Username");
+                            var fNameOrdinal = reader.GetOrdinal("FName");
+                            var lNameOrdinal = reader.GetOrdinal("LName");
+                            var isManagerOrdinal = reader.GetOrdinal("Manager");
+
+                            while (reader.Read())
+                            {
+                                var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
+                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var isManager = reader.GetInt32(isManagerOrdinal);
+
+                                
+                                var employee = new Employee(fName, lName);
+                                employee.Username = username;
+                                employee.IsManager = isManager == 1;
+
+                                if (employee.Username != currentEmployee.Username)
+                                {
+                                    employees.Add(employee);
+                                }
+
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return employees;
+        }
+
+
+        /// <summary>
         /// Authenticates the specified username.
         /// </summary>
         /// <param name="username">The username.</param>
@@ -63,7 +116,7 @@ namespace RentMeDesktop.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select e.FName, e.LName, e.Manager from Employee e, where e.Username = @username and e.Password = @password";
+                    var query = "select e.FName, e.LName, e.Manager from Employee e where e.Username = @username and e.Password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
 
