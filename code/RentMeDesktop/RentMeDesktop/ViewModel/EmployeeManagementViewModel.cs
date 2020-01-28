@@ -131,20 +131,66 @@ namespace RentMeDesktop.ViewModel
 				this.OnPropertyChanged();
 			}
 		}
-		
 
-		/// <summary>
-		/// Creates a new employee management view model
+        /// <summary>
+		/// The relay command for removing an employee
 		/// </summary>
-		public EmployeeManagementViewModel()
+		public RelayCommand RemoveCommand { get; set; }
+
+        /// <summary>
+        /// The relay command for adding an employee
+        /// </summary>
+        public RelayCommand AddCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selected employee
+        /// </summary>
+        public Employee SelectedEmployee
+        {
+            get => this.selectedEmployee;
+            set
+            {
+                this.selectedEmployee = value;
+                this.OnPropertyChanged();
+                this.RemoveCommand.OnCanExecuteChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the employees
+        /// </summary>
+        public ObservableCollection<Employee> Employees
+        {
+            get => this.employees;
+            set
+            {
+                this.employees = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a new employee management view model
+        /// </summary>
+        public EmployeeManagementViewModel()
 		{
 			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
 			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
 			
 		}
 
+        /// <summary>
+		/// Sets the employees from the db
+		/// </summary>
+		/// <param name="currentEmployee">the current employee logged in</param>
+		public void RetrieveEmployees(Employee currentEmployee)
+        {
+            this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(currentEmployee));
+        }
 
-		private bool canRemoveEmployee(object obj)
+
+        private bool canRemoveEmployee(object obj)
 		{
 			return this.SelectedEmployee != null;
 		}
@@ -180,49 +226,6 @@ namespace RentMeDesktop.ViewModel
 			this.Username = null;
 			this.Password = null;
 			this.IsManager = false;
-		}
-		/// <summary>
-		/// The relay command for removing an employee
-		/// </summary>
-		public RelayCommand RemoveCommand { get; set; }
-
-		/// <summary>
-		/// The relay command for adding an employee
-		/// </summary>
-		public RelayCommand AddCommand { get; set; }
-
-		/// <summary>
-		/// Gets or sets the selected employee
-		/// </summary>
-		public Employee SelectedEmployee { 
-			get => this.selectedEmployee; 
-			set
-			{
-				this.selectedEmployee = value;
-				this.OnPropertyChanged();
-				this.RemoveCommand.OnCanExecuteChanged();
-			} 
-		}
-
-		/// <summary>
-		/// Gets or sets the employees
-		/// </summary>
-		public ObservableCollection<Employee> Employees { 
-			get => this.employees;
-			set
-			{
-				this.employees = value;
-				this.OnPropertyChanged();
-			} 
-		}
-
-		/// <summary>
-		/// Sets the employees from the db
-		/// </summary>
-		/// <param name="currentEmployee">the current employee logged in</param>
-		public void RetrieveEmployees(Employee currentEmployee)
-		{
-			this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(currentEmployee));
 		}
 	}
 }

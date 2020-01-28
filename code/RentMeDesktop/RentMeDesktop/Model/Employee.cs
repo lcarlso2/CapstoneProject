@@ -48,6 +48,11 @@ namespace RentMeDesktop.Model
         public bool IsManager { get; set; }
 
         /// <summary>
+        /// Gets the employee info string
+        /// </summary>
+        public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Employee"/> class.
         /// </summary>
         /// <param name="firstName">The first name.</param>
@@ -74,9 +79,6 @@ namespace RentMeDesktop.Model
             this.IsManager = isManager;
         }
 
-        /// <summary>
-        /// Gets the employee info string
-        /// </summary>
-        public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n";
+        
     }
 }
