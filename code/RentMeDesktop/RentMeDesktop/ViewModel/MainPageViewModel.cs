@@ -35,6 +35,12 @@ namespace RentMeDesktop.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets or sets property depending on if a rental is selected
+        /// </summary>
+        /// <value>
+        /// True if a rental has been selected and false if not
+        /// </value>
         public bool IsRentalSelected
         {
             get => this.isRentalSelected;
