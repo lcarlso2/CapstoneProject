@@ -6,7 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:vm="using:RentMeDesktop.ViewModel"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:EmployeeManagementViewModel/>
+    </Page.DataContext>
 
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="450,212,0,0" Text="Name:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>

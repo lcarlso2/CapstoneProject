@@ -17,6 +17,8 @@ namespace RentMeDesktop.Model
         /// </value>
         public string Username { get; set; }
 
+   
+
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>

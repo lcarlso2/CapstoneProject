@@ -37,7 +37,7 @@ namespace RentMeDesktop.View
 
         private void addEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(AddEmployeePage));
+            Frame.Navigate(typeof(AddEmployeePage), this.ViewModel);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -57,12 +57,9 @@ namespace RentMeDesktop.View
 
             private void backButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
         }
 
-        private void removeEmployeeButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 }

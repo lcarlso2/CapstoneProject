@@ -26,7 +26,7 @@
         </ListView>
         <Button x:Name="backButton" Width="135" Height="45" Content="Back" Margin="400,760,0,0" VerticalAlignment="Top" Click="backButton_Click"/>
         <Button x:Name="addEmployeeButton" Width="135" Height="45" Content="Add Employee" Margin="630,760,0,0" VerticalAlignment="Top" Click="addEmployeeButton_Click"/>
-        <Button x:Name="removeEmployeeButton" Width="135" Height="45" Content="Remove Employee" Margin="860,760,0,0" VerticalAlignment="Top"  Click="removeEmployeeButton_Click"/>
+        <Button x:Name="removeEmployeeButton" Command="{Binding RemoveCommand}" Width="135" Height="45" Content="Remove Employee" Margin="860,760,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Center" Margin="0,135,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="45" FontSize="22" PlaceholderText="Search"/>
 
     </Grid>

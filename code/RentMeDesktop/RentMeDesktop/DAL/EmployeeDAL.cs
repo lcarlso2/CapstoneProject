@@ -10,6 +10,33 @@ namespace RentMeDesktop.DAL
 {
     public class EmployeeDAL
     {
+
+
+        public static void RemoveEmployee(Employee employee)
+        {
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "delete from Employee where Username = @username";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = employee.Username;
+
+                        cmd.ExecuteScalar();
+                    }
+                    conn.Close();
+
+                }
+            } catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// Gets the employees
         /// </summary>
@@ -28,7 +55,7 @@ namespace RentMeDesktop.DAL
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            var usernameOrdinal = reader.GetOrdinal("Username");
+                            var usernameOrdinal = reader.GetOrdinal("Username");  
                             var fNameOrdinal = reader.GetOrdinal("FName");
                             var lNameOrdinal = reader.GetOrdinal("LName");
                             var isManagerOrdinal = reader.GetOrdinal("Manager");
@@ -39,8 +66,9 @@ namespace RentMeDesktop.DAL
                                 var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
                                 var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
                                 var isManager = reader.GetInt32(isManagerOrdinal);
+                       
 
-                                
+
                                 var employee = new Employee(fName, lName);
                                 employee.Username = username;
                                 employee.IsManager = isManager == 1;
@@ -53,6 +81,7 @@ namespace RentMeDesktop.DAL
                             }
                         }
                     }
+                    conn.Close();
                 }
             } catch (Exception ex)
             {
