@@ -1,0 +1,70 @@
+﻿@model IEnumerable<RentMeEmployee.Models.Employee>
+@{
+    ViewData["Title"] = "ManageEmployees";
+}
+
+<div class="container">
+    <div class="text-center">
+        <h2>Employees</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Username)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsManager)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => employee.FName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => employee.LName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => employee.Username)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
+                            </td>
+                            <td>
+                                <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <div class="row">
+
+                <div class="col-6 text-center">
+                    <a asp-controller="Home" asp-action="AddEmployee" class="btn btn-primary">Add Employee</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

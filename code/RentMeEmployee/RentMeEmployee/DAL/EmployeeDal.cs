@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MySql.Data.MySqlClient;
+using RentMeEmployee.Models;
 
 namespace RentMeEmployee.DAL
 {
@@ -8,6 +10,36 @@ namespace RentMeEmployee.DAL
     /// </summary>
     public class EmployeeDal
     {
+
+        /// <summary>
+        /// Removes the employee from the database
+        /// </summary>
+        /// <param name="employee">the employee being removed</param>
+        public static void RemoveEmployee(string employeeUsername)
+        {
+            try
+            {
+                var conn = DBConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "delete from Employee where Username = @username";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = employeeUsername;
+
+                        cmd.ExecuteScalar();
+                    }
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// Authenticates the specified employee.
@@ -82,5 +114,60 @@ namespace RentMeEmployee.DAL
 
             return manager;
         }
+
+        /// <summary>
+        /// Gets the employees
+        /// </summary>
+        /// <returns>the employees </returns>
+        public static List<Employee> GetEmployees(Employee currentEmployee)
+        {
+            List<Employee> employees = new List<Employee>();
+            try
+            {
+                var conn = DBConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select * from Employee";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            var usernameOrdinal = reader.GetOrdinal("Username");
+                            var fNameOrdinal = reader.GetOrdinal("FName");
+                            var lNameOrdinal = reader.GetOrdinal("LName");
+                            var isManagerOrdinal = reader.GetOrdinal("Manager");
+
+                            while (reader.Read())
+                            {
+                                var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
+                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var isManager = reader.GetInt32(isManagerOrdinal);
+
+
+
+                                var employee = new Employee { FName = fName, LName = lName, Username = username, IsManager = isManager == 1};
+                        
+
+                                if (employee.Username != currentEmployee.Username)
+                                {
+                                    employees.Add(employee);
+                                }
+
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return employees;
+        }
+
     }
 }

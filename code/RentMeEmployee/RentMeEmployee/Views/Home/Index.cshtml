@@ -22,10 +22,10 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                             <div class="form-group row">
-                                @Html.LabelFor(employee => employee.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(employee => employee.Username, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(employee => employee.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "User Name" } })
-                                    @Html.ValidationMessageFor(employee => employee.UserName, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(employee => employee.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "User Name" } })
+                                    @Html.ValidationMessageFor(employee => employee.Username, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 

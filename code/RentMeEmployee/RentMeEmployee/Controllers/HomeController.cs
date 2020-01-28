@@ -14,6 +14,22 @@ namespace RentMeEmployee.Controllers
 
         public static bool isManager = false;
 
+        public static Employee CurrentEmployee;
+
+        public IActionResult ManageEmployees()
+        {
+            List<Employee> employees = EmployeeDal.GetEmployees(CurrentEmployee);
+
+            return View(employees);
+        }
+
+        public IActionResult DeleteEmployee(string username)
+        {
+            EmployeeDal.RemoveEmployee(username);
+
+            return RedirectToAction("ManageEmployees");
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -49,9 +65,9 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                if (ModelState.IsValid && EmployeeDal.Authenticate(employee.UserName, employee.Password) == 1)
+                if (ModelState.IsValid && EmployeeDal.Authenticate(employee.Username, employee.Password) == 1)
                 {
-                    if (EmployeeDal.IsManager(employee.UserName) == 0)
+                    if (EmployeeDal.IsManager(employee.Username) == 0)
                     {
                         isManager = false;
                     }
@@ -59,6 +75,7 @@ namespace RentMeEmployee.Controllers
                     {
                         isManager = true;
                     }
+                    CurrentEmployee = employee;
                     return RedirectToAction("EmployeeLanding");
                 }
             }
@@ -74,8 +91,7 @@ namespace RentMeEmployee.Controllers
 
         public IActionResult EmployeeLanding()
         {
-            ViewData["Message"] = "Employee Landing Page.";
-
+    
             List<BorrowedItem> items = RentalDal.RetrieveAllBorrowedItems();
 
             return View(items);
@@ -92,7 +108,6 @@ namespace RentMeEmployee.Controllers
         [HttpPost]
         public IActionResult ConfirmedUpdate(BorrowedItem borrowedItem)
         {
-            Debug.WriteLine("TESTING THIS---------------  ID: " + borrowedItem.TransactionId + "----- STATUS: " + borrowedItem.Status);
             RentalDal.UpdateStatus(borrowedItem.TransactionId, borrowedItem.Status);
 
             return RedirectToAction("EmployeeLanding");
