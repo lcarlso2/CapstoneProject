@@ -1,0 +1,19 @@
+﻿@using RentMeEmployee.Controllers
+
+@{
+    ViewData["Title"] = "Employee Landing Page";
+}
+
+
+<div class="container">
+    <div class="employee-landing-header">
+        <h4>@ViewData["Message"]</h4>
+    </div>
+
+    <div>
+        @if (HomeController.isManager)
+        {
+            <input type="button" name="button" class="btn btn-primary" value="Manage Employees" />
+        }
+    </div>
+</div>
