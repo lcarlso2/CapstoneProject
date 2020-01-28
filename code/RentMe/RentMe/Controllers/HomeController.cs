@@ -24,7 +24,22 @@ namespace RentMe.Controllers
 			return View();
 		}
 
+		public IActionResult ConfirmBorrow(int? id)
+		{
+			MediaModel media = MediaDal.RetrieveAllMedia().Where(currentMedia => currentMedia.Id == id).First();
+			return View(media);
+		}
+
+		public IActionResult ConfirmedBorrow(int? id)
+		{
+			MediaModel media = MediaDal.RetrieveAllMedia().Where(currentMedia => currentMedia.Id == id).First();
+
+			BorrowDal.RentItem(CurrentUser, media);
 		
+			return RedirectToAction("Browse");
+		}
+
+
 		public IActionResult Signout()
 		{
 			CurrentUser = null;

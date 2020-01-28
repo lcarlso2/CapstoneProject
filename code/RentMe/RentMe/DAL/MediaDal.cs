@@ -35,6 +35,7 @@ namespace RentMe.DAL
                             var categoryOrdinal = reader.GetOrdinal("Category");
                             var titleOrdinal = reader.GetOrdinal("Title");
                             var IDOrdinal = reader.GetOrdinal("Id");
+                            var QtyOrdinal = reader.GetOrdinal("Qty");
                             
 
 
@@ -49,12 +50,16 @@ namespace RentMe.DAL
                                 var title = reader[titleOrdinal] == DBNull.Value
                                     ? "null"
                                     : reader.GetString(titleOrdinal);
-                               
+
+                                var qty = reader.GetInt32((QtyOrdinal));
 
 
-                                var media = new MediaModel { Id = id, Category = category, Title = title };
+                                if (qty > 0)
+                                {
+                                    var media = new MediaModel { Id = id, Category = category, Title = title };
 
-                                mediaItems.Add(media);
+                                    mediaItems.Add(media);
+                                }
                             }
                         }
                     }

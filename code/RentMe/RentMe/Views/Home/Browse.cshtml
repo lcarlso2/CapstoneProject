@@ -68,32 +68,41 @@
 
     </div>
 
-    <div class="list-group" style="margin-top:50px;">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+               
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
 
 
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
 
-        @foreach (var item in Model)
-        {
-            <button type="button" class="list-group-item">
-                <div class="col-sm-4 text-center browseItem">
-                    @Html.DisplayFor(modelItem => item.Title)
-                </div>
-                <div class="col-sm-4 text-center browseItem">
-                    @Html.DisplayFor(modelItem => item.Category)
-                </div>
-                <div class="col-sm-4 text-center browseItem">
-                    Something else
-                </div>
-            </button>
-        }
-    </div>
+                    <td>
+                        <a asp-controller="Home" asp-action="ConfirmBorrow" asp-route-id="@item.Id">Borrow</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-    <div class="row">
-        
-        <div class="col-6 text-center">
-            <button class="btn btn-primary">Borrow Item</button>
-        </div>
-    </div>
 
 
 

@@ -138,3 +138,4 @@ C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\Re
 C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.dll
 C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.pdb
 C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\RentMe.csproj.CopyComplete
+C:\Users\lucas\Desktop\School(F19)\Capstone\CS4982CapstoneProject\code\RentMe\RentMe\obj\Debug\netcoreapp2.1\Razor\Views\Home\ConfirmBorrow.cshtml.g.cs
