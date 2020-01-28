@@ -6,15 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:vm="using:RentMeDesktop.ViewModel"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <vm:EmployeeManagementViewModel/>
+    </Page.DataContext>
 
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Employee Management" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <ListView x:Name="rentalListView" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="550" Height="550" Margin="0,187,0,0">
+        <ListView x:Name="rentalListView" ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="550" Height="550" Margin="0,187,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Grid.Column="0" Width="400" Text="" />
+                        <TextBlock Grid.Column="0" Width="400" Text="{Binding EmployeeInfo}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

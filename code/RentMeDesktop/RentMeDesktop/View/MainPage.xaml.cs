@@ -42,7 +42,7 @@ namespace RentMeDesktop
 
         private void manageEmployeesButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(EmployeeManagementPage));
+            Frame.Navigate(typeof(EmployeeManagementPage), this.ViewModel);
         }
 
         private void updateRentalStatusButton_Click(object sender, RoutedEventArgs e)

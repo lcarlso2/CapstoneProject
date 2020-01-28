@@ -78,6 +78,7 @@ namespace RentMeDesktop.ViewModel
             {
                 isValidEmployee = EmployeeDAL.Authenticate(username, password) == VALID_EMPLOYEE;
                 this.CurrentEmployee = EmployeeDAL.GetCurrentUser(username, password);
+                this.CurrentEmployee.Username = username;
             }
             catch (Exception ex)
             {
