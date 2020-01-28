@@ -1,5 +1,7 @@
-﻿using System;
+﻿using RentMeDesktop.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,9 +24,23 @@ namespace RentMeDesktop.View
     /// </summary>
     public sealed partial class UpdateRentalPage : Page
     {
+        public MainPageViewModel ViewModel;
+        public ObservableCollection<string> statusTypes = new ObservableCollection<string>();
+        /// <summary>
+        /// Creates an upate rental page
+        /// </summary>
         public UpdateRentalPage()
         {
             this.InitializeComponent();
+            this.ViewModel = new MainPageViewModel();
+            this.DataContext = this.ViewModel;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var oldViewModel = (MainPageViewModel)e.Parameter;
+            this.ViewModel.SelectedRental = oldViewModel.SelectedRental;
+            // pending, ship, delivered, returned, late
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

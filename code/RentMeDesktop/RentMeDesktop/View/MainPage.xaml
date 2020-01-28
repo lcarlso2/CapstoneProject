@@ -2,19 +2,24 @@
     x:Class="RentMeDesktop.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:RentMeDesktop"
+    xmlns:local="using:RentMeDesktop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:RentMeDesktop.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.DataContext>
+        <vm:BaseViewModel/>
+    </Page.DataContext>
+
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Current Rentals" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <ListView x:Name="rentalListView" ScrollViewer.VerticalScrollBarVisibility="Visible" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="550" Height="550" Margin="0,155,0,0">
+        <ListView x:Name="rentalListView" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding BorrowedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedRental, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="1100" Height="550" Margin="0,155,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Grid.Column="0" Width="400" Text="" />
+                        <TextBlock Grid.Column="0" Width="1100" Text="{Binding BorrowedItemInfo}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

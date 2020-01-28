@@ -1,23 +1,21 @@
 ﻿using RentMeDesktop.DAL;
 using RentMeDesktop.Model;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace RentMeDesktop.ViewModel
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged 
     {
 
         private const int VALID_EMPLOYEE = 1;
 
         private Employee currentEmployee;
 
-        
+        private ObservableCollection<BorrowedItem> borrowedItems;
 
 
         /// <summary>
@@ -37,6 +35,30 @@ namespace RentMeDesktop.ViewModel
         }
 
         /// <summary>
+		/// Gets or sets the borrowed items 
+		/// </summary>
+		/// <value>
+		/// The borrow items 
+		/// </value>
+        public ObservableCollection<BorrowedItem> BorrowedItems
+        {
+            get => this.borrowedItems;
+            set
+            {
+                this.borrowedItems = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets the borrowed items.
+        /// </summary>
+        public void GetBorrowedItems()
+        {
+            this.BorrowedItems = new ObservableCollection<BorrowedItem>(BorrowedItemDAL.RetrieveAllBorrowedItems());
+        }
+
+        /// <summary>
         ///     Occurs when a property value changes.
         /// </summary>
         /// <returns> the event</returns>
@@ -46,6 +68,7 @@ namespace RentMeDesktop.ViewModel
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
 
         public bool ValidateLoginCredentials(string username, string password)
         {

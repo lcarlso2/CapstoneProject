@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\code",
+    "\\code\\RentMeDesktop",
+    "\\code\\RentMeEmployee"
   ],
+  "SelectedNode": "\\code\\RentMeDesktop\\RentMeDesktop.sln",
   "PreviewInSolutionExplorer": false
 }

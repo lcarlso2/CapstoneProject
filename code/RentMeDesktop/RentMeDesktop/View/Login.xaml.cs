@@ -57,5 +57,17 @@ namespace RentMeDesktop.View
                 DBError.showErrorWindow();
             }
         }
+
+        private void usernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.usernameTextBox.BorderBrush = new SolidColorBrush(Colors.Gray);
+            this.usernameTextBox.PlaceholderText = "Username";
+        }
+
+        private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            this.passwordBox.PlaceholderText = "Password";
+            this.passwordBox.BorderBrush = new SolidColorBrush(Colors.Gray);
+        }
     }
 }

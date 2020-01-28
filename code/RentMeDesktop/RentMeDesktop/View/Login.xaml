@@ -5,13 +5,14 @@
     xmlns:local="using:RentMeDesktop.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:RentMeDesktop.ViewModel"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center"  Text="RentMe" TextWrapping="Wrap" VerticalAlignment="Top" Height="90" Width="215" FontSize="60" Margin="0,150,0,0" />
-        <TextBox x:Name="usernameTextBox" HorizontalAlignment="Center"  Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="59" FontSize="32" PlaceholderText="Username" Margin="0,300,0,0"/>
-        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="475" Height="59" FontSize="32" PlaceholderText="Password" Margin="0,450,0,0"/>
+        <TextBox x:Name="usernameTextBox" HorizontalAlignment="Center"  Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="475" Height="59" FontSize="32" PlaceholderText="Username" Margin="0,300,0,0" TextChanged="usernameTextBox_TextChanged"/>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="475" Height="59" FontSize="32" PlaceholderText="Password" Margin="0,450,0,0" PasswordChanged="passwordBox_PasswordChanged"/>
         <Button x:Name="loginButton" Content="Login" Height="50" Margin="0,600,0,0" VerticalAlignment="Top" Width="230" HorizontalAlignment="Center" Click="loginButton_Click"/>
 
     </Grid>
