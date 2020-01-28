@@ -12,6 +12,48 @@ namespace RentMeDesktop.DAL
     {
 
 
+        public static void AddEmployee(Employee employee, string password)
+        {
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "insert into Employee(Username, Password, FName, LName, Manager) values (@username, @password, @fName, @lName, @manager)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = employee.Username;
+
+                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                        cmd.Parameters["@password"].Value = password;
+
+                        cmd.Parameters.Add("@fName", MySqlDbType.VarChar);
+                        cmd.Parameters["@fName"].Value = employee.FirstName;
+
+                        cmd.Parameters.Add("@lName", MySqlDbType.VarChar);
+                        cmd.Parameters["@lName"].Value = employee.LastName;
+
+                        cmd.Parameters.Add("@manager", MySqlDbType.Int32);
+                        cmd.Parameters["@manager"].Value = employee.IsManager;
+
+                        cmd.ExecuteScalar();
+                    }
+
+                    conn.Close();
+
+                }
+            } catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Removes the employee from the database
+        /// </summary>
+        /// <param name="employee">the employee being removed</param>
         public static void RemoveEmployee(Employee employee)
         {
             try
@@ -36,6 +78,66 @@ namespace RentMeDesktop.DAL
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// Searches the employees and returns the one matching the search term
+        /// </summary>
+        /// <returns>the employees matching the term</returns>
+        public static List<Employee> SearchEmployees(Employee currentEmployee, string searchTerm)
+        {
+            List<Employee> employees = new List<Employee>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select * from Employee where Username like concat('%', @searchTerm, '%') or concat(FName, LName) like concat('%', @searchTerm, '%')";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+
+                        cmd.Parameters.Add("@searchTerm", MySqlDbType.VarChar);
+                        cmd.Parameters["@searchTerm"].Value = searchTerm;
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            var usernameOrdinal = reader.GetOrdinal("Username");
+                            var fNameOrdinal = reader.GetOrdinal("FName");
+                            var lNameOrdinal = reader.GetOrdinal("LName");
+                            var isManagerOrdinal = reader.GetOrdinal("Manager");
+
+                            while (reader.Read())
+                            {
+                                var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
+                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var isManager = reader.GetInt32(isManagerOrdinal);
+
+
+
+                                var employee = new Employee(fName, lName);
+                                employee.Username = username;
+                                employee.IsManager = isManager == 1;
+
+                                if (employee.Username != currentEmployee.Username)
+                                {
+                                    employees.Add(employee);
+                                }
+
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return employees;
+        }
+
 
         /// <summary>
         /// Gets the employees
@@ -91,6 +193,8 @@ namespace RentMeDesktop.DAL
             return employees;
         }
 
+
+        
 
         /// <summary>
         /// Authenticates the specified username.

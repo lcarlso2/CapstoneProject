@@ -56,6 +56,20 @@ namespace RentMeDesktop.Model
             this.IsManager = false;
         }
 
-        public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username}";
+        /// <summary>
+        /// Initializes a new instance of the employee
+        /// </summary>
+        /// <param name="firstName"> the first name </param>
+        /// <param name="lastName"> the last name</param>
+        /// <param name="username"> the username</param>
+        /// <param name="isManager"> true or false if the employee is a manager or not</param>
+        public Employee(string firstName, string lastName, string username, bool isManager)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Username = username;
+            this.IsManager = isManager;
+        }
+        public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n";
     }
 }
