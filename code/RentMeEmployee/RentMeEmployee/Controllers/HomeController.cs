@@ -76,7 +76,9 @@ namespace RentMeEmployee.Controllers
         {
             ViewData["Message"] = "Employee Landing Page.";
 
-            return View();
+            List<BorrowedItem> items = RentalDal.RetrieveAllBorrowedItems();
+
+            return View(items);
         }
 
 

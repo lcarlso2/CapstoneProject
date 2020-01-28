@@ -13,7 +13,12 @@ namespace RentMe.DAL
 	public class BorrowDal
 	{
 
-		public static void RentItem(Customer customer, MediaModel media)
+		/// <summary>
+		/// Borrows an item 
+		/// </summary>
+		/// <param name="customer"> the customer borrowing an item</param>
+		/// <param name="media"> the media being rented</param>
+		public static void BorrowItem(Customer customer, MediaModel media)
 		{
 			try
 			{
