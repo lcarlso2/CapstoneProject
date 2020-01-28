@@ -18,7 +18,7 @@ namespace RentMeEmployee.Controllers
 
         public IActionResult ManageEmployees()
         {
-            List<Employee> employees = EmployeeDal.GetEmployees(CurrentEmployee);
+            List<NewEmployee> employees = EmployeeDal.GetEmployees(CurrentEmployee);
 
             return View(employees);
         }
@@ -28,6 +28,29 @@ namespace RentMeEmployee.Controllers
             EmployeeDal.RemoveEmployee(username);
 
             return RedirectToAction("ManageEmployees");
+        }
+
+        [HttpGet]
+        public IActionResult AddEmployee()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddEmployee(NewEmployee employee)
+        {
+            try
+            {
+                EmployeeDal.AddEmployee(employee);
+
+                ViewBag.SuccessMessage = "Employee added!";
+            } catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Uh-oh...something went wrong";
+            }
+
+            ModelState.Clear();
+            return View(new NewEmployee());
         }
 
         public IActionResult Index()

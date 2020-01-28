@@ -11,6 +11,51 @@ namespace RentMeEmployee.DAL
     public class EmployeeDal
     {
 
+
+        /// <summary>
+        /// Adds an employee to the database
+        /// </summary>
+        /// <param name="employee">The employee being added</param>
+        /// <param name="password">The password of the employee</param>
+        public static void AddEmployee(NewEmployee employee)
+        {
+            try
+            {
+                var conn = DBConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "insert into Employee(Username, Password, FName, LName, Manager) values (@username, @password, @fName, @lName, @manager)";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = employee.Username;
+
+                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                        cmd.Parameters["@password"].Value = employee.Password;
+
+                        cmd.Parameters.Add("@fName", MySqlDbType.VarChar);
+                        cmd.Parameters["@fName"].Value = employee.FName;
+
+                        cmd.Parameters.Add("@lName", MySqlDbType.VarChar);
+                        cmd.Parameters["@lName"].Value = employee.LName;
+
+                        cmd.Parameters.Add("@manager", MySqlDbType.Int32);
+                        cmd.Parameters["@manager"].Value = employee.IsManager;
+
+                        cmd.ExecuteScalar();
+                    }
+
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// Removes the employee from the database
         /// </summary>
@@ -119,9 +164,9 @@ namespace RentMeEmployee.DAL
         /// Gets the employees
         /// </summary>
         /// <returns>the employees </returns>
-        public static List<Employee> GetEmployees(Employee currentEmployee)
+        public static List<NewEmployee> GetEmployees(Employee currentEmployee)
         {
-            List<Employee> employees = new List<Employee>();
+            List<NewEmployee> employees = new List<NewEmployee>();
             try
             {
                 var conn = DBConnection.GetConnection();
@@ -147,7 +192,7 @@ namespace RentMeEmployee.DAL
 
 
 
-                                var employee = new Employee { FName = fName, LName = lName, Username = username, IsManager = isManager == 1};
+                                var employee = new NewEmployee { FName = fName, LName = lName, Username = username, IsManager = isManager == 1};
                         
 
                                 if (employee.Username != currentEmployee.Username)
