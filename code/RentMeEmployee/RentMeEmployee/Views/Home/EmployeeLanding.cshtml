@@ -42,34 +42,39 @@
 				<tbody>
 					@foreach (var item in Model)
 					{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.TransactionId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.ItemId)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.CustomerEmail)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.RentalDate)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.ReturnDate)
-						</td>
-						<td>
-							@Html.DisplayFor(modelItem => item.Status)
-						</td>
-						<td>
-							<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.TransactionId">Update</a>
-						</td>
-					</tr>
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.TransactionId)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.ItemId)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.CustomerEmail)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.RentalDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.ReturnDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Status)
+							</td>
+							<td>
+								<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.TransactionId">Update</a>
+							</td>
+						</tr>
 					}
 				</tbody>
 			</table>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-2">
+					<label class=" label-danger">@ViewBag.ErrorMessage</label>
+				</div>
+			</div>
 
-			
+
 		</div>
 	</div>
 </div>
