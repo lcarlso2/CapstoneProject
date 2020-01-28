@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace RentMeEmployee.Models
 {
-    public class LogIn
+    public class Employee
     {
         [Required]
         public string UserName { get; set; }
