@@ -8,6 +8,9 @@ using System.Runtime.CompilerServices;
 
 namespace RentMeDesktop.ViewModel
 {
+    /// <summary>
+    /// The base view model class
+    /// </summary>
     public class BaseViewModel : INotifyPropertyChanged 
     {
 
@@ -69,7 +72,12 @@ namespace RentMeDesktop.ViewModel
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
+        /// <summary>
+        /// Validates the login credentials 
+        /// </summary>
+        /// <param name="username">the username</param>
+        /// <param name="password">the password</param>
+        /// <returns>True if the login was valid, otherwise false</returns>
         public bool ValidateLoginCredentials(string username, string password)
         {
             bool isValidEmployee;

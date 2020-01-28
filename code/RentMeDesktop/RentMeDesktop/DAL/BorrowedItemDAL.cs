@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RentMeDesktop.DAL
 {
+    /// <summary>
+    /// The borrowed item dal
+    /// </summary>
     public class BorrowedItemDAL
     {
         /// <summary>
@@ -81,9 +84,9 @@ namespace RentMeDesktop.DAL
         }
 
         /// <summary>
-        /// Updates the customer.
+        /// Updates the borrowed item
         /// </summary>
-        /// <param name="itemToUpdate">The customer to update.</param>
+        /// <param name="itemToUpdate">The item to update.</param>
         public static void UpdateBorrowedItem(BorrowedItem itemToUpdate)
         {
             try

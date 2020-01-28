@@ -45,18 +45,19 @@ namespace RentMeDesktop.View
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var oldViewModel = (MainPageViewModel)e.Parameter;
+            this.ViewModel.CurrentEmployee = oldViewModel.CurrentEmployee;
             this.ViewModel.SelectedRental = oldViewModel.SelectedRental;
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
         }
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
             this.ViewModel.UpdateRentalItem();
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
         }
     }
 }

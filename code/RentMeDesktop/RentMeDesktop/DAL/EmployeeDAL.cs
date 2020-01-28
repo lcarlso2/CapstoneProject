@@ -11,7 +11,11 @@ namespace RentMeDesktop.DAL
     public class EmployeeDAL
     {
 
-
+        /// <summary>
+        /// Adds an employee to the database
+        /// </summary>
+        /// <param name="employee">The employee being added</param>
+        /// <param name="password">The password of the employee</param>
         public static void AddEmployee(Employee employee, string password)
         {
             try

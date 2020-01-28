@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace RentMeDesktop.DAL
 {
+    /// <summary>
+    /// The db connection class
+    /// </summary>
     public class DbConnection
     {
+        /// <summary>
+        /// The connection string
+        /// </summary>
         public static readonly string ConnString = "server=160.10.25.16; port=3306; uid=cs4982s20c; " +
                                                    "pwd=zOAIfJ3BhiAeUryr; database=cs4982s20c;";
 

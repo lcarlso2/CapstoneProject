@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RentMeDesktop.Model
 {
+    /// <summary>
+    /// The employee class
+    /// </summary>
    public class Employee
     {
 
@@ -70,6 +73,10 @@ namespace RentMeDesktop.Model
             this.Username = username;
             this.IsManager = isManager;
         }
+
+        /// <summary>
+        /// Gets the employee info string
+        /// </summary>
         public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n";
     }
 }

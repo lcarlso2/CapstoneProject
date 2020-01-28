@@ -1,6 +1,7 @@
 ﻿using RentMeDesktop.DAL;
 using RentMeDesktop.Model;
 using RentMeDesktop.Utility;
+using RentMeDesktop.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,25 +35,37 @@ namespace RentMeDesktop.ViewModel
 
 		private Employee selectedEmployee;
 
-
+		/// <summary>
+		/// Gets or sets the employee search term
+		/// </summary>
 		public string EmployeeSearchTerm { 
 			get => this.employeeSearchTerm; 
 			set
 			{
 				this.employeeSearchTerm = value;
-				if (string.IsNullOrEmpty(this.EmployeeSearchTerm))
+				try
 				{
-					this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(this.CurrentEmployee));
-				} else
+					
+					if (string.IsNullOrEmpty(this.EmployeeSearchTerm))
+					{
+						this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(this.CurrentEmployee));
+					}
+					else
+					{
+						this.Employees = new ObservableCollection<Employee>(EmployeeDAL.SearchEmployees(this.CurrentEmployee, this.EmployeeSearchTerm));
+					}
+				} catch (Exception ex)
 				{
-					this.Employees = new ObservableCollection<Employee>(EmployeeDAL.SearchEmployees(this.CurrentEmployee, this.EmployeeSearchTerm));
+					DBError.showErrorWindow();
 				}
 				
 				this.OnPropertyChanged();
 			} 
 		}
 
-
+		/// <summary>
+		/// Gets or sets the First name 
+		/// </summary>
 		public string FName
 		{
 			get => this.fName; 
@@ -64,6 +77,9 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the last name
+		/// </summary>
 		public string LName
 		{
 			get => this.lName;
@@ -75,6 +91,9 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the username
+		/// </summary>
 		public string Username
 		{
 			get => this.username;
@@ -86,6 +105,9 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the password
+		/// </summary>
 		public string Password
 		{
 			get => this.password;
@@ -97,7 +119,9 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
-
+		/// <summary>
+		/// Gets or sets the isManager 
+		/// </summary>
 		public bool IsManager
 		{
 			get => this.isManager;
@@ -133,7 +157,7 @@ namespace RentMeDesktop.ViewModel
 				this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(this.CurrentEmployee));
 			} catch(Exception ex)
 			{
-
+				DBError.showErrorWindow();
 			}
 		}
 
