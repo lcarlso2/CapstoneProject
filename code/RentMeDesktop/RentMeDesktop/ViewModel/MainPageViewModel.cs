@@ -16,6 +16,8 @@ namespace RentMeDesktop.ViewModel
     {
         private BorrowedItem selectedRental;
 
+        private bool isRentalSelected;
+
         /// <summary>
         /// Gets or sets the selected borrowed item 
         /// </summary>
@@ -28,6 +30,17 @@ namespace RentMeDesktop.ViewModel
             set
             {
                 this.selectedRental = value;
+                this.IsRentalSelected = (this.selectedRental != null);
+                this.OnPropertyChanged();
+            }
+        }
+
+        public bool IsRentalSelected
+        {
+            get => this.isRentalSelected;
+            set
+            {
+                this.isRentalSelected = value;
                 this.OnPropertyChanged();
             }
         }
