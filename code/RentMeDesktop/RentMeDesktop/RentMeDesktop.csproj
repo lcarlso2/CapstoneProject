@@ -119,11 +119,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DAL\DbConnection.cs" />
+    <Compile Include="DAL\EmployeeDAL.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="View\AddEmployeePage.xaml.cs">
       <DependentUpon>AddEmployeePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DBError.cs" />
     <Compile Include="View\EmployeeManagementPage.xaml.cs">
       <DependentUpon>EmployeeManagementPage.xaml</DependentUpon>
     </Compile>
@@ -183,10 +186,11 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
+    <PackageReference Include="MySql.Data">
+      <Version>8.0.19</Version>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAL\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

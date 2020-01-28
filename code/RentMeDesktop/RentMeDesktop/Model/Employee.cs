@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RentMeDesktop.Model
 {
-    class Employee
+   public class Employee
     {
         /// <summary>
         /// Gets or sets the first name.
@@ -36,8 +36,12 @@ namespace RentMeDesktop.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Employee"/> class.
         /// </summary>
-        public Employee()
+        /// <param name="firstName">The first name.</param>
+        /// <param name="lastName">The last name.</param>
+        public Employee(string firstName, string lastName)
         {
+            this.FirstName = firstName;
+            this.LastName = lastName;
             this.IsManager = false;
         }
     }
