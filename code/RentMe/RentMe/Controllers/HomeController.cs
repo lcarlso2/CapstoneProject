@@ -11,9 +11,25 @@ namespace RentMe.Controllers
 {
 	public class HomeController : Controller
 	{
+
+		public static Customer CurrentUser;
+
+
 		public IActionResult Index()
 		{
+			if (CurrentUser != null)
+			{
+				return RedirectToAction("Browse");
+			}
 			return View();
+		}
+
+		
+		public IActionResult Signout()
+		{
+			CurrentUser = null;
+			
+			return RedirectToAction("Index");
 		}
 
 		public IActionResult About()
@@ -26,13 +42,8 @@ namespace RentMe.Controllers
         
 		public IActionResult Browse()
 		{
-			
-            List<MediaModel> media = new List<MediaModel>
-            {
-                new MediaModel { Title = "Lord of the Rings", Category = "Book" },
-                new MediaModel { Title = "Little Women", Category = "Book"  },
-                new MediaModel { Title = "Star Wars", Category = "Movie"  }
-            };
+
+			List<MediaModel> media = MediaDal.RetrieveAllMedia();
 
             return View(media);
 		}
@@ -59,7 +70,7 @@ namespace RentMe.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Register(RegisteringCustomer customer)
 		{
-
+			Debug.WriteLine(HttpContext.User);
 			if (ModelState.IsValid)
 			{
 				try
@@ -97,6 +108,7 @@ namespace RentMe.Controllers
 			{
 				if (ModelState.IsValid && CustomerDal.Authenticate(customer.Email, customer.Password) == 1)
 				{
+					CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
 					return RedirectToAction("Browse");
 				}
 			} catch (Exception ex)
