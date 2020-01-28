@@ -26,23 +26,26 @@
             @foreach (var item in Model)
             {
                 <button type="button" class="list-group-item">
-                    <div class="col-sm-2 text-center browseItem">
+                    <div class="col-sm-1 text-center">
                         @Html.DisplayFor(modelItem => item.TrasactionId)
                     </div>
-                    <div class="col-sm-1 text-center browseItem">
+                    <div class="col-sm-1 text-center">
                         @Html.DisplayFor(modelItem => item.ItemId)
                     </div>
-                    <div class="col-sm-3 text-center browseItem">
+                    <div class="col-sm-3 text-center">
                         @Html.DisplayFor(modelItem => item.CustomerEmail)
                     </div>
-                    <div class="col-sm-2 text-center browseItem">
+                    <div class="col-sm-2 text-center">
                         @Html.DisplayFor(modelItem => item.RentalDate)
                     </div>
-                    <div class="col-sm-2 text-center browseItem">
+                    <div class="col-sm-2 text-center">
                         @Html.DisplayFor(modelItem => item.ReturnDate)
                     </div>
-                    <div class="col-sm-2 text-center browseItem">
+                    <div class="col-sm-2 text-center">
                         @Html.DisplayFor(modelItem => item.Status)
+                    </div>
+                    <div class="col-sm-1 text-center">
+                        <a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.TrasactionId">Update</a>
                     </div>
                 </button>
             }
