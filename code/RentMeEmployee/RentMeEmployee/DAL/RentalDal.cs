@@ -77,5 +77,42 @@ namespace RentMeEmployee.DAL
             return borrowedItems;
         }
 
+        public static int UpdateStatus(int? transactionId, string status)
+        {
+
+            var rowsEffected = 0;
+
+            try
+            {
+                var conn = DBConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    const string query = "UPDATE BorrowedItem SET Status = @status WHERE TransactionID = @transactionId;";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@status", status);
+                        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+
+                        rowsEffected = cmd.ExecuteNonQuery();
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rowsEffected;
+
+
+
+        }
+
+
+
     }
 }

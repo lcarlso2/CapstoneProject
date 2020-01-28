@@ -1,4 +1,5 @@
-﻿using RentMeDesktop.Model;
+﻿using RentMeDesktop.DAL;
+using RentMeDesktop.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,12 @@ namespace RentMeDesktop.ViewModel
                 this.OnPropertyChanged();
             }
         }
+
+        public void UpdateRentalItem()
+        {
+            BorrowedItemDAL.UpdateBorrowedItem(this.SelectedRental);
+        }
+
+
     }
 }

@@ -1,0 +1,51 @@
+﻿@model BorrowedItem
+
+@{
+    ViewData["Title"] = "Update Status";
+}
+
+<h2 class="text-center">Update </h2>
+
+<div class="row">
+    <div class="col-sm-4 text-center">
+        <h4>Transaction ID</h4>
+    </div>
+    <div class="col-sm-4 text-center">
+        <h4>Customer Email</h4>
+    </div>
+    <div class="col-sm-4 text-center">
+        <h4>Status</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 text-center">
+        @Html.DisplayFor(item => item.TrasactionId)
+    </div>
+    <div class="col-sm-4 text-center">
+        @Html.DisplayFor(item => item.CustomerEmail)
+    </div>
+    <div class="col-sm-4 text-center">
+        <input id="itemStatus" type="text" value="@Model.Status" list="options" onchange=" function updateStatus() { @Model.Status = (document.getElementById('itemStatus') as HTMLInputElement).value; }"/>
+        <datalist id="options">
+            <option value="Pending"></option>
+            <option value="Shipped"></option>
+            <option value="Delivered"></option>
+            <option value="Returned"></option>
+            <option value="Late"></option> 
+            
+        </datalist>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 text-center">
+        <a asp-controller="Home" asp-action="ConfirmedUpdate" asp-route-id="@Model.TrasactionId" asp-route-status="@Model.Status" class="btn btn-primary">Update</a>
+    </div>
+</div>
+
+<div class="form-group text-center">
+    <div class="col-md-offset-2 col-md-2 ">
+        <label class=" label-danger">@ViewBag.Error</label>
+    </div>
+</div>

@@ -18,12 +18,11 @@
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="402,212,0,0" Text="Transaction ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
         <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="378,312,0,0" Text="Customer Email:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
         <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="417,412,0,0" Text="Status:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="550,200,0,0" Text="{Binding SelectedRental.TrasactionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Order #" FontSize="20"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="550,300,0,0" Text="{Binding SelectedRental.CustomerEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Member #" FontSize="20"/>
-        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="550,400,0,0" Text="{Binding SelectedRental, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Status" FontSize="20"/>
+        <TextBox x:Name="textBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="550,200,0,0" Text="{Binding SelectedRental.TrasactionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Order #" FontSize="20"/>
+        <TextBox x:Name="textBox1" IsReadOnly="True" HorizontalAlignment="Left" Margin="550,300,0,0" Text="{Binding SelectedRental.CustomerEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Member #" FontSize="20"/>
         <Button x:Name="cancelButton"  Width="135" Height="45" Content="Cancel" Margin="550,553,0,0" VerticalAlignment="Top" Click="cancelButton_Click"/>
-        <Button x:Name="updateButton"  Width="135" Height="45" Content="Update" Margin="815,553,0,0" VerticalAlignment="Top" Click="updateButton_Click"/>
-        <ComboBox x:Name="comboBox" Margin="1075,386,0,0" Width="120"/>
+        <Button x:Name="updateButton" Command="{Binding UpdateStatusCommand}" Width="135" Height="45" Content="Update" Margin="815,553,0,0" VerticalAlignment="Top" Click="updateButton_Click"/>
+        <ComboBox x:Name="comboBox" ItemsSource="{x:Bind statusTypes}" SelectedItem="{Binding SelectedRental.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="550,398,0,0" Height="45" Width="400" HorizontalAlignment="Left"/>
 
     </Grid>
 </Page>

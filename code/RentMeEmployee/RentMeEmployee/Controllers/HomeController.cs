@@ -81,6 +81,22 @@ namespace RentMeEmployee.Controllers
             return View(items);
         }
 
+		public IActionResult UpdateStatus(int? id)
+        {
+
+            BorrowedItem item = RentalDal.RetrieveAllBorrowedItems().Where(currentItem => currentItem.TrasactionId == id).First();
+
+            return View(item);
+        }
+
+        public IActionResult ConfirmedUpdate(int? id, string status)
+        {
+
+            RentalDal.UpdateStatus(id, status);
+
+            return RedirectToAction("EmployeeLanding");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

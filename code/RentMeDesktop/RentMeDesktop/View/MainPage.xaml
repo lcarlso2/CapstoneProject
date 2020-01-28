@@ -24,7 +24,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button x:Name="manageEmployeesButton" Content="Manage Employees" Margin="40,60,30,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50" Width="150" Click="manageEmployeesButton_Click"/>
+        <Button x:Name="manageEmployeesButton" Content="Manage Employees" Margin="40,60,30,0" Visibility="{Binding CurrentEmployee.IsManager}" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50" Width="150" Click="manageEmployeesButton_Click"/>
         <Button x:Name="updateRentalStatusButton" Height="50" Content="Update Rental Status" Width="220" Margin="0,768,0,0" VerticalAlignment="Top" Click="updateRentalStatusButton_Click" HorizontalAlignment="Center"/>
         <Button x:Name="logoutButton" Content="Log Out" Margin="30,60,40,0" Height="50" Width="150" VerticalAlignment="Top" HorizontalAlignment="Right" Click="logoutButton_Click"/>
     </Grid>

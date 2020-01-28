@@ -24,6 +24,11 @@ namespace RentMeEmployee.Models
 
         }
 
+        public void setStatus(string status)
+        {
+            this.Status = status;
+        }
+
 
     }
 }
