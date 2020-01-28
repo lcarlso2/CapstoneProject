@@ -32,6 +32,12 @@ namespace RentMeDesktop.View
         public UpdateRentalPage()
         {
             this.InitializeComponent();
+            this.statusTypes.Add("Pending");
+            this.statusTypes.Add("Shipped");
+            this.statusTypes.Add("Delivered");
+            this.statusTypes.Add("Returned");
+            this.statusTypes.Add("Late");
+
             this.ViewModel = new MainPageViewModel();
             this.DataContext = this.ViewModel;
         }
@@ -40,7 +46,6 @@ namespace RentMeDesktop.View
         {
             var oldViewModel = (MainPageViewModel)e.Parameter;
             this.ViewModel.SelectedRental = oldViewModel.SelectedRental;
-            // pending, ship, delivered, returned, late
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
@@ -50,6 +55,7 @@ namespace RentMeDesktop.View
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
+            this.ViewModel.UpdateRentalItem();
             Frame.Navigate(typeof(MainPage));
         }
     }

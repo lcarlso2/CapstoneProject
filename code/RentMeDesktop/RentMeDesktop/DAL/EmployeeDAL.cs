@@ -63,7 +63,7 @@ namespace RentMeDesktop.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select e.FName, e.LName, e.Manager from Employee e, where e.Username = @username and e.Password = @password";
+                    var query = "select FName, LName, Manager from Employee where Username = @username and Password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RentMeDesktop.DAL
 {
-    class BorrowedItemDAL
+    public class BorrowedItemDAL
     {
         /// <summary>
         /// Retrieves all borrowed items.
@@ -78,6 +78,45 @@ namespace RentMeDesktop.DAL
             }
 
             return borrowedItems;
+        }
+
+        /// <summary>
+        /// Updates the customer.
+        /// </summary>
+        /// <param name="itemToUpdate">The customer to update.</param>
+        public static void UpdateBorrowedItem(BorrowedItem itemToUpdate)
+        {
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query =
+                        "update BorrowedItem set Status=@status where TransactionID = @transactionID and ItemId = @itemID";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@status", MySqlDbType.VarChar);
+                        cmd.Parameters["@status"].Value = itemToUpdate.Status;
+
+                        cmd.Parameters.Add("@transactionID", MySqlDbType.Int32);
+                        cmd.Parameters["@transactionID"].Value = itemToUpdate.TrasactionId;
+
+                        cmd.Parameters.Add("@itemID", MySqlDbType.Int32);
+                        cmd.Parameters["@itemID"].Value = itemToUpdate.ItemId;
+
+
+                        cmd.ExecuteScalar();
+                    }
+                    conn.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }
