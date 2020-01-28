@@ -1,23 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace RentMeEmployee.Models
 {
     public class BorrowedItem
     {
-        public int TrasactionId { get; set; }
+        [Display(Name = "Transaction ID")]
+        public int TransactionId { get; set; }
 
+        [Display(Name = "Item ID")]
         public int ItemId { get; set; }
 
+        [Display(Name = "Customer Email")]
         public string CustomerEmail { get; set; }
-        
+
+        [Display(Name = "Rental Date")]
         public DateTime RentalDate { get; set; }
 
+        [Display(Name = "Return Date")]
         public DateTime ReturnDate { get; set; }
 
+        [Display(Name = "Order Status")]
         public string Status { get; set; }
+
+   
 
         public BorrowedItem()
         {

@@ -84,15 +84,16 @@ namespace RentMeEmployee.Controllers
 		public IActionResult UpdateStatus(int? id)
         {
 
-            BorrowedItem item = RentalDal.RetrieveAllBorrowedItems().Where(currentItem => currentItem.TrasactionId == id).First();
+            BorrowedItem item = RentalDal.RetrieveAllBorrowedItems().Where(currentItem => currentItem.TransactionId == id).First();
 
             return View(item);
         }
 
-        public IActionResult ConfirmedUpdate(int? id, string status)
+        [HttpPost]
+        public IActionResult ConfirmedUpdate(BorrowedItem borrowedItem)
         {
-
-            RentalDal.UpdateStatus(id, status);
+            Debug.WriteLine("TESTING THIS---------------  ID: " + borrowedItem.TransactionId + "----- STATUS: " + borrowedItem.Status);
+            RentalDal.UpdateStatus(borrowedItem.TransactionId, borrowedItem.Status);
 
             return RedirectToAction("EmployeeLanding");
         }

@@ -53,7 +53,7 @@ namespace RentMeEmployee.DAL
 
 
                                 var item = new BorrowedItem {
-                                    TrasactionId = transationId,
+                                    TransactionId = transationId,
                                     ItemId = itemId,
                                     CustomerEmail = customerEmail,
                                     RentalDate = rentalDate,
@@ -77,7 +77,7 @@ namespace RentMeEmployee.DAL
             return borrowedItems;
         }
 
-        public static int UpdateStatus(int? transactionId, string status)
+        public static int UpdateStatus(int transactionId, string status)
         {
 
             var rowsEffected = 0;
