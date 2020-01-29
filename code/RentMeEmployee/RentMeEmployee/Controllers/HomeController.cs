@@ -107,38 +107,7 @@ namespace RentMeEmployee.Controllers
                 return View();
             }
             
-        }
-
-        /// <summary>
-        /// The action result for the about page
-        /// </summary>
-        /// <returns>the about page</returns>
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        /// <summary>
-        /// the action result for the contact page
-        /// </summary>
-        /// <returns>the contact page</returns>
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        /// <summary>
-        /// The action result for the privacy page
-        /// </summary>
-        /// <returns>the privacy page</returns>
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        }  
 
         /// <summary>
         /// The action result for the get request from the login page 
