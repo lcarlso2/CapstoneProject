@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 
 namespace RentMeDesktop.ViewModel
 {
@@ -195,16 +196,27 @@ namespace RentMeDesktop.ViewModel
 			return this.SelectedEmployee != null;
 		}
 
-		private void removeEmployee(object obj)
+		private async void removeEmployee(object obj)
 		{
-			try
-			{
-				EmployeeDAL.RemoveEmployee(this.SelectedEmployee);
-				this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(this.CurrentEmployee));
-			} catch(Exception ex)
-			{
-				DBError.showErrorWindow();
-			}
+            ContentDialog dialog = new ContentDialog();
+            dialog.Title = "Confirm";
+            dialog.Content = "Are you sure you want to remove this employee?";
+            dialog.CloseButtonText = "Cancel";
+            dialog.PrimaryButtonText = "Confirm";
+            var result = await dialog.ShowAsync();
+            if(result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    EmployeeDAL.RemoveEmployee(this.SelectedEmployee);
+                    this.Employees = new ObservableCollection<Employee>(EmployeeDAL.GetEmployees(this.CurrentEmployee));
+                }
+                catch (Exception ex)
+                {
+                    DBError.showErrorWindow();
+                }
+            }
+            
 		}
 
 		private bool canAddEmployee(object obj)
@@ -212,11 +224,22 @@ namespace RentMeDesktop.ViewModel
 			return !String.IsNullOrEmpty(this.FName) && !String.IsNullOrEmpty(this.LName) && !String.IsNullOrEmpty(this.Username) && !String.IsNullOrEmpty(this.Password);
 		}
 
-		private void addEmployee(object obj)
+		private async void addEmployee(object obj)
 		{
-			var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
-			EmployeeDAL.AddEmployee(employeeToAdd, this.Password);
-			this.resetFields();
+            ContentDialog dialog = new ContentDialog();
+            dialog.Title = "Confirm";
+            dialog.Content = "Are you sure you want to remove this employee?";
+            dialog.CloseButtonText = "Cancel";
+            dialog.PrimaryButtonText = "Confirm";
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
+                EmployeeDAL.AddEmployee(employeeToAdd, this.Password);
+                this.resetFields();
+            }
+            
+			
 		}
 
 		private void resetFields()
