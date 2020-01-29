@@ -107,7 +107,18 @@ namespace RentMeEmployee.Controllers
                 return View();
             }
             
-        }  
+        }
+
+        /// <summary>
+        /// The signout action result
+        /// </summary>
+        /// <returns>The index page</returns>
+        public IActionResult Signout()
+        {
+            CurrentEmployee = null;
+
+            return RedirectToAction("Index");
+        }
 
         /// <summary>
         /// The action result for the get request from the login page 

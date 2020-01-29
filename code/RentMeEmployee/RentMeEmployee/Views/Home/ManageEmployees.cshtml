@@ -48,13 +48,37 @@
                                 @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
                             </td>
                             <td>
-                                <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">Delete</a>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                                    Remove Employee
+                                </button>
+                                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-center" id="exampleModalLabel">Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                Are you sure you want to remove this employee?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-sm-6">
+                                                    <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username"><input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;" /></a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-
 
             <div class="row">
                 <div class="col-6 text-center">
