@@ -20,17 +20,21 @@ namespace RentMeDesktop.ViewModel
 	public class EmployeeManagementViewModel : BaseViewModel
 	{
 
-		private string fName { get; set; }
+        private string fName;
 
-		private string lName { get; set; }
 
-		private string username { get; set; }
+        private string lName;
 
-		private string password { get; set; }
 
-		private bool isManager { get; set; }
+        private string username;
 
-		private string employeeSearchTerm { get; set; }
+        private string password;
+
+        private string confirmedPassword;
+
+        private bool isManager;
+
+        private string employeeSearchTerm;
 
 		private ObservableCollection<Employee> employees;
 
@@ -120,6 +124,16 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
+        public string ConfirmedPassword
+        {
+            get => this.confirmedPassword;
+            set
+            {
+                this.confirmedPassword = value;
+                this.OnPropertyChanged();
+                this.AddCommand.OnCanExecuteChanged();
+            }
+        }
 		/// <summary>
 		/// Gets or sets the isManager 
 		/// </summary>
@@ -221,7 +235,7 @@ namespace RentMeDesktop.ViewModel
 
 		private bool canAddEmployee(object obj)
 		{
-			return !String.IsNullOrEmpty(this.FName) && !String.IsNullOrEmpty(this.LName) && !String.IsNullOrEmpty(this.Username) && !String.IsNullOrEmpty(this.Password);
+			return !String.IsNullOrEmpty(this.FName) && !String.IsNullOrEmpty(this.LName) && !String.IsNullOrEmpty(this.Username) && !String.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 		}
 
 		private async void addEmployee(object obj)
