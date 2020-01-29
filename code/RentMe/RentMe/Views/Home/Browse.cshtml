@@ -15,9 +15,10 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a>Books</a></li>
-                            <li><a>Movies</a></li>
-                            <li><a>TV Shows</a></li>
+                            <li><a asp-controller="Home" asp-action="TypeFilter" asp-route-type="All" class="btn btn-primary">All Types</a></li>
+                            <li><a asp-controller="Home" asp-action="TypeFilter" asp-route-type="Book" class="btn btn-primary">Books</a></li>
+                            <li><a asp-controller="Home" asp-action="TypeFilter" asp-route-type="Movie" class="btn btn-primary">Movies</a></li>
+                            <li><a asp-controller="Home" asp-action="TypeFilter" asp-route-type="TV Show" class="btn btn-primary">TV Shows</a></li>
                         </ul>
                     </div>
                 </div>
@@ -32,10 +33,12 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a>Adventure</a></li>
-                            <li><a>Horror</a></li>
-                            <li><a>Comedy</a></li>
-                            <li><a>Romance</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="All" class="btn btn-primary">All Categories</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Action" class="btn btn-primary">Action</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Adventure" class="btn btn-primary">Adventure</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Comedy" class="btn btn-primary">Comedy</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Horror" class="btn btn-primary">Horror</a></li>
+                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Romance" class="btn btn-primary">Romance</a></li>
                         </ul>
                     </div>
                 </div>
@@ -75,6 +78,7 @@
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
                
+                <th>@Html.DisplayNameFor(model => model.Type)</th>
                 <th></th>
             </tr>
         </thead>
@@ -83,18 +87,20 @@
 
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-
-                    <td>
-                        <a asp-controller="Home" asp-action="ConfirmBorrow" asp-route-id="@item.Id">Borrow</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="ConfirmBorrow" asp-route-id="@item.Id">Borrow</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
