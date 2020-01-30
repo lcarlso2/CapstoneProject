@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using RentMeEmployee.DAL;
 using RentMeEmployee.Models;
+using RentMeSharedCode.DAL;
+using RentMeSharedCode.Model;
 
 namespace RentMeEmployee.Controllers
 {
@@ -14,10 +14,7 @@ namespace RentMeEmployee.Controllers
     /// </summary>
     public class HomeController : Controller
     {
-        /// <summary>
-        /// true if the logged in person is a manager otherwise false
-        /// </summary>
-        public static bool isManager = false;
+
 
         /// <summary>
         /// The current employee logged in
@@ -25,15 +22,20 @@ namespace RentMeEmployee.Controllers
         public static Employee CurrentEmployee;
 
         /// <summary>
+        /// True if the current user is a manager
+        /// </summary>
+        public static bool IsManager;
+
+        /// <summary>
         /// The action results for managing employees
         /// </summary>
         /// <returns>the view for managing employees</returns>
         public IActionResult ManageEmployees()
         {
-            List<NewEmployee> employees = new List<NewEmployee>();
+            List<Employee> employees = new List<Employee>();
             try
             {
-                employees = EmployeeDal.GetEmployees(CurrentEmployee);
+                employees = EmployeeDAL.GetEmployees(CurrentEmployee);
             } catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";
@@ -52,7 +54,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                EmployeeDal.RemoveEmployee(username);
+               // EmployeeDAL.RemoveEmployee(username);
             } catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";
@@ -77,11 +79,11 @@ namespace RentMeEmployee.Controllers
         /// <param name="employee">the employee being added</param>
         /// <returns>the add employee page</returns>
         [HttpPost]
-        public IActionResult AddEmployee(NewEmployee employee)
+        public IActionResult AddEmployee(Employee employee)
         {
             try
             {
-                EmployeeDal.AddEmployee(employee);
+                EmployeeDAL.AddEmployee(employee, employee.Password);
 
                 ViewBag.SuccessMessage = "Employee added!";
             } catch (Exception ex)
@@ -90,7 +92,7 @@ namespace RentMeEmployee.Controllers
             }
 
             ModelState.Clear();
-            return View(new NewEmployee());
+            return View(new Employee());
         }
 
         /// <summary>
@@ -136,21 +138,17 @@ namespace RentMeEmployee.Controllers
         /// <param name="employee">the employee being logged in</param>
         /// <returns>the login page</returns>
         [HttpPost]
-        public IActionResult Login(Employee employee)
+        public IActionResult Login(BaseEmployee employee)
         {
             try
             {
-                if (ModelState.IsValid && EmployeeDal.Authenticate(employee.Username, employee.Password) == 1)
+              
+                if (ModelState.IsValid && EmployeeDAL.Authenticate(employee.Username, employee.Password) == 1)
                 {
-                    if (EmployeeDal.IsManager(employee.Username) == 0)
-                    {
-                        isManager = false;
-                    }
-                    else
-                    {
-                        isManager = true;
-                    }
-                    CurrentEmployee = employee;
+
+                    CurrentEmployee = EmployeeDAL.GetCurrentUser(employee.Username, employee.Password);
+                    IsManager = CurrentEmployee.IsManager;
+                   
                     return RedirectToAction("EmployeeLanding");
                 }
             }
@@ -170,11 +168,11 @@ namespace RentMeEmployee.Controllers
         /// <returns>the employee landing page</returns>
         public IActionResult EmployeeLanding()
         {
-            List<BorrowedItem> items = new List<BorrowedItem>();
+            List<RentalItem> items = new List<RentalItem>();
 
             try
             {
-                items = RentalDal.RetrieveAllBorrowedItems();
+                items = RentalDAL.RetrieveAllBorrowedItems();
             } catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";
@@ -191,10 +189,10 @@ namespace RentMeEmployee.Controllers
         /// <returns>the update status page</returns>
 		public IActionResult UpdateStatus(int? id)
         {
-            BorrowedItem item = new BorrowedItem();
+            RentalItem item = new RentalItem();
             try
             {
-                item = RentalDal.RetrieveAllBorrowedItems().Where(currentItem => currentItem.TransactionId == id).First();
+                item = RentalDAL.RetrieveAllBorrowedItems().Where(currentItem => currentItem.TransactionId == id).First();
             } catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";
@@ -210,11 +208,11 @@ namespace RentMeEmployee.Controllers
         /// <param name="borrowedItem">the borrowed item</param>
         /// <returns>the employee landing page</returns>
         [HttpPost]
-        public IActionResult ConfirmedUpdate(BorrowedItem borrowedItem)
+        public IActionResult ConfirmedUpdate(RentalItem borrowedItem)
         {
             try
             {
-                RentalDal.UpdateStatus(borrowedItem.TransactionId, borrowedItem.Status);
+                RentalDAL.UpdateStatus(borrowedItem.TransactionId, borrowedItem.Status);
             } catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";

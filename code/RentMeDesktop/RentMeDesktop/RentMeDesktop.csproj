@@ -119,11 +119,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DAL\BorrowedItemDAL.cs" />
-    <Compile Include="DAL\DbConnection.cs" />
-    <Compile Include="DAL\EmployeeDAL.cs" />
-    <Compile Include="Model\BorrowedItem.cs" />
-    <Compile Include="Model\Employee.cs" />
     <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\EmployeeManagementViewModel.cs" />
@@ -195,7 +190,7 @@
       <Version>8.0.19</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <Import Project="..\..\RentMeEmployee\RentMeSharedCode\RentMeSharedCode.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

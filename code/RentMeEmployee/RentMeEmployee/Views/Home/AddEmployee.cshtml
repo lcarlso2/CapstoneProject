@@ -1,4 +1,4 @@
-﻿@model NewEmployee
+﻿@model RentMeSharedCode.Model.Employee
 @{
     ViewData["Title"] = "AddEmployee";
 }
@@ -24,19 +24,19 @@
 
                         <div class="form-group row">
                             <div class="col">
-                                @Html.LabelFor(employee => employee.FName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(employee => employee.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                             <div class="col-md-8">
-                                @Html.EditorFor(employee => employee.FName, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
-                                @Html.ValidationMessageFor(employee => employee.FName, "", new { @class = "text-danger" })
+                                @Html.EditorFor(employee => employee.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
+                                @Html.ValidationMessageFor(employee => employee.FirstName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            @Html.LabelFor(employee => employee.LName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(employee => employee.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-8">
-                                @Html.EditorFor(employee => employee.LName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last name" } })
-                                @Html.ValidationMessageFor(employee => employee.LName, "", new { @class = "text-danger" })
+                                @Html.EditorFor(employee => employee.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last name" } })
+                                @Html.ValidationMessageFor(employee => employee.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
 

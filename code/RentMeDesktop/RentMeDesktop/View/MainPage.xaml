@@ -15,11 +15,11 @@
 
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Current Rentals" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <ListView x:Name="rentalListView" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding BorrowedItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedRental, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="1100" Height="550" Margin="0,155,0,0">
+        <ListView x:Name="rentalListView" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding RentalItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedRental, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="1100" Height="550" Margin="0,155,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Grid.Column="0" Width="1100" Text="{Binding BorrowedItemInfo}" />
+                        <TextBlock Grid.Column="0" Width="1100" Text="{Binding RentalItemInfo}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

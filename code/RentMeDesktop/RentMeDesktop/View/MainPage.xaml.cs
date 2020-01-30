@@ -32,7 +32,7 @@ namespace RentMeDesktop
             
             try
             {
-                this.ViewModel.GetBorrowedItems();
+                this.ViewModel.GetRentalItems();
             }
             catch (Exception ex)
             {

@@ -1,11 +1,7 @@
-﻿using RentMeDesktop.DAL;
-using RentMeDesktop.Model;
-using RentMeDesktop.View;
+﻿using RentMeDesktop.View;
+using RentMeSharedCode.DAL;
+using RentMeSharedCode.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RentMeDesktop.ViewModel
 {
@@ -14,7 +10,7 @@ namespace RentMeDesktop.ViewModel
     /// </summary>
     public class MainPageViewModel : BaseViewModel 
     {
-        private BorrowedItem selectedRental;
+        private RentalItem selectedRental;
 
         private bool isRentalSelected;
 
@@ -24,7 +20,7 @@ namespace RentMeDesktop.ViewModel
         /// <value>
         /// The selected borrowed item 
         /// </value>
-        public BorrowedItem SelectedRental
+        public RentalItem SelectedRental
         {
             get => this.selectedRental;
             set
@@ -58,7 +54,7 @@ namespace RentMeDesktop.ViewModel
         {
             try
             {
-                BorrowedItemDAL.UpdateBorrowedItem(this.SelectedRental);
+                RentalDAL.UpdateStatus(this.SelectedRental.TransactionId, this.SelectedRental.Status);
             } catch (Exception ex)
             {
                 DBError.showErrorWindow();

@@ -1,9 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using RentMe.Models;
+using RentMeSharedCode.DAL;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace RentMe.DAL
 {

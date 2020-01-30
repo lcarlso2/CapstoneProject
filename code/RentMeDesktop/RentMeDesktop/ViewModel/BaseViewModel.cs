@@ -1,9 +1,10 @@
-﻿using RentMeDesktop.DAL;
-using RentMeDesktop.Model;
+﻿using RentMeSharedCode.DAL;
+using RentMeSharedCode.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 
 
 namespace RentMeDesktop.ViewModel
@@ -18,7 +19,7 @@ namespace RentMeDesktop.ViewModel
 
         private Employee currentEmployee;
 
-        private ObservableCollection<BorrowedItem> borrowedItems;
+        private ObservableCollection<RentalItem> rentalItems;
 
 
         /// <summary>
@@ -43,12 +44,12 @@ namespace RentMeDesktop.ViewModel
 		/// <value>
 		/// The borrow items 
 		/// </value>
-        public ObservableCollection<BorrowedItem> BorrowedItems
+        public ObservableCollection<RentalItem> RentalItems
         {
-            get => this.borrowedItems;
+            get => this.rentalItems;
             set
             {
-                this.borrowedItems = value;
+                this.rentalItems = value;
                 this.OnPropertyChanged();
             }
         }
@@ -56,9 +57,9 @@ namespace RentMeDesktop.ViewModel
         /// <summary>
         /// Gets the borrowed items.
         /// </summary>
-        public void GetBorrowedItems()
+        public void GetRentalItems()
         {
-            this.BorrowedItems = new ObservableCollection<BorrowedItem>(BorrowedItemDAL.RetrieveAllBorrowedItems());
+            this.RentalItems = new ObservableCollection<RentalItem>(RentalDAL.RetrieveAllBorrowedItems());
         }
 
         /// <summary>

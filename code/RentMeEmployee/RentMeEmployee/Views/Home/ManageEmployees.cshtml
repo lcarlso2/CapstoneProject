@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RentMeEmployee.Models.NewEmployee>
+﻿@model IEnumerable<RentMeSharedCode.Model.Employee>
 @{
     ViewData["Title"] = "ManageEmployees";
 }
@@ -16,10 +16,10 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.FName)
+                            @Html.DisplayNameFor(model => model.FirstName)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.LName)
+                            @Html.DisplayNameFor(model => model.LastName)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Username)
@@ -36,10 +36,10 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(model => employee.FName)
+                                @Html.DisplayFor(model => employee.FirstName)
                             </td>
                             <td>
-                                @Html.DisplayFor(model => employee.LName)
+                                @Html.DisplayFor(model => employee.LastName)
                             </td>
                             <td>
                                 @Html.DisplayFor(model => employee.Username)

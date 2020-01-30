@@ -11,4 +11,6 @@
     <PackageReference Include="MySql.Data" Version="8.0.19" />
   </ItemGroup>
 
+  <Import Project="..\..\RentMeEmployee\RentMeSharedCode\RentMeSharedCode.projitems" Label="Shared" />
+
 </Project>

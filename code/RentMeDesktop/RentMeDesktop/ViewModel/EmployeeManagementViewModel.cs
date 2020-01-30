@@ -1,13 +1,9 @@
-﻿using RentMeDesktop.DAL;
-using RentMeDesktop.Model;
-using RentMeDesktop.Utility;
+﻿using RentMeDesktop.Utility;
 using RentMeDesktop.View;
+using RentMeSharedCode.DAL;
+using RentMeSharedCode.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace RentMeDesktop.ViewModel
