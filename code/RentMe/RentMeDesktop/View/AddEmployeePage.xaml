@@ -23,11 +23,11 @@
         <TextBox x:Name="lNameTextBox" HorizontalAlignment="Left" Margin="550,300,0,0" Text="{Binding LName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Last Name" FontSize="20"/>
         <TextBox x:Name="usernameTextBox" HorizontalAlignment="Left" Margin="550,400,0,0" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Username" FontSize="20"/>
         <TextBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="550,500,0,0" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Password" FontSize="20"/>
+        <TextBlock x:Name="confirmPasswordTextBlock" HorizontalAlignment="Left" Margin="345,602,0,0" Text="Confirm Password:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.585,0.259"/>
+        <TextBox x:Name="confirmPasswordTextBox" HorizontalAlignment="Left" Margin="550,590,0,0" Text="{Binding ConfirmedPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Confirm Password" FontSize="20"/>
         <CheckBox x:Name="isManagerCheckBox" Content="Is Manager?" IsChecked="{Binding IsManager, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="700,653,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Button x:Name="cancelButton" Content="Cancel" Width="135" Height="45" Margin="550,693,0,0" VerticalAlignment="Top" Click="cancelButton_Click" />
         <Button x:Name="addButton" Command="{Binding AddCommand}" Content="Add" Width="135" Height="45" Margin="815,693,0,0" VerticalAlignment="Top"/>
-        <TextBlock x:Name="confirmPasswordTextBlock" HorizontalAlignment="Left" Margin="345,602,0,0" Text="Confirm Password:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.585,0.259"/>
-        <TextBox x:Name="confirmPasswordTextBox" HorizontalAlignment="Left" Margin="550,590,0,0" Text="{Binding ConfirmedPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Confirm Password" FontSize="20"/>
-
+        
     </Grid>
 </Page>

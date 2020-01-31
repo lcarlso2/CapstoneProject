@@ -25,28 +25,50 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "insert into Employee(Username, Password, FName, LName, Manager) values (@username, @password, @fName, @lName, @manager)";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    
+                    using (var transaction = conn.BeginTransaction())
                     {
-                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
-                        cmd.Parameters["@username"].Value = employee.Username;
 
-                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
-                        cmd.Parameters["@password"].Value = password;
+	                    var query = "insert into user(fname, lname, password) values (@fname, @lname, @password)";
 
-                        cmd.Parameters.Add("@fName", MySqlDbType.VarChar);
-                        cmd.Parameters["@fName"].Value = employee.FirstName;
+	                    using (var cmd = new MySqlCommand(query, conn))
+	                    {
+		                    cmd.Transaction = transaction;
 
-                        cmd.Parameters.Add("@lName", MySqlDbType.VarChar);
-                        cmd.Parameters["@lName"].Value = employee.LastName;
+		                    cmd.Parameters.Add("@fname", MySqlDbType.VarChar);
+		                    cmd.Parameters["@fname"].Value = employee.FirstName;
 
-                        cmd.Parameters.Add("@manager", MySqlDbType.Int32);
-                        cmd.Parameters["@manager"].Value = employee.IsManager;
+		                    cmd.Parameters.Add("@lname", MySqlDbType.VarChar);
+		                    cmd.Parameters["@lname"].Value = employee.LastName;
 
-                        cmd.ExecuteScalar();
+		                    cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+		                    cmd.Parameters["@password"].Value = password;
+
+		                    if (cmd.ExecuteNonQuery() != 1)
+		                    {
+			                    transaction.Rollback();
+		                    }
+
+                            cmd.Parameters.Clear();
+                            cmd.CommandText =
+	                            "insert into employee(employeeID, isManager, username) values (last_insert_id(), @isManager, @username)";
+
+
+                            cmd.Parameters.Add("@isManager", MySqlDbType.Int32);
+                            cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+
+
+                            cmd.Parameters["@isManager"].Value = employee.IsManager;
+                            cmd.Parameters["@username"].Value = employee.Username;
+
+                            if (cmd.ExecuteNonQuery() != 1)
+                            {
+                                transaction.Rollback();
+                            }
+                            transaction.Commit();
+	                    }
+	                    conn.Close();
                     }
-
-                    conn.Close();
 
                 }
             }
@@ -57,10 +79,10 @@ namespace SharedCode.DAL
         }
 
         /// <summary>
-        /// Removes the employee from the database
+        /// Removes the employee with the given username from the database
         /// </summary>
-        /// <param name="employee">the employee being removed</param>
-        public static void RemoveEmployee(Employee employee)
+        /// <param name="username">the username of the employee being removed</param>
+        public static void RemoveEmployee(string username)
         {
             try
             {
@@ -68,11 +90,11 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "delete from Employee where Username = @username";
+                    var query = "delete from user where userID = (select employeeID from employee where username = @username)";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@username", MySqlDbType.VarChar);
-                        cmd.Parameters["@username"].Value = employee.Username;
+                        cmd.Parameters["@username"].Value = username;
 
                         cmd.ExecuteScalar();
                     }
@@ -152,22 +174,22 @@ namespace SharedCode.DAL
         /// <returns>the employees </returns>
         public static List<Employee> GetEmployees(Employee currentEmployee)
         {
-            List<Employee> employees = new List<Employee>();
+            var employees = new List<Employee>();
             try
             {
                 var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from Employee";
+                    var query = "select * from employee, user where employeeID = userID";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            var usernameOrdinal = reader.GetOrdinal("Username");
-                            var fNameOrdinal = reader.GetOrdinal("FName");
-                            var lNameOrdinal = reader.GetOrdinal("LName");
-                            var isManagerOrdinal = reader.GetOrdinal("Manager");
+                            var usernameOrdinal = reader.GetOrdinal("username");
+                            var fNameOrdinal = reader.GetOrdinal("fname");
+                            var lNameOrdinal = reader.GetOrdinal("lname");
+                            var isManagerOrdinal = reader.GetOrdinal("isManager");
 
                             while (reader.Read())
                             {
@@ -219,8 +241,8 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select count(*) from Employee where Username = @username and Password = @password";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    var query = "select count(*) from user, employee where userID = employeeID and username = @username and Password = @password";
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@username", MySqlDbType.VarChar);
                         cmd.Parameters["@username"].Value = username;
@@ -257,7 +279,7 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select e.FName, e.LName, e.Manager from Employee e where e.Username = @username and e.Password = @password";
+                    var query = "select * from user, employee where userID = employeeID and username = @username and password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
 
@@ -269,9 +291,9 @@ namespace SharedCode.DAL
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                            var fNameOrdinal = reader.GetOrdinal("FName");
-                            var lNameOrdinal = reader.GetOrdinal("LName");
-                            var isManagerOrdinal = reader.GetOrdinal("Manager");
+                            var fNameOrdinal = reader.GetOrdinal("fname");
+                            var lNameOrdinal = reader.GetOrdinal("lname");
+                            var isManagerOrdinal = reader.GetOrdinal("isManager");
 
 
 
@@ -289,7 +311,10 @@ namespace SharedCode.DAL
                                 var isManager = reader.GetInt32(isManagerOrdinal);
 
 
-                                currentUser = new Employee(fname, lname);
+                                currentUser = new Employee(fname, lname)
+                                {
+                                    Username = username
+                                };
 
 
                                 if (isManager == 1)

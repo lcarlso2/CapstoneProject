@@ -15,40 +15,52 @@
 
 			<table class="table">
 				<thead>
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.TransactionId)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ItemId)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.CustomerEmail)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.RentalDate)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ReturnDate)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Status)
-					</th>
-					<th></th>
-				</tr>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.InventoryId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.MemberEmail)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Category)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ReturnDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Status)
+						</th>
+						<th></th>
+					</tr>
 				</thead>
 				<tbody>
 				@foreach (var item in Model)
 				{
 					<tr>
 						<td>
-							@Html.DisplayFor(modelItem => item.TransactionId)
+							@Html.DisplayFor(modelItem => item.RentalId)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem => item.ItemId)
+							@Html.DisplayFor(modelItem => item.InventoryId)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem => item.CustomerEmail)
+							@Html.DisplayFor(modelItem => item.MemberEmail)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Category)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Title)
 						</td>
 						<td>
 							@Html.DisplayFor(modelItem => item.RentalDate)
@@ -60,7 +72,7 @@
 							@Html.DisplayFor(modelItem => item.Status)
 						</td>
 						<td>
-							<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.TransactionId">Update</a>
+							<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
 						</td>
 					</tr>
 				}

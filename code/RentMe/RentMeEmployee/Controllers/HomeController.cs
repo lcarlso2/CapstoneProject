@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RentMeEmployee.Models;
@@ -57,8 +56,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                //TODO FIX THIS
-                //EmployeeDal.RemoveEmployee(username);
+	            EmployeeDal.RemoveEmployee(username);
             }
             catch (Exception)
             {
@@ -140,7 +138,7 @@ namespace RentMeEmployee.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View("Index");
         }
 
         /// <summary>
@@ -183,7 +181,7 @@ namespace RentMeEmployee.Controllers
 
             try
             {
-                items = RentalDal.RetrieveAllBorrowedItems();
+	            items = RentalDal.RetrieveAllRentedItems();
             }
             catch (Exception)
             {
@@ -204,7 +202,7 @@ namespace RentMeEmployee.Controllers
             RentalItem item = new RentalItem();
             try
             {
-                item = RentalDal.RetrieveAllBorrowedItems().First(currentItem => currentItem.TransactionId == id);
+                item = RentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
             }
             catch (Exception)
             {
@@ -225,7 +223,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                RentalDal.UpdateStatus(borrowedItem.TransactionId, borrowedItem.Status);
+                RentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status);
             }
             catch (Exception)
             {

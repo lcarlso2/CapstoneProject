@@ -222,7 +222,7 @@ namespace RentMeDesktop.ViewModel
 			{
 				try
 				{
-					EmployeeDal.RemoveEmployee(this.SelectedEmployee);
+					EmployeeDal.RemoveEmployee(this.SelectedEmployee.Username);
 					this.Employees = new ObservableCollection<Employee>(EmployeeDal.GetEmployees(this.CurrentEmployee));
 				}
 				catch (Exception)
@@ -243,7 +243,7 @@ namespace RentMeDesktop.ViewModel
 			var dialog = new ContentDialog
 			{
 				Title = "Confirm",
-				Content = "Are you sure you want to remove this employee?",
+				Content = $"Are you sure you want to add {this.FName} {this.LName}?",
 				CloseButtonText = "Cancel",
 				PrimaryButtonText = "Confirm"
 			};
@@ -264,6 +264,7 @@ namespace RentMeDesktop.ViewModel
 			this.LName = null;
 			this.Username = null;
 			this.Password = null;
+			this.ConfirmedPassword = null;
 			this.IsManager = false;
 		}
 	}

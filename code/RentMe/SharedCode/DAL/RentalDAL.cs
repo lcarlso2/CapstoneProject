@@ -16,9 +16,9 @@ namespace SharedCode.DAL
         /// Retrieves all borrowed items.
         /// </summary>
         /// <returns>All borrowed items </returns>
-        public static List<RentalItem> RetrieveAllBorrowedItems()
+        public static List<RentalItem> RetrieveAllRentedItems()
         {
-            var borrowedItems = new List<RentalItem>();
+            var rentedItems = new List<RentalItem>();
 
             try
             {
@@ -26,47 +26,72 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from BorrowedItem";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    var query = "select member.memberID, email, r.rentalID, rentalDateTime, returnDateTime, r.inventoryID, category, title, status " +
+                                "from rental_transaction r, user, member, media, inventory_item i, status_history s, status " +
+                                "where userID = member.memberID and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+                                "r.rentalID = s.rentalTransactionID and s.statusID = status.statusID;";
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        using (var reader = cmd.ExecuteReader())
                         {
+	                        var memberIDOrdinal = reader.GetOrdinal("memberID");
+                            var emailOrdinal = reader.GetOrdinal("email");
+                            var rentalIDOrdinal = reader.GetOrdinal("rentalID");
+                            var rentalDateOrdinal = reader.GetOrdinal("rentalDateTime");
+                            var returnDateOrdinal = reader.GetOrdinal("returnDateTime");
+                            var inventoryIDOrdinal = reader.GetOrdinal("inventoryID");
+                            var categoryOrdinal = reader.GetOrdinal("category");
+                            var titleOrdinal = reader.GetOrdinal("title");
+                            var statusOrdinal = reader.GetOrdinal("status");
 
-                            var transactionIdOrdinal = reader.GetOrdinal("TransactionID");
-                            var itemIdOrdinal = reader.GetOrdinal("ItemId");
-                            var customerEmailOrdinal = reader.GetOrdinal("CustomerEmail");
-                            var rentalDateOrdinal = reader.GetOrdinal("RentalDate");
-                            var returnDateOrdinal = reader.GetOrdinal("ReturnDate");
-                            var statusOrdinal = reader.GetOrdinal("Status");
+
 
 
 
                             while (reader.Read())
                             {
-                                var transationId = reader.GetInt32((transactionIdOrdinal));
-                                var itemId = reader.GetInt32((itemIdOrdinal));
+	                            var memberID = reader.GetInt32(memberIDOrdinal);
 
-                                var customerEmail = reader[customerEmailOrdinal] == DBNull.Value
-                                    ? "null"
-                                    : reader.GetString(customerEmailOrdinal);
+                                var memberEmail = reader[emailOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(emailOrdinal);
+
+                                var rentalID = reader.GetInt32(rentalIDOrdinal);
 
                                 var rentalDate = reader.GetDateTime(rentalDateOrdinal);
+
                                 var returnDate = reader.GetDateTime(returnDateOrdinal);
-                                var status = reader.GetString(statusOrdinal);
+
+                                var inventoryID = reader.GetInt32(inventoryIDOrdinal);
+
+                                var category = reader[categoryOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(categoryOrdinal);
+
+                                var title = reader[titleOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(titleOrdinal);
+
+                                var status = reader[statusOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(statusOrdinal);
 
 
 
                                 var item = new RentalItem
                                 {
-                                    TransactionId = transationId,
-                                    ItemId = itemId,
-                                    CustomerEmail = customerEmail,
+                                    MemberId = memberID,
+                                    MemberEmail = memberEmail,
+                                    RentalId = rentalID,
                                     RentalDate = rentalDate,
                                     ReturnDate = returnDate,
+                                    InventoryId = inventoryID,
+                                    Category = category,
+                                    Title = title,
                                     Status = status
                                 };
 
-                                borrowedItems.Add(item);
+                                rentedItems.Add(item);
                             }
                         }
                     }
@@ -79,7 +104,7 @@ namespace SharedCode.DAL
                 throw ex;
             }
 
-            return borrowedItems;
+            return rentedItems;
         }
 
         public static int UpdateStatus(int transactionId, string status)

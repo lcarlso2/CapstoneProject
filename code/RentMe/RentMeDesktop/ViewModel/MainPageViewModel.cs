@@ -58,7 +58,7 @@ namespace RentMeDesktop.ViewModel
 		{
 			try
 			{
-				RentalDal.UpdateStatus(this.SelectedRental.TransactionId, this.SelectedRental.Status);
+				RentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status);
 			}
 			catch (Exception)
 			{
