@@ -1,4 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace RentMe.Models
@@ -6,8 +9,9 @@ namespace RentMe.Models
 	/// <summary>
 	/// The class responsible for keeping track of the registering customer
 	/// </summary>
-	public class RegisteringCustomer
+	public class RegisteringCustomer : Customer
 	{
+
 		/// <summary>
 		/// Gets or sets the first name
 		/// </summary>
@@ -15,7 +19,7 @@ namespace RentMe.Models
 		[Display(Name = "First Name")]
 		public string First { get; set; }
 
-		
+
 		/// <summary>
 		/// Gets or sets the last name
 		/// </summary>
@@ -23,12 +27,6 @@ namespace RentMe.Models
 		[Display(Name = "Last Name")]
 		public string Last { get; set; }
 
-		/// <summary>
-		/// Gets or sets the email 
-		/// </summary>
-		[Required]
-		[DataType(DataType.EmailAddress)]
-		public string Email { get; set; }
 
 		/// <summary>
 		/// Gets or sets the confirm email
@@ -38,13 +36,6 @@ namespace RentMe.Models
 		[DataType(DataType.EmailAddress)]
 		[Compare("Email")]
 		public string ConfirmEmail { get; set; }
-
-		/// <summary>
-		/// Gets or sets the password
-		/// </summary>
-		[Required]
-		[DataType(DataType.Password)]
-		public string Password { get; set; }
 
 		/// <summary>
 		/// Gets or sets the confirm password
@@ -68,15 +59,12 @@ namespace RentMe.Models
 		[Required]
 		public string State { get; set; }
 
-	
+
 		/// <summary>
 		/// Gets or sets the zip
 		/// </summary>
 		[RegularExpression(@"\b\d{5}\b", ErrorMessage = "Must be five digits")]
 		[Required]
 		public string Zip { get; set; }
-
-
 	}
-
 }

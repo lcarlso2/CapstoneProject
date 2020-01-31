@@ -1,16 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
 using RentMe.Models;
-using RentMeSharedCode.DAL;
+using SharedCode.DAL;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RentMe.DAL
 {
-    /// <summary>
-    /// The customer dal class repsonsible for communicating with the DB for customer related things 
-    /// </summary>
+	/// <summary>
+	/// The customer dal class repsonsible for communicating with the DB for customer related things 
+	/// </summary>
 	public class CustomerDal
 	{
+
         /// <summary>
         /// Authenticates the specified customer.
         /// </summary>
@@ -22,7 +25,7 @@ namespace RentMe.DAL
             var validUser = 0;
             try
             {
-                var conn = DBConnection.GetConnection();
+                var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
@@ -58,7 +61,7 @@ namespace RentMe.DAL
         {
             try
             {
-                var conn = DBConnection.GetConnection();
+                var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
@@ -103,8 +106,5 @@ namespace RentMe.DAL
 
 
         }
-
-
     }
 }
-

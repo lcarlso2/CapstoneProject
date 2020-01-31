@@ -1,9 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using RentMe.Models;
-using RentMeSharedCode.DAL;
+using SharedCode.DAL;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RentMe.DAL
 {
@@ -12,17 +13,18 @@ namespace RentMe.DAL
 	/// </summary>
 	public class MediaDal
 	{
+
         /// <summary>
         /// Retrieves all media.
         /// </summary>
         /// <returns>All media </returns>
-        public static List<MediaModel> RetrieveAllMedia()
+        public static List<Media> RetrieveAllMedia()
         {
-            var mediaItems = new List<MediaModel>();
+            var mediaItems = new List<Media>();
 
             try
             {
-                var conn = DBConnection.GetConnection();
+                var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
@@ -31,13 +33,13 @@ namespace RentMe.DAL
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
-                        
+
                             var categoryOrdinal = reader.GetOrdinal("Category");
                             var typeOrdinal = reader.GetOrdinal("Type");
                             var titleOrdinal = reader.GetOrdinal("Title");
                             var IDOrdinal = reader.GetOrdinal("Id");
                             var QtyOrdinal = reader.GetOrdinal("Qty");
-                            
+
 
 
                             while (reader.Read())
@@ -61,7 +63,7 @@ namespace RentMe.DAL
 
                                 if (qty > 0)
                                 {
-                                    var media = new MediaModel { Id = id, Category = category, Title = title, Type = type };
+                                    var media = new Media { Id = id, Category = category, Title = title, Type = type };
 
                                     mediaItems.Add(media);
                                 }
@@ -84,13 +86,13 @@ namespace RentMe.DAL
         /// Retrieves all media in a specific category.
         /// </summary>
         /// <returns>All media in a category</returns>
-        public static List<MediaModel> RetrieveMediaByCategory(string category)
+        public static List<Media> RetrieveMediaByCategory(string category)
         {
-            var mediaItems = new List<MediaModel>();
+            var mediaItems = new List<Media>();
 
             try
             {
-                var conn = DBConnection.GetConnection();
+                var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
@@ -132,7 +134,7 @@ namespace RentMe.DAL
 
                                 if (qty > 0)
                                 {
-                                    var media = new MediaModel { Id = id, Category = categoryValue, Title = title, Type = type };
+                                    var media = new Media { Id = id, Category = categoryValue, Title = title, Type = type };
 
                                     mediaItems.Add(media);
                                 }
@@ -155,13 +157,13 @@ namespace RentMe.DAL
         /// Retrieves all media in a specific type.
         /// </summary>
         /// <returns>All media in a type</returns>
-        public static List<MediaModel> RetrieveMediaByType(string type)
+        public static List<Media> RetrieveMediaByType(string type)
         {
-            var mediaItems = new List<MediaModel>();
+            var mediaItems = new List<Media>();
 
             try
             {
-                var conn = DBConnection.GetConnection();
+                var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
@@ -203,7 +205,7 @@ namespace RentMe.DAL
 
                                 if (qty > 0)
                                 {
-                                    var media = new MediaModel { Id = id, Category = category, Title = title, Type = typeValue };
+                                    var media = new Media { Id = id, Category = category, Title = title, Type = typeValue };
 
                                     mediaItems.Add(media);
                                 }

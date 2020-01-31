@@ -1,8 +1,10 @@
-﻿using MySql.Data.MySqlClient;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using RentMe.Models;
-using RentMeSharedCode.DAL;
-using System;
-
+using SharedCode.DAL;
 
 namespace RentMe.DAL
 {
@@ -11,17 +13,16 @@ namespace RentMe.DAL
 	/// </summary>
 	public class BorrowDal
 	{
-
 		/// <summary>
 		/// Borrows an item 
 		/// </summary>
 		/// <param name="customer"> the customer borrowing an item</param>
 		/// <param name="media"> the media being rented</param>
-		public static void BorrowItem(Customer customer, MediaModel media)
+		public static void BorrowItem(Customer customer, Media media)
 		{
 			try
 			{
-				var conn = DBConnection.GetConnection();
+				var conn = DbConnection.GetConnection();
 				using (conn)
 				{
 					conn.Open();
@@ -56,7 +57,7 @@ namespace RentMe.DAL
 							cmd.Parameters.Add("@id", MySqlDbType.Int32);
 
 							cmd.CommandText = "update Media set Qty = Qty - 1 where Id = @id;";
-					
+
 							cmd.Parameters["@id"].Value = media.Id;
 
 							if (cmd.ExecuteNonQuery() != 1)
@@ -69,7 +70,8 @@ namespace RentMe.DAL
 						conn.Close();
 					}
 				}
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				throw ex;
 			}
