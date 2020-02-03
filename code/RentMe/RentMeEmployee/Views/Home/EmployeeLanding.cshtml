@@ -5,87 +5,87 @@
 }
 
 <div class="container">
-    <div class="text-center">
-        <h2>Current Rentals</h2>
-    </div>
+	<div class="text-center">
+		<h2>Current Rentals</h2>
+	</div>
 
-    <div class="row">
+	<div class="row">
 
-        <div class="col">
+		<div class="col">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RentalId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.InventoryId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MemberEmail)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Category)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Title)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RentalDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ReturnDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Status)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RentalId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.InventoryId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MemberEmail)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RentalDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ReturnDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                <a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-2">
-                    <label class=" label-danger">@ViewBag.ErrorMessage</label>
-                </div>
-            </div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.InventoryId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.MemberEmail)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Category)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ReturnDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Status)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.RentalId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.InventoryId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.MemberEmail)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Category)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Title)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.RentalDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ReturnDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Status)
+						</td>
+						<td>
+							<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
+						</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-2">
+					<label class=" label-danger">@ViewBag.ErrorMessage</label>
+				</div>
+			</div>
 
 
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace SharedCode.Model
 {
-    /// <summary>
+	/// <summary>
 	/// The employee class
 	/// </summary>
 	public class Employee : BaseEmployee
-    {
-
+	{
+        
         /// <summary>
         /// Gets or sets the employee id
         /// </summary>

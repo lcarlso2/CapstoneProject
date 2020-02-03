@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace SharedCode.Model
 {
-    /// <summary>
-    /// The rental item class
-    /// </summary>
-    public class RentalItem
-    {
+	/// <summary>
+	/// The rental item class
+	/// </summary>
+	public class RentalItem
+	{
 
         [Display(Name = "Member ID")]
         public int MemberId { get; set; }
@@ -57,7 +57,7 @@ namespace SharedCode.Model
         /// <summary>
         /// The rental string info
         /// </summary>
-        public string RentalItemInfo => $"Rental ID: {this.RentalId}, Inventory ID: {this.InventoryId}, Category: {this.Category}, Title: {this.Title}\n Member ID: {this.MemberId} Member Email: {this.MemberEmail}\nRental Date: {this.RentalDate}, Return Date: {this.ReturnDate}, Status: {this.Status}\n";
+        public string RentalItemInfo => $"Rental ID: {this.RentalId}, Inventory ID: {this.InventoryId}, Category: {this.Category}, Title: {this.Title}\nMember ID: {this.MemberId} Member Email: {this.MemberEmail}\nRental Date: {this.RentalDate}, Return Date: {this.ReturnDate}, Status: {this.Status}\n";
 
 
     }

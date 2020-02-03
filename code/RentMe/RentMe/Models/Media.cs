@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace RentMe.Models
 {
-    /// <summary>
-    /// The class responsible for keeping track of the media
-    /// </summary>
-    /// 
-    [Serializable]
-    public class Media
-    {
+	/// <summary>
+	/// The class responsible for keeping track of the media
+	/// </summary>
+	/// 
+	[Serializable]
+	public class Media
+	{
 
         /// <summary>
         /// Gets or sets the inventory id

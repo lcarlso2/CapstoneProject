@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RentMeEmployee.Models;
@@ -11,9 +10,12 @@ using SharedCode.Model;
 
 namespace RentMeEmployee.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+	/// <summary>
+	/// The home controller for the application 
+	/// </summary>
+	public class HomeController : Controller
+	{
+		private readonly ILogger<HomeController> _logger;
 
         /// <summary>
         /// The current employee logged in
@@ -54,7 +56,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                EmployeeDal.RemoveEmployee(username);
+	            EmployeeDal.RemoveEmployee(username);
             }
             catch (Exception)
             {
@@ -84,7 +86,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                EmployeeDal.AddEmployee(employee, employee.Password);
+	            EmployeeDal.AddEmployee(employee, employee.Password);
 
                 ViewBag.SuccessMessage = "Employee added!";
             }
@@ -98,24 +100,24 @@ namespace RentMeEmployee.Controllers
         }
 
         public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		{
+			_logger = logger;
+		}
 
         /// <summary>
         /// The action result for the index page
         /// </summary>
         /// <returns>the index page</returns>
         public IActionResult Index()
-        {
-            if (CurrentEmployee != null)
-            {
-                return RedirectToAction("EmployeeLanding");
-            }
-            else
-            {
-                return View();
-            }
+		{
+			if (CurrentEmployee != null)
+			{
+				return RedirectToAction("EmployeeLanding");
+			}
+			else
+			{
+				return View();
+			}
         }
 
         /// <summary>
@@ -179,7 +181,7 @@ namespace RentMeEmployee.Controllers
 
             try
             {
-                items = RentalDal.RetrieveAllRentedItems();
+	            items = RentalDal.RetrieveAllRentedItems();
             }
             catch (Exception)
             {
@@ -232,11 +234,12 @@ namespace RentMeEmployee.Controllers
             return RedirectToAction("EmployeeLanding");
         }
 
+   
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }
