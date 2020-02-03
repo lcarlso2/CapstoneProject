@@ -36,7 +36,7 @@ namespace RentMeDesktop.View
 		public UpdateRentalPage()
 		{
 			this.InitializeComponent();
-			this.StatusTypes.Add("Pending");
+			this.StatusTypes.Add("Ordered");
 			this.StatusTypes.Add("Shipped");
 			this.StatusTypes.Add("Delivered");
 			this.StatusTypes.Add("Returned");

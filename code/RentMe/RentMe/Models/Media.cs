@@ -14,9 +14,9 @@ namespace RentMe.Models
 	{
 
         /// <summary>
-        /// Gets or sets the id
+        /// Gets or sets the inventory id
         /// </summary>
-        public int Id { get; set; }
+        public int InventoryId { get; set; }
 
         /// <summary>
         /// Gets or sets the title

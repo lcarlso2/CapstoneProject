@@ -223,7 +223,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                RentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status);
+                RentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
             }
             catch (Exception)
             {

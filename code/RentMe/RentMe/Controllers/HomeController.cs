@@ -48,7 +48,7 @@ namespace RentMe.Controllers
 		public IActionResult ConfirmBorrow(int? id)
 		{
 
-			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.Id == id);
+			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 			return View(media);
 		}
 
@@ -59,7 +59,7 @@ namespace RentMe.Controllers
 		/// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page</returns>
 		public IActionResult ConfirmedBorrow(int? id)
 		{
-			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.Id == id);
+			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 
 			try
 			{
@@ -76,7 +76,7 @@ namespace RentMe.Controllers
 			catch (Exception ex)
 			{
 				ViewBag.ErrorMessage = ex.Message;
-				ViewBag.Error = "Uh-oh... something went wrong";
+				ViewBag.Error = ex.Message;
 				return View("ConfirmBorrow", media);
 			}
 		}
@@ -198,15 +198,7 @@ namespace RentMe.Controllers
 
 		}
 
-		/// <summary>
-		/// The http get for login 
-		/// </summary>
-		/// <returns>the login page</returns>
-		[HttpGet]
-		public IActionResult Login()
-		{
-			return View();
-		}
+
 
 		/// <summary>
 		/// The http post for the action result login

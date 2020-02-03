@@ -294,6 +294,7 @@ namespace SharedCode.DAL
                             var fNameOrdinal = reader.GetOrdinal("fname");
                             var lNameOrdinal = reader.GetOrdinal("lname");
                             var isManagerOrdinal = reader.GetOrdinal("isManager");
+                            var idOrdinal = reader.GetOrdinal("employeeID");
 
 
 
@@ -310,10 +311,13 @@ namespace SharedCode.DAL
 
                                 var isManager = reader.GetInt32(isManagerOrdinal);
 
+                                var id = reader.GetInt32(idOrdinal);
+
 
                                 currentUser = new Employee(fname, lname)
                                 {
-                                    Username = username
+                                    Username = username,
+                                    EmployeeId = id
                                 };
 
 

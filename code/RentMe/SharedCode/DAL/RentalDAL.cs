@@ -34,12 +34,12 @@ namespace SharedCode.DAL
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
-	                        var memberIDOrdinal = reader.GetOrdinal("memberID");
+	                        var memberIdOrdinal = reader.GetOrdinal("memberID");
                             var emailOrdinal = reader.GetOrdinal("email");
-                            var rentalIDOrdinal = reader.GetOrdinal("rentalID");
+                            var rentalIdOrdinal = reader.GetOrdinal("rentalID");
                             var rentalDateOrdinal = reader.GetOrdinal("rentalDateTime");
                             var returnDateOrdinal = reader.GetOrdinal("returnDateTime");
-                            var inventoryIDOrdinal = reader.GetOrdinal("inventoryID");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
@@ -50,19 +50,19 @@ namespace SharedCode.DAL
 
                             while (reader.Read())
                             {
-	                            var memberID = reader.GetInt32(memberIDOrdinal);
+	                            var memberId = reader.GetInt32(memberIdOrdinal);
 
                                 var memberEmail = reader[emailOrdinal] == DBNull.Value
 	                                ? "null"
 	                                : reader.GetString(emailOrdinal);
 
-                                var rentalID = reader.GetInt32(rentalIDOrdinal);
+                                var rentalId = reader.GetInt32(rentalIdOrdinal);
 
                                 var rentalDate = reader.GetDateTime(rentalDateOrdinal);
 
                                 var returnDate = reader.GetDateTime(returnDateOrdinal);
 
-                                var inventoryID = reader.GetInt32(inventoryIDOrdinal);
+                                var inventoryId = reader.GetInt32(inventoryIdOrdinal);
 
                                 var category = reader[categoryOrdinal] == DBNull.Value
 	                                ? "null"
@@ -80,12 +80,12 @@ namespace SharedCode.DAL
 
                                 var item = new RentalItem
                                 {
-                                    MemberId = memberID,
+                                    MemberId = memberId,
                                     MemberEmail = memberEmail,
-                                    RentalId = rentalID,
+                                    RentalId = rentalId,
                                     RentalDate = rentalDate,
                                     ReturnDate = returnDate,
-                                    InventoryId = inventoryID,
+                                    InventoryId = inventoryId,
                                     Category = category,
                                     Title = title,
                                     Status = status
@@ -107,10 +107,31 @@ namespace SharedCode.DAL
             return rentedItems;
         }
 
-        public static int UpdateStatus(int transactionId, string status)
+        public static int UpdateStatus(int transactionId, string status, int employeeId)
         {
 
             var rowsEffected = 0;
+
+            var statusId = 0;
+
+            if (status == "Ordered")
+            {
+	            statusId = 1; 
+            } else if (status == "Shipped")
+            {
+	            statusId = 2;
+            } else if (status == "Delivered")
+            {
+	            statusId = 3;
+            } else if (status == "Returned")
+            {
+	            statusId = 4;
+            }
+            else
+            {
+	            statusId = 5;
+            }
+
 
             try
             {
@@ -118,15 +139,44 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    const string query = "UPDATE BorrowedItem SET Status = @status WHERE TransactionID = @transactionId;";
-
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    using (var transaction = conn.BeginTransaction())
                     {
-                        cmd.Parameters.AddWithValue("@status", status);
-                        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+	                    var query =
+		                    "insert into status_history values (@transactionId, @statusID, @updateDateTime, @employeeID)";
 
-                        rowsEffected = cmd.ExecuteNonQuery();
+	                    using (var cmd = new MySqlCommand(query, conn))
+	                    {
+		                    cmd.Transaction = transaction;
+		                    cmd.Parameters.AddWithValue("@statusID", statusId);
+		                    cmd.Parameters.AddWithValue("@transactionId", transactionId);
+		                    cmd.Parameters.AddWithValue("@updateDateTime", DateTime.Now);
+		                    cmd.Parameters.AddWithValue("@employeeID", employeeId);
 
+		                    if (cmd.ExecuteNonQuery() != 1)
+		                    {
+                                transaction.Rollback();
+		                    }
+
+		                    if (statusId == 4)
+		                    {
+			                    cmd.Parameters.Clear();
+
+			                    cmd.CommandText =
+                                    "update inventory_item set inStock = true where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
+			                    cmd.Parameters.AddWithValue("@transactionId", transactionId);
+
+
+                                if (cmd.ExecuteNonQuery() != 1)
+			                    {
+				                    transaction.Rollback();
+			                    }
+
+		                    }
+
+		                    transaction.Commit();
+
+                        }
+                        conn.Close();
                     }
                 }
 
@@ -137,11 +187,7 @@ namespace SharedCode.DAL
             }
 
             return rowsEffected;
-
-
-
         }
-
 
     }
 }

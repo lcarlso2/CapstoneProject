@@ -10,6 +10,14 @@ namespace SharedCode.Model
 	/// </summary>
 	public class Employee : BaseEmployee
 	{
+        
+        /// <summary>
+        /// Gets or sets the employee id
+        /// </summary>
+        /// <value>
+        /// The employee ID
+        /// </value>
+        public int EmployeeId { get; set; }
 
         /// <summary>
         /// Gets or sets the confirm password

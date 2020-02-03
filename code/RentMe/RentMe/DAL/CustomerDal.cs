@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RentMe.DAL
 {
 	/// <summary>
-	/// The customer dal class repsonsible for communicating with the DB for customer related things 
+	/// The customer dal class responsible for communicating with the DB for customer related things 
 	/// </summary>
 	public class CustomerDal
 	{
@@ -29,14 +29,14 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select count(*) from Customer where Email = @Email and Password = @Password";
+                    var query = "select count(*) from member, user where member.memberID = user.userID and email = @email and password = @password";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.Add("@Email", MySqlDbType.VarChar);
-                        cmd.Parameters["@Email"].Value = email;
+                        cmd.Parameters.Add("@email", MySqlDbType.VarChar);
+                        cmd.Parameters["@email"].Value = email;
 
-                        cmd.Parameters.Add("@Password", MySqlDbType.VarChar);
-                        cmd.Parameters["@Password"].Value = password;
+                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                        cmd.Parameters["@password"].Value = password;
 
 
                         validUser = Convert.ToInt32(cmd.ExecuteScalar());
@@ -59,45 +59,63 @@ namespace RentMe.DAL
         /// <param name="customer">The customer to register.</param>
         public static void RegisterCustomer(RegisteringCustomer customer)
         {
+
             try
             {
                 var conn = DbConnection.GetConnection();
                 using (conn)
                 {
                     conn.Open();
-                    var query = "insert into Customer(Email, Password, FName, LName, Address, State, Zip) values(@Email, @Password, @FName, @LName, @Address, @State, @Zip)";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+
+                    using (var transaction = conn.BeginTransaction())
                     {
 
+                        var query = "insert into user(fname, lname, password) values (@fname, @lname, @password)";
 
-                        cmd.Parameters.Add("@Email", MySqlDbType.VarChar);
-                        cmd.Parameters["@Email"].Value = customer.Email;
+                        using (var cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Transaction = transaction;
 
-                        cmd.Parameters.Add("@Password", MySqlDbType.VarChar);
-                        cmd.Parameters["@Password"].Value = customer.Password;
+                            cmd.Parameters.Add("@fname", MySqlDbType.VarChar);
+                            cmd.Parameters["@fname"].Value = customer.First;
 
-                        cmd.Parameters.Add("@FName", MySqlDbType.VarChar);
-                        cmd.Parameters["@FName"].Value = customer.First;
+                            cmd.Parameters.Add("@lname", MySqlDbType.VarChar);
+                            cmd.Parameters["@lname"].Value = customer.Last;
 
-                        cmd.Parameters.Add("@LName", MySqlDbType.VarChar);
-                        cmd.Parameters["@LName"].Value = customer.Last;
+                            cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                            cmd.Parameters["@password"].Value = customer.Password;
 
-                        cmd.Parameters.Add("@Address", MySqlDbType.VarChar);
-                        cmd.Parameters["@Address"].Value = customer.Address;
+                            if (cmd.ExecuteNonQuery() != 1)
+                            {
+                                transaction.Rollback();
+                            }
 
-                        cmd.Parameters.Add("@State", MySqlDbType.VarChar);
-                        cmd.Parameters["@State"].Value = customer.State;
-
-                        cmd.Parameters.Add("@Zip", MySqlDbType.VarChar);
-                        cmd.Parameters["@Zip"].Value = customer.Zip;
+                            cmd.Parameters.Clear();
+                            cmd.CommandText =
+                                "insert into member(memberID, address, email, state, zip) values (last_insert_id(), @address, @email, @state, @zip)";
 
 
+                            cmd.Parameters.Add("@address", MySqlDbType.VarChar);
+                            cmd.Parameters.Add("@email", MySqlDbType.VarChar);
+                            cmd.Parameters.Add("@state", MySqlDbType.VarChar);
+                            cmd.Parameters.Add("@zip", MySqlDbType.VarChar);
 
-                        cmd.ExecuteScalar();
+
+                            cmd.Parameters["@address"].Value = customer.Address;
+                            cmd.Parameters["@email"].Value = customer.Email;
+                            cmd.Parameters["@state"].Value = customer.State;
+                            cmd.Parameters["@zip"].Value = customer.Zip;
+
+                            if (cmd.ExecuteNonQuery() != 1)
+                            {
+                                transaction.Rollback();
+                            }
+                            transaction.Commit();
+                        }
+                        conn.Close();
                     }
-                    conn.Close();
-                }
 
+                }
             }
             catch (Exception ex)
             {

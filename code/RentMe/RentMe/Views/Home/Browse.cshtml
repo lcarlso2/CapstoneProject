@@ -26,20 +26,19 @@
 
             <div class="col-sm-4">
                 <div class="text-center">
-                    <div class="btn-group">
-                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Category
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="All" class="btn btn-primary">All Categories</a></li>
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Action" class="btn btn-primary">Action</a></li>
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Adventure" class="btn btn-primary">Adventure</a></li>
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Comedy" class="btn btn-primary">Comedy</a></li>
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Horror" class="btn btn-primary">Horror</a></li>
-                            <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Romance" class="btn btn-primary">Romance</a></li>
-                        </ul>
-                    </div>
+	                <div class="dropdown">
+		                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			                Category
+		                </button>
+		                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="All" class="btn btn-primary">All Categories</a>
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Action" class="btn btn-primary">Action</a>
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Adventure" class="btn btn-primary">Adventure</a>
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Comedy" class="btn btn-primary">Comedy</a>
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Horror" class="btn btn-primary">Horror</a>
+			                <a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="Romance" class="btn btn-primary">Romance</a>
+		                </div>
+	                </div>
                 </div>
 
             </div>
@@ -97,7 +96,7 @@
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td>
-                        <a asp-controller="Home" asp-action="ConfirmBorrow" asp-route-id="@item.Id">Borrow</a>
+                        <a asp-controller="Home" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
                     </td>
                 </tr>
             }

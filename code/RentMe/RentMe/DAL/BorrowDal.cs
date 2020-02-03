@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using RentMe.Models;
 using SharedCode.DAL;
+using SharedCode.Model;
 
 namespace RentMe.DAL
 {
@@ -20,6 +21,7 @@ namespace RentMe.DAL
 		/// <param name="media"> the media being rented</param>
 		public static void BorrowItem(Customer customer, Media media)
 		{
+		
 			try
 			{
 				var conn = DbConnection.GetConnection();
@@ -30,23 +32,24 @@ namespace RentMe.DAL
 					{
 
 
-						var query = "insert into BorrowedItem(ItemId, CustomerEmail, RentalDate, ReturnDate) values (@itemID, @customerEmail, @rentalDate, @returnDate)";
+						var query = "insert into rental_transaction(memberID, rentalDateTime, returnDateTime, inventoryID) " +
+						            "values ((select memberID from member where email = @memberEmail), @rentalDateTime, @returnDateTime, @inventoryID)";
 
 						using (var cmd = new MySqlCommand(query, conn))
 						{
 							cmd.Transaction = transaction;
 
-							cmd.Parameters.Add("@itemID", MySqlDbType.Int32);
-							cmd.Parameters["@itemID"].Value = media.Id;
+							cmd.Parameters.Add("@memberEmail", MySqlDbType.VarChar);
+							cmd.Parameters["@memberEmail"].Value = customer.Email;
 
-							cmd.Parameters.Add("@customerEmail", MySqlDbType.VarChar);
-							cmd.Parameters["@customerEmail"].Value = customer.Email;
+							cmd.Parameters.Add("@rentalDateTime", MySqlDbType.DateTime);
+							cmd.Parameters["@rentalDateTime"].Value = DateTime.Now;
 
-							cmd.Parameters.Add("@rentalDate", MySqlDbType.DateTime);
-							cmd.Parameters["@rentalDate"].Value = DateTime.Now;
+							cmd.Parameters.Add("@returnDateTime", MySqlDbType.DateTime);
+							cmd.Parameters["@returnDateTime"].Value = DateTime.Now.AddDays(14);
 
-							cmd.Parameters.Add("@returnDate", MySqlDbType.DateTime);
-							cmd.Parameters["@returnDate"].Value = DateTime.Now.AddDays(14);
+							cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
+							cmd.Parameters["@inventoryID"].Value = media.InventoryId;
 
 							if (cmd.ExecuteNonQuery() != 1)
 							{
@@ -54,16 +57,35 @@ namespace RentMe.DAL
 							}
 
 							cmd.Parameters.Clear();
-							cmd.Parameters.Add("@id", MySqlDbType.Int32);
+							
 
-							cmd.CommandText = "update Media set Qty = Qty - 1 where Id = @id;";
+							cmd.CommandText = "insert into status_history (rentalTransactionID, statusID, updateDateTime) values (last_insert_id(), @statusID, @updateDateTime);";
 
-							cmd.Parameters["@id"].Value = media.Id;
+							cmd.Parameters.Add("@statusID", MySqlDbType.Int32);
+							cmd.Parameters["@statusID"].Value = 1;
+
+							cmd.Parameters.Add("@updateDateTime", MySqlDbType.DateTime);
+							cmd.Parameters["@updateDateTime"].Value = DateTime.Now;
+
 
 							if (cmd.ExecuteNonQuery() != 1)
 							{
 								transaction.Rollback();
 							}
+
+							cmd.Parameters.Clear();
+
+							cmd.CommandText =
+								"update inventory_item set inStock = false where inventoryID = @inventoryID;";
+							cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
+							cmd.Parameters["@inventoryID"].Value = media.InventoryId;
+
+
+							if (cmd.ExecuteNonQuery() != 1)
+							{
+								transaction.Rollback();
+							}
+
 
 							transaction.Commit();
 						}

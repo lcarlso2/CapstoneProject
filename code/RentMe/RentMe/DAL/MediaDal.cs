@@ -28,23 +28,22 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from Media";
+                    var query = "select * from inventory_item, media where inventory_item.mediaID = media.mediaID and inStock = true";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
 
-                            var categoryOrdinal = reader.GetOrdinal("Category");
-                            var typeOrdinal = reader.GetOrdinal("Type");
-                            var titleOrdinal = reader.GetOrdinal("Title");
-                            var IDOrdinal = reader.GetOrdinal("Id");
-                            var QtyOrdinal = reader.GetOrdinal("Qty");
+                            var categoryOrdinal = reader.GetOrdinal("category");
+                            var typeOrdinal = reader.GetOrdinal("type");
+                            var titleOrdinal = reader.GetOrdinal("title");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
 
 
 
                             while (reader.Read())
                             {
-                                var id = reader.GetInt32((IDOrdinal));
+                                var inventoryId = reader.GetInt32((inventoryIdOrdinal));
 
                                 var category = reader[categoryOrdinal] == DBNull.Value
                                     ? "null"
@@ -58,15 +57,11 @@ namespace RentMe.DAL
                                     ? "null"
                                     : reader.GetString(titleOrdinal);
 
-                                var qty = reader.GetInt32((QtyOrdinal));
 
 
-                                if (qty > 0)
-                                {
-                                    var media = new Media { Id = id, Category = category, Title = title, Type = type };
+	                            var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type };
 
-                                    mediaItems.Add(media);
-                                }
+	                            mediaItems.Add(media);
                             }
                         }
                     }
@@ -96,7 +91,7 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from Media where Category = @category";
+                    var query = "select * from media, inventory_item where Category = @category and media.mediaID = inventory_item.mediaID and inStock = 1";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@category", MySqlDbType.VarChar);
@@ -108,14 +103,13 @@ namespace RentMe.DAL
                             var categoryOrdinal = reader.GetOrdinal("Category");
                             var titleOrdinal = reader.GetOrdinal("Title");
                             var typeOrdinal = reader.GetOrdinal("Type");
-                            var IDOrdinal = reader.GetOrdinal("Id");
-                            var QtyOrdinal = reader.GetOrdinal("Qty");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
 
 
 
                             while (reader.Read())
                             {
-                                var id = reader.GetInt32((IDOrdinal));
+                                var inventoryId = reader.GetInt32((inventoryIdOrdinal));
 
                                 var categoryValue = reader[categoryOrdinal] == DBNull.Value
                                     ? "null"
@@ -129,15 +123,11 @@ namespace RentMe.DAL
                                     ? "null"
                                     : reader.GetString(titleOrdinal);
 
-                                var qty = reader.GetInt32((QtyOrdinal));
+                          
+	                            var media = new Media { InventoryId = inventoryId, Category = categoryValue, Title = title, Type = type };
 
-
-                                if (qty > 0)
-                                {
-                                    var media = new Media { Id = id, Category = categoryValue, Title = title, Type = type };
-
-                                    mediaItems.Add(media);
-                                }
+	                            mediaItems.Add(media);
+                                
                             }
                         }
                     }
@@ -167,7 +157,7 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from Media where type = @type";
+                    var query = "select * from media, inventory_item where type = @type and media.mediaID = inventory_item.mediaID and inStock = 1";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@type", MySqlDbType.VarChar);
@@ -179,14 +169,14 @@ namespace RentMe.DAL
                             var categoryOrdinal = reader.GetOrdinal("Category");
                             var titleOrdinal = reader.GetOrdinal("Title");
                             var typeOrdinal = reader.GetOrdinal("Type");
-                            var IDOrdinal = reader.GetOrdinal("Id");
-                            var QtyOrdinal = reader.GetOrdinal("Qty");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
+                      
 
 
 
                             while (reader.Read())
                             {
-                                var id = reader.GetInt32((IDOrdinal));
+                                var inventoryId = reader.GetInt32((inventoryIdOrdinal));
 
                                 var category = reader[categoryOrdinal] == DBNull.Value
                                     ? "null"
@@ -200,15 +190,11 @@ namespace RentMe.DAL
                                     ? "null"
                                     : reader.GetString(titleOrdinal);
 
-                                var qty = reader.GetInt32((QtyOrdinal));
 
+                                var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = typeValue };
 
-                                if (qty > 0)
-                                {
-                                    var media = new Media { Id = id, Category = category, Title = title, Type = typeValue };
-
-                                    mediaItems.Add(media);
-                                }
+	                            mediaItems.Add(media);
+                                
                             }
                         }
                     }
