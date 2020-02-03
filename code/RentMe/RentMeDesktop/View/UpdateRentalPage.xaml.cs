@@ -19,49 +19,51 @@ using RentMeDesktop.ViewModel;
 
 namespace RentMeDesktop.View
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class UpdateRentalPage : Page
-	{
-		/// <summary>
-		/// The view model
-		/// </summary>
-		public MainPageViewModel ViewModel;
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class UpdateRentalPage : Page
+    {
+        /// <summary>
+        /// The view model
+        /// </summary>
+        public MainPageViewModel ViewModel;
 
-		/// <summary>
-		/// The status type
-		/// </summary>
-		public ObservableCollection<string> StatusTypes = new ObservableCollection<string>();
-		public UpdateRentalPage()
-		{
-			this.InitializeComponent();
-			this.StatusTypes.Add("Ordered");
-			this.StatusTypes.Add("Shipped");
-			this.StatusTypes.Add("Delivered");
-			this.StatusTypes.Add("Returned");
-			this.StatusTypes.Add("Late");
+        /// <summary>
+        /// The status type
+        /// </summary>
+        public ObservableCollection<string> StatusTypes = new ObservableCollection<string>();
 
-			this.ViewModel = new MainPageViewModel();
-			this.DataContext = this.ViewModel;
-		}
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			var oldViewModel = (MainPageViewModel)e.Parameter;
-			this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
-			this.ViewModel.SelectedRental = oldViewModel?.SelectedRental;
-		}
+        public UpdateRentalPage()
+        {
+            this.InitializeComponent();
+            this.StatusTypes.Add("Ordered");
+            this.StatusTypes.Add("Shipped");
+            this.StatusTypes.Add("Delivered");
+            this.StatusTypes.Add("Returned");
+            this.StatusTypes.Add("Late");
 
-		private void cancelButton_Click(object sender, RoutedEventArgs e)
-		{
-			Frame.Navigate(typeof(MainPage), this.ViewModel);
-		}
+            this.ViewModel = new MainPageViewModel();
+            this.DataContext = this.ViewModel;
+        }
 
-		private void updateButton_Click(object sender, RoutedEventArgs e)
-		{
-			this.ViewModel.UpdateRentalItem();
-			Frame.Navigate(typeof(MainPage), this.ViewModel);
-		}
-	}
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var oldViewModel = (MainPageViewModel)e.Parameter;
+            this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
+            this.ViewModel.SelectedRental = oldViewModel?.SelectedRental;
+        }
+
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
+        }
+
+        private void updateButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.UpdateRentalItem();
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
+        }
+    }
 }

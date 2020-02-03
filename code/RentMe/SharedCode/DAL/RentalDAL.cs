@@ -6,11 +6,11 @@ using SharedCode.Model;
 
 namespace SharedCode.DAL
 {
-	/// <summary>
+    /// <summary>
 	/// The rental dal responsible for communicating with the database for the rentals 
 	/// </summary>
 	public class RentalDal
-	{
+    {
 
         /// <summary>
         /// Retrieves all borrowed items.
@@ -34,7 +34,7 @@ namespace SharedCode.DAL
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
-	                        var memberIdOrdinal = reader.GetOrdinal("memberID");
+                            var memberIdOrdinal = reader.GetOrdinal("memberID");
                             var emailOrdinal = reader.GetOrdinal("email");
                             var rentalIdOrdinal = reader.GetOrdinal("rentalID");
                             var rentalDateOrdinal = reader.GetOrdinal("rentalDateTime");
@@ -50,11 +50,11 @@ namespace SharedCode.DAL
 
                             while (reader.Read())
                             {
-	                            var memberId = reader.GetInt32(memberIdOrdinal);
+                                var memberId = reader.GetInt32(memberIdOrdinal);
 
                                 var memberEmail = reader[emailOrdinal] == DBNull.Value
-	                                ? "null"
-	                                : reader.GetString(emailOrdinal);
+                                    ? "null"
+                                    : reader.GetString(emailOrdinal);
 
                                 var rentalId = reader.GetInt32(rentalIdOrdinal);
 
@@ -65,16 +65,16 @@ namespace SharedCode.DAL
                                 var inventoryId = reader.GetInt32(inventoryIdOrdinal);
 
                                 var category = reader[categoryOrdinal] == DBNull.Value
-	                                ? "null"
-	                                : reader.GetString(categoryOrdinal);
+                                    ? "null"
+                                    : reader.GetString(categoryOrdinal);
 
                                 var title = reader[titleOrdinal] == DBNull.Value
-	                                ? "null"
-	                                : reader.GetString(titleOrdinal);
+                                    ? "null"
+                                    : reader.GetString(titleOrdinal);
 
                                 var status = reader[statusOrdinal] == DBNull.Value
-	                                ? "null"
-	                                : reader.GetString(statusOrdinal);
+                                    ? "null"
+                                    : reader.GetString(statusOrdinal);
 
 
 
@@ -116,20 +116,23 @@ namespace SharedCode.DAL
 
             if (status == "Ordered")
             {
-	            statusId = 1; 
-            } else if (status == "Shipped")
+                statusId = 1;
+            }
+            else if (status == "Shipped")
             {
-	            statusId = 2;
-            } else if (status == "Delivered")
+                statusId = 2;
+            }
+            else if (status == "Delivered")
             {
-	            statusId = 3;
-            } else if (status == "Returned")
+                statusId = 3;
+            }
+            else if (status == "Returned")
             {
-	            statusId = 4;
+                statusId = 4;
             }
             else
             {
-	            statusId = 5;
+                statusId = 5;
             }
 
 
@@ -141,39 +144,39 @@ namespace SharedCode.DAL
                     conn.Open();
                     using (var transaction = conn.BeginTransaction())
                     {
-	                    var query =
-		                    "insert into status_history values (@transactionId, @statusID, @updateDateTime, @employeeID)";
+                        var query =
+                            "insert into status_history values (@transactionId, @statusID, @updateDateTime, @employeeID)";
 
-	                    using (var cmd = new MySqlCommand(query, conn))
-	                    {
-		                    cmd.Transaction = transaction;
-		                    cmd.Parameters.AddWithValue("@statusID", statusId);
-		                    cmd.Parameters.AddWithValue("@transactionId", transactionId);
-		                    cmd.Parameters.AddWithValue("@updateDateTime", DateTime.Now);
-		                    cmd.Parameters.AddWithValue("@employeeID", employeeId);
+                        using (var cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Transaction = transaction;
+                            cmd.Parameters.AddWithValue("@statusID", statusId);
+                            cmd.Parameters.AddWithValue("@transactionId", transactionId);
+                            cmd.Parameters.AddWithValue("@updateDateTime", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@employeeID", employeeId);
 
-		                    if (cmd.ExecuteNonQuery() != 1)
-		                    {
+                            if (cmd.ExecuteNonQuery() != 1)
+                            {
                                 transaction.Rollback();
-		                    }
+                            }
 
-		                    if (statusId == 4)
-		                    {
-			                    cmd.Parameters.Clear();
+                            if (statusId == 4)
+                            {
+                                cmd.Parameters.Clear();
 
-			                    cmd.CommandText =
+                                cmd.CommandText =
                                     "update inventory_item set inStock = true where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
-			                    cmd.Parameters.AddWithValue("@transactionId", transactionId);
+                                cmd.Parameters.AddWithValue("@transactionId", transactionId);
 
 
                                 if (cmd.ExecuteNonQuery() != 1)
-			                    {
-				                    transaction.Rollback();
-			                    }
+                                {
+                                    transaction.Rollback();
+                                }
 
-		                    }
+                            }
 
-		                    transaction.Commit();
+                            transaction.Commit();
 
                         }
                         conn.Close();

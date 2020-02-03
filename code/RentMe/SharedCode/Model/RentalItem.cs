@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace SharedCode.Model
 {
-	/// <summary>
-	/// The rental item class
-	/// </summary>
-	public class RentalItem
-	{
+    /// <summary>
+    /// The rental item class
+    /// </summary>
+    public class RentalItem
+    {
 
         [Display(Name = "Member ID")]
         public int MemberId { get; set; }

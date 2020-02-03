@@ -28,6 +28,6 @@
         <CheckBox x:Name="isManagerCheckBox" Content="Is Manager?" IsChecked="{Binding IsManager, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="700,653,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Button x:Name="cancelButton" Content="Cancel" Width="135" Height="45" Margin="550,693,0,0" VerticalAlignment="Top" Click="cancelButton_Click" />
         <Button x:Name="addButton" Command="{Binding AddCommand}" Content="Add" Width="135" Height="45" Margin="815,693,0,0" VerticalAlignment="Top"/>
-        
+
     </Grid>
 </Page>

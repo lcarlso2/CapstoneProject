@@ -18,32 +18,31 @@ using RentMeDesktop.ViewModel;
 
 namespace RentMeDesktop.View
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class AddEmployeePage : Page
-	{
-		/// <summary>
-		/// The view Model
-		/// </summary>
-		public EmployeeManagementViewModel ViewModel;
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class AddEmployeePage : Page
+    {
+        /// <summary>
+        /// The view Model
+        /// </summary>
+        public EmployeeManagementViewModel ViewModel;
+        public AddEmployeePage()
+        {
+            this.InitializeComponent();
+            this.ViewModel = new EmployeeManagementViewModel();
+            this.DataContext = this.ViewModel;
+        }
 
-		public AddEmployeePage()
-		{
-			this.InitializeComponent();
-			this.ViewModel = new EmployeeManagementViewModel();
-			this.DataContext = this.ViewModel;
-		}
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(EmployeeManagementPage), this.ViewModel);
+        }
 
-		private void cancelButton_Click(object sender, RoutedEventArgs e)
-		{
-			Frame.Navigate(typeof(EmployeeManagementPage), this.ViewModel);
-		}
-
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			var oldViewModel = (BaseViewModel)e.Parameter;
-			this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
-		}
-	}
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var oldViewModel = (BaseViewModel)e.Parameter;
+            this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
+        }
+    }
 }

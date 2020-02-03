@@ -18,47 +18,47 @@ using RentMeDesktop.ViewModel;
 
 namespace RentMeDesktop.View
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class EmployeeManagementPage : Page
-	{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class EmployeeManagementPage : Page
+    {
+        /// <summary>
+        /// The view Model
+        /// </summary>
+        public EmployeeManagementViewModel ViewModel;
 
-		/// <summary>
-		/// The view Model
-		/// </summary>
-		public EmployeeManagementViewModel ViewModel;
-		public EmployeeManagementPage()
-		{
-			this.InitializeComponent();
-			this.ViewModel = new EmployeeManagementViewModel();
-			this.DataContext = this.ViewModel;
-		}
+        public EmployeeManagementPage()
+        {
+            this.InitializeComponent();
+            this.ViewModel = new EmployeeManagementViewModel();
+            this.DataContext = this.ViewModel;
+        }
 
-		private void addEmployeeButton_Click(object sender, RoutedEventArgs e)
-		{
-			Frame.Navigate(typeof(AddEmployeePage), this.ViewModel);
-		}
+        private void addEmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AddEmployeePage), this.ViewModel);
+        }
 
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			var oldViewModel = (BaseViewModel)e.Parameter;
-			this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var oldViewModel = (BaseViewModel)e.Parameter;
+            this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
 
-			try
-			{
-				this.ViewModel.RetrieveEmployees(oldViewModel?.CurrentEmployee);
-			}
-			catch (Exception)
-			{
-				DbError.showErrorWindow();
-			}
-		}
+            try
+            {
+                this.ViewModel.RetrieveEmployees(oldViewModel?.CurrentEmployee);
+            }
+            catch (Exception)
+            {
+                DbError.showErrorWindow();
+            }
+        }
 
-		private void backButton_Click(object sender, RoutedEventArgs e)
-		{
-			Frame.Navigate(typeof(MainPage), this.ViewModel);
-		}
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
+        }
 
     }
 }

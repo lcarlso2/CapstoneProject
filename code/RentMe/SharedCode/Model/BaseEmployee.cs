@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace SharedCode.Model
 {
     /// <summary>
-	/// The base employee class
-	/// </summary>
-	public class BaseEmployee
-	{
+    /// The base employee class
+    /// </summary>
+    public class BaseEmployee
+    {
 
         /// <summary>
         /// Gets or sets the username

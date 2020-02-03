@@ -1,18 +1,18 @@
-﻿using MySql.Data.MySqlClient;
-using RentMe.Models;
-using SharedCode.DAL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using RentMe.Models;
+using SharedCode.DAL;
 
 namespace RentMe.DAL
 {
-	/// <summary>
+    /// <summary>
 	/// The class responsible communicating with the DB for the media 
 	/// </summary>
 	public class MediaDal
-	{
+    {
 
         /// <summary>
         /// Retrieves all media.
@@ -59,9 +59,9 @@ namespace RentMe.DAL
 
 
 
-	                            var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type };
+                                var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type };
 
-	                            mediaItems.Add(media);
+                                mediaItems.Add(media);
                             }
                         }
                     }
@@ -123,11 +123,11 @@ namespace RentMe.DAL
                                     ? "null"
                                     : reader.GetString(titleOrdinal);
 
-                          
-	                            var media = new Media { InventoryId = inventoryId, Category = categoryValue, Title = title, Type = type };
 
-	                            mediaItems.Add(media);
-                                
+                                var media = new Media { InventoryId = inventoryId, Category = categoryValue, Title = title, Type = type };
+
+                                mediaItems.Add(media);
+
                             }
                         }
                     }
@@ -170,7 +170,7 @@ namespace RentMe.DAL
                             var titleOrdinal = reader.GetOrdinal("Title");
                             var typeOrdinal = reader.GetOrdinal("Type");
                             var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
-                      
+
 
 
 
@@ -193,8 +193,8 @@ namespace RentMe.DAL
 
                                 var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = typeValue };
 
-	                            mediaItems.Add(media);
-                                
+                                mediaItems.Add(media);
+
                             }
                         }
                     }

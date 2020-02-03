@@ -1,18 +1,18 @@
-﻿using MySql.Data.MySqlClient;
-using RentMe.Models;
-using SharedCode.DAL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using RentMe.Models;
+using SharedCode.DAL;
 
 namespace RentMe.DAL
 {
-	/// <summary>
+    /// <summary>
 	/// The customer dal class responsible for communicating with the DB for customer related things 
 	/// </summary>
 	public class CustomerDal
-	{
+    {
 
         /// <summary>
         /// Authenticates the specified customer.

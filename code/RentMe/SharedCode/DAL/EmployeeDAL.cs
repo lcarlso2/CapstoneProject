@@ -6,11 +6,11 @@ using SharedCode.Model;
 
 namespace SharedCode.DAL
 {
-	/// <summary>
+    /// <summary>
 	/// The employee DAL responsible for communicating with the database for employee purposes
 	/// </summary>
 	public class EmployeeDal
-	{
+    {
 
         /// <summary>
         /// Adds an employee to the database
@@ -25,33 +25,33 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    
+
                     using (var transaction = conn.BeginTransaction())
                     {
 
-	                    var query = "insert into user(fname, lname, password) values (@fname, @lname, @password)";
+                        var query = "insert into user(fname, lname, password) values (@fname, @lname, @password)";
 
-	                    using (var cmd = new MySqlCommand(query, conn))
-	                    {
-		                    cmd.Transaction = transaction;
+                        using (var cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Transaction = transaction;
 
-		                    cmd.Parameters.Add("@fname", MySqlDbType.VarChar);
-		                    cmd.Parameters["@fname"].Value = employee.FirstName;
+                            cmd.Parameters.Add("@fname", MySqlDbType.VarChar);
+                            cmd.Parameters["@fname"].Value = employee.FirstName;
 
-		                    cmd.Parameters.Add("@lname", MySqlDbType.VarChar);
-		                    cmd.Parameters["@lname"].Value = employee.LastName;
+                            cmd.Parameters.Add("@lname", MySqlDbType.VarChar);
+                            cmd.Parameters["@lname"].Value = employee.LastName;
 
-		                    cmd.Parameters.Add("@password", MySqlDbType.VarChar);
-		                    cmd.Parameters["@password"].Value = password;
+                            cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                            cmd.Parameters["@password"].Value = password;
 
-		                    if (cmd.ExecuteNonQuery() != 1)
-		                    {
-			                    transaction.Rollback();
-		                    }
+                            if (cmd.ExecuteNonQuery() != 1)
+                            {
+                                transaction.Rollback();
+                            }
 
                             cmd.Parameters.Clear();
                             cmd.CommandText =
-	                            "insert into employee(employeeID, isManager, username) values (last_insert_id(), @isManager, @username)";
+                                "insert into employee(employeeID, isManager, username) values (last_insert_id(), @isManager, @username)";
 
 
                             cmd.Parameters.Add("@isManager", MySqlDbType.Int32);
@@ -66,8 +66,8 @@ namespace SharedCode.DAL
                                 transaction.Rollback();
                             }
                             transaction.Commit();
-	                    }
-	                    conn.Close();
+                        }
+                        conn.Close();
                     }
 
                 }

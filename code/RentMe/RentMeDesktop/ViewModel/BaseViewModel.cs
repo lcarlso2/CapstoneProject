@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SharedCode.DAL;
+using SharedCode.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,16 +8,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using SharedCode.DAL;
-using SharedCode.Model;
 
 namespace RentMeDesktop.ViewModel
 {
-	/// <summary>
+    /// <summary>
 	/// The base view model class
 	/// </summary>
 	public class BaseViewModel : INotifyPropertyChanged
-	{
+    {
         private const int VALID_EMPLOYEE = 1;
 
         private Employee currentEmployee;
