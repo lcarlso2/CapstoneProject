@@ -13288,11 +13288,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\csuser\\Desktop\\RentMe\\RentMe\\RentMe.csproj",
+      "projectUniqueName": "C:\\Users\\csuser\\Desktop\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
       "projectName": "RentMe",
-      "projectPath": "C:\\Users\\csuser\\Desktop\\RentMe\\RentMe\\RentMe.csproj",
+      "projectPath": "C:\\Users\\csuser\\Desktop\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
       "packagesPath": "C:\\Users\\csuser\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\csuser\\Desktop\\RentMe\\RentMe\\obj\\",
+      "outputPath": "C:\\Users\\csuser\\Desktop\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
