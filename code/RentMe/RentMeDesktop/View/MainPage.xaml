@@ -24,7 +24,7 @@
             </ListView.ItemTemplate>
         </ListView>
         <Button x:Name="manageEmployeesButton" Content="Manage Employees" Margin="40,60,30,0" Visibility="{Binding CurrentEmployee.IsManager}" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50" Width="150" Click="manageEmployeesButton_Click"/>
-        <ComboBox x:Name="filterRentalComboBox" ItemsSource="{Binding RentalFilters}" SelectedItem="{Binding SelectedRentalFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,118,0,0" Width="216" HorizontalAlignment="Center"/>
+        <ComboBox x:Name="filterRentalComboBox" ItemsSource="{Binding StatusFilters}" SelectedItem="{Binding SelectedStatusFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,118,0,0" Width="216" HorizontalAlignment="Center"/>
         <Button x:Name="updateRentalStatusButton" IsEnabled="{Binding CanUpdateBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="50" Content="Update Rental Status" Width="220" Margin="0,768,0,0" VerticalAlignment="Top" Click="updateRentalStatusButton_Click" HorizontalAlignment="Center"/>
         <Button x:Name="logoutButton" Content="Log Out" Margin="30,60,40,0" Height="50" Width="150" VerticalAlignment="Top" HorizontalAlignment="Right" Click="logoutButton_Click"/>
 

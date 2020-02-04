@@ -35,6 +35,28 @@ namespace RentMeEmployee.Controllers
         public static List<SelectListItem> Statuses = new List<SelectListItem>();
 
         /// <summary>
+        /// The action result for filtering the rentals by status
+        /// </summary>
+        /// <returns>The given view based on the desired status</returns>
+        public IActionResult StatusFilter(string status)
+        {
+
+	        List<RentalItem> rentals;
+
+	        if (status.Equals("All"))
+	        {
+                rentals = new List<RentalItem>(RentalDal.RetrieveAllRentedItems());
+	        }
+	        else
+	        {
+		        rentals = new List<RentalItem>(RentalDal.RetrieveSelectRentedItems(status));
+            }
+
+	        return View("EmployeeLanding", rentals);
+
+        }
+
+        /// <summary>
         /// The action results for managing employees
         /// </summary>
         /// <returns>the view for managing employees</returns>

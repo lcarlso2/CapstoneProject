@@ -20,17 +20,17 @@ namespace RentMeDesktop.ViewModel
 
 		private bool canUpdateBeClicked;
 
-		private ObservableCollection<string> rentalFilters;
+		private ObservableCollection<string> statusFilters;
 
-		private string selectedRentalFilter;
+		private string selectedStatusFilter;
 
 		/// <summary>
 		/// Creates a new main page view model
 		/// </summary>
 		public MainPageViewModel()
 		{
-			this.SelectedRentalFilter = "All";
-			this.RentalFilters = new ObservableCollection<string>{"All", "Ordered", "Shipped", "Delivered", "Returned", "Late"};
+			this.SelectedStatusFilter = "All";
+			this.StatusFilters = new ObservableCollection<string>{"All", "Ordered", "Shipped", "Delivered", "Returned", "Late"};
 		}
 
 		/// <summary>
@@ -39,12 +39,12 @@ namespace RentMeDesktop.ViewModel
 		/// <value>
 		/// The rental filters
 		/// </value>
-		public ObservableCollection<string> RentalFilters
+		public ObservableCollection<string> StatusFilters
 		{
-			get => this.rentalFilters;
+			get => this.statusFilters;
 			set
 			{
-				this.rentalFilters = value;
+				this.statusFilters = value;
 				this.OnPropertyChanged();
 			}
 		}
@@ -55,15 +55,15 @@ namespace RentMeDesktop.ViewModel
 		/// <value>
 		///	The selected rental filter
 		/// </value>
-		public string SelectedRentalFilter
+		public string SelectedStatusFilter
 		{
-			get => this.selectedRentalFilter;
+			get => this.selectedStatusFilter;
 			set
 			{
-				this.selectedRentalFilter = value;
+				this.selectedStatusFilter = value;
 				try
 				{
-					if (this.SelectedRentalFilter.Equals("All"))
+					if (this.SelectedStatusFilter.Equals("All"))
 					{
 						this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.RetrieveAllRentedItems());
 					}
@@ -71,7 +71,7 @@ namespace RentMeDesktop.ViewModel
 					{
 						this.RentalItems =
 							new ObservableCollection<RentalItem>(
-								RentalDal.RetrieveSelectRentedItems(this.SelectedRentalFilter));
+								RentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
 					}
 				}
 				catch (Exception)
