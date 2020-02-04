@@ -2,13 +2,41 @@
 @{
     ViewData["Title"] = "Register";
 }
+<head>
+    <style>
+        label {
+            min-width: 175px;
+        }
+        input {
+            width: 100%;
+        }
+        .input-container {
+            width: 70%;
+            float: right;
+        }
+        .button-container {
+            margin: 0 10% !important;
+            max-width: 80% !important;
+        }
+        .card {
+            box-shadow: .5em .2em 1em .3em #9494b8;
+            border-radius: .5em;
+        }
 
+        @@media screen and (max-width: 1200px) {
+            .input-container {
+                width: 90%;
+                margin: 0 5%;
+            }
+        }
+    </style>
+</head>
 <div class="container">
     <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+        <div class="col-md-8 offset-2">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2>Welcome</h2>
+                    <h2>Register</h2>
                 </div>
                 <div class="card-body">
 
@@ -23,79 +51,79 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.First, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.First, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.First, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
                                     @Html.ValidationMessageFor(customer => customer.First, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.Last, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.Last, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.Last, new { htmlAttributes = new { @class = "form-control", placeholder = "Last name" } })
                                     @Html.ValidationMessageFor(customer => customer.Last, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
                                     @Html.ValidationMessageFor(customer => customer.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.ConfirmEmail, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirm Email" } })
                                     @Html.ValidationMessageFor(customer => customer.ConfirmEmail, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.Password, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                                     @Html.ValidationMessageFor(customer => customer.Password, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirm Password" } })
                                     @Html.ValidationMessageFor(customer => customer.ConfirmPassword, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.Address, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Address" } })
                                     @Html.ValidationMessageFor(customer => customer.Address, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.State, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.State, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
                                     @Html.ValidationMessageFor(customer => customer.State, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                @Html.LabelFor(customer => customer.Zip, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
+                                @Html.LabelFor(customer => customer.Zip, htmlAttributes: new { @class = "control-label col-md-2", @style = "float: left" })
+                                <div class="input-container">
                                     @Html.EditorFor(customer => customer.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip" } })
                                     @Html.ValidationMessageFor(customer => customer.Zip, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-md-offset-2 col-md-10">
+                                <div class="button-container col-md-10">
                                     <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block text-uppercase" />
                                 </div>
                             </div>
