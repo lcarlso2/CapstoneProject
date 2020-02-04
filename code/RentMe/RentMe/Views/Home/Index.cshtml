@@ -3,11 +3,59 @@
     ViewData["Title"] = "Home Page";
 }
 
+    <head>
+        <style>
+			.card-container {
+				margin-left: 16.667%;
+			}
+            .button-container {
+                margin: 0 10% !important;
+                max-width: 80% !important;
+            }
+			.card {
+				box-shadow: .5em .2em 1em .3em #9494b8;
+				border-radius: .5em;
+			}
+			.alert-danger {
+				color: red;
+				background-color: unset;
+				font-weight: 600;
+			}
+
+            @@media screen and (max-width: 1200px) {
+
+                .col-md-8 {
+                    max-width: 80% !important;
+                }
+
+                .col-md-2 {
+                    max-width: unset !important;
+                }
+
+                label {
+                    min-width: 110px !important;
+                }
+
+                .form-input {
+                    max-width: 100% !important;
+                    flex: unset;
+                }
+            }
+
+			@@media screen and (max-width: 768px) {
+				
+                .card-container {
+                    margin-left: 10%;
+                }
+			}
+        </style>
+    </head>
+
 <div class="container">
 	<div class="row">
-		<div class="col-sm-4 offset-4">
+		<div class="col-md-8 card-container">
 			<div class="card">
-				<div class="card-header text-center">
+				<div class="text-center">
 					<h2>Welcome</h2>
 				</div>
 				<div class="card-body">
@@ -15,15 +63,14 @@
 					{
 						@Html.AntiForgeryToken()
 
-						<div>
-
+						<div class="container">
 
 							<hr />
 							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 							<div class="form-group row">
 								@Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
+								<div class="col-md-10 form-input">
 									@Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
 									@Html.ValidationMessageFor(customer => customer.Email, "", new { @class = "text-danger" })
 								</div>
@@ -31,25 +78,24 @@
 
 							<div class="form-group row">
 								@Html.LabelFor(customer => customer.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-								<div class="col-md-10">
+								<div class="col-md-10 form-input">
 									@Html.EditorFor(customer => customer.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
 									@Html.ValidationMessageFor(customer => customer.Password, "", new { @class = "text-danger" })
 								</div>
 							</div>
 
 							<div class="form-group row">
-								<div class="offset-md-2 col-md-10">
+								<div class="button-container col-md-10">
 									<input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block text-uppercase" />
 								</div>
 							</div>
 
 							<div class="form-group">
-								<div class="offset-md-2 col-md-2">
+								<div class="col-md-2 text-center">
 									<label class="alert-danger">@ViewBag.Error</label>
 								</div>
 							</div>
 						</div>
-
 					}
 				</div>
 			</div>

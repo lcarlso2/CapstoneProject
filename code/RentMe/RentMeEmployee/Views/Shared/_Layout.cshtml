@@ -18,20 +18,33 @@
     </environment>
 </head>
 <body>
+
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    @if (HomeController.IsManager)
-                    {
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Rent Me (Employee)</a>
+                @if (HomeController.CurrentEmployee != null)
+                {
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="display:contents;">
+                        <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
-                    }
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">RentMeEmployee</a>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        @if (HomeController.IsManager)
+                        {
+                            <span class="icon-bar"></span>
+                        }
+                        <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAADIAAAAxCAYAAACYq/ofAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA
+                             JcEhZcwAADsEAAA7BAbiRa+0AAAITSURBVGhD3ZhLTsQwEESTkeAsHIjPao7CCnETNggOxFnYBJdxm3K7O5nNJG2eNErGTph6/qnFvCzL9B8YTmSe53
+                             I3TZw9i0hndCmWYLJDuc9EFvEkhFO5hkZLYMD1oFeR6MtK4Jx8P8SMXEIV2VqDEeHMXXqZrtv56T5dXtLnLjccy1f6PH8v75/4Yg16c/wKN9MjJD5+v
+                             4XiATLW5s9LCze8cRKYiYg0uTh3s9lJJsJyssi5jIHvT63yANZkRNxczalFa++1XKORc6msmSyiG9OGekuXc/pEmRnkOJdcFc7dGiRk7Wk5vSavzdrv
+                             W31NixVWXtpbRPCEdHu32SPDg6kHdiiRNRoRTJeeMnDUstJwNp2zT52IElywBpdB3q7WEonIRSOQzJK3/vOBZaIXjbhBXskO6h5BI3WELxpZAninVui
+                             i0aI7tYrpmEUjBHiPJEIXjUDlnU66AQxfNPIG0oJ6c+3BWgbuQ3v95gXFC0dICJ6MbvdOrZDwgOrBrSLacDS64zeyEGfTOc3UR+4Ji63BRd4hi0Yr75
+                             BFo2SV7KDuETRSR+iiUWXNeMdv6KIRM8IrCHSnVjEdomhkoSxiGIYvGhlkH7JotPZIY8GdWlC/eG0u/X15rj7dGdIf2ltCs5ZF+rxTawhY8O8uIbb8A
+                             Ig0Ix6bTxwtIWzJrPZGkRA8GeR0RaJJCN6yN4vGqBI+0/QDCF4+T7bfTNAAAAAASUVORK5CYII=" alt="Hambuger" style="padding: 0 0 8px 0; max-height: 30px; max-width: 30px;" />
+                    </button>
+                }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -45,7 +58,6 @@
             </div>
         </div>
     </nav>
-
 
     <div class="container body-content">
         @RenderBody()

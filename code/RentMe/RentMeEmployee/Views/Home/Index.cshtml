@@ -3,56 +3,105 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-4">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h2>Welcome</h2>
-                    </div>
-                    <div class="card-body">
-                        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-                        {
-                            @Html.AntiForgeryToken()
+<head>
+    <style>
+        .card-container {
+            margin-left: 16.667%;
+        }
 
-                            <div class="form-horizontal">
+        .button-container {
+            margin: 0 10% !important;
+            max-width: 80% !important;
+        }
 
-                                <hr />
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        .card {
+            box-shadow: .5em .2em 1em .3em #9494b8;
+            border-radius: .5em;
+        }
 
-                                <div class="form-group row">
-                                    @Html.LabelFor(employee => employee.Username, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(employee => employee.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "User Name" } })
-                                        @Html.ValidationMessageFor(employee => employee.Username, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+        .alert-danger {
+            color: red;
+            background-color: unset;
+            font-weight: 600;
+        }
 
-                                <div class="form-group row">
-                                    @Html.LabelFor(employee => employee.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(employee => employee.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
-                                        @Html.ValidationMessageFor(employee => employee.Password, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+        @@media screen and (max-width: 1200px) {
 
-                                <div class="form-group row">
-                                    <div class="col-md-offset-2 col-md-10">
-                                        <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block text-uppercase" />
-                                    </div>
-                                </div>
+            .col-md-8 {
+                max-width: 80% !important;
+            }
 
-                                <div class="form-group">
-                                    <div class="col-md-offset-2 col-md-2">
-                                        <label class=" label-danger">@ViewBag.Error</label>
-                                    </div>
-                                </div>
+            .col-md-2 {
+                max-width: unset !important;
+            }
 
+            label {
+                min-width: 110px !important;
+            }
+
+            .form-input {
+                max-width: 100% !important;
+                flex: unset;
+            }
+        }
+
+        @@media screen and (max-width: 768px) {
+
+            .card-container {
+                margin-left: 10%;
+            }
+        }
+    </style>
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 card-container">
+            <div class="card">
+                <div class="text-center">
+                    <h2>Welcome</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                    <div class="container">
+
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="form-group row">
+                            @Html.LabelFor(employee => employee.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10 form-input">
+                                @Html.EditorFor(employee => employee.Username, new { htmlAttributes = new { @class = "form-control", placeholder = "User Name" } })
+                                @Html.ValidationMessageFor(employee => employee.Username, "", new { @class = "text-danger" })
                             </div>
+                        </div>
 
-                        }
+                        <div class="form-group row">
+                            @Html.LabelFor(employee => employee.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10 form-input">
+                                @Html.EditorFor(employee => employee.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                                @Html.ValidationMessageFor(employee => employee.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="button-container col-md-10">
+                                <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block text-uppercase" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2 text-center">
+                                <label class="alert-danger">@ViewBag.Error</label>
+                            </div>
+                        </div>
                     </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+</div>

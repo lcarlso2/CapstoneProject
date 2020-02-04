@@ -20,7 +20,7 @@ namespace RentMeEmployee.Controllers
         /// <summary>
         /// The current employee logged in
         /// </summary>
-        public static Employee CurrentEmployee;
+        public static Employee CurrentEmployee = null;
 
         /// <summary>
         /// True if the current user is a manager
