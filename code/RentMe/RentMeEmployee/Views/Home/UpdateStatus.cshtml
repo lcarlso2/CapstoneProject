@@ -1,6 +1,6 @@
 ﻿@model SharedCode.Model.RentalItem
 @{
-    ViewData["Title"] = "UpdateStatus";
+	ViewData["Title"] = "UpdateStatus";
 }
 
 <h2 class="text-center">Update </h2>
@@ -16,10 +16,10 @@
 		<h4>Status</h4>
 	</div>
 </div>
-<div class="row">
 
-	@using (Html.BeginForm("ConfirmedUpdate", "Home", FormMethod.Post))
-	{
+@using (Html.BeginForm("ConfirmedUpdate", "Home", FormMethod.Post))
+{
+	<div class="row" style="margin: 0 0 .7em 0">
 		@Html.AntiForgeryToken()
 		<div class="col-sm-4 text-center">
 			@Html.DisplayFor(item => item.RentalId)
@@ -41,13 +41,15 @@
 
 
 		</div>
-		<div class="row">
-			<div class="col">
-				<input type="submit" value="Confirm" class="btn btn-primary btn-block text-uppercase" />
-			</div>
+
+
+	</div>
+	<div class="row">
+		<div class="col">
+			<input type="submit" value="Confirm" class="btn btn-primary btn-block text-uppercase" />
 		</div>
-	}
-</div>
+	</div>
+}
 
 
 
