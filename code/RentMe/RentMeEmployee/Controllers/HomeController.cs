@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using RentMeEmployee.Models;
 using SharedCode.DAL;
@@ -26,6 +28,11 @@ namespace RentMeEmployee.Controllers
         /// True if the current user is a manager
         /// </summary>
         public static bool IsManager;
+
+        /// <summary>
+        /// The possible status for the current rental item
+        /// </summary>
+        public static List<SelectListItem> Statuses = new List<SelectListItem>();
 
         /// <summary>
         /// The action results for managing employees
@@ -202,7 +209,13 @@ namespace RentMeEmployee.Controllers
             RentalItem item = new RentalItem();
             try
             {
+                Statuses.Clear();
                 item = RentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
+                var statuses = RentalItem.GetPossibleStatuses(item.Status);
+                foreach (var current in statuses)
+                {
+	                Statuses.Add(new SelectListItem(current, current));
+                }
             }
             catch (Exception)
             {

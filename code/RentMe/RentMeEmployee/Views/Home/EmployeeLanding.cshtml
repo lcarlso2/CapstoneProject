@@ -84,7 +84,13 @@
 							@Html.DisplayFor(modelItem => item.Status)
 						</td>
 						<td>
-							<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
+							@{
+								if (item.Status != "Returned")
+								{
+									<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
+								}
+
+							}
 						</td>
 					</tr>
 				}
