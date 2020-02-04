@@ -49,15 +49,52 @@ namespace SharedCode.Model
 
         }
 
-        public void setStatus(string status)
-        {
-            this.Status = status;
-        }
-
         /// <summary>
         /// The rental string info
         /// </summary>
         public string RentalItemInfo => $"Rental ID: {this.RentalId}, Inventory ID: {this.InventoryId}, Category: {this.Category}, Title: {this.Title}\nMember ID: {this.MemberId} Member Email: {this.MemberEmail}\nRental Date: {this.RentalDate}, Return Date: {this.ReturnDate}, Status: {this.Status}\n";
+
+        /// <summary>
+        /// Gets the list of possible statuses 
+        /// </summary>
+        /// <param name="currentStatus">the current status</param>
+        /// <returns>the list of possible statuses</returns>
+        public static List<string> GetPossibleStatuses(string currentStatus)
+        {
+            List<string> statuses;
+
+
+            if (currentStatus.Equals("Ordered"))
+            {
+                statuses = new List<string>{ "Ordered", "Shipped", "Delivered", "Returned", "Late" };
+
+            } else if (currentStatus.Equals("Shipped"))
+            {
+
+	            statuses = new List<string> { "Shipped", "Delivered", "Returned", "Late" };
+
+            } else if (currentStatus.Equals("Delivered"))
+            {
+
+	            statuses = new List<string> { "Delivered", "Returned", "Late" };
+
+            } else if (currentStatus.Equals("Returned"))
+            {
+
+	            statuses = new List<string> { "Returned", "Late" };
+
+            }
+            else
+            {
+
+	            statuses = new List<string> { "Returned", "Late" };
+
+            }
+
+            return statuses;
+        }
+
+
 
 
     }

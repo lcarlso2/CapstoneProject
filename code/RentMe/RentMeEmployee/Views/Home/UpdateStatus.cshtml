@@ -1,4 +1,6 @@
-﻿@model SharedCode.Model.RentalItem
+﻿@using Microsoft.AspNetCore.TestHost
+@using SharedCode.Model
+@model SharedCode.Model.RentalItem
 @{
 	ViewData["Title"] = "UpdateStatus";
 }
@@ -30,15 +32,14 @@
 		</div>
 		<div class="col-sm-4 text-center">
 
-
 			@Html.DropDownListFor(item => item.Status, new List<SelectListItem> {
-				new SelectListItem { Text = "Ordered" },
-				new SelectListItem { Text = "Shipped" },
-				new SelectListItem { Text = "Delivered" },
-				new SelectListItem { Text = "Returned" },
-				new SelectListItem { Text = "Late" }})
-			@Html.ValidationMessageFor(item => item.Status, "", new { @class = "text-danger" })
-
+					new SelectListItem { Text = "Ordered" },
+					new SelectListItem { Text = "Shipped" },
+					new SelectListItem { Text = "Delivered" },
+					new SelectListItem { Text = "Returned" },
+					new SelectListItem { Text = "Late" }})
+			@Html.ValidationMessageFor(item => item.Status, "", new {@class = "text-danger"})
+			
 
 		</div>
 

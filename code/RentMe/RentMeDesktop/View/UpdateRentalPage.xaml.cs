@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using RentMeDesktop.ViewModel;
+using SharedCode.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,11 +37,6 @@ namespace RentMeDesktop.View
 		public UpdateRentalPage()
 		{
 			this.InitializeComponent();
-			this.StatusTypes.Add("Ordered");
-			this.StatusTypes.Add("Shipped");
-			this.StatusTypes.Add("Delivered");
-			this.StatusTypes.Add("Returned");
-			this.StatusTypes.Add("Late");
 
 			this.ViewModel = new MainPageViewModel();
 			this.DataContext = this.ViewModel;
@@ -51,6 +47,8 @@ namespace RentMeDesktop.View
 			var oldViewModel = (MainPageViewModel)e.Parameter;
 			this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
 			this.ViewModel.SelectedRental = oldViewModel?.SelectedRental;
+
+			this.StatusTypes = new ObservableCollection<string>(RentalItem.GetPossibleStatuses(this.ViewModel?.SelectedRental?.Status));
 		}
 
 		private void cancelButton_Click(object sender, RoutedEventArgs e)

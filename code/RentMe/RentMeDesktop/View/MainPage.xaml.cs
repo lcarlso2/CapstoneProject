@@ -45,7 +45,7 @@ namespace RentMeDesktop.View
 			{
 				this.ViewModel.GetRentalItems();
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				DbError.showErrorWindow();
 			}
