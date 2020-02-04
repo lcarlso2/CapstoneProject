@@ -26,10 +26,15 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select member.memberID, email, r.rentalID, rentalDateTime, returnDateTime, r.inventoryID, category, title, status " +
-                                "from rental_transaction r, user, member, media, inventory_item i, status_history s, status " +
-                                "where userID = member.memberID and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
-                                "r.rentalID = s.rentalTransactionID and s.statusID = status.statusID;";
+                    var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, " +
+                                "r.returnDateTime, r.inventoryID, category, title, status from rental_transaction " +
+                                "r, user, member, media, inventory_item i, status where " +
+                                "userID = member.memberID and member.memberID = r.memberID and " +
+                                "r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+                                "status.statusID = (select max(s1.statusID) from status_history s1 " +
+                                "where r.rentalID = s1.rentalTransactionID " +
+                                "group by s1.rentalTransactionID);";
+                    
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         using (var reader = cmd.ExecuteReader())
