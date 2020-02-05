@@ -251,23 +251,17 @@ namespace SharedCode.DAL
 
 		                    if (cmd.ExecuteNonQuery() != 1)
 		                    {
-                                transaction.Rollback();
+			                    transaction.Rollback();
 		                    }
+
+		                    if (statusId == 2) { 
+
+			                    updateInventoryItemForShippedStatus(transactionId, statusId, cmd, transaction);
+							}
 
 		                    if (statusId == 4)
 		                    {
-			                    cmd.Parameters.Clear();
-
-			                    cmd.CommandText =
-                                    "update inventory_item set inStock = true where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
-			                    cmd.Parameters.AddWithValue("@transactionId", transactionId);
-
-
-                                if (cmd.ExecuteNonQuery() != 1)
-			                    {
-				                    transaction.Rollback();
-			                    }
-
+			                    updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction);
 		                    }
 
 		                    transaction.Commit();
@@ -284,6 +278,38 @@ namespace SharedCode.DAL
             }
 
             return rowsEffected;
+        }
+
+        private static void updateInventoryItemForReturnedStatus(int transactionId, int statusId, MySqlCommand cmd,
+	        MySqlTransaction transaction)
+        {
+	       
+	        cmd.Parameters.Clear();
+
+	        cmd.CommandText =
+			        "update inventory_item set inStock = true, isRented = false where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
+	        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+
+
+	        if (cmd.ExecuteNonQuery() != 1) { 
+		        transaction.Rollback();
+	        }
+        }
+
+        private static void updateInventoryItemForShippedStatus(int transactionId, int statusId, MySqlCommand cmd,
+	        MySqlTransaction transaction)
+        {
+	        cmd.Parameters.Clear();
+
+	        cmd.CommandText =
+			        "update inventory_item set inStock = false, isRented = true where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
+	        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+
+
+	        if (cmd.ExecuteNonQuery() != 1)
+	        {
+		        transaction.Rollback();
+	        }
         }
 
         private static int getStatusId(string status)

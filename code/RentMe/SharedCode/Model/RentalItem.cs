@@ -118,12 +118,12 @@ namespace SharedCode.Model
 
             if (currentStatus.Equals("Ordered"))
             {
-                statuses = new List<string>{ "Ordered", "Shipped", "Delivered", "Returned", "Late" };
+                statuses = new List<string>{ "Ordered", "Shipped", "Delivered", "Returned" };
 
             } else if (currentStatus.Equals("Shipped"))
             {
 
-	            statuses = new List<string> { "Shipped", "Delivered", "Returned", "Late" };
+	            statuses = new List<string> { "Shipped", "Delivered", "Returned" };
 
             } else if (currentStatus.Equals("Delivered"))
             {
@@ -133,7 +133,7 @@ namespace SharedCode.Model
             } else if (currentStatus.Equals("Returned"))
             {
 
-	            statuses = new List<string> { "Returned", "Late" };
+	            statuses = new List<string> { "Returned" };
 
             }
             else

@@ -76,7 +76,7 @@ namespace RentMe.DAL
 							cmd.Parameters.Clear();
 
 							cmd.CommandText =
-								"update inventory_item set inStock = false where inventoryID = @inventoryID;";
+								"update inventory_item set isRented = true where inventoryID = @inventoryID;";
 							cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
 							cmd.Parameters["@inventoryID"].Value = media.InventoryId;
 
