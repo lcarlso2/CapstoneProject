@@ -37,7 +37,7 @@ namespace RentMe.Controllers
 			{
 				return RedirectToAction("Browse");
 			}
-			return View();
+			return View("Index");
 		}
 
 		/// <summary>
@@ -160,7 +160,7 @@ namespace RentMe.Controllers
 		[HttpGet]
 		public IActionResult Register()
 		{
-			return View();
+			return View("Register");
 		}
 
 		/// <summary>
