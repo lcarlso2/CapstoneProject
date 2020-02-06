@@ -30,7 +30,7 @@ namespace RentMeDesktop.ViewModel
 		public MainPageViewModel()
 		{
 			this.SelectedStatusFilter = "All";
-			this.StatusFilters = new ObservableCollection<string>{"All", "Ordered", "Shipped", "Delivered", "Returned", "Late"};
+			this.StatusFilters = new ObservableCollection<string>{"All", "Ordered", "Shipped", "Returned"};
 		}
 
 		/// <summary>

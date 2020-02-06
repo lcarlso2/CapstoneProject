@@ -228,7 +228,7 @@ namespace SharedCode.DAL
 
             var rowsEffected = 0;
 
-            var statusId = getStatusId(status);
+            var statusId = RentalItem.GetStatusId(status);
 
             try
             {
@@ -312,34 +312,7 @@ namespace SharedCode.DAL
 	        }
         }
 
-        private static int getStatusId(string status)
-        {
-            int statusId;
-
-            if (status.Equals("Ordered") )
-	        {
-		        statusId = 1;
-	        }
-	        else if (status.Equals("Shipped"))
-	        {
-		        statusId = 2;
-	        }
-	        else if (status.Equals("Delivered"))
-	        {
-		        statusId = 3;
-	        }
-	        else if (status.Equals("Returned"))
-	        {
-		        statusId = 4;
-	        }
-	        else
-	        {
-		        statusId = 5;
-	        }
-
-	        return statusId;
-
-        }
+        
 
     }
 

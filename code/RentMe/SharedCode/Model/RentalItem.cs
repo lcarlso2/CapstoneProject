@@ -118,32 +118,56 @@ namespace SharedCode.Model
 
             if (currentStatus.Equals("Ordered"))
             {
-                statuses = new List<string>{ "Ordered", "Shipped", "Delivered", "Returned" };
+                statuses = new List<string>{ "Ordered", "Shipped" };
 
             } else if (currentStatus.Equals("Shipped"))
             {
 
-	            statuses = new List<string> { "Shipped", "Delivered", "Returned" };
+	            statuses = new List<string> { "Shipped", "Returned" };
 
-            } else if (currentStatus.Equals("Delivered"))
-            {
-
-	            statuses = new List<string> { "Delivered", "Returned", "Late" };
-
-            } else if (currentStatus.Equals("Returned"))
+            } 
+            else
             {
 
 	            statuses = new List<string> { "Returned" };
 
             }
-            else
-            {
-
-	            statuses = new List<string> { "Returned", "Late" };
-
-            }
 
             return statuses;
+        }
+
+        /// <summary>
+        /// Gets the status id given the string status
+        /// </summary>
+        /// <param name="status">the status</param>
+        /// <returns>the number equivalent of the status</returns>
+        public static int GetStatusId(string status)
+        {
+	        int statusId;
+
+	        if (status.Equals("Ordered"))
+	        {
+		        statusId = 1;
+	        }
+	        else if (status.Equals("Shipped"))
+	        {
+		        statusId = 2;
+	        }
+	        else if (status.Equals("Delivered"))
+	        {
+		        statusId = 3;
+	        }
+	        else if (status.Equals("Returned"))
+	        {
+		        statusId = 4;
+	        }
+	        else
+	        {
+		        statusId = 5;
+	        }
+
+	        return statusId;
+
         }
 
 
