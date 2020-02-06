@@ -153,17 +153,9 @@ namespace SharedCode.Model
 	        {
 		        statusId = 2;
 	        }
-	        else if (status.Equals("Delivered"))
-	        {
-		        statusId = 3;
-	        }
-	        else if (status.Equals("Returned"))
-	        {
-		        statusId = 4;
-	        }
 	        else
 	        {
-		        statusId = 5;
+		        statusId = 4;
 	        }
 
 	        return statusId;
