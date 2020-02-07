@@ -113,11 +113,7 @@ namespace RentMeTests.Controllers.Tests
 
 		}
 
-		[TestMethod]
-		public void TestTest()
-		{
-			Assert.AreEqual(1,1);
-		}
+		
 	}
 
 	
