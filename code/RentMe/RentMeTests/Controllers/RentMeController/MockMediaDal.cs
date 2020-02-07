@@ -6,6 +6,9 @@ using RentMe.Models;
 
 namespace RentMeTests.Controllers.RentMeController
 {
+	/// <summary>
+	/// The mock media dal class used for testing purposes 
+	/// </summary>
 	public class MockMediaDal : IMediaDal
 	{
 
