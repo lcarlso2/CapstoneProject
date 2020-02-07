@@ -48,7 +48,7 @@ namespace RentMe.Controllers
 		public IActionResult ConfirmBorrow(int? id)
 		{
 
-			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+			Media media = MediaDal.OldRetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 			return View(media);
 		}
 
@@ -59,7 +59,7 @@ namespace RentMe.Controllers
 		/// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page</returns>
 		public IActionResult ConfirmedBorrow(int? id)
 		{
-			Media media = MediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+			Media media = MediaDal.OldRetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 
 			try
 			{
@@ -100,7 +100,7 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				List<Media> media = MediaDal.RetrieveAllMedia();
+				List<Media> media = MediaDal.OldRetrieveAllMedia();
 
 				return View("Browse", media);
 			}
@@ -122,11 +122,11 @@ namespace RentMe.Controllers
 			List<Media> media = new List<Media>();
 			if (type == "All")
 			{
-				media = MediaDal.RetrieveAllMedia();
+				media = MediaDal.OldRetrieveAllMedia();
 			}
 			else
 			{
-				media = MediaDal.RetrieveMediaByType(type);
+				media = MediaDal.OldRetrieveMediaByType(type);
 			}
 
 			return View("Browse", media);
@@ -142,11 +142,11 @@ namespace RentMe.Controllers
 			List<Media> media = new List<Media>();
 			if (category == "All")
 			{
-				media = MediaDal.RetrieveAllMedia();
+				media = MediaDal.OldRetrieveAllMedia();
 			}
 			else
 			{
-				media = MediaDal.RetrieveMediaByCategory(category);
+				media = MediaDal.OldRetrieveMediaByCategory(category);
 			}
 
 			return View("Browse", media);
