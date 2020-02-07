@@ -62,9 +62,17 @@ namespace RentMe.Controllers
 		/// <returns>The confirm borrow screen</returns>
 		public IActionResult ConfirmBorrow(int? id)
 		{
+			try
+			{
+				var media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+				return View(media);
+			}
+			catch (Exception ex)
+			{
+				ViewBag.Error = "Uh-oh.. something went wrong";
+				return RedirectToAction("Browse");
+			}
 
-			Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
-			return View(media);
 		}
 
 		/// <summary>

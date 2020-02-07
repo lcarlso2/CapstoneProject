@@ -360,6 +360,32 @@ namespace RentMeTests.Controllers.Tests
 			Assert.AreEqual(0, actualList.Count);
 		}
 
+		[TestMethod()]
+		public void ConfirmBorrowTest()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockBorrowDal(), new CustomerDal(), mediaDal);
+			var result = (ViewResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual(null, result.ViewName);
+			var actualItem = (Media)result.Model;
+			Assert.AreEqual(1, actualItem.InventoryId);
+		}
+
+		[TestMethod()]
+		public void ConfirmBorrowTestWithException()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockBorrowDal(), new CustomerDal(), mediaDal);
+			var result = (RedirectToActionResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual("Browse", result.ActionName);
+		}
+
 	}
 
 
