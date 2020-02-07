@@ -17,19 +17,25 @@ namespace RentMeTests.Controllers.RentMeController
 
 		public int AuthenticateValueToReturn { get; set; }
 
+
 		/// <summary>
 		/// Set to true when an error is needed
 		/// </summary>
 		public bool ThrowError { get; set; }
 		public int Authenticate(string email, string password)
 		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
 			return AuthenticateValueToReturn;
 		}
 
 
 		public void RegisterCustomer(RegisteringCustomer customer)
 		{
-			if (ThrowError)
+			if (this.ThrowError)
 			{
 				throw new Exception();
 			}

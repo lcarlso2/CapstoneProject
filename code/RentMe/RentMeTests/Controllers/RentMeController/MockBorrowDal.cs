@@ -23,12 +23,12 @@ namespace RentMeTests.Controllers.RentMeController
 
 		public void BorrowItem(Customer customer, Media media)
 		{
-			if (ThrowNullReference)
+			if (this.ThrowNullReference)
 			{
 				throw new NullReferenceException();
 			}
 
-			if (ThrowException)
+			if (this.ThrowException)
 			{
 				throw new Exception();
 			}
