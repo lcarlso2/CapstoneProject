@@ -63,7 +63,7 @@ namespace RentMe.Controllers
 
 			try
 			{
-				BorrowDal.BorrowItem(CurrentUser, media);
+				BorrowDal.OldBorrowItem(CurrentUser, media);
 
 				return RedirectToAction("Browse");
 			}
