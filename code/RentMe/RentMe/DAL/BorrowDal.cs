@@ -100,11 +100,7 @@ namespace RentMe.DAL
 			}
 		}
 
-		/// <summary>
-		/// Borrows an item 
-		/// </summary>
-		/// <param name="customer"> the customer borrowing an item</param>
-		/// <param name="media"> the media being rented</param>
+		
 		public void BorrowItem(Customer customer, Media media)
 		{
 

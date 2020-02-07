@@ -177,7 +177,7 @@ namespace RentMe.Controllers
 			{
 				try
 				{
-					CustomerDal.RegisterCustomer(customer);
+					CustomerDal.OldRegisterCustomer(customer);
 				}
 				catch (Exception ex)
 				{
@@ -210,7 +210,7 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				if (ModelState.IsValid && CustomerDal.Authenticate(customer.Email, customer.Password) == 1)
+				if (ModelState.IsValid && CustomerDal.OldAuthenticate(customer.Email, customer.Password) == 1)
 				{
 					CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
 					return RedirectToAction("Browse");

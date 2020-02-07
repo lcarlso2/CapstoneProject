@@ -6,6 +6,9 @@ using RentMe.Models;
 
 namespace RentMe.DAL
 {
+	/// <summary>
+	/// The dal interface borrowing items
+	/// </summary>
 	interface IBorrowDal
 	{
 		/// <summary>
