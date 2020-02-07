@@ -60,7 +60,7 @@ namespace RentMeDesktop.ViewModel
         /// </summary>
         public void GetRentalItems()
         {
-            this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.RetrieveAllRentedItems());
+            this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
         }
 
         /// <summary>

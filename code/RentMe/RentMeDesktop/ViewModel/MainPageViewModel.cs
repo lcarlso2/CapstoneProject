@@ -65,13 +65,13 @@ namespace RentMeDesktop.ViewModel
 				{
 					if (this.SelectedStatusFilter.Equals("All"))
 					{
-						this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.RetrieveAllRentedItems());
+						this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
 					}
 					else
 					{
 						this.RentalItems =
 							new ObservableCollection<RentalItem>(
-								RentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
+								RentalDal.OldRetrieveSelectRentedItems(this.SelectedStatusFilter));
 					}
 				}
 				catch (Exception)
@@ -124,7 +124,7 @@ namespace RentMeDesktop.ViewModel
 		{
 			try
 			{
-				RentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
+				RentalDal.OldUpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
 			}
 			catch (Exception)
 			{

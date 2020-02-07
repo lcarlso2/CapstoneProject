@@ -45,11 +45,11 @@ namespace RentMeEmployee.Controllers
 
 	        if (status.Equals("All"))
 	        {
-                rentals = new List<RentalItem>(RentalDal.RetrieveAllRentedItems());
+                rentals = new List<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
 	        }
 	        else
 	        {
-		        rentals = new List<RentalItem>(RentalDal.RetrieveSelectRentedItems(status));
+		        rentals = new List<RentalItem>(RentalDal.OldRetrieveSelectRentedItems(status));
             }
 
 	        return View("EmployeeLanding", rentals);
@@ -210,7 +210,7 @@ namespace RentMeEmployee.Controllers
 
             try
             {
-	            items = RentalDal.RetrieveAllRentedItems();
+	            items = RentalDal.OldRetrieveAllRentedItems();
             }
             catch (Exception)
             {
@@ -232,7 +232,7 @@ namespace RentMeEmployee.Controllers
             try
             {
                 Statuses.Clear();
-                item = RentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
+                item = RentalDal.OldRetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
                 var statuses = RentalItem.GetPossibleStatuses(item.Status);
                 foreach (var current in statuses)
                 {
@@ -258,7 +258,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                RentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
+                RentalDal.OldUpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
             }
             catch (Exception)
             {
