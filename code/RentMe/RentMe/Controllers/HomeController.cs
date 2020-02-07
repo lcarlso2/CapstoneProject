@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RentMe.DAL;
 using RentMe.Models;
@@ -15,16 +16,30 @@ namespace RentMe.Controllers
 	/// </summary>
 	public class HomeController : Controller
 	{
+
+		private IBorrowDal borrowDal;
+		private ICustomerDal customerDal;
+		private IMediaDal mediaDal;
+
 		/// <summary>
 		/// The current user that is logged in
 		/// </summary>
 		public static Customer CurrentUser;
 
-		private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal)
 		{
-			_logger = logger;
+			this.borrowDal = borrowDal;
+			this.customerDal = customerDal;
+			this.mediaDal = mediaDal;
+		}
+
+		[ActivatorUtilitiesConstructor]
+		public HomeController() 
+		{
+			this.borrowDal = new BorrowDal();
+			this.customerDal = new CustomerDal();
+			this.mediaDal = new MediaDal();
 		}
 
 		/// <summary>
@@ -100,7 +115,7 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				List<Media> media = MediaDal.OldRetrieveAllMedia();
+				var media = this.mediaDal.RetrieveAllMedia();
 
 				return View("Browse", media);
 			}
@@ -122,11 +137,11 @@ namespace RentMe.Controllers
 			List<Media> media = new List<Media>();
 			if (type == "All")
 			{
-				media = MediaDal.OldRetrieveAllMedia();
+				media = this.mediaDal.RetrieveAllMedia();
 			}
 			else
 			{
-				media = MediaDal.OldRetrieveMediaByType(type);
+				media = this.mediaDal.RetrieveMediaByType(type);
 			}
 
 			return View("Browse", media);
@@ -142,11 +157,11 @@ namespace RentMe.Controllers
 			List<Media> media = new List<Media>();
 			if (category == "All")
 			{
-				media = MediaDal.OldRetrieveAllMedia();
+				media = this.mediaDal.RetrieveAllMedia();
 			}
 			else
 			{
-				media = MediaDal.OldRetrieveMediaByCategory(category);
+				media = this.mediaDal.RetrieveMediaByCategory(category);
 			}
 
 			return View("Browse", media);

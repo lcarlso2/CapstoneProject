@@ -9,7 +9,7 @@ namespace RentMe.DAL
 	/// <summary>
 	/// The dal interface borrowing items
 	/// </summary>
-	interface IBorrowDal
+	public interface IBorrowDal
 	{
 		/// <summary>
 		/// Borrows an item 

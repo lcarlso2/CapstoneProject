@@ -9,7 +9,7 @@ namespace RentMe.DAL
 	/// <summary>
 	/// The Dal interface for the customer object 
 	/// </summary>
-	interface ICustomerDal
+	public interface ICustomerDal
 	{
 		/// <summary>
 		/// Authenticates the specified customer.
