@@ -155,13 +155,21 @@ namespace RentMe.Controllers
 		public IActionResult CategoryFilter(string category)
 		{
 			List<Media> media = new List<Media>();
-			if (category == "All")
+			try
 			{
-				media = this.mediaDal.RetrieveAllMedia();
+				if (category == "All")
+				{
+					media = this.mediaDal.RetrieveAllMedia();
+				}
+				else
+				{
+					media = this.mediaDal.RetrieveMediaByCategory(category);
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				media = this.mediaDal.RetrieveMediaByCategory(category);
+				ViewBag.Error = "Uh-oh something went wrong";
+				return View("Browse");
 			}
 
 			return View("Browse", media);

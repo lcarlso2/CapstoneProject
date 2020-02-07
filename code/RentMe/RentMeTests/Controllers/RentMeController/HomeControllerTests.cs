@@ -240,7 +240,54 @@ namespace RentMeTests.Controllers.Tests
 			Assert.AreEqual("Whoops, try again. Something went wrong.", result.ViewData["Error"]);
 
 		}
+
+		[TestMethod()]
+		public void CategoryFilterTestWithAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockBorrowDal(), new CustomerDal(), mediaDal);
+			var result = (ViewResult)controller.CategoryFilter("All");
+			Assert.AreEqual("Browse", result.ViewName);
+			var actualList = (List<Media>) result.Model;
+			Assert.AreEqual(1, actualList.Count);
+
+		}
+
+		[TestMethod()]
+		public void CategoryFilterTestWithoutAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockBorrowDal(), new CustomerDal(), mediaDal);
+			var result = (ViewResult)controller.CategoryFilter("Action");
+			Assert.AreEqual("Browse", result.ViewName);
+			var actualList = (List<Media>)result.Model;
+			Assert.AreEqual(0, actualList.Count);
+
+		}
+
+
+		[TestMethod()]
+		public void CategoryFilterTestWithExceptionThrown()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockBorrowDal(), new CustomerDal(), mediaDal);
+			var result = (ViewResult)controller.CategoryFilter("Action");
+			Assert.AreEqual("Browse", result.ViewName);
+			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+
+		}
+
+
 	}
 
-	
+
 }
