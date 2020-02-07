@@ -17,9 +17,9 @@ namespace RentMe.Controllers
 	public class HomeController : Controller
 	{
 
-		private IBorrowDal borrowDal;
-		private ICustomerDal customerDal;
-		private IMediaDal mediaDal;
+		private readonly IBorrowDal borrowDal;
+		private readonly ICustomerDal customerDal;
+		private readonly IMediaDal mediaDal;
 
 		/// <summary>
 		/// The current user that is logged in
@@ -63,7 +63,7 @@ namespace RentMe.Controllers
 		public IActionResult ConfirmBorrow(int? id)
 		{
 
-			Media media = MediaDal.OldRetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+			Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 			return View(media);
 		}
 
@@ -78,7 +78,7 @@ namespace RentMe.Controllers
 
 			try
 			{
-				BorrowDal.OldBorrowItem(CurrentUser, media);
+				this.borrowDal.BorrowItem(CurrentUser, media);
 
 				return RedirectToAction("Browse");
 			}
@@ -192,7 +192,7 @@ namespace RentMe.Controllers
 			{
 				try
 				{
-					CustomerDal.OldRegisterCustomer(customer);
+					this.customerDal.RegisterCustomer(customer);
 				}
 				catch (Exception ex)
 				{
@@ -225,7 +225,7 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				if (ModelState.IsValid && CustomerDal.OldAuthenticate(customer.Email, customer.Password) == 1)
+				if (ModelState.IsValid && this.customerDal.Authenticate(customer.Email, customer.Password) == 1)
 				{
 					CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
 					return RedirectToAction("Browse");
