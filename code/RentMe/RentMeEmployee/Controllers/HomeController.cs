@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RentMeEmployee.Models;
 using SharedCode.DAL;
@@ -17,9 +18,10 @@ namespace RentMeEmployee.Controllers
 	/// </summary>
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly IRentalDal rentalDal;
+		private readonly IEmployeeDal employeeDal;
 
-        /// <summary>
+		/// <summary>
         /// The current employee logged in
         /// </summary>
         public static Employee CurrentEmployee = null;
@@ -33,6 +35,27 @@ namespace RentMeEmployee.Controllers
         /// The possible status for the current rental item
         /// </summary>
         public static List<SelectListItem> Statuses = new List<SelectListItem>();
+
+        /// <summary>
+        /// Creates a new default home controller 
+        /// </summary>
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	       this.rentalDal = new RentalDal();
+           this.employeeDal = new EmployeeDal();
+        }
+
+        /// <summary>
+        /// Creates a new home controller with the desired dals
+        /// </summary>
+        /// <param name="rentalDal">the rental dal</param>
+        /// <param name="employeeDal">the employee dal</param>
+        public HomeController(IRentalDal rentalDal, IEmployeeDal employeeDal)
+        {
+	        this.rentalDal = rentalDal;
+	        this.employeeDal = employeeDal;
+        }
 
         /// <summary>
         /// The action result for filtering the rentals by status
@@ -128,10 +151,6 @@ namespace RentMeEmployee.Controllers
             return View(new Employee());
         }
 
-        public HomeController(ILogger<HomeController> logger)
-		{
-			_logger = logger;
-		}
 
         /// <summary>
         /// The action result for the index page

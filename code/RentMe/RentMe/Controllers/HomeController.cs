@@ -26,7 +26,12 @@ namespace RentMe.Controllers
 		/// </summary>
 		public static Customer CurrentUser;
 
-
+		/// <summary>
+		/// Creates a new home controller with the desired dals
+		/// </summary>
+		/// <param name="borrowDal">the borrow dal</param>
+		/// <param name="customerDal">the customer dal</param>
+		/// <param name="mediaDal">the media dal</param>
 		public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal)
 		{
 			this.borrowDal = borrowDal;
@@ -34,6 +39,9 @@ namespace RentMe.Controllers
 			this.mediaDal = mediaDal;
 		}
 
+		/// <summary>
+		/// Creates a new default home controller
+		/// </summary>
 		[ActivatorUtilitiesConstructor]
 		public HomeController() 
 		{
