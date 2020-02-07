@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using RentMeEmployee.Models;
 using SharedCode.DAL;
 using SharedCode.Model;
@@ -68,11 +66,11 @@ namespace RentMeEmployee.Controllers
 
 	        if (status.Equals("All"))
 	        {
-                rentals = new List<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
+                rentals = new List<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
 	        }
 	        else
 	        {
-		        rentals = new List<RentalItem>(RentalDal.OldRetrieveSelectRentedItems(status));
+		        rentals = new List<RentalItem>(this.rentalDal.RetrieveSelectRentedItems(status));
             }
 
 	        return View("EmployeeLanding", rentals);
@@ -88,7 +86,7 @@ namespace RentMeEmployee.Controllers
             List<Employee> employees = new List<Employee>();
             try
             {
-                employees = EmployeeDal.OldGetEmployees(CurrentEmployee);
+                employees = this.employeeDal.GetEmployees(CurrentEmployee);
             }
             catch (Exception)
             {
@@ -108,7 +106,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-	            EmployeeDal.OldRemoveEmployee(username);
+	            this.employeeDal.RemoveEmployee(username);
             }
             catch (Exception)
             {
@@ -138,7 +136,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-	            EmployeeDal.OldAddEmployee(employee, employee.Password);
+	            this.employeeDal.AddEmployee(employee, employee.Password);
 
                 ViewBag.SuccessMessage = "Employee added!";
             }
@@ -200,10 +198,10 @@ namespace RentMeEmployee.Controllers
             try
             {
 
-                if (ModelState.IsValid && EmployeeDal.OldAuthenticate(employee.Username, employee.Password) == 1)
+                if (ModelState.IsValid && this.employeeDal.Authenticate(employee.Username, employee.Password) == 1)
                 {
 
-                    CurrentEmployee = EmployeeDal.OldGetCurrentUser(employee.Username, employee.Password);
+                    CurrentEmployee = this.employeeDal.GetCurrentUser(employee.Username, employee.Password);
                     IsManager = CurrentEmployee.IsManager;
 
                     return RedirectToAction("EmployeeLanding");
@@ -229,7 +227,7 @@ namespace RentMeEmployee.Controllers
 
             try
             {
-	            items = RentalDal.OldRetrieveAllRentedItems();
+	            items = this.rentalDal.RetrieveAllRentedItems();
             }
             catch (Exception)
             {
@@ -251,7 +249,7 @@ namespace RentMeEmployee.Controllers
             try
             {
                 Statuses.Clear();
-                item = RentalDal.OldRetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
+                item = this.rentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
                 var statuses = RentalItem.GetPossibleStatuses(item.Status);
                 foreach (var current in statuses)
                 {
@@ -277,7 +275,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-                RentalDal.OldUpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
+                this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
             }
             catch (Exception)
             {

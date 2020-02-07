@@ -44,10 +44,11 @@
                             <td>
                                 @Html.DisplayFor(model => employee.Username)
                             </td>
-                            <td>
-                                @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
-                            </td>
-                            <td>
+	                        <td>
+		                        @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
+	                        </td>
+
+	                        <td>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
                                     Remove Employee
                                 </button>
@@ -65,7 +66,9 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="col-sm-6">
-                                                    <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username"><input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;" /></a>
+	                                                <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">
+		                                                <input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;"/>
+	                                                </a>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancel</button>
