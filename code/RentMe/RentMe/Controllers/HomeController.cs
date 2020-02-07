@@ -135,13 +135,23 @@ namespace RentMe.Controllers
 		public IActionResult TypeFilter(string type)
 		{
 			List<Media> media = new List<Media>();
-			if (type == "All")
+			try
 			{
-				media = this.mediaDal.RetrieveAllMedia();
+
+
+				if (type == "All")
+				{
+					media = this.mediaDal.RetrieveAllMedia();
+				}
+				else
+				{
+					media = this.mediaDal.RetrieveMediaByType(type);
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				media = this.mediaDal.RetrieveMediaByType(type);
+				ViewBag.Error = "Uh-oh something went wrong";
+				return View("Browse");
 			}
 
 			return View("Browse", media);
