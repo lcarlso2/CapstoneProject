@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DAL\DbConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\EmployeeDal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\IEmployeeDal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAL\IRentalDal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAL\RentalDal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\BaseEmployee.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Employee.cs" />

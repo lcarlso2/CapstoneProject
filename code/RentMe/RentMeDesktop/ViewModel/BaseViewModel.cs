@@ -86,10 +86,10 @@ namespace RentMeDesktop.ViewModel
 
             try
             {
-                isValidEmployee = EmployeeDal.Authenticate(username, password) == VALID_EMPLOYEE;
+                isValidEmployee = EmployeeDal.OldAuthenticate(username, password) == VALID_EMPLOYEE;
                 if (isValidEmployee)
                 {
-                    this.CurrentEmployee = EmployeeDal.GetCurrentUser(username, password);
+                    this.CurrentEmployee = EmployeeDal.OldGetCurrentUser(username, password);
                     this.CurrentEmployee.Username = username;
                 }
             }

@@ -65,7 +65,7 @@ namespace RentMeEmployee.Controllers
             List<Employee> employees = new List<Employee>();
             try
             {
-                employees = EmployeeDal.GetEmployees(CurrentEmployee);
+                employees = EmployeeDal.OldGetEmployees(CurrentEmployee);
             }
             catch (Exception)
             {
@@ -85,7 +85,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-	            EmployeeDal.RemoveEmployee(username);
+	            EmployeeDal.OldRemoveEmployee(username);
             }
             catch (Exception)
             {
@@ -115,7 +115,7 @@ namespace RentMeEmployee.Controllers
         {
             try
             {
-	            EmployeeDal.AddEmployee(employee, employee.Password);
+	            EmployeeDal.OldAddEmployee(employee, employee.Password);
 
                 ViewBag.SuccessMessage = "Employee added!";
             }
@@ -181,10 +181,10 @@ namespace RentMeEmployee.Controllers
             try
             {
 
-                if (ModelState.IsValid && EmployeeDal.Authenticate(employee.Username, employee.Password) == 1)
+                if (ModelState.IsValid && EmployeeDal.OldAuthenticate(employee.Username, employee.Password) == 1)
                 {
 
-                    CurrentEmployee = EmployeeDal.GetCurrentUser(employee.Username, employee.Password);
+                    CurrentEmployee = EmployeeDal.OldGetCurrentUser(employee.Username, employee.Password);
                     IsManager = CurrentEmployee.IsManager;
 
                     return RedirectToAction("EmployeeLanding");

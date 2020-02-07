@@ -52,11 +52,11 @@ namespace RentMeDesktop.ViewModel
 
 					if (string.IsNullOrEmpty(this.EmployeeSearchTerm))
 					{
-						this.Employees = new ObservableCollection<Employee>(EmployeeDal.GetEmployees(this.CurrentEmployee));
+						this.Employees = new ObservableCollection<Employee>(EmployeeDal.OldGetEmployees(this.CurrentEmployee));
 					}
 					else
 					{
-						this.Employees = new ObservableCollection<Employee>(EmployeeDal.SearchEmployees(this.CurrentEmployee, this.EmployeeSearchTerm));
+						this.Employees = new ObservableCollection<Employee>(EmployeeDal.OldSearchEmployees(this.CurrentEmployee, this.EmployeeSearchTerm));
 					}
 				}
 				catch (Exception)
@@ -201,7 +201,7 @@ namespace RentMeDesktop.ViewModel
 		/// <param name="currentEmployee">the current employee logged in</param>
 		public void RetrieveEmployees(Employee currentEmployee)
 		{
-			this.Employees = new ObservableCollection<Employee>(EmployeeDal.GetEmployees(currentEmployee));
+			this.Employees = new ObservableCollection<Employee>(EmployeeDal.OldGetEmployees(currentEmployee));
 		}
 
 
@@ -222,8 +222,8 @@ namespace RentMeDesktop.ViewModel
 			{
 				try
 				{
-					EmployeeDal.RemoveEmployee(this.SelectedEmployee.Username);
-					this.Employees = new ObservableCollection<Employee>(EmployeeDal.GetEmployees(this.CurrentEmployee));
+					EmployeeDal.OldRemoveEmployee(this.SelectedEmployee.Username);
+					this.Employees = new ObservableCollection<Employee>(EmployeeDal.OldGetEmployees(this.CurrentEmployee));
 				}
 				catch (Exception)
 				{
@@ -251,7 +251,7 @@ namespace RentMeDesktop.ViewModel
 			if (result == ContentDialogResult.Primary)
 			{
 				var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
-				EmployeeDal.AddEmployee(employeeToAdd, this.Password);
+				EmployeeDal.OldAddEmployee(employeeToAdd, this.Password);
 				this.resetFields();
 			}
 
