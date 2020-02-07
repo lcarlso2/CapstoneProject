@@ -11,7 +11,7 @@ namespace RentMeTests.Controllers.RentMeController
 
 		public List<Media> RetrieveAllMedia()
 		{
-			var media = new List<Media>();
+			var media = new List<Media>{new Media{InventoryId = 1}};
 			return media;
 		}
 

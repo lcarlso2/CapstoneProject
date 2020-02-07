@@ -113,7 +113,54 @@ namespace RentMeTests.Controllers.Tests
 
 		}
 
-		
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithValidInput()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false
+			};
+			var mockMediaDal = new MockMediaDal();
+			var controller = new HomeController(mockBorrowDal, new MockCustomerDal(), mockMediaDal);
+			var result = (RedirectToActionResult)controller.ConfirmedBorrow(1);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("Browse", result.ActionName);
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithNullReference()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = true
+			};
+			var mockMediaDal = new MockMediaDal();
+			var controller = new HomeController(mockBorrowDal, new MockCustomerDal(), mockMediaDal);
+			var result = (ViewResult)controller.ConfirmedBorrow(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Please log in again.", result.ViewData["Error"]);
+			Assert.AreEqual("Object reference not set to an instance of an object.", result.ViewData["ErrorMessage"]);
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithException()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = true,
+				ThrowNullReference = false
+			};
+			var mockMediaDal = new MockMediaDal();
+			var controller = new HomeController(mockBorrowDal, new MockCustomerDal(), mockMediaDal);
+			var result = (ViewResult)controller.ConfirmedBorrow(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Exception of type 'System.Exception' was thrown.", result.ViewData["Error"]);
+
+		}
 	}
 
 	
