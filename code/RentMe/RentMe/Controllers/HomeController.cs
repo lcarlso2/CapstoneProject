@@ -187,7 +187,6 @@ namespace RentMe.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Register(RegisteringCustomer customer)
 		{
-			Debug.WriteLine(HttpContext.User);
 			if (ModelState.IsValid)
 			{
 				try
