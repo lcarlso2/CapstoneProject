@@ -74,7 +74,7 @@ namespace RentMe.Controllers
 		/// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page</returns>
 		public IActionResult ConfirmedBorrow(int? id)
 		{
-			Media media = MediaDal.OldRetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+			Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
 
 			try
 			{
