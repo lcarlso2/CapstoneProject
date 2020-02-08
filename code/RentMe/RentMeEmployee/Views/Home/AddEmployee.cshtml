@@ -4,9 +4,8 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4 col-md-6 col-lg-8">
-            <div class="card">
+	
+            <div class="card text-center mx-auto">
                 <div class="card-header text-center">
                     <h2>Welcome</h2>
                 </div>
@@ -23,10 +22,9 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                             <div class="form-group row">
-                                <div class="col">
+                               
                                     @Html.LabelFor(employee => employee.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                                </div>
-                                <div class="col-md-8">
+                                    <div class="col-md-8">
                                     @Html.EditorFor(employee => employee.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
                                     @Html.ValidationMessageFor(employee => employee.FirstName, "", new { @class = "text-danger" })
                                 </div>
@@ -74,7 +72,7 @@
 
                             <div class="form-group row">
 
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                                <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="#confirmationModal">
                                     Add Employee
                                 </button>
                             </div>
@@ -119,8 +117,8 @@
                     }
                 </div>
             </div>
-        </div>
-    </div>
+        
+    
 </div>
 
 
