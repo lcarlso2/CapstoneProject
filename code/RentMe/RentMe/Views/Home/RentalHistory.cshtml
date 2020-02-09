@@ -17,12 +17,6 @@
                     @Html.DisplayNameFor(model => model.RentalDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ReturnDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Title)
                 </th>
                 <th>
@@ -40,45 +34,46 @@
                         @Html.DisplayFor(modelItem => item.RentalDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReturnDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.Title)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="#viewModal">
+                        <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="@("#modal"+item.RentalId)">
                             View
                         </button>
+                        <div class="modal fade" id="@("modal"+item.RentalId)" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center" id="exampleModalLabel">View Rental</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <ul>
+                                            <li><h5>Email: </h5><h6>@Html.DisplayFor(modelItem => item.MemberEmail)</h6></li>
+                                            <li><h5>Rental Date: </h5><h6>@Html.DisplayFor(modelItem => item.RentalDate)</h6></li>
+                                            <li><h5>Return Date: </h5><h6>@Html.DisplayFor(modelItem => item.ReturnDate)</h6></li>
+                                            <li><h5>Item Category: </h5><h6>@Html.DisplayFor(modelItem => item.Category)</h6></li>
+                                            <li><h5>Item Title: </h5><h6>@Html.DisplayFor(modelItem => item.Title)</h6></li>
+                                            <li><h5>Current Status: </h5><h6>@Html.DisplayFor(modelItem => item.Status)</h6></li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
 
                 </tr>
             }
-            <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-center" id="exampleModalLabel">View Rental</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body text-center">
-                            Stuff
-                        </div>
-                        <div class="modal-footer">
-                            <div class="col-sm-2">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </tbody>
     </table>
 
