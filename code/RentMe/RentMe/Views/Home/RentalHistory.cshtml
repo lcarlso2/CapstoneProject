@@ -9,6 +9,32 @@
             <h4 class="text-center" style="margin: .5em auto;">Rental History</h4>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Home" asp-action="RentalFilter" asp-route-type="Date" class="btn btn-primary">Date</a>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Home" asp-action="RentalFilter" asp-route-type="Title" class="btn btn-primary">Title</a>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Home" asp-action="RentalFilter" asp-route-type="Status" class="btn btn-primary">Status</a>
+                </button>
+            </div>
+        </div>
+
+    </div>
 
     <table class="table">
         <thead>
