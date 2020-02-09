@@ -17,6 +17,13 @@ namespace SharedCode.DAL
 		List<RentalItem> RetrieveAllRentedItems();
 
 		/// <summary>
+		/// Retrieves all rentals by customer email.
+		/// </summary>
+		/// <param name="email"> The email of the customer</param>
+		/// <returns>All rentals by the customer </returns>
+		List<RentalItem> RetrieveAllRentalsByCustomer(string email);
+
+		/// <summary>
 		/// Retrieves select borrowed items with the given status.
 		/// </summary>
 		/// <param name="selectedStatus"> the desired status</param>

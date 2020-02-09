@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RentMe.DAL;
 using RentMe.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
 
 namespace RentMe.Controllers
 {
@@ -20,6 +22,7 @@ namespace RentMe.Controllers
 		private readonly IBorrowDal borrowDal;
 		private readonly ICustomerDal customerDal;
 		private readonly IMediaDal mediaDal;
+		private readonly IRentalDal rentalDal;
 
 		/// <summary>
 		/// The current user that is logged in
@@ -48,6 +51,7 @@ namespace RentMe.Controllers
 			this.borrowDal = new BorrowDal();
 			this.customerDal = new CustomerDal();
 			this.mediaDal = new MediaDal();
+			this.rentalDal = new RentalDal();
 		}
 
 		/// <summary>
@@ -143,6 +147,28 @@ namespace RentMe.Controllers
 			}
 
 		}
+
+		/// <summary>
+		/// The rental history action
+		/// </summary>
+		/// <returns>The rental history page</returns>
+		public IActionResult RentalHistory()
+		{
+			try
+			{
+				var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(CurrentUser.Email);
+
+				return View(rentals);
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = ex.Message;
+				ViewBag.Error = "Uh-oh.. something went wrong";
+				return View(new List<RentalItem>());
+			}
+
+		}
+
 
 		/// <summary>
 		/// The type filter action

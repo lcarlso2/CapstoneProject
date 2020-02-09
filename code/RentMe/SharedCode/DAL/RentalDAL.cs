@@ -209,6 +209,102 @@ namespace SharedCode.DAL
             return rentedItems;
         }
 
+        public List<RentalItem> RetrieveAllRentalsByCustomer(string email)
+        {
+            var rentedItems = new List<RentalItem>();
+
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, " +
+                                "r.returnDateTime, r.inventoryID, category, title, status from rental_transaction " +
+                                "r, user, member, media, inventory_item i, status where " +
+                                "userID = member.memberID and member.memberID = r.memberID and " +
+                                "r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+                                "status.statusID = (select max(s1.statusID) from status_history s1 " +
+                                "where r.rentalID = s1.rentalTransactionID " +
+                                "group by s1.rentalTransactionID);";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var memberIdOrdinal = reader.GetOrdinal("memberID");
+                            var emailOrdinal = reader.GetOrdinal("email");
+                            var rentalIdOrdinal = reader.GetOrdinal("rentalID");
+                            var rentalDateOrdinal = reader.GetOrdinal("rentalDateTime");
+                            var returnDateOrdinal = reader.GetOrdinal("returnDateTime");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
+                            var categoryOrdinal = reader.GetOrdinal("category");
+                            var titleOrdinal = reader.GetOrdinal("title");
+                            var statusOrdinal = reader.GetOrdinal("status");
+
+
+
+
+
+                            while (reader.Read())
+                            {
+                                var memberId = reader.GetInt32(memberIdOrdinal);
+
+                                var memberEmail = reader[emailOrdinal] == DBNull.Value
+                                    ? "null"
+                                    : reader.GetString(emailOrdinal);
+
+                                var rentalId = reader.GetInt32(rentalIdOrdinal);
+
+                                var rentalDate = reader.GetDateTime(rentalDateOrdinal);
+
+                                var returnDate = reader.GetDateTime(returnDateOrdinal);
+
+                                var inventoryId = reader.GetInt32(inventoryIdOrdinal);
+
+                                var category = reader[categoryOrdinal] == DBNull.Value
+                                    ? "null"
+                                    : reader.GetString(categoryOrdinal);
+
+                                var title = reader[titleOrdinal] == DBNull.Value
+                                    ? "null"
+                                    : reader.GetString(titleOrdinal);
+
+                                var status = reader[statusOrdinal] == DBNull.Value
+                                    ? "null"
+                                    : reader.GetString(statusOrdinal);
+
+
+
+                                var item = new RentalItem
+                                {
+                                    MemberId = memberId,
+                                    MemberEmail = memberEmail,
+                                    RentalId = rentalId,
+                                    RentalDate = rentalDate,
+                                    ReturnDate = returnDate,
+                                    InventoryId = inventoryId,
+                                    Category = category,
+                                    Title = title,
+                                    Status = status
+                                };
+
+                                rentedItems.Add(item);
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rentedItems;
+        }
+
         /// <summary>
         /// Retrieves select borrowed items with the given status.
         /// </summary>
