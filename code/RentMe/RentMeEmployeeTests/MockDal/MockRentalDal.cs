@@ -26,6 +26,16 @@ namespace RentMeEmployeeTests.MockDal
 			}
 			return items;
 		}
+		public List<RentalItem> RetrieveAllRentalsByCustomer(string email)
+		{
+			var items = new List<RentalItem> { new RentalItem { RentalId = 1, Status = "Ordered" } };
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return items;
+		}
+
 
 		public List<RentalItem> RetrieveSelectRentedItems(string selectedStatus)
 		{

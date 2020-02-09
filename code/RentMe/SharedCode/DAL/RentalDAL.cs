@@ -225,11 +225,13 @@ namespace SharedCode.DAL
                                 "userID = member.memberID and member.memberID = r.memberID and " +
                                 "r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
                                 "status.statusID = (select max(s1.statusID) from status_history s1 " +
-                                "where r.rentalID = s1.rentalTransactionID " +
+                                "where r.rentalID = s1.rentalTransactionID and r.memberId = (select memberID from member where email = @email) " +
                                 "group by s1.rentalTransactionID);";
 
                     using (var cmd = new MySqlCommand(query, conn))
                     {
+                        cmd.Parameters.AddWithValue("@email", email);
+
                         using (var reader = cmd.ExecuteReader())
                         {
                             var memberIdOrdinal = reader.GetOrdinal("memberID");
@@ -241,10 +243,6 @@ namespace SharedCode.DAL
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
-
-
-
-
 
                             while (reader.Read())
                             {
@@ -275,7 +273,6 @@ namespace SharedCode.DAL
                                     : reader.GetString(statusOrdinal);
 
 
-
                                 var item = new RentalItem
                                 {
                                     MemberId = memberId,
@@ -293,6 +290,7 @@ namespace SharedCode.DAL
                             }
                         }
                     }
+
                     conn.Close();
                 }
 
@@ -346,9 +344,6 @@ namespace SharedCode.DAL
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
-
-
-
 
 
                             while (reader.Read())
