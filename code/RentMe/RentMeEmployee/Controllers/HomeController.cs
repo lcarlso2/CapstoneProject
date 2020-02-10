@@ -62,15 +62,23 @@ namespace RentMeEmployee.Controllers
         public IActionResult StatusFilter(string status)
         {
 
-	        List<RentalItem> rentals;
+	        List<RentalItem> rentals = new List<RentalItem>();
+	        try
+	        {
 
-	        if (status.Equals("All"))
-	        {
-                rentals = new List<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
+		        if (status.Equals("All"))
+		        {
+			        rentals = new List<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
+		        }
+		        else
+		        {
+			        rentals = new List<RentalItem>(this.rentalDal.RetrieveSelectRentedItems(status));
+		        }
 	        }
-	        else
+	        catch (Exception)
 	        {
-		        rentals = new List<RentalItem>(this.rentalDal.RetrieveSelectRentedItems(status));
+		        ViewBag.Error = "Uh-oh something went wrong";
+		        return View("EmployeeLanding", rentals);
             }
 
 	        return View("EmployeeLanding", rentals);
