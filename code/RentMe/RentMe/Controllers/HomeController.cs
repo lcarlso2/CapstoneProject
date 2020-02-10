@@ -84,7 +84,7 @@ namespace RentMe.Controllers
                 var media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
                 return View(media);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Error = "Uh-oh.. something went wrong";
                 return RedirectToAction("Browse");
@@ -195,7 +195,7 @@ namespace RentMe.Controllers
                     media = this.mediaDal.RetrieveMediaByType(type);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Error = "Uh-oh something went wrong";
                 return View("Browse");
@@ -234,7 +234,7 @@ namespace RentMe.Controllers
                     sortedMedia = media;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Error = "Uh-oh something went wrong";
                 return View("Browse");
@@ -263,7 +263,7 @@ namespace RentMe.Controllers
                     media = this.mediaDal.RetrieveMediaByCategory(category);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.Error = "Uh-oh something went wrong";
                 return View("Browse");
