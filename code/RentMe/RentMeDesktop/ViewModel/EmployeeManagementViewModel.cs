@@ -126,7 +126,13 @@ namespace RentMeDesktop.ViewModel
 			}
 		}
 
-		public string ConfirmedPassword
+        /// <summary>
+        /// Gets or sets the confirmed password.
+        /// </summary>
+        /// <value>
+        /// The confirmed password.
+        /// </value>
+        public string ConfirmedPassword
 		{
 			get => this.confirmedPassword;
 			set

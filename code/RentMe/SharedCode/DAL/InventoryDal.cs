@@ -7,7 +7,7 @@ using SharedCode.Model;
 namespace SharedCode.DAL
 {
     
-    class InventoryDal : IInventoryDal
+    public class InventoryDal : IInventoryDal
     {
         public List<InventoryItem> GetInventoryItems()
         {

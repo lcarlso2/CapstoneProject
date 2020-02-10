@@ -8,7 +8,7 @@ namespace SharedCode.DAL
     /// <summary>
     /// The interface for all inventory database actions
     /// </summary>
-    interface IInventoryDal
+    public interface IInventoryDal
     {
 
         /// <summary>

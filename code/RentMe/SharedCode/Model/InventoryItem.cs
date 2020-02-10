@@ -7,7 +7,7 @@ namespace SharedCode.Model
     /// <summary>
     /// Template for an inventory item
     /// </summary>
-    class InventoryItem
+    public class InventoryItem
     {
         /// <summary>
         /// The id for an individual inventory item
@@ -48,6 +48,11 @@ namespace SharedCode.Model
         /// True if the item is in stock and false if it is not
         /// </summary>
         public bool InStock;
+
+        /// <summary>
+        /// The rental string info
+        /// </summary>
+        public string InventoryItemInfo => $"Title: {this.Title}\tCategory: {this.Category}\tType: {this.Type}\n";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryItem"/> class.

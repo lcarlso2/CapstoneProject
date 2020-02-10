@@ -58,11 +58,28 @@ namespace RentMeDesktop.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseViewModel"/> class.
+        /// </summary>
+        /// @postcondition this.rentalDal is created as a new RentalDal
+        /// @postcondition this.employeeDal is created as a new EmployeeDal
         public BaseViewModel()
         {
             this.rentalDal = new RentalDal();
             this.employeeDal = new EmployeeDal();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseViewModel"/> class.
+        /// </summary>
+        /// <param name="rentalDal">The rental dal.</param>
+        /// <param name="employeeDal">The employee dal.</param>
+        /// @postcondition this.rentalDal is set to the rental dal that is passed in
+        /// @postcondition this.employeeDal is set to the employee dal that is passed in
+        public BaseViewModel(IRentalDal rentalDal, IEmployeeDal employeeDal)
+        {
+            this.rentalDal = rentalDal;
+            this.employeeDal = employeeDal;
         }
         /// <summary>
         /// Gets the borrowed items.
