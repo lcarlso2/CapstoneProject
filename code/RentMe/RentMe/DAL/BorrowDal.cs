@@ -14,14 +14,14 @@ namespace RentMe.DAL
 	/// </summary>
 	public class BorrowDal : IBorrowDal
 	{
-		
+
 		/// <summary>
 		/// Borrows an item from the database. Throws an error if there is an error on the database
 		/// </summary>
 		/// <param name="customer">the customer borrowing the item</param>
 		/// <param name="media">the item being borrowed</param>
 		/// @precondition none
-		/// @postcondition the item is borrowed
+		/// @postcondition the item is borrowed or an error is thrown if something goes wrong on the database
 		public void BorrowItem(Customer customer, Media media)
 		{
 

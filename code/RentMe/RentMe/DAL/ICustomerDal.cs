@@ -16,7 +16,7 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="email">The email.</param>
 		/// <param name="password">The password.</param>
-		/// <returns></returns>
+		/// <returns>1 if the customer is valid otherwise 0</returns>
 		int Authenticate(string email, string password);
 
 		/// <summary>
