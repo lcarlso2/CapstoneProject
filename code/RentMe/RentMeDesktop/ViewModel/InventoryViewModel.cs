@@ -19,6 +19,8 @@ namespace RentMeDesktop.ViewModel
 
         private InventoryItem selectedInventoryItem;
 
+        private bool canViewDetailsBeClicked;
+
         /// <summary>
         /// The selected inventory item
         /// </summary>
@@ -28,6 +30,7 @@ namespace RentMeDesktop.ViewModel
             set
             {
                 this.selectedInventoryItem = value;
+                this.CanViewDetailsBeClicked = (this.SelectedInventoryItem != null);
                 this.OnPropertyChanged();
             }
         }
@@ -41,6 +44,22 @@ namespace RentMeDesktop.ViewModel
             set
             {
                 this.inventory = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+		/// Gets or sets property depending on if update can be clicked
+		/// </summary>
+		/// <value>
+		/// True if a rental has been selected and the rental hasn't been returned otherwise false
+		/// </value>
+		public bool CanViewDetailsBeClicked
+        {
+            get => this.canViewDetailsBeClicked;
+            set
+            {
+                this.canViewDetailsBeClicked = value;
                 this.OnPropertyChanged();
             }
         }

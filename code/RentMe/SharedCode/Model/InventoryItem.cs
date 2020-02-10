@@ -50,11 +50,6 @@ namespace SharedCode.Model
         public bool InStock;
 
         /// <summary>
-        /// The rental string info
-        /// </summary>
-        public string InventoryItemInfo => $"Title: {this.Title}\tCategory: {this.Category}\tType: {this.Type}\n";
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="InventoryItem"/> class.
         /// </summary>
         public InventoryItem()
