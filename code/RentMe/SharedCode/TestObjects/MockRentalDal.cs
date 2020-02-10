@@ -4,7 +4,7 @@ using System.Text;
 using SharedCode.DAL;
 using SharedCode.Model;
 
-namespace RentMeEmployeeTests.MockDal
+namespace SharedCode.TestObjects
 {
 	/// <summary>
 	/// The mock rental dal for testing purposes
@@ -28,7 +28,7 @@ namespace RentMeEmployeeTests.MockDal
 		}
 		public List<RentalItem> RetrieveAllRentalsByCustomer(string email)
 		{
-			var items = new List<RentalItem> { new RentalItem { RentalId = 1, Status = "Ordered" } };
+			var items = new List<RentalItem> { new RentalItem { RentalId = 1, Status = "Ordered", RentalDate = DateTime.Now, Title = "Test"} };
 			if (this.ThrowError)
 			{
 				throw new Exception();

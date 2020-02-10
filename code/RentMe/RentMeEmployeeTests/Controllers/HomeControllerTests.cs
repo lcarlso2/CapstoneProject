@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using RentMeEmployeeTests.MockDal;
 using SharedCode.Model;
+using SharedCode.TestObjects;
 
 namespace RentMeEmployee.Controllers.Tests
 {

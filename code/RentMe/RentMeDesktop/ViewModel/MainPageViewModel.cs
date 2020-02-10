@@ -64,22 +64,26 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.selectedStatusFilter = value;
-				try
+				if (this.rentalDal != null)
 				{
-					if (this.SelectedStatusFilter.Equals("All"))
+					try
 					{
-						this.RentalItems = new ObservableCollection<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
+						if (this.SelectedStatusFilter.Equals("All"))
+						{
+							this.RentalItems =
+								new ObservableCollection<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
+						}
+						else
+						{
+							this.RentalItems =
+								new ObservableCollection<RentalItem>(
+									this.rentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
+						}
 					}
-					else
+					catch (Exception)
 					{
-						this.RentalItems =
-							new ObservableCollection<RentalItem>(
-								this.rentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
+						DbError.showErrorWindow();
 					}
-				}
-				catch (Exception)
-				{
-					DbError.showErrorWindow();
 				}
 
 				this.OnPropertyChanged();

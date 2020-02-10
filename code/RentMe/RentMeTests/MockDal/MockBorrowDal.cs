@@ -13,7 +13,7 @@ namespace RentMeTests.Controllers.RentMeController
 	{
 		/// <summary>
 		/// Set to true when a null reference is needed
-		/// </summary>
+		/// </summary>s
 		public bool ThrowNullReference { get; set; }
 		
 		/// <summary>

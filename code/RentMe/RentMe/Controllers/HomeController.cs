@@ -35,11 +35,12 @@ namespace RentMe.Controllers
         /// <param name="borrowDal">the borrow dal</param>
         /// <param name="customerDal">the customer dal</param>
         /// <param name="mediaDal">the media dal</param>
-        public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal)
+        public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal, IRentalDal rentalDal)
         {
             this.borrowDal = borrowDal;
             this.customerDal = customerDal;
             this.mediaDal = mediaDal;
+            this.rentalDal = rentalDal;
         }
 
         /// <summary>
