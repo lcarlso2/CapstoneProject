@@ -6,9 +6,15 @@ using SharedCode.Model;
 
 namespace SharedCode.DAL
 {
-    
+    /// <summary>
+    /// The inventory dal class responsible for communicating with the database for inventory items 
+    /// </summary>
     public class InventoryDal : IInventoryDal
     {
+        /// <summary>
+        /// Gets the inventory items from the database  
+        /// </summary>
+        /// <returns>The inventory items from the database or an error if something goes wrong on the database </returns>
         public List<InventoryItem> GetInventoryItems()
         {
             var inventory = new List<InventoryItem>();

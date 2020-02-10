@@ -12,9 +12,8 @@ namespace SharedCode.TestObjects
 	public class MockEmployeeDal : IEmployeeDal
 	{
 
-		/// <summary>
-		/// The value to return for the authenticate method 
-		/// </summary>
+
+		public bool ThrowError { get; set; }
 		public int AuthenticateValueToReturn { get; set; }
 
 		public void AddEmployee(Employee employee, string password)
@@ -55,10 +54,6 @@ namespace SharedCode.TestObjects
 			return new List<Employee>();
 		}
 
-		/// <summary>
-		/// Set to true if an error is needed for testing purposes
-		/// </summary>
-		public bool ThrowError { get; set; }
 
 		public int Authenticate(string username, string password)
 		{

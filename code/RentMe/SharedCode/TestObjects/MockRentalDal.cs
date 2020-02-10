@@ -12,9 +12,6 @@ namespace SharedCode.TestObjects
 	public class MockRentalDal : IRentalDal
 	{
 
-		/// <summary>
-		/// Set to true if an error is needed for testing purposes
-		/// </summary>
 		public bool ThrowError { get; set; }
 
 		public List<RentalItem> RetrieveAllRentedItems()
