@@ -4,7 +4,7 @@ using System.Text;
 using RentMe.DAL;
 using RentMe.Models;
 
-namespace RentMeTests.Controllers.RentMeController
+namespace RentMeTests.MockDal
 {
 	/// <summary>
 	/// The mock media dal class used for testing purposes 
@@ -12,9 +12,6 @@ namespace RentMeTests.Controllers.RentMeController
 	public class MockMediaDal : IMediaDal
 	{
 
-		/// <summary>
-		/// Set to true when an error is needed
-		/// </summary>
 		public bool ThrowError { get; set; }
 
 		public List<Media> RetrieveAllMedia()

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SharedCode.Model;
 using SharedCode.TestObjects;
 
-namespace RentMeEmployee.Controllers.Tests
+namespace RentMeEmployee.Controllers
 {
 	/// <summary>
 	/// The test class for the home controller of the RentMeEmployee app

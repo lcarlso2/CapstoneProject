@@ -1,19 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentMe.Controllers;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Logging;
-using Moq;
-using RentMe.DAL;
 using RentMe.Models;
-using RentMeTests.Controllers.RentMeController;
 using SharedCode.Model;
 using SharedCode.TestObjects;
+using RentMeTests.MockDal;
 
-namespace RentMeTests.Controllers.Tests
+namespace RentMeTests.Controllers
 {
 	/// <summary>
 	/// The test class for the home controller of the RentMe project

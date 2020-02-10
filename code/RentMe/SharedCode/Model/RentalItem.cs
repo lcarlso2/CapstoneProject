@@ -8,7 +8,7 @@ namespace SharedCode.Model
 	/// <summary>
 	/// The rental item class
 	/// </summary>
-	public class RentalItem
+	public class RentalItem : InventoryItem
 	{
         /// <summary>
         /// Gets or sets the member id that rented the item
@@ -56,33 +56,7 @@ namespace SharedCode.Model
         [Display(Name = "Return Date")]
         public DateTime ReturnDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the inventory ID
-        /// </summary>
-        /// <value>
-        ///The inventory id
-        /// </value>
-        [Display(Name = "Inventory ID")]
-        public int InventoryId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the category
-        /// </summary>
-        /// <value>
-        ///The category
-        /// </value>
-        [Display(Name = "Category")]
-        public string Category { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title 
-        /// </summary>
-        /// <value>
-        ///The title
-        /// </value>
-        [Display(Name = "Title")]
-        public string Title { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the status
         /// </summary>
