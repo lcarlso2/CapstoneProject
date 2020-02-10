@@ -500,10 +500,11 @@ namespace RentMeTests.Controllers.Tests
 			};
 			HomeController.CurrentUser = new Customer { Email = "test" };
 			var controller = new HomeController(new MockBorrowDal(), new MockCustomerDal(), new MockMediaDal(), rentalDal);
-			var result = (ViewResult)controller.RentalFilter("");
+			var result = (ViewResult)controller.RentalHistory();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("Browse", result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+			Assert.AreEqual(null, result.ViewName);
+			var items = (List<RentalItem>) result.Model;
+			Assert.AreEqual(1, items.Count);
 			HomeController.CurrentUser = null;
 
 		}
@@ -517,10 +518,10 @@ namespace RentMeTests.Controllers.Tests
 			};
 			HomeController.CurrentUser = new Customer { Email = "test" };
 			var controller = new HomeController(new MockBorrowDal(), new MockCustomerDal(), new MockMediaDal(), rentalDal);
-			var result = (ViewResult)controller.RentalFilter("");
+			var result = (ViewResult)controller.RentalHistory();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("Browse", result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
 			HomeController.CurrentUser = null;
 
 		}
