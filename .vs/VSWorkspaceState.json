@@ -2,9 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\code",
-    "\\code\\RentMeDesktop",
-    "\\code\\RentMeEmployee"
+    "\\code\\RentMe",
+    "\\code\\RentMe\\RentMeDesktop"
   ],
-  "SelectedNode": "\\code\\RentMeDesktop\\RentMeDesktop.sln",
+  "SelectedNode": "\\code\\RentMe\\RentMe.sln",
   "PreviewInSolutionExplorer": false
 }

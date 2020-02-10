@@ -65,5 +65,10 @@ namespace RentMeDesktop.View
 		{
 			Frame.Navigate(typeof(Login));
 		}
-    }
+
+		private void button_Click(object sender, RoutedEventArgs e)
+		{
+			Frame.Navigate(typeof(ViewInventoryPage));
+		}
+	}
 }

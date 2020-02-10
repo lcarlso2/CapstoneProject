@@ -24,6 +24,8 @@ namespace RentMeDesktop.ViewModel
 
 		private string selectedStatusFilter;
 
+		private IRentalDal rentalDal;
+
 		/// <summary>
 		/// Creates a new main page view model
 		/// </summary>
@@ -31,6 +33,7 @@ namespace RentMeDesktop.ViewModel
 		{
 			this.SelectedStatusFilter = "All";
 			this.StatusFilters = new ObservableCollection<string>{"All", "Ordered", "Shipped", "Returned"};
+			this.rentalDal = new RentalDal();
 		}
 
 		/// <summary>
@@ -65,13 +68,13 @@ namespace RentMeDesktop.ViewModel
 				{
 					if (this.SelectedStatusFilter.Equals("All"))
 					{
-						this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
+						this.RentalItems = new ObservableCollection<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
 					}
 					else
 					{
 						this.RentalItems =
 							new ObservableCollection<RentalItem>(
-								RentalDal.OldRetrieveSelectRentedItems(this.SelectedStatusFilter));
+								this.rentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
 					}
 				}
 				catch (Exception)
@@ -124,7 +127,7 @@ namespace RentMeDesktop.ViewModel
 		{
 			try
 			{
-				RentalDal.OldUpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
+				this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
 			}
 			catch (Exception)
 			{

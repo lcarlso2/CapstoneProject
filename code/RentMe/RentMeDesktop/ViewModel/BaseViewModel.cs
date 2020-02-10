@@ -22,6 +22,9 @@ namespace RentMeDesktop.ViewModel
 
         private ObservableCollection<RentalItem> rentalItems;
 
+        private IRentalDal rentalDal;
+        private IEmployeeDal employeeDal;
+
 
         /// <summary>
         /// Gets or sets the current employee
@@ -55,12 +58,18 @@ namespace RentMeDesktop.ViewModel
             }
         }
 
+
+        public BaseViewModel()
+        {
+            this.rentalDal = new RentalDal();
+            this.employeeDal = new EmployeeDal();
+        }
         /// <summary>
         /// Gets the borrowed items.
         /// </summary>
         public void GetRentalItems()
         {
-            this.RentalItems = new ObservableCollection<RentalItem>(RentalDal.OldRetrieveAllRentedItems());
+            this.RentalItems = new ObservableCollection<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
         }
 
         /// <summary>
@@ -86,10 +95,10 @@ namespace RentMeDesktop.ViewModel
 
             try
             {
-                isValidEmployee = EmployeeDal.OldAuthenticate(username, password) == VALID_EMPLOYEE;
+                isValidEmployee = this.employeeDal.Authenticate(username, password) == VALID_EMPLOYEE;
                 if (isValidEmployee)
                 {
-                    this.CurrentEmployee = EmployeeDal.OldGetCurrentUser(username, password);
+                    this.CurrentEmployee = this.employeeDal.GetCurrentUser(username, password);
                     this.CurrentEmployee.Username = username;
                 }
             }

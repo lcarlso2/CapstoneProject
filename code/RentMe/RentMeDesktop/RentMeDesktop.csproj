@@ -140,6 +140,9 @@
     <Compile Include="View\UpdateRentalPage.xaml.cs">
       <DependentUpon>UpdateRentalPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewInventoryPage.xaml.cs">
+      <DependentUpon>ViewInventoryPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -178,6 +181,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UpdateRentalPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewInventoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
