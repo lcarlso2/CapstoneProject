@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Employee.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\InventoryItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\RentalItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestObjects\MockEmployeeDal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestObjects\MockRentalDal.cs" />
   </ItemGroup>
 </Project>

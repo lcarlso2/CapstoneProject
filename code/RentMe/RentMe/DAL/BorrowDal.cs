@@ -10,12 +10,18 @@ using SharedCode.Model;
 namespace RentMe.DAL
 {
 	/// <summary>
-	/// The class responsible for borrowing items 
+	/// The class responsible for interacting with the database for borrowing items 
 	/// </summary>
 	public class BorrowDal : IBorrowDal
 	{
 		
-		
+		/// <summary>
+		/// Borrows an item from the database. Throws an error if there is an error on the database
+		/// </summary>
+		/// <param name="customer">the customer borrowing the item</param>
+		/// <param name="media">the item being borrowed</param>
+		/// @precondition none
+		/// @postcondition the item is borrowed
 		public void BorrowItem(Customer customer, Media media)
 		{
 
