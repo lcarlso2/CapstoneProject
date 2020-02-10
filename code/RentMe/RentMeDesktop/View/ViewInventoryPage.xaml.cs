@@ -30,6 +30,7 @@ namespace RentMeDesktop.View
         {
             this.InitializeComponent();
             this.ViewModel = new InventoryViewModel();
+            this.DataContext = this.ViewModel;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:vm="using:RentMeDesktop.ViewModel"
+    xmlns:local1="using:SharedCode.Model"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
         <vm:InventoryViewModel/>
@@ -14,14 +15,44 @@
     <Grid>
 
         <ListView x:Name="inventoryListView" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Inventory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedInventoryItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="1100" Height="550" Margin="0,155,0,0">
-            <ListView.ItemTemplate>
+            <ListView.HeaderTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <TextBlock Grid.Column="0" Width="1100" Text="{Binding InventoryItemInfo}" />
+                    <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Title" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="1" Text="Category" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="2" Text="Type" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="3" Text="Condition" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="4" Text="Inventory ID" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate x:Name="TableDataTemplate" x:DataType="local1:InventoryItem">
+                    <Grid Height="48" AutomationProperties.Name="{x:Bind Title}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                            <ColumnDefinition Width="215"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind Title}" />
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind Category}"/>
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind Type}"/>
+                        <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{x:Bind Condition}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Text="{x:Bind InventoryId}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
         <TextBlock HorizontalAlignment="Center" Margin="0,64,0,0" Text="Browse Inventory" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
+        <Button x:Name="detailsButton" IsEnabled="{Binding CanViewDetailsBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="View Details" Margin="0,768,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Width="150" Height="50"/>
     </Grid>
 </Page>
