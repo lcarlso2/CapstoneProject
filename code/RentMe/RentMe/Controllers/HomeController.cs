@@ -35,6 +35,8 @@ namespace RentMe.Controllers
         /// <param name="borrowDal">the borrow dal</param>
         /// <param name="customerDal">the customer dal</param>
         /// <param name="mediaDal">the media dal</param>
+        /// @precondition none
+        /// @postcondition the controller is created
         public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal, IRentalDal rentalDal)
         {
             this.borrowDal = borrowDal;
@@ -46,6 +48,8 @@ namespace RentMe.Controllers
         /// <summary>
         /// Creates a new default home controller
         /// </summary>
+        /// @precondition none
+        /// @postcondition the controller is created
         [ActivatorUtilitiesConstructor]
         public HomeController()
         {
@@ -58,7 +62,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The index action result
         /// </summary>
-        /// <returns>the browse page if someone is logged in, otherwise the index page</returns>
+        /// <returns>the browse page if someone is logged in, otherwise the index page if no one is logged in</returns>
         public IActionResult Index()
         {
             if (CurrentUser != null)
@@ -72,7 +76,7 @@ namespace RentMe.Controllers
         /// The confirm borrow action result
         /// </summary>
         /// <param name="id">the id of the item being borrowed</param>
-        /// <returns>The confirm borrow screen</returns>
+        /// <returns>The confirm borrow screen or if an error occurs redirected to the browse action</returns>
         public IActionResult ConfirmBorrow(int? id)
         {
             try
@@ -92,7 +96,7 @@ namespace RentMe.Controllers
         /// The confirmed borrow action result
         /// </summary>
         /// <param name="id">the id of the item being borrowed</param>
-        /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page</returns>
+        /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs</returns>
         public IActionResult ConfirmedBorrow(int? id)
         {
             Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
@@ -203,7 +207,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The rental history filter action
         /// </summary>
-        /// <returns>The rental history page with filtered items</returns>
+        /// <returns>The rental history page with filtered items or the browse page if an error occurs</returns>
         public IActionResult RentalFilter(string type)
         {
             List<RentalItem> media = new List<RentalItem>();
@@ -319,7 +323,7 @@ namespace RentMe.Controllers
         /// The http post for the action result login
         /// </summary>
         /// <param name="customer">the customer logging in</param>
-        /// <returns>The browse page if the customer is signed in</returns>
+        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs</returns>
         [HttpPost]
         public IActionResult Login(Customer customer)
         {

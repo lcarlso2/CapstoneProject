@@ -14,7 +14,14 @@ namespace RentMe.DAL
 	public class CustomerDal : ICustomerDal
 	{
 
-
+        /// <summary>
+        /// Authenticates the customer's sign in on the database
+        /// </summary>
+        /// <param name="email">the customers email</param>
+        /// <param name="password">the customer password</param>
+        /// <returns>1 if the customer is valid, otherwise 0 and the customer is invalid</returns>
+        /// @precondition none
+        /// @postcondition the customer is signed in or an error is thrown if something goes wrong on the database
         public int Authenticate(string email, string password)
         {
 	        var validUser = 0;
@@ -48,6 +55,12 @@ namespace RentMe.DAL
 	        return validUser;
         }
 
+        /// <summary>
+        /// Registers the customer on the database 
+        /// </summary>
+        /// <param name="customer">The customer being registered </param>
+        /// @precondition none
+        /// @postcondition the customer is registered or an error is thrown if something goes wrong on the database
         public void RegisterCustomer(RegisteringCustomer customer)
         {
 

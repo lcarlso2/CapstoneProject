@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using RentMeEmployeeTests.MockDal;
 using SharedCode.Model;
 using SharedCode.TestObjects;
 
@@ -315,6 +314,107 @@ namespace RentMeEmployee.Controllers.Tests
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
 			Assert.AreEqual("ManageEmployees", result.ActionName);
 		}
+
+		[TestMethod()]
+		public void StatusFilterTestAll()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter("All");
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("EmployeeLanding", result.ViewName);
+			var items = (List<RentalItem>)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterTestEmpty()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter("");
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("EmployeeLanding", result.ViewName);
+			var items = (List<RentalItem>)result.Model;
+			Assert.AreEqual(0, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter("");
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("EmployeeLanding", result.ViewName);
+			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+			var item = (List<RentalItem>)result.Model;
+			Assert.AreEqual(0, item.Count);
+		}
+
+		[TestMethod()]
+		public void IndexTestEmployeeNotNull()
+		{
+			HomeController.CurrentEmployee = new Employee();
+			var controller = new HomeController();
+			var result = (RedirectToActionResult) controller.Index();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("EmployeeLanding", result.ActionName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void IndexTestEmployeeNull()
+		{
+			HomeController.CurrentEmployee = null;
+			var controller = new HomeController();
+			var result = (ViewResult) controller.Index();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+
+		}
+
+		[TestMethod()]
+		public void SignoutTest()
+		{
+			HomeController.CurrentEmployee = null;
+			var controller = new HomeController();
+			var result = (RedirectToActionResult)controller.SignOut();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("Index", result.ActionName);
+			Assert.AreEqual(null, HomeController.CurrentEmployee);
+
+		}
+
+		[TestMethod()]
+		public void LoginTest()
+		{
+			var controller = new HomeController();
+			var result = (ViewResult)controller.Login();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Index", result.ViewName);
+			
+		}
+
+		[TestMethod()]
+		public void AddEmployeeTest()
+		{
+			var controller = new HomeController();
+			var result = (ViewResult)controller.AddEmployee();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+
+		}
+
 
 
 

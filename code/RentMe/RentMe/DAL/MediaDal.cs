@@ -14,7 +14,10 @@ namespace RentMe.DAL
 	public class MediaDal : IMediaDal
 	{
 
-
+        /// <summary>
+        /// Retrieves all media from the database 
+        /// </summary>
+        /// <returns>The list of media objects on the database, or throws an error because something went wrong on the database side</returns>
         public List<Media> RetrieveAllMedia()
         {
             var mediaItems = new List<Media>();
@@ -71,6 +74,11 @@ namespace RentMe.DAL
             return mediaItems;
         }
 
+        /// <summary>
+        /// Retrieves all media with the given category
+        /// </summary>
+        /// <param name="category">the desired category</param>
+        /// <returns>the media matching that category or an error is thrown if something goes wrong on the database</returns>
         public List<Media> RetrieveMediaByCategory(string category)
         {
             var mediaItems = new List<Media>();
@@ -130,7 +138,11 @@ namespace RentMe.DAL
             return mediaItems;
         }
 
-       
+        /// <summary>
+        /// Retrieves all media with the given type
+        /// </summary>
+        /// <param name="type">the desired type</param>
+        /// <returns>the media matching that type or an error is thrown if something goes wrong on the database</returns>
         public List<Media> RetrieveMediaByType(string type)
         {
             var mediaItems = new List<Media>();
