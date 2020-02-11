@@ -20,9 +20,10 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="customer">the customer borrowing the item</param>
 		/// <param name="media">the item being borrowed</param>
+		/// <returns>the number of rows altered in the database</returns>
 		/// @precondition none
 		/// @postcondition the item is borrowed or an error is thrown if something goes wrong on the database
-		public void BorrowItem(Customer customer, Media media)
+		public int BorrowItem(Customer customer, Media media)
 		{
 
 			try
@@ -96,6 +97,8 @@ namespace RentMe.DAL
 			{
 				throw ex;
 			}
+
+			return 3;
 		}
 	}
 }

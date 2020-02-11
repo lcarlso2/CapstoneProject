@@ -16,6 +16,7 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="customer"> the customer borrowing an item</param>
 		/// <param name="media"> the media being rented</param>
-		void BorrowItem(Customer customer, Media media);
+		/// <returns>the number of rows altered</returns>
+		int BorrowItem(Customer customer, Media media);
 	}
 }
