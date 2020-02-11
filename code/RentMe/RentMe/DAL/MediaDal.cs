@@ -15,9 +15,9 @@ namespace RentMe.DAL
 	{
 
         /// <summary>
-        /// Retrieves all media from the database 
+        /// Retrieves all media that can currently be rented from the database 
         /// </summary>
-        /// <returns>The list of media objects on the database, or throws an error because something went wrong on the database side</returns>
+        /// <returns>The list of media objects that can currently be rented on the database, or throws an error because something went wrong on the database side</returns>
         public List<Media> RetrieveAllMedia()
         {
             var mediaItems = new List<Media>();
