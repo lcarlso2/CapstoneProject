@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeEmployee\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
+using RentMeEmployee.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+using SharedCode.View;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The home controller for the application 
+	/// &lt;/summary&gt;
+	public class HomeController : Controller
+	{
+		private readonly IRentalDal rentalDal;
+		private readonly IEmployeeDal employeeDal;
+        private readonly IInventoryDal inventoryDal;
+
+		/// &lt;summary&gt;
+        /// The current employee logged in
+        /// &lt;/summary&gt;
+        public static Employee CurrentEmployee = null;
+
+        /// &lt;summary&gt;
+        /// True if the current user is a manager
+        /// &lt;/summary&gt;
+        public static bool IsManager;
+
+        /// &lt;summary&gt;
+        /// The possible status for the current rental item
+        /// &lt;/summary&gt;
+        public static List&lt;SelectListItem&gt; Statuses = new List&lt;SelectListItem&gt;();
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller 
+        /// &lt;/summary&gt;
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	       this.rentalDal = new RentalDal();
+           this.employeeDal = new EmployeeDal();
+           this.inventoryDal = new InventoryDal();
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new controller with the given dals passed in
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalDal&quot;&gt;The rental dal to be passed in&lt;/param&gt;
+        /// &lt;param name=&quot;employeeDal&quot;&gt;The employee dal to be passed in&lt;/param&gt;
+        /// &lt;param name=&quot;inventoryDal&quot;&gt;The inventory dal to be passed in&lt;/param&gt;
+        /// 
+        /// @precondition none
+        /// @postcondition getRentalDal() == rentalDal &amp;&amp; getEmployeeDal() == employeeDal &amp;&amp; getInventoryDal() == inventoryDal
+        public HomeController(IInventoryDal inventoryDal)
+        {
+            this.rentalDal = new RentalDal();
+            this.employeeDal = new EmployeeDal();
+            this.inventoryDal = inventoryDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new home controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalDal&quot;&gt;the rental dal&lt;/param&gt;
+        /// &lt;param name=&quot;employeeDal&quot;&gt;the employee dal&lt;/param&gt;
+        public HomeController(IRentalDal rentalDal, IEmployeeDal employeeDal)
+        {
+	        this.rentalDal = rentalDal;
+	        this.employeeDal = employeeDal;
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for filtering the rentals by status
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The given view based on the desired status&lt;/returns&gt;
+        public IActionResult StatusFilter(string status)
+        {
+
+	        List&lt;RentalItem&gt; rentals = new List&lt;RentalItem&gt;();
+	        try
+	        {
+
+		        if (status.Equals(&quot;All&quot;))
+		        {
+			        rentals = new List&lt;RentalItem&gt;(this.rentalDal.RetrieveAllRentedItems());
+		        }
+		        else
+		        {
+			        rentals = new List&lt;RentalItem&gt;(this.rentalDal.RetrieveSelectRentedItems(status));
+		        }
+	        }
+	        catch (Exception)
+	        {
+		        ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+		        return View(&quot;EmployeeLanding&quot;, rentals);
+            }
+
+	        return View(&quot;EmployeeLanding&quot;, rentals);
+
+        }
+
+        /// &lt;summary&gt;
+        /// The action results for managing employees
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the view for managing employees&lt;/returns&gt;
+        public IActionResult ManageEmployees()
+        {
+            List&lt;Employee&gt; employees = new List&lt;Employee&gt;();
+            try
+            {
+                employees = this.employeeDal.GetEmployees(CurrentEmployee);
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+            }
+
+            return View(employees);
+        }
+
+        /// &lt;summary&gt;
+        /// The action results for managing employees
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the view for managing employees&lt;/returns&gt;
+        public IActionResult ViewInventory()
+        {
+            List&lt;InventoryItem&gt; inventory = new List&lt;InventoryItem&gt;();
+            try
+            {
+                inventory = this.inventoryDal.GetInventoryItems();
+            }
+            catch (Exception )
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+            }
+
+            return View(inventory);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The Delete employee action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;username&quot;&gt;the username of the employee being deleted&lt;/param&gt;
+        /// &lt;returns&gt;the manage employee view&lt;/returns&gt;
+        public IActionResult DeleteEmployee(string username)
+        {
+            try
+            {
+	            this.employeeDal.RemoveEmployee(username);
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+            }
+
+            return RedirectToAction(&quot;ManageEmployees&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The get request for the add employee page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the add employee page&lt;/returns&gt;
+        [HttpGet]
+        public IActionResult AddEmployee()
+        {
+            return View();
+        }
+
+        /// &lt;summary&gt;
+        /// The post request for the add employee page
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;employee&quot;&gt;the employee being added&lt;/param&gt;
+        /// &lt;returns&gt;the add employee page&lt;/returns&gt;
+        [HttpPost]
+        public IActionResult AddEmployee(Employee employee)
+        {
+            try
+            {
+	            this.employeeDal.AddEmployee(employee, employee.Password);
+
+                ViewBag.SuccessMessage = &quot;Employee added!&quot;;
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh...something went wrong&quot;;
+            }
+
+            ModelState.Clear();
+            return View(new Employee());
+        }
+
+
+        /// &lt;summary&gt;
+        /// The action result for the index page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the index page&lt;/returns&gt;
+        public IActionResult Index()
+		{
+			if (CurrentEmployee != null)
+			{
+				return RedirectToAction(&quot;EmployeeLanding&quot;);
+			}
+			else
+			{
+				return View();
+			}
+        }
+
+        /// &lt;summary&gt;
+        /// The sign out action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page&lt;/returns&gt;
+        public IActionResult SignOut()
+        {
+            CurrentEmployee = null;
+
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for the get request from the login page 
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the login page&lt;/returns&gt;
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for the post request from the login page
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;employee&quot;&gt;the employee being logged in&lt;/param&gt;
+        /// &lt;returns&gt;the login page&lt;/returns&gt;
+        [HttpPost]
+        public IActionResult Login(BaseEmployee employee)
+        {
+            try
+            {
+
+                if (ModelState.IsValid &amp;&amp; this.employeeDal.Authenticate(employee.Username, employee.Password) == 1)
+                {
+
+                    CurrentEmployee = this.employeeDal.GetCurrentUser(employee.Username, employee.Password);
+                    IsManager = CurrentEmployee.IsManager;
+
+                    return RedirectToAction(&quot;EmployeeLanding&quot;);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The employee landing page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the employee landing page&lt;/returns&gt;
+        public IActionResult EmployeeLanding()
+        {
+            List&lt;RentalItem&gt; items = new List&lt;RentalItem&gt;();
+
+            try
+            {
+	            items = this.rentalDal.RetrieveAllRentedItems();
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+            }
+
+
+            return View(items);
+        }
+
+        /// &lt;summary&gt;
+        /// The update status action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the id of the order being updated&lt;/param&gt;
+        /// &lt;returns&gt;the update status page&lt;/returns&gt;
+		public IActionResult UpdateStatus(int? id)
+        {
+            RentalItem item = new RentalItem();
+            try
+            {
+                Statuses.Clear();
+                item = this.rentalDal.RetrieveAllRentedItems().First(currentItem =&gt; currentItem.RentalId == id);
+                var statuses = RentalItem.GetPossibleStatuses(item.Status);
+                foreach (var current in statuses)
+                {
+	                Statuses.Add(new SelectListItem(current, current));
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+            }
+
+
+            return View(item);
+        }
+
+        /// &lt;summary&gt;
+        /// The http post for the confirm update action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;borrowedItem&quot;&gt;the borrowed item&lt;/param&gt;
+        /// &lt;returns&gt;the employee landing page&lt;/returns&gt;
+        [HttpPost]
+        public IActionResult ConfirmedUpdate(RentalItem borrowedItem)
+        {
+            try
+            {
+                this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;UpdateStatus&quot;);
+            }
+
+            return RedirectToAction(&quot;EmployeeLanding&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// Returns a formatted output string for an inventory items history
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;inventoryId&quot;&gt;The id of the inventory item to get the history of&lt;/param&gt;
+        /// &lt;returns&gt;Returns a formatted output string for an inventory items history&lt;/returns&gt;
+        public IActionResult InventoryItemDetails(int id)
+        {
+            try
+            {
+                var inventoryItems = this.inventoryDal.GetItemDetailSummary(id);
+                var items = inventoryItems.OrderBy(item =&gt; item.RentalId).ThenBy(item =&gt; item.UpdateDateTime).ToList();
+                   
+                return View(&quot;ItemDetails&quot;, items);
+                    
+            } catch (Exception)
+            {
+                ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;ViewInventory&quot;);
+            }
+            
+        }
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[27,9,27,55,1],[37,9,37,82,1],[43,9,43,32,1],[44,9,44,10,1],[45,9,45,42,1],[46,12,46,49,1],[47,12,47,51,1],[48,9,48,10,1],[59,9,59,58,1],[60,9,60,10,1],[61,13,61,46,1],[62,13,62,50,1],[63,13,63,46,1],[64,9,64,10,1],[71,9,71,78,1],[72,9,72,10,1],[73,10,73,37,1],[74,10,74,41,1],[75,9,75,10,1],[82,9,82,10,1],[84,10,84,60,1],[86,10,86,11,1],[88,11,88,36,1],[89,11,89,12,1],[90,12,90,84,1],[91,11,91,12,1],[93,11,93,12,1],[94,12,94,93,1],[95,11,95,12,1],[96,10,96,11,1],[97,10,97,27,1],[98,10,98,11,1],[99,11,99,56,1],[100,11,100,51,1],[103,10,103,50,1],[105,9,105,10,1],[112,9,112,10,1],[113,13,113,61,1],[115,13,115,14,1],[116,17,116,76,1],[117,13,117,14,1],[118,13,118,30,1],[119,13,119,14,1],[120,17,120,69,1],[121,13,121,14,1],[123,13,123,36,1],[124,9,124,10,1],[131,9,131,10,1],[132,13,132,71,1],[134,13,134,14,1],[135,17,135,67,1],[136,13,136,14,1],[137,13,137,31,1],[138,13,138,14,1],[139,17,139,69,1],[140,13,140,14,1],[142,13,142,36,1],[143,9,143,10,1],[152,9,152,10,1],[154,13,154,14,1],[155,14,155,56,1],[156,13,156,14,1],[157,13,157,30,1],[158,13,158,14,1],[159,17,159,69,1],[160,13,160,14,1],[162,13,162,56,1],[163,9,163,10,1],[171,9,171,10,1],[172,13,172,27,1],[173,9,173,10,1],[182,9,182,10,1],[184,13,184,14,1],[185,14,185,72,1],[187,17,187,60,1],[188,13,188,14,1],[189,13,189,30,1],[190,13,190,14,1],[191,17,191,71,1],[192,13,192,14,1],[194,13,194,32,1],[195,13,195,41,1],[196,9,196,10,1],[204,3,204,4,1],[205,4,205,32,1],[206,4,206,5,1],[207,5,207,48,1],[210,4,210,5,1],[211,5,211,19,1],[213,9,213,10,1],[220,9,220,10,1],[221,13,221,36,1],[223,13,223,46,1],[224,9,224,10,1],[232,9,232,10,1],[233,13,233,34,1],[234,9,234,10,1],[243,9,243,10,1],[245,13,245,14,1],[247,17,247,116,1],[248,17,248,18,1],[250,21,250,109,1],[251,21,251,59,1],[253,21,253,64,1],[255,13,255,14,1],[256,13,256,30,1],[257,13,257,14,1],[258,17,258,76,1],[259,17,259,38,1],[262,13,262,45,1],[263,13,263,34,1],[264,9,264,10,1],[271,9,271,10,1],[272,13,272,61,1],[275,13,275,14,1],[276,14,276,62,1],[277,13,277,14,1],[278,13,278,30,1],[279,13,279,14,1],[280,17,280,69,1],[281,13,281,14,1],[284,13,284,32,1],[285,9,285,10,1],[293,9,293,10,1],[294,13,294,48,1],[296,13,296,14,1],[297,17,297,34,1],[298,17,298,85,1],[298,85,298,111,1],[298,111,298,113,1],[298,17,298,113,1],[299,17,299,76,1],[300,17,300,24,1],[300,26,300,37,1],[300,38,300,40,1],[300,41,300,49,1],[301,17,301,18,1],[302,18,302,69,1],[303,17,303,18,1],[304,13,304,14,1],[305,13,305,30,1],[306,13,306,14,1],[307,17,307,69,1],[308,13,308,14,1],[311,13,311,31,1],[312,9,312,10,1],[321,9,321,10,1],[323,13,323,14,1],[324,17,324,117,1],[325,13,325,14,1],[326,13,326,30,1],[327,13,327,14,1],[328,17,328,69,1],[329,17,329,45,1],[332,13,332,56,1],[333,9,333,10,1],[342,9,342,10,1],[344,13,344,14,1],[345,17,345,81,1],[346,17,346,60,1],[346,60,346,73,1],[346,73,346,90,1],[346,90,346,109,1],[346,109,346,120,1],[346,17,346,120,1],[348,17,348,51,1],[350,15,350,32,1],[351,13,351,14,1],[352,17,352,69,1],[353,17,353,46,1],[356,9,356,10,1],[360,3,360,4,0],[361,4,361,104,0],[362,3,362,4,0]]);
+    </script>
+  </body>
+</html>

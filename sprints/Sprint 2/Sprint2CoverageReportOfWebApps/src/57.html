@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeDesktop\ViewModel\MainPageViewModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RentMeDesktop.Utility;
+using RentMeDesktop.View;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeDesktop.ViewModel
+{
+	/// &lt;summary&gt;
+	/// The main page viewmodel 
+	/// &lt;/summary&gt;
+	public class MainPageViewModel : BaseViewModel
+	{
+		private RentalItem selectedRental;
+
+		private bool canUpdateBeClicked;
+
+		private ObservableCollection&lt;string&gt; statusFilters;
+
+		private string selectedStatusFilter;
+
+		private IRentalDal rentalDal;
+
+		/// &lt;summary&gt;
+		/// Creates a new main page view model
+		/// &lt;/summary&gt;
+		public MainPageViewModel()
+		{
+			this.SelectedStatusFilter = &quot;All&quot;;
+			this.StatusFilters = new ObservableCollection&lt;string&gt;{&quot;All&quot;, &quot;Ordered&quot;, &quot;Shipped&quot;, &quot;Returned&quot;};
+			this.rentalDal = new RentalDal();
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the rental filters
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		/// The rental filters
+		/// &lt;/value&gt;
+		public ObservableCollection&lt;string&gt; StatusFilters
+		{
+			get =&gt; this.statusFilters;
+			set
+			{
+				this.statusFilters = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the selected rental filter
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		///	The selected rental filter
+		/// &lt;/value&gt;
+		public string SelectedStatusFilter
+		{
+			get =&gt; this.selectedStatusFilter;
+			set
+			{
+				this.selectedStatusFilter = value;
+				if (this.rentalDal != null)
+				{
+					try
+					{
+						if (this.SelectedStatusFilter.Equals(&quot;All&quot;))
+						{
+							this.RentalItems =
+								new ObservableCollection&lt;RentalItem&gt;(this.rentalDal.RetrieveAllRentedItems());
+						}
+						else
+						{
+							this.RentalItems =
+								new ObservableCollection&lt;RentalItem&gt;(
+									this.rentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
+						}
+					}
+					catch (Exception)
+					{
+						DbError.showErrorWindow();
+					}
+				}
+
+				this.OnPropertyChanged();
+			}
+		}
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the selected borrowed item 
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		/// The selected borrowed item 
+		/// &lt;/value&gt;
+		public RentalItem SelectedRental
+		{
+			get =&gt; this.selectedRental;
+			set
+			{
+				this.selectedRental = value;
+				this.CanUpdateBeClicked = (this.SelectedRental != null) &amp;&amp; !this.SelectedRental.Status.Equals(&quot;Returned&quot;);
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets property depending on if update can be clicked
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		/// True if a rental has been selected and the rental hasn&#39;t been returned otherwise false
+		/// &lt;/value&gt;
+		public bool CanUpdateBeClicked
+		{
+			get =&gt; this.canUpdateBeClicked;
+			set
+			{
+				this.canUpdateBeClicked = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Updates the rental item
+		/// &lt;/summary&gt;
+		public void UpdateRentalItem()
+		{
+			try
+			{
+				this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
+			}
+			catch (Exception)
+			{
+				DbError.showErrorWindow();
+			}
+
+		}
+
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[32,3,32,29,0],[33,3,33,4,0],[34,4,34,38,0],[35,4,35,99,0],[36,4,36,37,0],[37,3,37,4,0],[47,11,47,29,0],[49,4,49,5,0],[50,5,50,32,0],[51,5,51,30,0],[52,4,52,5,0],[63,11,63,36,0],[65,4,65,5,0],[66,5,66,39,0],[67,5,67,32,0],[68,5,68,6,0],[70,6,70,7,0],[71,7,71,51,0],[72,7,72,8,0],[73,8,74,87,0],[75,7,75,8,0],[77,7,77,8,0],[78,8,80,79,0],[81,7,81,8,0],[82,6,82,7,0],[83,6,83,23,0],[84,6,84,7,0],[85,7,85,33,0],[86,6,86,7,0],[87,5,87,6,0],[89,5,89,30,0],[90,4,90,5,0],[102,11,102,30,0],[104,4,104,5,0],[105,5,105,33,0],[106,5,106,111,0],[107,5,107,30,0],[108,4,108,5,0],[119,11,119,34,0],[121,4,121,5,0],[122,5,122,37,0],[123,5,123,30,0],[124,4,124,5,0],[131,3,131,4,0],[133,4,133,5,0],[134,5,134,124,0],[135,4,135,5,0],[136,4,136,21,0],[137,4,137,5,0],[138,5,138,31,0],[139,4,139,5,0],[141,3,141,4,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeDesktop\ViewModel\EmployeeManagementViewModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
+using RentMeDesktop.Utility;
+using RentMeDesktop.View;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeDesktop.ViewModel
+{
+	/// &lt;summary&gt;
+	/// The view model for the employee management page
+	/// &lt;/summary&gt;
+	public class EmployeeManagementViewModel : BaseViewModel
+	{
+
+		private string fName;
+
+
+		private string lName;
+
+
+		private string username;
+
+		private string password;
+
+		private string confirmedPassword;
+
+		private bool isManager;
+
+		private string employeeSearchTerm;
+
+		private ObservableCollection&lt;Employee&gt; employees;
+
+		private Employee selectedEmployee;
+
+		private IEmployeeDal employeeDal;
+
+		/// &lt;summary&gt;
+		/// Gets or sets the employee search term
+		/// &lt;/summary&gt;
+		public string EmployeeSearchTerm
+		{
+			get =&gt; this.employeeSearchTerm;
+			set
+			{
+				this.employeeSearchTerm = value;
+				try
+				{
+
+					if (string.IsNullOrEmpty(this.EmployeeSearchTerm))
+					{
+						this.Employees = new ObservableCollection&lt;Employee&gt;(this.employeeDal.GetEmployees(this.CurrentEmployee));
+					}
+					else
+					{
+						this.Employees = new ObservableCollection&lt;Employee&gt;(this.employeeDal.GetEmployees(this.CurrentEmployee));
+					}
+				}
+				catch (Exception)
+				{
+					DbError.showErrorWindow();
+				}
+
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the First name 
+		/// &lt;/summary&gt;
+		public string FName
+		{
+			get =&gt; this.fName;
+			set
+			{
+				this.fName = value;
+				this.OnPropertyChanged();
+				this.AddCommand.OnCanExecuteChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the last name
+		/// &lt;/summary&gt;
+		public string LName
+		{
+			get =&gt; this.lName;
+			set
+			{
+				this.lName = value;
+				this.OnPropertyChanged();
+				this.AddCommand.OnCanExecuteChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the username
+		/// &lt;/summary&gt;
+		public string Username
+		{
+			get =&gt; this.username;
+			set
+			{
+				this.username = value;
+				this.OnPropertyChanged();
+				this.AddCommand.OnCanExecuteChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the password
+		/// &lt;/summary&gt;
+		public string Password
+		{
+			get =&gt; this.password;
+			set
+			{
+				this.password = value;
+				this.OnPropertyChanged();
+				this.AddCommand.OnCanExecuteChanged();
+			}
+		}
+
+        /// &lt;summary&gt;
+        /// Gets or sets the confirmed password.
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The confirmed password.
+        /// &lt;/value&gt;
+        public string ConfirmedPassword
+		{
+			get =&gt; this.confirmedPassword;
+			set
+			{
+				this.confirmedPassword = value;
+				this.OnPropertyChanged();
+				this.AddCommand.OnCanExecuteChanged();
+			}
+		}
+		/// &lt;summary&gt;
+		/// Gets or sets the isManager 
+		/// &lt;/summary&gt;
+		public bool IsManager
+		{
+			get =&gt; this.isManager;
+			set
+			{
+				this.isManager = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// The relay command for removing an employee
+		/// &lt;/summary&gt;
+		public RelayCommand RemoveCommand { get; set; }
+
+		/// &lt;summary&gt;
+		/// The relay command for adding an employee
+		/// &lt;/summary&gt;
+		public RelayCommand AddCommand { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the selected employee
+		/// &lt;/summary&gt;
+		public Employee SelectedEmployee
+		{
+			get =&gt; this.selectedEmployee;
+			set
+			{
+				this.selectedEmployee = value;
+				this.OnPropertyChanged();
+				this.RemoveCommand.OnCanExecuteChanged();
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Gets or sets the employees
+		/// &lt;/summary&gt;
+		public ObservableCollection&lt;Employee&gt; Employees
+		{
+			get =&gt; this.employees;
+			set
+			{
+				this.employees = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+
+		/// &lt;summary&gt;
+		/// Creates a new employee management view model
+		/// &lt;/summary&gt;
+		public EmployeeManagementViewModel()
+		{
+			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
+			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
+			this.employeeDal = new EmployeeDal();
+
+		}
+
+		/// &lt;summary&gt;
+		/// Sets the employees from the db
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;currentEmployee&quot;&gt;the current employee logged in&lt;/param&gt;
+		public void RetrieveEmployees(Employee currentEmployee)
+		{
+			this.Employees = new ObservableCollection&lt;Employee&gt;(this.employeeDal.GetEmployees(currentEmployee));
+		}
+
+
+		private bool canRemoveEmployee(object obj)
+		{
+			return this.SelectedEmployee != null;
+		}
+
+		private async void removeEmployee(object obj)
+		{
+			ContentDialog dialog = new ContentDialog();
+			dialog.Title = &quot;Confirm&quot;;
+			dialog.Content = &quot;Are you sure you want to remove this employee?&quot;;
+			dialog.CloseButtonText = &quot;Cancel&quot;;
+			dialog.PrimaryButtonText = &quot;Confirm&quot;;
+			var result = await dialog.ShowAsync();
+			if (result == ContentDialogResult.Primary)
+			{
+				try
+				{
+					this.employeeDal.RemoveEmployee(this.SelectedEmployee.Username);
+					this.Employees = new ObservableCollection&lt;Employee&gt;(this.employeeDal.GetEmployees(this.CurrentEmployee));
+				}
+				catch (Exception)
+				{
+					DbError.showErrorWindow();
+				}
+			}
+
+		}
+
+		private bool canAddEmployee(object obj)
+		{
+			return !String.IsNullOrEmpty(this.FName) &amp;&amp; !String.IsNullOrEmpty(this.LName) &amp;&amp; !String.IsNullOrEmpty(this.Username) &amp;&amp; !String.IsNullOrEmpty(this.Password) &amp;&amp; (this.Password == this.ConfirmedPassword);
+		}
+
+		private async void addEmployee(object obj)
+		{
+			var dialog = new ContentDialog
+			{
+				Title = &quot;Confirm&quot;,
+				Content = $&quot;Are you sure you want to add {this.FName} {this.LName}?&quot;,
+				CloseButtonText = &quot;Cancel&quot;,
+				PrimaryButtonText = &quot;Confirm&quot;
+			};
+			var result = await dialog.ShowAsync();
+			if (result == ContentDialogResult.Primary)
+			{
+				var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
+				this.employeeDal.AddEmployee(employeeToAdd, this.Password);
+				this.resetFields();
+			}
+
+
+		}
+
+		private void resetFields()
+		{
+			this.FName = null;
+			this.LName = null;
+			this.Username = null;
+			this.Password = null;
+			this.ConfirmedPassword = null;
+			this.IsManager = false;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[48,11,48,34,0],[50,4,50,5,0],[51,5,51,37,0],[53,5,53,6,0],[55,6,55,56,0],[56,6,56,7,0],[57,7,57,112,0],[58,6,58,7,0],[60,6,60,7,0],[61,7,61,112,0],[62,6,62,7,0],[63,5,63,6,0],[64,5,64,22,0],[65,5,65,6,0],[66,6,66,32,0],[67,5,67,6,0],[69,5,69,30,0],[70,4,70,5,0],[78,11,78,21,0],[80,4,80,5,0],[81,5,81,24,0],[82,5,82,30,0],[83,5,83,43,0],[84,4,84,5,0],[92,11,92,21,0],[94,4,94,5,0],[95,5,95,24,0],[96,5,96,30,0],[97,5,97,43,0],[98,4,98,5,0],[106,11,106,24,0],[108,4,108,5,0],[109,5,109,27,0],[110,5,110,30,0],[111,5,111,43,0],[112,4,112,5,0],[120,11,120,24,0],[122,4,122,5,0],[123,5,123,27,0],[124,5,124,30,0],[125,5,125,43,0],[126,4,126,5,0],[137,11,137,33,0],[139,4,139,5,0],[140,5,140,36,0],[141,5,141,30,0],[142,5,142,43,0],[143,4,143,5,0],[150,11,150,25,0],[152,4,152,5,0],[153,5,153,28,0],[154,5,154,30,0],[155,4,155,5,0],[161,39,161,43,0],[161,44,161,48,0],[166,36,166,40,0],[166,41,166,45,0],[173,11,173,32,0],[175,4,175,5,0],[176,5,176,35,0],[177,5,177,30,0],[178,5,178,46,0],[179,4,179,5,0],[187,11,187,25,0],[189,4,189,5,0],[190,5,190,28,0],[191,5,191,30,0],[192,4,192,5,0],[199,3,199,39,0],[200,3,200,4,0],[201,4,201,77,0],[202,4,202,68,0],[203,4,203,41,0],[205,3,205,4,0],[212,3,212,4,0],[213,4,213,104,0],[214,3,214,4,0],[218,3,218,4,0],[219,4,219,41,0],[220,3,220,4,0],[223,3,223,4,0],[224,4,224,47,0],[225,4,225,29,0],[226,4,226,70,0],[227,4,227,38,0],[228,4,228,41,0],[229,4,229,42,0],[230,4,230,46,0],[231,4,231,5,0],[233,5,233,6,0],[234,6,234,70,0],[235,6,235,111,0],[236,5,236,6,0],[237,5,237,22,0],[238,5,238,6,0],[239,6,239,32,0],[240,5,240,6,0],[241,4,241,5,0],[243,3,243,4,0],[246,3,246,4,0],[247,4,247,207,0],[248,3,248,4,0],[251,3,251,4,0],[252,4,258,6,0],[259,4,259,42,0],[260,4,260,46,0],[261,4,261,5,0],[262,5,262,93,0],[263,5,263,64,0],[264,5,264,24,0],[265,4,265,5,0],[268,3,268,4,0],[271,3,271,4,0],[272,4,272,22,0],[273,4,273,22,0],[274,4,274,25,0],[275,4,275,25,0],[276,4,276,34,0],[277,4,277,27,0],[278,3,278,4,0]]);
+    </script>
+  </body>
+</html>

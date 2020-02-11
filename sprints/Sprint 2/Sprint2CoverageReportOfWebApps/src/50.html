@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeDesktop\ViewModel\InventoryViewModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.ObjectModel;
+
+using SharedCode.DAL;
+using SharedCode.Model;
+using SharedCode.View;
+
+namespace RentMeDesktop.ViewModel
+{
+    /// &lt;summary&gt;
+    /// The view model for the view inventory page
+    /// &lt;/summary&gt;
+    public class InventoryViewModel : BaseViewModel
+    {
+        private IInventoryDal inventoryDal;
+        private ObservableCollection&lt;InventoryItem&gt; inventory;
+
+        private InventoryItem selectedInventoryItem;
+
+        private bool canViewDetailsBeClicked;
+
+        /// &lt;summary&gt;
+        /// The selected inventory item
+        /// &lt;/summary&gt;
+        public InventoryItem SelectedInventoryItem
+        {
+            get =&gt; this.selectedInventoryItem;
+            set
+            {
+                this.selectedInventoryItem = value;
+                this.CanViewDetailsBeClicked = (this.SelectedInventoryItem != null);
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// The entire inventory for the app
+        /// &lt;/summary&gt;
+        public ObservableCollection&lt;InventoryItem&gt; Inventory
+        {
+            get =&gt; this.inventory;
+            set
+            {
+                this.inventory = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        
+
+        /// &lt;summary&gt;
+        /// Gets or sets property depending on if update can be clicked
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// True if a rental has been selected and the rental hasn&#39;t been returned otherwise false
+        /// &lt;/value&gt;
+        public bool CanViewDetailsBeClicked
+        {
+            get =&gt; this.canViewDetailsBeClicked;
+            set
+            {
+                this.canViewDetailsBeClicked = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// @postcondition this.inventoryDal is created as a new InventoryDal
+        public InventoryViewModel()
+        {
+            this.inventoryDal = new InventoryDal();
+        }
+
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;inventoryDal&quot;&gt;The inventory dal.&lt;/param&gt;
+        /// /// @postcondition this.inventoryDal is set to the inventory dal that is passed in
+        public InventoryViewModel(IInventoryDal inventoryDal)
+        {
+            this.inventoryDal = inventoryDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Retrieves all inventory items from the db
+        /// &lt;/summary&gt;
+        /// @postcondition this.Inventory == all inventory items from db
+        public void RetrieveAllInventoryItems()
+        {
+            this.Inventory = new ObservableCollection&lt;InventoryItem&gt;(this.inventoryDal.GetInventoryItems());
+        }
+
+        /// &lt;summary&gt;
+        /// Gets a detailed summary of the selected inventory item
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;Returns a details string output of the selected inventory item&lt;/returns&gt;
+        public string GetSelectedItemDetailSummary()
+        {
+            var summaryItems = this.inventoryDal.GetItemDetailSummary(this.selectedInventoryItem.InventoryId);
+            OutputFormatter formatter = new OutputFormatter();
+            return formatter.GenerateHistoryOfInventoryItem(summaryItems);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[27,20,27,46,0],[29,13,29,14,0],[30,17,30,52,0],[31,17,31,85,0],[32,17,32,42,0],[33,13,33,14,0],[41,20,41,34,0],[43,13,43,14,0],[44,17,44,40,0],[45,17,45,42,0],[46,13,46,14,0],[59,20,59,48,0],[61,13,61,14,0],[62,17,62,54,0],[63,17,63,42,0],[64,13,64,14,0],[71,9,71,36,0],[72,9,72,10,0],[73,13,73,52,0],[74,9,74,10,0],[82,9,82,62,0],[83,9,83,10,0],[84,13,84,46,0],[85,9,85,10,0],[92,9,92,10,0],[93,13,93,109,0],[94,9,94,10,0],[101,9,101,10,0],[102,13,102,111,0],[103,13,103,63,0],[104,13,104,75,0],[105,9,105,10,0]]);
+    </script>
+  </body>
+</html>

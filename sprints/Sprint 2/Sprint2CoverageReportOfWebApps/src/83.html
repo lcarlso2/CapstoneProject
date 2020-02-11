@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeTests\SharedCodeTests\ModelTests\EmployeeTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.Model;
+
+namespace RentMeTests.SharedCodeTests.ModelTests
+{
+	/// &lt;summary&gt;
+	/// The test class for the employee
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class EmployeeTests
+	{
+
+		[TestMethod()]
+		public void TestCreateEmployeeBaseConstructor()
+		{
+			var employee = new Employee();
+
+			Assert.AreEqual(&quot;&quot;, employee.FirstName);
+			Assert.AreEqual(&quot;&quot;, employee.LastName);
+		}
+
+		[TestMethod()]
+		public void TestCreateEmployee2ParamConstructor()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;);
+
+			Assert.AreEqual(&quot;Bob&quot;, employee.FirstName);
+			Assert.AreEqual(&quot;Jack&quot;, employee.LastName);
+			Assert.AreEqual(false, employee.IsManager);
+		}
+
+		[TestMethod()]
+		public void TestCreateEmployee4ParamConstructor()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;, &quot;bjack&quot;, true);
+
+			Assert.AreEqual(&quot;Bob&quot;, employee.FirstName);
+			Assert.AreEqual(&quot;Jack&quot;, employee.LastName);
+			Assert.AreEqual(&quot;bjack&quot;, employee.Username);
+			Assert.AreEqual(true, employee.IsManager);
+		}
+
+		[TestMethod()]
+		public void TestEmployeeInfo()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;, &quot;bjack&quot;, true);
+
+			Assert.AreEqual($&quot;Name: {employee.FirstName} {employee.LastName} \nUsername: {employee.Username} \nIs Manager: {employee.IsManager} \n&quot;, employee.EmployeeInfo);
+
+		}
+
+		[TestMethod()]
+		public void TestEmployeePassword()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;, &quot;bjack&quot;, true);
+			employee.Password = &quot;test&quot;;
+
+			Assert.AreEqual(&quot;test&quot;, employee.Password);
+
+		}
+
+		[TestMethod()]
+		public void TestEmployeeConfirmPassword()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;, &quot;bjack&quot;, true);
+			employee.ConfirmPassword = &quot;test&quot;;
+
+			Assert.AreEqual(&quot;test&quot;, employee.ConfirmPassword);
+
+		}
+
+		[TestMethod()]
+		public void TestEmployeeId()
+		{
+			var employee = new Employee(&quot;Bob&quot;, &quot;Jack&quot;, &quot;bjack&quot;, true);
+			employee.EmployeeId = 1;
+
+			Assert.AreEqual(1, employee.EmployeeId);
+
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,4,1],[19,4,19,34,1],[21,4,21,44,1],[22,4,22,43,1],[23,3,23,4,1],[27,3,27,4,1],[28,4,28,47,1],[30,4,30,47,1],[31,4,31,47,1],[32,4,32,47,1],[33,3,33,4,1],[37,3,37,4,1],[38,4,38,62,1],[40,4,40,47,1],[41,4,41,47,1],[42,4,42,48,1],[43,4,43,46,1],[44,3,44,4,1],[48,3,48,4,1],[49,4,49,62,1],[51,4,51,164,1],[53,3,53,4,1],[57,3,57,4,1],[58,4,58,62,1],[59,4,59,31,1],[61,4,61,47,1],[63,3,63,4,1],[67,3,67,4,1],[68,4,68,62,1],[69,4,69,38,1],[71,4,71,54,1],[73,3,73,4,1],[77,3,77,4,1],[78,4,78,62,1],[79,4,79,28,1],[81,4,81,44,1],[83,3,83,4,1]]);
+    </script>
+  </body>
+</html>

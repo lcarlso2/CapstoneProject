@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\MediaDalTest\RetrieveAllMediaByTypeTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.DAL;
+
+namespace RentMeTests.DalTests.MediaDalTest
+{
+	/// &lt;summary&gt;
+	/// The test class for retrieve all media by type
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class RetrieveAllMediaByTypeTests
+	{
+		[TestMethod()]
+		public void RetrieveAllMediaByTypeValidTest()
+		{
+			var mediaDal = new MediaDal();
+
+			var result = mediaDal.RetrieveMediaByType(&quot;Movie&quot;);
+
+			Assert.AreEqual(5, result.Count);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,3,17,4,1],[18,4,18,34,1],[20,4,20,55,1],[22,4,22,37,1],[23,3,23,4,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\SharedCode\View\OutputFormatter.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using SharedCode.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SharedCode.View
+{
+    /// &lt;summary&gt;
+    /// Holds methods used for formatting and generating output for the view
+    /// &lt;/summary&gt;
+    public class OutputFormatter
+    {
+        private const int DEFAULT_ID = -1;
+
+        /// &lt;summary&gt;
+        /// Generates a summary of an inventory items history
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalItems&quot;&gt;&lt;/param&gt;
+        /// &lt;returns&gt;&lt;/returns&gt;
+        public string GenerateHistoryOfInventoryItem(List&lt;RentalItem&gt; rentalItems)
+        {
+            StringBuilder sb = new StringBuilder();
+            var rentalId = DEFAULT_ID;
+            var isFirstItem = true;
+            rentalItems = rentalItems.OrderBy(item =&gt; item.RentalDate).ToList();
+            foreach (var rentalItem in rentalItems)
+            {
+                
+                if (rentalId != rentalItem.RentalId)
+                {
+                    if(!isFirstItem)
+                    {
+                        sb.Append(&quot;------------------------------------------------------------------------&quot; + Environment.NewLine + Environment.NewLine);
+                    }
+                    
+                    sb.Append(&quot;Title: &quot; + rentalItem.Title + &quot;\tCategory: &quot; + rentalItem.Category + Environment.NewLine + &quot;Member ID: &quot; + rentalItem.MemberId + &quot;\tMember Email: &quot; + rentalItem.MemberEmail + Environment.NewLine + Environment.NewLine +
+                    &quot;Date Rented: &quot; + rentalItem.RentalDate + &quot;\tDate Returned: &quot; + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
+                    rentalId = rentalItem.RentalId;
+                    isFirstItem = false;
+                } 
+
+                sb.Append(&quot;Status: &quot; + rentalItem.Status + &quot;\tUpdate Date: &quot; + rentalItem.UpdateDateTime + Environment.NewLine);
+              
+            }
+            return sb.ToString();
+        }
+
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,9,22,10,0],[23,13,23,52,0],[24,13,24,39,0],[25,13,25,36,0],[26,13,26,55,0],[26,55,26,70,0],[26,70,26,81,0],[26,13,26,81,0],[27,13,27,20,0],[27,22,27,36,0],[27,37,27,39,0],[27,40,27,51,0],[28,13,28,14,0],[30,17,30,53,0],[31,17,31,18,0],[32,21,32,37,0],[33,21,33,22,0],[34,25,34,155,0],[35,21,35,22,0],[37,21,38,152,0],[39,21,39,52,0],[40,21,40,41,0],[41,17,41,18,0],[43,17,43,129,0],[45,13,45,14,0],[46,13,46,34,0],[47,9,47,10,0]]);
+    </script>
+  </body>
+</html>

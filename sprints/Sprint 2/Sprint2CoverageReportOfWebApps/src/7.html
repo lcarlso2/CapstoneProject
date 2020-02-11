@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\SharedCode\Model\InventoryItem.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace SharedCode.Model
+{
+    /// &lt;summary&gt;
+    /// Template for an inventory item
+    /// &lt;/summary&gt;
+    public class InventoryItem
+    {
+        /// &lt;summary&gt;
+        /// The id for an individual inventory item
+        /// &lt;/summary&gt;
+        public int InventoryId;
+
+        /// &lt;summary&gt;
+        /// The id for a specific media item
+        /// &lt;/summary&gt;
+        public int MediaId;
+
+        /// &lt;summary&gt;
+        /// The condition of the inventory item
+        /// &lt;/summary&gt;
+        public string Condition;
+
+        /// &lt;summary&gt;
+        /// The category of the inventory item
+        /// &lt;/summary&gt;
+        public string Category;
+
+        /// &lt;summary&gt;
+        /// The title of the inventory item
+        /// &lt;/summary&gt;
+        public string Title;
+
+        /// &lt;summary&gt;
+        /// The type of the inventory item
+        /// &lt;/summary&gt;
+        public string Type;
+
+        /// &lt;summary&gt;
+        /// True if item is rented and false if it is not
+        /// &lt;/summary&gt;
+        [Display(Name = &quot;Is Rented&quot;)]
+        public bool IsRented;
+
+        /// &lt;summary&gt;
+        /// True if the item is in stock and false if it is not
+        /// &lt;/summary&gt;
+        [Display(Name = &quot;In Stock&quot;)]
+        public bool InStock;
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryItem&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        public InventoryItem()
+        {
+
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[55,9,55,31,1],[56,9,56,10,1],[58,9,58,10,1]]);
+    </script>
+  </body>
+</html>

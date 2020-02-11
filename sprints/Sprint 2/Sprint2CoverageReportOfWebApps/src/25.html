@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeEmployeeTests\Controllers\HomeControllerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMeEmployee.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using SharedCode.Model;
+using SharedCode.TestObjects;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The test class for the home controller of the RentMeEmployee app
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class HomeControllerTests
+	{
+		[TestMethod()]
+		public void UpdateStatusTestValidOutput()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.UpdateStatus(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var item = (RentalItem) result.Model;
+			Assert.AreEqual(1, item.RentalId);
+		}
+
+	
+
+		[TestMethod()]
+		public void UpdateStatusTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.UpdateStatus(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+			var item = (RentalItem)result.Model;
+			Assert.AreEqual(0, item.RentalId);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithValidEmployee()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;Test&quot;,
+				Password = &quot;Pass&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (RedirectToActionResult)controller.Login(employee);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidEmployeeLogin()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;Test&quot;,
+				Password = &quot;Pass&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 0,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.Login(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidEmployee()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			controller.ModelState.AddModelError(&quot;Test&quot;, &quot;Test&quot;);
+			var result = (ViewResult)controller.Login(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void LoginTestWithException()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.Login(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Whoops, try again. Something went wrong.&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void AddEmployeeTestValid()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.AddEmployee(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Employee added!&quot;, result.ViewData[&quot;SuccessMessage&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void AddEmployeeTestWithException()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.AddEmployee(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh...something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+			Assert.AreEqual(0, controller.ModelState.Count);
+		}
+
+		[TestMethod()]
+		public void EmployeeLandingValidTest()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.EmployeeLanding();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var items = (List&lt;RentalItem&gt;) result.Model;
+			Assert.AreEqual(1, items.Count);
+
+		}
+
+		[TestMethod()]
+		public void EmployeeLandingTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.EmployeeLanding();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+		}
+
+		[TestMethod()]
+		public void ManageEmployeesTestValid()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.ManageEmployees();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var employees = (List&lt;Employee&gt;)result.Model;
+			Assert.AreEqual(0, employees.Count);
+		}
+
+		[TestMethod()]
+		public void ManageEmployeesTestExceptionThrown()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (ViewResult)controller.ManageEmployees();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+			var employees = (List&lt;Employee&gt;)result.Model;
+			Assert.AreEqual(0, employees.Count);
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestValid()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			HomeController.CurrentEmployee = new Employee();
+			var result = (RedirectToActionResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = &quot;Ordered&quot; });
+			
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ActionName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.ConfirmedUpdate(new RentalItem());
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;UpdateStatus&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+			
+		}
+
+		[TestMethod()]
+		public void DeleteEmployeeTestValid()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (RedirectToActionResult)controller.DeleteEmployee(&quot;test&quot;);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;ManageEmployees&quot;, result.ActionName);
+
+		}
+
+		[TestMethod()]
+		public void DeleteEmployeeTestExceptionThrown()
+		{
+			var employee = new Employee
+			{
+				Username = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var result = (RedirectToActionResult)controller.DeleteEmployee(&quot;test&quot;);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;ManageEmployees&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void StatusFilterTestAll()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter(&quot;All&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterTestEmpty()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter(&quot;&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(0, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(rentalDal, new MockEmployeeDal());
+			var result = (ViewResult)controller.StatusFilter(&quot;&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+			var item = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(0, item.Count);
+		}
+
+		[TestMethod()]
+		public void IndexTestEmployeeNotNull()
+		{
+			HomeController.CurrentEmployee = new Employee();
+			var controller = new HomeController();
+			var result = (RedirectToActionResult) controller.Index();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ActionName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void IndexTestEmployeeNull()
+		{
+			HomeController.CurrentEmployee = null;
+			var controller = new HomeController();
+			var result = (ViewResult) controller.Index();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+
+		}
+
+		[TestMethod()]
+		public void SignoutTest()
+		{
+			HomeController.CurrentEmployee = null;
+			var controller = new HomeController();
+			var result = (RedirectToActionResult)controller.SignOut();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ActionName);
+			Assert.AreEqual(null, HomeController.CurrentEmployee);
+
+		}
+
+		[TestMethod()]
+		public void LoginTest()
+		{
+			var controller = new HomeController();
+			var result = (ViewResult)controller.Login();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			
+		}
+
+		[TestMethod()]
+		public void AddEmployeeTest()
+		{
+			var controller = new HomeController();
+			var result = (ViewResult)controller.AddEmployee();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+
+		}
+
+
+		[TestMethod()]
+		public void InventoryItemDetailsValidTest()
+		{
+			var inventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(inventoryDal);
+			var result = (ViewResult)controller.InventoryItemDetails(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ItemDetails&quot;, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void InventoryItemDetailsTestExceptionThrown()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(mockInventoryDal);
+			var result = (ViewResult)controller.InventoryItemDetails(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ViewInventory&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+		}
+
+		[TestMethod()]
+		public void ViewInventoryValidTest()
+		{
+			var inventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+			var controller = new HomeController(inventoryDal);
+			var result = (ViewResult)controller.ViewInventory();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var items = (List&lt;InventoryItem&gt;)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void ViewInventoryTestExceptionThrown()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = true
+			};
+			var controller = new HomeController(mockInventoryDal);
+			var result = (ViewResult)controller.ViewInventory();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+		}
+
+
+
+
+
+
+
+
+
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,3,20,4,1],[21,4,24,6,1],[25,4,25,74,1],[26,4,26,56,1],[27,4,27,56,1],[28,4,28,43,1],[29,4,29,41,1],[30,4,30,38,1],[31,3,31,4,1],[37,3,37,4,1],[38,4,41,6,1],[42,4,42,74,1],[43,4,43,56,1],[44,4,44,56,1],[45,4,45,43,1],[46,4,46,83,1],[47,4,47,40,1],[48,4,48,38,1],[49,3,49,4,1],[53,3,53,4,1],[54,4,58,6,1],[59,4,63,6,1],[64,4,64,74,1],[65,4,65,68,1],[66,4,66,68,1],[67,4,67,58,1],[68,3,68,4,1],[72,3,72,4,1],[73,4,77,6,1],[78,4,82,6,1],[83,4,83,74,1],[84,4,84,56,1],[85,4,85,56,1],[86,4,86,46,1],[87,4,87,63,1],[88,3,88,4,1],[92,3,92,4,1],[93,4,97,6,1],[98,4,102,6,1],[103,4,103,74,1],[104,4,104,56,1],[105,4,105,56,1],[106,4,106,56,1],[107,4,107,46,1],[108,4,108,63,1],[110,3,110,4,1],[114,3,114,4,1],[115,4,119,6,1],[120,4,124,6,1],[125,4,125,74,1],[126,4,126,56,1],[127,4,127,56,1],[128,4,128,46,1],[129,4,129,90,1],[131,3,131,4,1],[135,3,135,4,1],[136,4,140,6,1],[141,4,145,6,1],[146,4,146,74,1],[147,4,147,62,1],[148,4,148,56,1],[149,4,149,43,1],[150,4,150,74,1],[152,3,152,4,1],[156,3,156,4,1],[157,4,161,6,1],[162,4,166,6,1],[167,4,167,74,1],[168,4,168,62,1],[169,4,169,56,1],[170,4,170,43,1],[171,4,171,85,1],[172,4,172,52,1],[173,3,173,4,1],[177,3,177,4,1],[178,4,181,6,1],[182,4,182,74,1],[183,4,183,58,1],[184,4,184,56,1],[185,4,185,43,1],[186,4,186,48,1],[187,4,187,36,1],[189,3,189,4,1],[193,3,193,4,1],[194,4,197,6,1],[198,4,198,74,1],[199,4,199,58,1],[200,4,200,56,1],[201,4,201,43,1],[202,4,202,83,1],[203,3,203,4,1],[207,3,207,4,1],[208,4,212,6,1],[213,4,217,6,1],[218,4,218,74,1],[219,4,219,58,1],[220,4,220,56,1],[221,4,221,43,1],[222,4,222,49,1],[223,4,223,40,1],[224,3,224,4,1],[228,3,228,4,1],[229,4,233,6,1],[234,4,238,6,1],[239,4,239,74,1],[240,4,240,58,1],[241,4,241,56,1],[242,4,242,43,1],[243,4,243,83,1],[244,4,244,49,1],[245,4,245,40,1],[246,3,246,4,1],[250,3,250,4,1],[251,4,254,6,1],[255,4,255,74,1],[256,4,256,52,1],[257,4,257,121,1],[259,4,259,68,1],[260,4,260,58,1],[261,4,261,42,1],[262,3,262,4,1],[266,3,266,4,1],[267,4,270,6,1],[271,4,271,74,1],[272,4,272,74,1],[273,4,273,56,1],[274,4,274,53,1],[275,4,275,83,1],[277,3,277,4,1],[281,3,281,4,1],[282,4,286,6,1],[287,4,291,6,1],[292,4,292,74,1],[293,4,293,75,1],[294,4,294,68,1],[295,4,295,58,1],[297,3,297,4,1],[301,3,301,4,1],[302,4,306,6,1],[307,4,311,6,1],[312,4,312,74,1],[313,4,313,75,1],[314,4,314,68,1],[315,4,315,58,1],[316,3,316,4,1],[320,3,320,4,1],[321,4,324,6,1],[325,4,325,74,1],[326,4,326,60,1],[327,4,327,56,1],[328,4,328,56,1],[329,4,329,47,1],[330,4,330,36,1],[331,3,331,4,1],[335,3,335,4,1],[336,4,339,6,1],[340,4,340,74,1],[341,4,341,57,1],[342,4,342,56,1],[343,4,343,56,1],[344,4,344,47,1],[345,4,345,36,1],[346,3,346,4,1],[350,3,350,4,1],[351,4,354,6,1],[355,4,355,74,1],[356,4,356,57,1],[357,4,357,56,1],[358,4,358,56,1],[359,4,359,76,1],[360,4,360,46,1],[361,4,361,35,1],[362,3,362,4,1],[366,3,366,4,1],[367,4,367,52,1],[368,4,368,42,1],[369,4,369,61,1],[370,4,370,68,1],[371,4,371,58,1],[372,4,372,42,1],[373,3,373,4,1],[377,3,377,4,1],[378,4,378,42,1],[379,4,379,42,1],[380,4,380,49,1],[381,4,381,56,1],[382,4,382,43,1],[384,3,384,4,1],[388,3,388,4,1],[389,4,389,42,1],[390,4,390,42,1],[391,4,391,62,1],[392,4,392,68,1],[393,4,393,48,1],[394,4,394,58,1],[396,3,396,4,1],[400,3,400,4,1],[401,4,401,42,1],[402,4,402,48,1],[403,4,403,56,1],[404,4,404,46,1],[406,3,406,4,1],[410,3,410,4,1],[411,4,411,42,1],[412,4,412,54,1],[413,4,413,56,1],[414,4,414,43,1],[416,3,416,4,1],[421,3,421,4,1],[422,4,425,6,1],[426,4,426,54,1],[427,4,427,64,1],[428,4,428,56,1],[429,4,429,52,1],[430,4,430,47,1],[431,4,431,36,1],[432,3,432,4,1],[436,3,436,4,1],[437,4,440,6,1],[441,4,441,58,1],[442,4,442,64,1],[443,4,443,56,1],[444,4,444,54,1],[445,4,445,83,1],[446,3,446,4,1],[450,3,450,4,1],[451,4,454,6,1],[455,4,455,54,1],[456,4,456,56,1],[457,4,457,56,1],[458,4,458,43,1],[459,4,459,50,1],[460,4,460,36,1],[461,3,461,4,1],[465,3,465,4,1],[466,4,469,6,1],[470,4,470,58,1],[471,4,471,56,1],[472,4,472,56,1],[473,4,473,43,1],[474,4,474,83,1],[475,3,475,4,1]]);
+    </script>
+  </body>
+</html>

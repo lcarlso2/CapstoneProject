@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The home controller responsible for the page communication of the Rent Me Application (Member Side).
+    /// &lt;/summary&gt;
+    public class HomeController : Controller
+    {
+
+        private readonly IBorrowDal borrowDal;
+        private readonly ICustomerDal customerDal;
+        private readonly IMediaDal mediaDal;
+        private readonly IRentalDal rentalDal;
+
+        /// &lt;summary&gt;
+        /// The current user that is logged into the system.
+        /// If there is noone logged in, the user is null.
+        /// &lt;/summary&gt;
+        public static Customer CurrentUser;
+
+        /// &lt;summary&gt;
+        /// Creates a new home controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;borrowDal&quot;&gt;the borrow dal for communitaction&lt;/param&gt;
+        /// &lt;param name=&quot;customerDal&quot;&gt;The customer dal for communitaction&lt;/param&gt;
+        /// &lt;param name=&quot;mediaDal&quot;&gt;the media dal for communitaction&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the input dals
+        public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal, IRentalDal rentalDal)
+        {
+            this.borrowDal = borrowDal;
+            this.customerDal = customerDal;
+            this.mediaDal = mediaDal;
+            this.rentalDal = rentalDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with new borrowDals, CustomerDals, MediaDals, and RentalDals.
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+            this.borrowDal = new BorrowDal();
+            this.customerDal = new CustomerDal();
+            this.mediaDal = new MediaDal();
+            this.rentalDal = new RentalDal();
+        }
+
+        /// &lt;summary&gt;
+        /// The index action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the browse page if someone is logged in, otherwise the index page if no one is logged in&lt;/returns&gt;
+        public IActionResult Index()
+        {
+            if (CurrentUser != null)
+            {
+                return RedirectToAction(&quot;Browse&quot;);
+            }
+            return View(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The confirm borrow action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the id of the item being borrowed&lt;/param&gt;
+        /// &lt;returns&gt;The confirm borrow screen or if an error occurs redirected to the browse action&lt;/returns&gt;
+        public IActionResult ConfirmBorrow(int? id)
+        {
+            try
+            {
+                var media = this.mediaDal.RetrieveAllMedia().First(currentMedia =&gt; currentMedia.InventoryId == id);
+                return View(media);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return RedirectToAction(&quot;Browse&quot;);
+            }
+
+        }
+
+        /// &lt;summary&gt;
+        /// The confirmed borrow action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the id of the item being borrowed&lt;/param&gt;
+        /// &lt;returns&gt;Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs&lt;/returns&gt;
+        public IActionResult ConfirmedBorrow(int? id)
+        {
+            Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia =&gt; currentMedia.InventoryId == id);
+
+            try
+            {
+                this.borrowDal.BorrowItem(CurrentUser, media);
+
+                return RedirectToAction(&quot;Browse&quot;);
+            }
+            catch (NullReferenceException ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Please log in again.&quot;;
+                return View(&quot;ConfirmBorrow&quot;, media);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = ex.Message;
+                return View(&quot;ConfirmBorrow&quot;, media);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// The signout action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page&lt;/returns&gt;
+        public IActionResult Signout()
+        {
+            CurrentUser = null;
+
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The browse action
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The browse page&lt;/returns&gt;
+        public IActionResult Browse()
+        {
+            try
+            {
+                var media = this.mediaDal.RetrieveAllMedia();
+
+                return View(&quot;Browse&quot;, media);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(new List&lt;Media&gt;());
+            }
+
+        }
+
+        /// &lt;summary&gt;
+        /// The rental history action
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The rental history page&lt;/returns&gt;
+        public IActionResult RentalHistory()
+        {
+            try
+            {
+                var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(CurrentUser.Email);
+
+                return View(rentals);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(new List&lt;RentalItem&gt;());
+            }
+
+        }
+
+
+        /// &lt;summary&gt;
+        /// The type filter action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;type&quot;&gt;the type to filter the media by&lt;/param&gt;
+        /// &lt;returns&gt;The browse page with filtered items&lt;/returns&gt;
+        public IActionResult TypeFilter(string type)
+        {
+            List&lt;Media&gt; media = new List&lt;Media&gt;();
+            try
+            {
+
+
+                if (type == &quot;All&quot;)
+                {
+                    media = this.mediaDal.RetrieveAllMedia();
+                }
+                else
+                {
+                    media = this.mediaDal.RetrieveMediaByType(type);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;Browse&quot;);
+            }
+
+            return View(&quot;Browse&quot;, media);
+
+        }
+        /// &lt;summary&gt;
+        /// The rental history filter action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;type&quot;&gt;the type to filter the rentals by&lt;/param&gt;
+        /// &lt;returns&gt;The rental history page with filtered items or the browse page if an error occurs&lt;/returns&gt;
+        public IActionResult RentalFilter(string type)
+        {
+            List&lt;RentalItem&gt; media = new List&lt;RentalItem&gt;();
+            List&lt;RentalItem&gt; sortedMedia = new List&lt;RentalItem&gt;();
+
+            try
+            {
+                media = this.rentalDal.RetrieveAllRentalsByCustomer(CurrentUser.Email);
+
+                if (type == &quot;Date&quot;)
+                {
+                    sortedMedia = media.OrderBy(item =&gt; item.RentalDate).ToList();
+                }
+                else if (type == &quot;Status&quot;)
+                {
+                    sortedMedia = media.OrderBy(item =&gt; item.Status).ToList();
+                }
+                else if (type == &quot;Title&quot;)
+                {
+                    sortedMedia = media.OrderBy(item =&gt; item.Title).ToList();
+                }
+                else
+                {
+                    sortedMedia = media;
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;Browse&quot;);
+            }
+
+            return View(&quot;RentalHistory&quot;, sortedMedia);
+
+        }
+
+
+        /// &lt;summary&gt;
+        /// The type category action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;category&quot;&gt;the category to filter the media by&lt;/param&gt;
+        /// &lt;returns&gt;The browse page with filtered items&lt;/returns&gt;
+        public IActionResult CategoryFilter(string category)
+        {
+            List&lt;Media&gt; media = new List&lt;Media&gt;();
+            try
+            {
+                if (category == &quot;All&quot;)
+                {
+                    media = this.mediaDal.RetrieveAllMedia();
+                }
+                else
+                {
+                    media = this.mediaDal.RetrieveMediaByCategory(category);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;Browse&quot;);
+            }
+
+            return View(&quot;Browse&quot;, media);
+
+        }
+
+        /// &lt;summary&gt;
+        /// The register action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The register page&lt;/returns&gt;
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(&quot;Register&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The http post for the register page
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;customer&quot;&gt;the customer being registered&lt;/param&gt;
+        /// &lt;returns&gt; Registers the customer&lt;/returns&gt;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisteringCustomer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    this.customerDal.RegisterCustomer(customer);
+                }
+                catch (Exception ex)
+                {
+
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View(customer);
+                }
+
+                ModelState.Clear();
+                ViewBag.SuccessMessage = &quot;You&#39;re Registered!&quot;;
+
+                return View(&quot;Register&quot;, new RegisteringCustomer());
+            }
+            else
+            {
+                return View(customer);
+            }
+
+        }
+
+
+
+        /// &lt;summary&gt;
+        /// The http post for the action result login
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;customer&quot;&gt;the customer logging in&lt;/param&gt;
+        /// &lt;returns&gt;The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs&lt;/returns&gt;
+        [HttpPost]
+        public IActionResult Login(Customer customer)
+        {
+            try
+            {
+                if (ModelState.IsValid &amp;&amp; this.customerDal.Authenticate(customer.Email, customer.Password) == 1)
+                {
+                    CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
+                    return RedirectToAction(&quot;Browse&quot;);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[41,9,41,120,1],[42,9,42,10,1],[43,13,43,40,1],[44,13,44,44,1],[45,13,45,38,1],[46,13,46,40,1],[47,9,47,10,1],[55,9,55,32,1],[56,9,56,10,1],[57,13,57,46,1],[58,13,58,50,1],[59,13,59,44,1],[60,13,60,46,1],[61,9,61,10,1],[68,9,68,10,1],[69,13,69,37,1],[70,13,70,14,1],[71,17,71,51,1],[73,13,73,34,1],[74,9,74,10,1],[82,9,82,10,1],[84,13,84,14,1],[85,17,85,84,1],[85,84,85,114,1],[85,114,85,116,1],[85,17,85,116,1],[86,17,86,36,1],[88,13,88,30,1],[89,13,89,14,1],[90,17,90,64,1],[91,17,91,51,1],[94,9,94,10,1],[102,9,102,10,1],[103,13,103,82,1],[103,82,103,112,1],[103,112,103,114,1],[103,13,103,114,1],[106,13,106,14,1],[107,17,107,63,1],[109,17,109,51,1],[111,13,111,46,1],[112,13,112,14,1],[113,17,113,51,1],[114,17,114,56,1],[115,17,115,53,1],[117,13,117,33,1],[118,13,118,14,1],[119,17,119,51,1],[120,17,120,44,1],[121,17,121,53,1],[123,9,123,10,1],[130,9,130,10,1],[131,13,131,32,1],[133,13,133,46,1],[134,9,134,10,1],[141,9,141,10,1],[143,13,143,14,1],[144,17,144,62,1],[146,17,146,46,1],[148,13,148,33,1],[149,13,149,14,1],[150,17,150,51,1],[151,17,151,64,1],[152,17,152,48,1],[155,9,155,10,1],[162,9,162,10,1],[164,13,164,14,1],[165,17,165,94,1],[167,17,167,38,1],[169,13,169,33,1],[170,13,170,14,1],[171,17,171,51,1],[172,17,172,64,1],[173,17,173,53,1],[176,9,176,10,1],[185,9,185,10,1],[186,13,186,51,1],[188,13,188,14,1],[191,17,191,35,1],[192,17,192,18,1],[193,21,193,62,1],[194,17,194,18,1],[196,17,196,18,1],[197,21,197,69,1],[198,17,198,18,1],[199,13,199,14,1],[200,13,200,30,1],[201,13,201,14,1],[202,17,202,62,1],[203,17,203,39,1],[206,13,206,42,1],[208,9,208,10,1],[215,9,215,10,1],[216,13,216,61,1],[217,13,217,67,1],[220,13,220,14,1],[221,17,221,88,1],[223,17,223,36,1],[224,17,224,18,1],[225,21,225,57,1],[225,57,225,72,1],[225,72,225,83,1],[225,21,225,83,1],[226,17,226,18,1],[227,22,227,43,1],[228,17,228,18,1],[229,21,229,57,1],[229,57,229,68,1],[229,68,229,79,1],[229,21,229,79,1],[230,17,230,18,1],[231,22,231,42,1],[232,17,232,18,1],[233,21,233,57,1],[233,57,233,67,1],[233,67,233,78,1],[233,21,233,78,1],[234,17,234,18,1],[236,17,236,18,1],[237,21,237,41,1],[238,17,238,18,1],[239,13,239,14,1],[240,13,240,30,1],[241,13,241,14,1],[242,17,242,62,1],[243,17,243,39,1],[246,13,246,55,1],[248,9,248,10,1],[257,9,257,10,1],[258,13,258,51,1],[260,13,260,14,1],[261,17,261,39,1],[262,17,262,18,1],[263,21,263,62,1],[264,17,264,18,1],[266,17,266,18,1],[267,21,267,77,1],[268,17,268,18,1],[269,13,269,14,1],[270,13,270,30,1],[271,13,271,14,1],[272,17,272,62,1],[273,17,273,39,1],[276,13,276,42,1],[278,9,278,10,1],[286,9,286,10,1],[287,13,287,37,1],[288,9,288,10,1],[298,9,298,10,1],[299,13,299,36,1],[300,13,300,14,1],[302,17,302,18,1],[303,21,303,65,1],[304,17,304,18,1],[305,17,305,37,1],[306,17,306,18,1],[308,21,308,55,1],[309,21,309,43,1],[312,17,312,36,1],[313,17,313,63,1],[315,17,315,68,1],[318,13,318,14,1],[319,17,319,39,1],[322,9,322,10,1],[333,9,333,10,1],[335,13,335,14,1],[336,17,336,113,1],[337,17,337,18,1],[338,21,338,105,1],[339,21,339,55,1],[341,13,341,14,1],[342,13,342,33,1],[343,13,343,14,1],[344,17,344,51,1],[345,17,345,76,1],[346,17,346,38,1],[349,13,349,45,1],[350,13,350,34,1],[351,9,351,10,1],[356,9,356,10,0],[357,13,357,113,0],[358,9,358,10,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\DAL\CustomerDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using MySql.Data.MySqlClient;
+using RentMe.Models;
+using SharedCode.DAL;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace RentMe.DAL
+{
+	/// &lt;summary&gt;
+	/// The customer dal class responsible for communicating with the DB for customer related things 
+	/// &lt;/summary&gt;
+	public class CustomerDal : ICustomerDal
+	{
+
+        /// &lt;summary&gt;
+        /// Authenticates the customer&#39;s sign in on the database
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;email&quot;&gt;the customers email&lt;/param&gt;
+        /// &lt;param name=&quot;password&quot;&gt;the customer password&lt;/param&gt;
+        /// &lt;returns&gt;1 if the customer is valid, otherwise 0 and the customer is invalid&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the customer is signed in or an error is thrown if something goes wrong on the database
+        public int Authenticate(string email, string password)
+        {
+	        var validUser = 0;
+	        try
+	        {
+		        var conn = DbConnection.GetConnection();
+		        using (conn)
+		        {
+			        conn.Open();
+			        var query = &quot;select count(*) from member, user where member.memberID = user.userID and email = @email and password = @password&quot;;
+			        using (var cmd = new MySqlCommand(query, conn))
+			        {
+				        cmd.Parameters.Add(&quot;@email&quot;, MySqlDbType.VarChar);
+				        cmd.Parameters[&quot;@email&quot;].Value = email;
+
+				        cmd.Parameters.Add(&quot;@password&quot;, MySqlDbType.VarChar);
+				        cmd.Parameters[&quot;@password&quot;].Value = password;
+
+
+				        validUser = Convert.ToInt32(cmd.ExecuteScalar());
+			        }
+			        conn.Close();
+		        }
+
+	        }
+	        catch (Exception ex)
+	        {
+		        throw ex;
+	        }
+
+	        return validUser;
+        }
+
+        /// &lt;summary&gt;
+        /// Registers the customer on the database 
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;customer&quot;&gt;The customer being registered &lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the customer is registered or an error is thrown if something goes wrong on the database
+        public void RegisterCustomer(RegisteringCustomer customer)
+        {
+
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+
+                    using var transaction = conn.BeginTransaction();
+                    var query = &quot;insert into user(fname, lname, password) values (@fname, @lname, @password)&quot;;
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Transaction = transaction;
+
+                        cmd.Parameters.Add(&quot;@fname&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters[&quot;@fname&quot;].Value = customer.First;
+
+                        cmd.Parameters.Add(&quot;@lname&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters[&quot;@lname&quot;].Value = customer.Last;
+
+                        cmd.Parameters.Add(&quot;@password&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters[&quot;@password&quot;].Value = customer.Password;
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+                            transaction.Rollback();
+                        }
+
+                        cmd.Parameters.Clear();
+                        cmd.CommandText =
+                            &quot;insert into member(memberID, address, email, state, zip) values (last_insert_id(), @address, @email, @state, @zip)&quot;;
+
+
+                        cmd.Parameters.Add(&quot;@address&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters.Add(&quot;@email&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters.Add(&quot;@state&quot;, MySqlDbType.VarChar);
+                        cmd.Parameters.Add(&quot;@zip&quot;, MySqlDbType.VarChar);
+
+
+                        cmd.Parameters[&quot;@address&quot;].Value = customer.Address;
+                        cmd.Parameters[&quot;@email&quot;].Value = customer.Email;
+                        cmd.Parameters[&quot;@state&quot;].Value = customer.State;
+                        cmd.Parameters[&quot;@zip&quot;].Value = customer.Zip;
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+                            transaction.Rollback();
+                        }
+                        transaction.Commit();
+                    }
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[26,9,26,10,1],[27,10,27,28,1],[29,10,29,11,1],[30,11,30,51,1],[31,11,31,23,1],[32,11,32,12,1],[33,12,33,24,1],[34,12,34,140,1],[35,19,35,58,1],[36,12,36,13,1],[37,13,37,63,1],[38,13,38,52,1],[40,13,40,66,1],[41,13,41,58,1],[44,13,44,62,1],[45,12,45,13,1],[46,12,46,25,1],[47,11,47,12,1],[49,10,49,11,1],[50,10,50,30,0],[51,10,51,11,0],[52,11,52,20,0],[55,10,55,27,1],[56,9,56,10,1],[65,9,65,10,1],[68,13,68,14,1],[69,17,69,57,1],[70,17,70,29,1],[71,17,71,18,1],[72,21,72,33,1],[74,21,74,69,1],[75,21,75,111,1],[77,28,77,67,1],[78,21,78,22,1],[79,25,79,55,1],[81,25,81,75,1],[82,25,82,73,1],[84,25,84,75,1],[85,25,85,72,1],[87,25,87,78,1],[88,25,88,79,1],[90,25,90,56,1],[91,25,91,26,0],[92,29,92,52,0],[93,25,93,26,0],[95,25,95,48,1],[96,25,97,146,1],[100,25,100,77,1],[101,25,101,75,1],[102,25,102,75,1],[103,25,103,73,1],[106,25,106,77,1],[107,25,107,73,1],[108,25,108,73,1],[109,25,109,69,1],[111,25,111,56,1],[112,25,112,26,0],[113,29,113,52,0],[114,25,114,26,0],[115,25,115,46,1],[116,21,116,22,1],[117,21,117,34,1],[119,17,119,18,1],[120,13,120,14,1],[121,13,121,33,0],[122,13,122,14,0],[123,17,123,26,0],[127,9,127,10,1]]);
+    </script>
+  </body>
+</html>

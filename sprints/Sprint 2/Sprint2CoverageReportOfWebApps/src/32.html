@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\Models\RegisteringCustomer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of the registering customer
+	/// &lt;/summary&gt;
+	public class RegisteringCustomer : Customer
+	{
+
+		/// &lt;summary&gt;
+		/// Gets or sets the first name
+		/// &lt;/summary&gt;
+		[Required]
+		[Display(Name = &quot;First Name&quot;)]
+		public string First { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the last name
+		/// &lt;/summary&gt;
+		[Required]
+		[Display(Name = &quot;Last Name&quot;)]
+		public string Last { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm email
+		/// &lt;/summary&gt;
+		[Required]
+		[Display(Name = &quot;Confirm Email&quot;)]
+		[DataType(DataType.EmailAddress)]
+		[Compare(&quot;Email&quot;)]
+		public string ConfirmEmail { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm password
+		/// &lt;/summary&gt;
+		[Required]
+		[Display(Name = &quot;Confirm Password&quot;)]
+		[DataType(DataType.Password)]
+		[Compare(&quot;Password&quot;)]
+		public string ConfirmPassword { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the password
+		/// &lt;/summary&gt;
+		[Required]
+		public string Address { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the state 
+		/// &lt;/summary&gt;
+		[Required]
+		public string State { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the zip
+		/// &lt;/summary&gt;
+		[RegularExpression(@&quot;\b\d{5}\b&quot;, ErrorMessage = &quot;Must be five digits&quot;)]
+		[Required]
+		public string Zip { get; set; }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,25,20,29,1],[20,30,20,34,1],[28,24,28,28,1],[28,29,28,33,1],[38,32,38,36,0],[38,37,38,41,1],[47,35,47,39,0],[47,40,47,44,1],[54,27,54,31,1],[54,32,54,36,1],[60,25,60,29,1],[60,30,60,34,1],[68,23,68,27,1],[68,28,68,32,1]]);
+    </script>
+  </body>
+</html>

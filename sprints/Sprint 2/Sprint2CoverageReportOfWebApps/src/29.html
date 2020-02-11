@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMe\Models\Customer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of customer object
+	/// &lt;/summary&gt;
+	public class Customer
+	{
+		/// &lt;summary&gt;
+		/// Gets or sets the email of the customer
+		/// &lt;/summary&gt;
+		[Required]
+		[DataType(DataType.EmailAddress)]
+		public string Email { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or set the password
+		/// &lt;/summary&gt;
+		[Required]
+		[DataType(DataType.Password)]
+		public string Password { get; set; }
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,25,19,29,1],[19,30,19,34,1],[26,28,26,32,1],[26,33,26,37,1]]);
+    </script>
+  </body>
+</html>

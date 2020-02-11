@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\SharedCode\Model\Employee.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+
+namespace SharedCode.Model
+{
+	/// &lt;summary&gt;
+	/// The employee class
+	/// &lt;/summary&gt;
+	public class Employee : BaseEmployee
+	{
+        
+        /// &lt;summary&gt;
+        /// Gets or sets the employee id
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The employee ID
+        /// &lt;/value&gt;
+        public int EmployeeId { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the confirm password
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The confirm password
+        /// &lt;/value&gt;
+        [Required]
+        [Display(Name = &quot;Confirm Password&quot;)]
+        [DataType(DataType.Password)]
+        [Compare(&quot;Password&quot;)]
+        public string ConfirmPassword { get; set; }
+
+
+        /// &lt;summary&gt;
+        /// Gets or sets the first name.
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The first name.
+        /// &lt;/value&gt;
+        [Required]
+        public string FirstName { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the last name.
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The last name.
+        /// &lt;/value&gt;
+        [Required]
+        public string LastName { get; set; }
+
+
+        /// &lt;summary&gt;
+        /// Gets or sets the whether the employee is a manager
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// True if employee is manager, false if not
+        /// &lt;/value&gt;
+        [Display(Name = &quot;Is Manager&quot;)]
+        public bool IsManager { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets the employee info string
+        /// &lt;/summary&gt;
+        public string EmployeeInfo =&gt; $&quot;Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n&quot;;
+
+        /// &lt;summary&gt;
+        /// The default constructor for the employee
+        /// &lt;/summary&gt;
+        public Employee()
+        {
+            this.FirstName = &quot;&quot;;
+            this.LastName = &quot;&quot;;
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;Employee&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;firstName&quot;&gt;The first name.&lt;/param&gt;
+        /// &lt;param name=&quot;lastName&quot;&gt;The last name.&lt;/param&gt;
+        public Employee(string firstName, string lastName)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.IsManager = false;
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the employee
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;firstName&quot;&gt; the first name &lt;/param&gt;
+        /// &lt;param name=&quot;lastName&quot;&gt; the last name&lt;/param&gt;
+        /// &lt;param name=&quot;username&quot;&gt; the username&lt;/param&gt;
+        /// &lt;param name=&quot;isManager&quot;&gt; true or false if the employee is a manager or not&lt;/param&gt;
+        public Employee(string firstName, string lastName, string username, bool isManager)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Username = username;
+            this.IsManager = isManager;
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,33,20,37,1],[20,33,20,37,0],[20,33,20,37,1],[20,38,20,42,0],[20,38,20,42,0],[20,38,20,42,1],[32,41,32,45,0],[32,41,32,45,0],[32,41,32,45,1],[32,46,32,50,0],[32,46,32,50,0],[32,46,32,50,1],[42,35,42,39,0],[42,35,42,39,1],[42,35,42,39,0],[42,40,42,44,1],[42,40,42,44,1],[42,40,42,44,0],[51,34,51,38,1],[51,34,51,38,0],[51,34,51,38,0],[51,39,51,43,1],[51,39,51,43,0],[51,39,51,43,1],[61,33,61,37,0],[61,33,61,37,1],[61,33,61,37,1],[61,38,61,42,0],[61,38,61,42,1],[61,38,61,42,0],[66,39,66,142,0],[66,39,66,142,1],[66,39,66,142,0],[71,9,71,26,1],[71,9,71,26,1],[71,9,71,26,0],[72,9,72,10,1],[72,9,72,10,0],[72,9,72,10,1],[73,13,73,33,1],[73,13,73,33,0],[73,13,73,33,1],[74,13,74,32,0],[74,13,74,32,1],[74,13,74,32,1],[75,9,75,10,1],[75,9,75,10,1],[75,9,75,10,0],[82,9,82,59,1],[82,9,82,59,0],[82,9,82,59,0],[83,9,83,10,1],[83,9,83,10,0],[83,9,83,10,0],[84,13,84,40,0],[84,13,84,40,0],[84,13,84,40,1],[85,13,85,38,0],[85,13,85,38,1],[85,13,85,38,0],[86,13,86,36,0],[86,13,86,36,1],[86,13,86,36,0],[87,9,87,10,0],[87,9,87,10,0],[87,9,87,10,1],[96,9,96,92,0],[96,9,96,92,1],[96,9,96,92,0],[97,9,97,10,0],[97,9,97,10,0],[97,9,97,10,1],[98,13,98,40,0],[98,13,98,40,0],[98,13,98,40,1],[99,13,99,38,1],[99,13,99,38,0],[99,13,99,38,0],[100,13,100,38,0],[100,13,100,38,0],[100,13,100,38,1],[101,13,101,40,0],[101,13,101,40,0],[101,13,101,40,1],[102,9,102,10,1],[102,9,102,10,0],[102,9,102,10,0]]);
+    </script>
+  </body>
+</html>

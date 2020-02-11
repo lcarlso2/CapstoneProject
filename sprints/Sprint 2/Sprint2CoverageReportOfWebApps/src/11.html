@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\SharedCode\DAL\InventoryDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using MySql.Data.MySqlClient;
+using SharedCode.Model;
+
+namespace SharedCode.DAL
+{
+    /// &lt;summary&gt;
+    /// The inventory dal class responsible for communicating with the database for inventory items 
+    /// &lt;/summary&gt;
+    public class InventoryDal : IInventoryDal
+    {
+        /// &lt;summary&gt;
+        /// Gets the inventory items from the database  
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The inventory items from the database or an error if something goes wrong on the database &lt;/returns&gt;
+        public List&lt;InventoryItem&gt; GetInventoryItems()
+        {
+            var inventory = new List&lt;InventoryItem&gt;();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = &quot;select * from inventory_item i, media m where i.mediaID = m.mediaID&quot;;
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var titleOrdinal = reader.GetOrdinal(&quot;title&quot;);
+                            var categoryOrdinal = reader.GetOrdinal(&quot;category&quot;);
+                            var typeOrdinal = reader.GetOrdinal(&quot;type&quot;);
+                            var conditionOrdinal = reader.GetOrdinal(&quot;condition&quot;);
+                            var inStockOrdinal = reader.GetOrdinal(&quot;inStock&quot;);
+                            var isRentedOrdinal = reader.GetOrdinal(&quot;isRented&quot;);
+                            var inventoryIdOrdinal = reader.GetOrdinal(&quot;inventoryID&quot;);
+                            var mediaIdOrdinal = reader.GetOrdinal(&quot;mediaID&quot;);
+
+                            while (reader.Read())
+                            {
+                                var title = reader[titleOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(titleOrdinal);
+                                var category = reader[categoryOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(categoryOrdinal);
+                                var type = reader[typeOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(typeOrdinal);
+                                var condition = reader[conditionOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(conditionOrdinal);
+                                var inStock = reader.GetInt32(inStockOrdinal);
+                                var isRented = reader.GetInt32(isRentedOrdinal);
+                                var inventoryId = reader.GetInt32(inventoryIdOrdinal);
+                                var mediaId = reader.GetInt32(mediaIdOrdinal);
+
+
+
+                                var inventoryItem = new InventoryItem
+                                {
+                                    Title = title,
+                                    Category = category,
+                                    Type = type,
+                                    Condition = condition,
+                                    IsRented = isRented == 1,
+                                    InStock = inStock == 1,
+                                    InventoryId = inventoryId,
+                                    MediaId = mediaId
+                                };
+
+                                inventory.Add(inventoryItem);
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return inventory;
+        }
+
+        public List&lt;RentalItem&gt; GetItemDetailSummary(int inventoryId)
+        {
+            List&lt;RentalItem&gt; rentalItems = new List&lt;RentalItem&gt;();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = &quot;select r.memberID, email, r.rentalID, r.rentalDateTime, r.returnDateTime, r.inventoryID, category, title, status, s2.updateDateTime from rental_transaction r, user, member, media, inventory_item i, status_history s2, status where userID = member.memberID and member.memberID = r.memberID and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and i.inventoryID = @inventoryId and s2.rentalTransactionID = r.rentalID and s2.statusID = status.statusID&quot;;
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+
+                        cmd.Parameters.Add(&quot;@inventoryId&quot;, MySqlDbType.Int32);
+                        cmd.Parameters[&quot;@inventoryId&quot;].Value = inventoryId;
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var memberIdOrdinal = reader.GetOrdinal(&quot;memberID&quot;);
+                            var emailOrdinal = reader.GetOrdinal(&quot;email&quot;);
+                            var rentalIdOrdinal = reader.GetOrdinal(&quot;rentalID&quot;);
+                            var rentalDateTimeOrdinal = reader.GetOrdinal(&quot;rentalDateTime&quot;);
+                            var returnDateTimeOrdinal = reader.GetOrdinal(&quot;returnDateTime&quot;);
+                            var inventoryIdOrdinal = reader.GetOrdinal(&quot;inventoryID&quot;);
+                            var categoryOrdinal = reader.GetOrdinal(&quot;category&quot;);
+                            var titleOrdinal = reader.GetOrdinal(&quot;title&quot;);
+                            var statusOrdinal = reader.GetOrdinal(&quot;status&quot;);
+                            var updateDateTimeOrdinal = reader.GetOrdinal(&quot;updateDateTime&quot;);
+
+                            while (reader.Read())
+                            {
+                                var memberID = reader.GetInt32(memberIdOrdinal);
+                                var email = reader[emailOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(emailOrdinal);
+                                var rentalID = reader.GetInt32(rentalIdOrdinal);
+                                var rentalDateTime = reader.GetDateTime(rentalDateTimeOrdinal);
+                                var returnDateTime = reader.GetDateTime(returnDateTimeOrdinal);
+                                var inventoryID = reader.GetInt32(inventoryIdOrdinal);
+                                var category = reader[categoryOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(categoryOrdinal);
+                                var title = reader[titleOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(titleOrdinal);
+                                var status = reader[statusOrdinal] == DBNull.Value ? &quot;null&quot; : reader.GetString(statusOrdinal);
+                                var updateDateTime = reader.GetDateTime(updateDateTimeOrdinal);
+
+
+                                var rentalItem = new RentalItem
+                                {
+                                    MemberId = memberID,
+                                    MemberEmail = email,
+                                    RentalId = rentalID,
+                                    RentalDate = rentalDateTime,
+                                    ReturnDate = returnDateTime,
+                                    InventoryId = inventoryID,
+                                    Category = category,
+                                    Title = title,
+                                    Status = status,
+                                    UpdateDateTime = updateDateTime
+                                };
+
+                                rentalItems.Add(rentalItem);
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rentalItems;
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,9,19,10,0],[19,9,19,10,0],[19,9,19,10,1],[20,13,20,55,0],[20,13,20,55,0],[20,13,20,55,1],[22,13,22,14,0],[22,13,22,14,0],[22,13,22,14,1],[23,17,23,57,0],[23,17,23,57,1],[23,17,23,57,0],[24,17,24,29,1],[24,17,24,29,0],[24,17,24,29,0],[25,17,25,18,1],[25,17,25,18,0],[25,17,25,18,0],[26,21,26,33,1],[26,21,26,33,0],[26,21,26,33,0],[27,21,27,103,0],[27,21,27,103,1],[27,21,27,103,0],[28,28,28,67,0],[28,28,28,67,1],[28,28,28,67,0],[29,21,29,22,1],[29,21,29,22,0],[29,21,29,22,0],[30,32,30,64,0],[30,32,30,64,0],[30,32,30,64,1],[31,25,31,26,0],[31,25,31,26,0],[31,25,31,26,1],[32,29,32,75,0],[32,29,32,75,1],[32,29,32,75,0],[33,29,33,81,1],[33,29,33,81,0],[33,29,33,81,0],[34,29,34,73,1],[34,29,34,73,0],[34,29,34,73,0],[35,29,35,83,1],[35,29,35,83,0],[35,29,35,83,0],[36,29,36,79,1],[36,29,36,79,0],[36,29,36,79,0],[37,29,37,81,0],[37,29,37,81,1],[37,29,37,81,0],[38,29,38,87,0],[38,29,38,87,0],[38,29,38,87,1],[39,29,39,79,1],[39,29,39,79,0],[39,29,39,79,0],[41,29,41,50,1],[41,29,41,50,0],[41,29,41,50,0],[42,29,42,30,1],[42,29,42,30,0],[42,29,42,30,0],[43,33,43,124,0],[43,33,43,124,0],[43,33,43,124,1],[44,33,44,133,1],[44,33,44,133,0],[44,33,44,133,0],[45,33,45,121,1],[45,33,45,121,0],[45,33,45,121,0],[46,33,46,136,0],[46,33,46,136,1],[46,33,46,136,0],[47,33,47,79,0],[47,33,47,79,1],[47,33,47,79,0],[48,33,48,81,0],[48,33,48,81,1],[48,33,48,81,0],[49,33,49,87,1],[49,33,49,87,0],[49,33,49,87,0],[50,33,50,79,0],[50,33,50,79,0],[50,33,50,79,1],[54,33,64,35,0],[54,33,64,35,0],[54,33,64,35,1],[66,33,66,62,0],[66,33,66,62,1],[66,33,66,62,0],[67,29,67,30,1],[67,29,67,30,0],[67,29,67,30,0],[68,25,68,26,1],[68,25,68,26,0],[68,25,68,26,0],[69,21,69,22,1],[69,21,69,22,0],[69,21,69,22,0],[70,21,70,34,1],[70,21,70,34,0],[70,21,70,34,0],[71,17,71,18,1],[71,17,71,18,0],[71,17,71,18,0],[72,13,72,14,1],[72,13,72,14,0],[72,13,72,14,0],[73,13,73,33,0],[73,13,73,33,0],[73,13,73,33,0],[74,13,74,14,0],[74,13,74,14,0],[74,13,74,14,0],[75,17,75,26,0],[75,17,75,26,0],[75,17,75,26,0],[78,13,78,30,0],[78,13,78,30,1],[78,13,78,30,0],[79,9,79,10,0],[79,9,79,10,0],[79,9,79,10,1],[82,9,82,10,1],[82,9,82,10,0],[82,9,82,10,0],[83,13,83,67,0],[83,13,83,67,0],[83,13,83,67,1],[85,13,85,14,0],[85,13,85,14,1],[85,13,85,14,0],[86,17,86,57,1],[86,17,86,57,0],[86,17,86,57,0],[87,17,87,29,0],[87,17,87,29,0],[87,17,87,29,1],[88,17,88,18,1],[88,17,88,18,0],[88,17,88,18,0],[89,21,89,33,1],[89,21,89,33,0],[89,21,89,33,0],[90,21,90,494,0],[90,21,90,494,1],[90,21,90,494,0],[91,28,91,67,0],[91,28,91,67,0],[91,28,91,67,1],[92,21,92,22,1],[92,21,92,22,0],[92,21,92,22,0],[94,25,94,79,0],[94,25,94,79,0],[94,25,94,79,1],[95,25,95,76,0],[95,25,95,76,0],[95,25,95,76,1],[97,32,97,64,0],[97,32,97,64,0],[97,32,97,64,1],[98,25,98,26,0],[98,25,98,26,0],[98,25,98,26,1],[99,29,99,81,0],[99,29,99,81,1],[99,29,99,81,0],[100,29,100,75,1],[100,29,100,75,0],[100,29,100,75,0],[101,29,101,81,1],[101,29,101,81,0],[101,29,101,81,0],[102,29,102,93,0],[102,29,102,93,0],[102,29,102,93,1],[103,29,103,93,0],[103,29,103,93,1],[103,29,103,93,0],[104,29,104,87,1],[104,29,104,87,0],[104,29,104,87,0],[105,29,105,81,0],[105,29,105,81,0],[105,29,105,81,1],[106,29,106,75,0],[106,29,106,75,1],[106,29,106,75,0],[107,29,107,77,1],[107,29,107,77,0],[107,29,107,77,0],[108,29,108,93,0],[108,29,108,93,1],[108,29,108,93,0],[110,29,110,50,1],[110,29,110,50,0],[110,29,110,50,0],[111,29,111,30,0],[111,29,111,30,0],[111,29,111,30,1],[112,33,112,81,1],[112,33,112,81,0],[112,33,112,81,0],[113,33,113,124,0],[113,33,113,124,0],[113,33,113,124,1],[114,33,114,81,0],[114,33,114,81,1],[114,33,114,81,0],[115,33,115,96,0],[115,33,115,96,0],[115,33,115,96,1],[116,33,116,96,0],[116,33,116,96,1],[116,33,116,96,0],[117,33,117,87,1],[117,33,117,87,0],[117,33,117,87,0],[118,33,118,133,0],[118,33,118,133,1],[118,33,118,133,0],[119,33,119,124,0],[119,33,119,124,1],[119,33,119,124,0],[120,33,120,127,0],[120,33,120,127,0],[120,33,120,127,1],[121,33,121,96,1],[121,33,121,96,0],[121,33,121,96,0],[124,33,136,35,1],[124,33,136,35,0],[124,33,136,35,0],[138,33,138,61,1],[138,33,138,61,0],[138,33,138,61,0],[139,29,139,30,0],[139,29,139,30,1],[139,29,139,30,0],[140,25,140,26,0],[140,25,140,26,1],[140,25,140,26,0],[141,21,141,22,0],[141,21,141,22,0],[141,21,141,22,1],[142,21,142,34,0],[142,21,142,34,1],[142,21,142,34,0],[143,17,143,18,1],[143,17,143,18,0],[143,17,143,18,0],[144,13,144,14,1],[144,13,144,14,0],[144,13,144,14,0],[145,13,145,33,0],[145,13,145,33,0],[145,13,145,33,0],[146,13,146,14,0],[146,13,146,14,0],[146,13,146,14,0],[147,17,147,26,0],[147,17,147,26,0],[147,17,147,26,0],[150,13,150,32,0],[150,13,150,32,0],[150,13,150,32,1],[151,9,151,10,1],[151,9,151,10,0],[151,9,151,10,0]]);
+    </script>
+  </body>
+</html>

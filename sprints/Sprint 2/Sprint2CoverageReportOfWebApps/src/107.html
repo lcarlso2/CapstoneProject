@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeDesktop\ViewModel\BaseViewModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeDesktop.ViewModel
+{
+	/// &lt;summary&gt;
+	/// The base view model class
+	/// &lt;/summary&gt;
+	public class BaseViewModel : INotifyPropertyChanged
+	{
+        private const int VALID_EMPLOYEE = 1;
+
+        private Employee currentEmployee;
+
+        private ObservableCollection&lt;RentalItem&gt; rentalItems;
+
+        private IRentalDal rentalDal;
+        private IEmployeeDal employeeDal;
+
+
+        /// &lt;summary&gt;
+        /// Gets or sets the current employee
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The current employee 
+        /// &lt;/value&gt;
+        public Employee CurrentEmployee
+        {
+            get =&gt; this.currentEmployee;
+            set
+            {
+                this.currentEmployee = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+		/// Gets or sets the borrowed items 
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		/// The borrow items 
+		/// &lt;/value&gt;
+        public ObservableCollection&lt;RentalItem&gt; RentalItems
+        {
+            get =&gt; this.rentalItems;
+            set
+            {
+                this.rentalItems = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;BaseViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// @postcondition this.rentalDal is created as a new RentalDal
+        /// @postcondition this.employeeDal is created as a new EmployeeDal
+        public BaseViewModel()
+        {
+            this.rentalDal = new RentalDal();
+            this.employeeDal = new EmployeeDal();
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;BaseViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalDal&quot;&gt;The rental dal.&lt;/param&gt;
+        /// &lt;param name=&quot;employeeDal&quot;&gt;The employee dal.&lt;/param&gt;
+        /// @postcondition this.rentalDal is set to the rental dal that is passed in
+        /// @postcondition this.employeeDal is set to the employee dal that is passed in
+        public BaseViewModel(IRentalDal rentalDal, IEmployeeDal employeeDal)
+        {
+            this.rentalDal = rentalDal;
+            this.employeeDal = employeeDal;
+        }
+        /// &lt;summary&gt;
+        /// Gets the borrowed items.
+        /// &lt;/summary&gt;
+        public void GetRentalItems()
+        {
+            try
+            {
+                this.RentalItems = new ObservableCollection&lt;RentalItem&gt;(this.rentalDal.RetrieveAllRentedItems());
+            } catch (Exception ex)
+            {
+                throw ex;
+            }
+           
+        }
+
+        /// &lt;summary&gt;
+        ///     Occurs when a property value changes.
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt; the event&lt;/returns&gt;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// &lt;summary&gt;
+        /// Validates the login credentials 
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;username&quot;&gt;the username&lt;/param&gt;
+        /// &lt;param name=&quot;password&quot;&gt;the password&lt;/param&gt;
+        /// &lt;returns&gt;True if the login was valid, otherwise false&lt;/returns&gt;
+        public bool ValidateLoginCredentials(string username, string password)
+        {
+            bool isValidEmployee;
+
+            try
+            {
+                isValidEmployee = this.employeeDal.Authenticate(username, password) == VALID_EMPLOYEE;
+                if (isValidEmployee)
+                {
+                    this.CurrentEmployee = this.employeeDal.GetCurrentUser(username, password);
+                    this.CurrentEmployee.Username = username;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isValidEmployee;
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[37,20,37,40,0],[39,13,39,14,0],[40,17,40,46,0],[41,17,41,42,0],[42,13,42,14,0],[53,20,53,36,0],[55,13,55,14,0],[56,17,56,42,0],[57,17,57,42,0],[58,13,58,14,0],[66,9,66,31,0],[67,9,67,10,0],[68,13,68,46,0],[69,13,69,50,0],[70,9,70,10,0],[79,9,79,77,0],[80,9,80,10,0],[81,13,81,40,0],[82,13,82,44,0],[83,9,83,10,0],[88,9,88,10,0],[90,13,90,14,0],[91,17,91,114,0],[92,13,92,14,0],[92,15,92,35,0],[93,13,93,14,0],[94,17,94,26,0],[97,9,97,10,0],[106,9,106,10,0],[107,13,107,92,0],[108,9,108,10,0],[117,9,117,10,0],[121,13,121,14,0],[122,17,122,103,0],[123,17,123,37,0],[124,17,124,18,0],[125,21,125,96,0],[126,21,126,62,0],[127,17,127,18,0],[128,13,128,14,0],[129,13,129,33,0],[130,13,130,14,0],[131,17,131,26,0],[134,13,134,36,0],[135,9,135,10,0]]);
+    </script>
+  </body>
+</html>

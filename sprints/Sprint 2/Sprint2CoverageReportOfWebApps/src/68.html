@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\lucas\Desktop\CS4982CapstoneProject\code\RentMe\RentMeDesktop\App.xaml.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+using RentMeDesktop.View;
+
+namespace RentMeDesktop
+{
+    /// &lt;summary&gt;
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// &lt;/summary&gt;
+    sealed partial class App : Application
+    {
+        /// &lt;summary&gt;
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// &lt;/summary&gt;
+        public App()
+        {
+            this.InitializeComponent();
+            this.Suspending += OnSuspending;
+        }
+
+        /// &lt;summary&gt;
+        /// Invoked when the application is launched normally by the end user.  Other entry points
+        /// will be used such as when the application is launched to open a specific file.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;e&quot;&gt;Details about the launch request and process.&lt;/param&gt;
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (rootFrame == null)
+            {
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: Load state from previously suspended application
+                }
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
+            }
+
+            if (e.PrelaunchActivated == false)
+            {
+                if (rootFrame.Content == null)
+                {
+                    // When the navigation stack isn&#39;t restored navigate to the first page,
+                    // configuring the new page by passing required information as a navigation
+                    // parameter
+                    rootFrame.Navigate(typeof(Login), e.Arguments);
+                }
+                // Ensure the current window is active
+                Window.Current.Activate();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Invoked when Navigation to a certain page fails
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;The Frame which failed navigation&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;Details about the navigation failure&lt;/param&gt;
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception(&quot;Failed to load Page &quot; + e.SourcePageType.FullName);
+        }
+
+        /// &lt;summary&gt;
+        /// Invoked when application execution is being suspended.  Application state is saved
+        /// without knowing whether the application will be terminated or resumed with the contents
+        /// of memory still intact.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;sender&quot;&gt;The source of the suspend request.&lt;/param&gt;
+        /// &lt;param name=&quot;e&quot;&gt;Details about the suspend request.&lt;/param&gt;
+        private void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            //TODO: Save application state and stop any background activity
+            deferral.Complete();
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[30,9,30,21,0],[31,9,31,10,0],[32,13,32,40,0],[33,13,33,45,0],[34,9,34,10,0],[42,9,42,10,0],[43,13,43,63,0],[47,13,47,35,0],[48,13,48,14,0],[50,17,50,41,0],[52,17,52,66,0],[54,17,54,86,0],[55,17,55,18,0],[57,17,57,18,0],[60,17,60,52,0],[61,13,61,14,0],[63,13,63,47,0],[64,13,64,14,0],[65,17,65,47,0],[66,17,66,18,0],[70,21,70,68,0],[71,17,71,18,0],[73,17,73,43,0],[74,13,74,14,0],[75,9,75,10,0],[83,9,83,10,0],[84,13,84,85,0],[95,9,95,10,0],[96,13,96,64,0],[98,13,98,33,0],[99,9,99,10,0]]);
+    </script>
+  </body>
+</html>
