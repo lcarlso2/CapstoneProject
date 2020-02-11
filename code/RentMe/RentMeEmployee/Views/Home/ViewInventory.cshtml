@@ -78,13 +78,14 @@
                                 @Html.DisplayFor(modelItem => item.InventoryId)
                             </td>
                             <td>
-                               <a class="btn btn-primary" asp-controller="Home" asp-action="InventoryItemDetails" asp-route-id="@item.InventoryId">View Details</a>
+                                <button class="btn btn-primary">
+                                    <a  asp-controller="Home" asp-action="InventoryItemDetails" asp-route-id="@item.InventoryId">View Details</a>
+                                </button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        @Html.PartialAsync("ItemDetail");
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-2">
                     <label class=" label-danger">@ViewBag.ErrorMessage</label>

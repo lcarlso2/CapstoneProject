@@ -343,12 +343,12 @@ namespace RentMeEmployee.Controllers
             try
             {
                 var inventoryItems = this.inventoryDal.GetItemDetailSummary(id);
-                var formatter = new OutputFormatter();
-                return PartialView("ItemDetail", formatter.GenerateHistoryOfInventoryItem(inventoryItems));
-                    //
+                return View("ItemDetails", inventoryItems);
+                    
             } catch (Exception)
             {
-                return PartialView("ItemDetail");
+                ViewBag.ErrorMessage = "Uh-oh something went wrong";
+                return View("ViewInventory");
             }
             
         }

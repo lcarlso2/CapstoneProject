@@ -72,6 +72,7 @@ namespace SharedCode.Model
         /// <value>
         ///The update date time
         /// </value>
+         [Display(Name = "Update Date")]
         public DateTime UpdateDateTime {get; set; }
 
 
