@@ -14,7 +14,7 @@ using SharedCode.Model;
 namespace RentMe.Controllers
 {
     /// <summary>
-    /// The home controller responsible for the page communication 
+    /// The home controller responsible for the page communication of the Rent Me Application (Member Side).
     /// </summary>
     public class HomeController : Controller
     {
@@ -25,18 +25,19 @@ namespace RentMe.Controllers
         private readonly IRentalDal rentalDal;
 
         /// <summary>
-        /// The current user that is logged in
+        /// The current user that is logged into the system.
+        /// If there is noone logged in, the user is null.
         /// </summary>
         public static Customer CurrentUser;
 
         /// <summary>
         /// Creates a new home controller with the desired dals
         /// </summary>
-        /// <param name="borrowDal">the borrow dal</param>
-        /// <param name="customerDal">the customer dal</param>
-        /// <param name="mediaDal">the media dal</param>
+        /// <param name="borrowDal">the borrow dal for communitaction</param>
+        /// <param name="customerDal">The customer dal for communitaction</param>
+        /// <param name="mediaDal">the media dal for communitaction</param>
         /// @precondition none
-        /// @postcondition the controller is created
+        /// @postcondition the controller is created with the input dals
         public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal, IRentalDal rentalDal)
         {
             this.borrowDal = borrowDal;
@@ -49,7 +50,7 @@ namespace RentMe.Controllers
         /// Creates a new default home controller
         /// </summary>
         /// @precondition none
-        /// @postcondition the controller is created
+        /// @postcondition the controller is created with new borrowDals, CustomerDals, MediaDals, and RentalDals.
         [ActivatorUtilitiesConstructor]
         public HomeController()
         {
@@ -178,6 +179,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The type filter action
         /// </summary>
+        /// <param name="type">the type to filter the media by</param>
         /// <returns>The browse page with filtered items</returns>
         public IActionResult TypeFilter(string type)
         {
@@ -207,6 +209,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The rental history filter action
         /// </summary>
+        /// <param name="type">the type to filter the rentals by</param>
         /// <returns>The rental history page with filtered items or the browse page if an error occurs</returns>
         public IActionResult RentalFilter(string type)
         {
@@ -248,6 +251,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The type category action
         /// </summary>
+        /// <param name="category">the category to filter the media by</param>
         /// <returns>The browse page with filtered items</returns>
         public IActionResult CategoryFilter(string category)
         {
