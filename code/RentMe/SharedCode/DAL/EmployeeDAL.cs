@@ -6,20 +6,20 @@ using SharedCode.Model;
 
 namespace SharedCode.DAL
 {
-	/// <summary>
-	/// The employee DAL responsible for communicating with the database for employee purposes
-	/// </summary>
-	public class EmployeeDal : IEmployeeDal
-	{
+    /// <summary>
+    /// The employee DAL responsible for communicating with the database for employee purposes
+    /// </summary>
+    public class EmployeeDal : IEmployeeDal
+    {
 
-		/// <summary>
-		/// Adds an employee to the database
-		/// </summary>
-		/// <param name="employee">The employee being added</param>
-		/// <param name="password">The password of the employee</param>
-		/// @precondition none
-		/// @postcondition the employee is added or an error is thrown if something went wrong on the database
-		public void AddEmployee(Employee employee, string password)
+        /// <summary>
+        /// Adds an employee to the database
+        /// </summary>
+        /// <param name="employee">The employee being added</param>
+        /// <param name="password">The password of the employee</param>
+        /// @precondition none
+        /// @postcondition the employee is added or an error is thrown if something went wrong on the database
+        public void AddEmployee(Employee employee, string password)
         {
             try
             {
@@ -80,36 +80,36 @@ namespace SharedCode.DAL
             }
         }
 
-		/// <summary>
-		/// Removes the employee with the given username from the database
-		/// </summary>
-		/// <param name="username">the username of the employee being removed</param>
-		/// @precondition none
-		/// @postcondition the employee is removed or an error is thrown if something went wrong on the database 
+        /// <summary>
+        /// Removes the employee with the given username from the database
+        /// </summary>
+        /// <param name="username">the username of the employee being removed</param>
+        /// @precondition none
+        /// @postcondition the employee is removed or an error is thrown if something went wrong on the database 
         public void RemoveEmployee(string username)
         {
-	        try
-	        {
-		        var conn = DbConnection.GetConnection();
-		        using (conn)
-		        {
-			        conn.Open();
-			        var query = "delete from user where userID = (select employeeID from employee where username = @username)";
-			        using (var cmd = new MySqlCommand(query, conn))
-			        {
-				        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
-				        cmd.Parameters["@username"].Value = username;
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "delete from user where userID = (select employeeID from employee where username = @username)";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = username;
 
-				        cmd.ExecuteScalar();
-			        }
-			        conn.Close();
+                        cmd.ExecuteScalar();
+                    }
+                    conn.Close();
 
-		        }
-	        }
-	        catch (Exception ex)
-	        {
-		        throw ex;
-	        }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -194,6 +194,7 @@ namespace SharedCode.DAL
                         using (var reader = cmd.ExecuteReader())
                         {
                             var usernameOrdinal = reader.GetOrdinal("username");
+                            var idOrdinal = reader.GetOrdinal("employeeID");
                             var fNameOrdinal = reader.GetOrdinal("fname");
                             var lNameOrdinal = reader.GetOrdinal("lname");
                             var isManagerOrdinal = reader.GetOrdinal("isManager");
@@ -203,6 +204,7 @@ namespace SharedCode.DAL
                                 var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
                                 var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
                                 var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var employeeId = reader.GetInt32(idOrdinal);
                                 var isManager = reader.GetInt32(isManagerOrdinal);
 
 
@@ -210,6 +212,7 @@ namespace SharedCode.DAL
                                 var employee = new Employee(fName, lName);
                                 employee.Username = username;
                                 employee.IsManager = isManager == 1;
+                                employee.EmployeeId = employeeId;
 
                                 if (employee.Username != currentEmployee.Username)
                                 {
@@ -241,34 +244,34 @@ namespace SharedCode.DAL
         /// <returns>1 if the employee is valid otherwise 0. Or throws an error if something goes wrong on the database</returns>
         public int Authenticate(string username, string password)
         {
-	        var validUser = 0;
-	        try
-	        {
-		        var conn = DbConnection.GetConnection();
-		        using (conn)
-		        {
-			        conn.Open();
-			        var query = "select count(*) from user, employee where userID = employeeID and username = @username and Password = @password";
-			        using (var cmd = new MySqlCommand(query, conn))
-			        {
-				        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
-				        cmd.Parameters["@username"].Value = username;
+            var validUser = 0;
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select count(*) from user, employee where userID = employeeID and username = @username and Password = @password";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@username", MySqlDbType.VarChar);
+                        cmd.Parameters["@username"].Value = username;
 
-				        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
-				        cmd.Parameters["@password"].Value = password;
+                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                        cmd.Parameters["@password"].Value = password;
 
-				        validUser = Convert.ToInt32(cmd.ExecuteScalar());
-			        }
-			        conn.Close();
-		        }
+                        validUser = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    conn.Close();
+                }
 
-	        }
-	        catch (Exception ex)
-	        {
-		        throw ex;
-	        }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-	        return validUser;
+            return validUser;
         }
 
 

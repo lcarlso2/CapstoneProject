@@ -343,7 +343,9 @@ namespace RentMeEmployee.Controllers
             try
             {
                 var inventoryItems = this.inventoryDal.GetItemDetailSummary(id);
-                return View("ItemDetails", inventoryItems);
+                var items = inventoryItems.OrderBy(item => item.RentalId).ThenBy(item => item.UpdateDateTime).ToList();
+                   
+                return View("ItemDetails", items);
                     
             } catch (Exception)
             {
