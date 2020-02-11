@@ -66,7 +66,10 @@ namespace RentMeDesktop.View
                 dialog.Content = "It seems there is no information here";
             } else
             {
-                dialog.Content = content;
+                dialog.Content = new ScrollViewer()
+                {
+                    Content = new TextBlock() { Text = content}
+                };
             }
             
             dialog.CloseButtonText = "Close";

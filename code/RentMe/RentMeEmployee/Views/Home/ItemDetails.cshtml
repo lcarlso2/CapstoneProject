@@ -39,6 +39,9 @@
                 <thead>
                     <tr>
                         <th>
+                            @Html.DisplayNameFor(model => model.RentalId)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Title)
                         </th>
                         <th>
@@ -67,32 +70,35 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MemberId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MemberEmail)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RentalDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ReturnDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ReturnDate)
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RentalId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RentalDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReturnDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpdateDateTime)
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>
