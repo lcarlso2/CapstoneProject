@@ -45,5 +45,27 @@ namespace RentMeDesktop.View
                 DbError.showErrorWindow();
             }
         }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage), this.ViewModel);
+        }
+
+        private async void detailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var content = this.ViewModel.GetSelectedItemDetailSummary();
+            ContentDialog dialog = new ContentDialog();
+            dialog.Title = "Details";
+            if (String.IsNullOrEmpty(content))
+            {
+                dialog.Content = "It seems there is no information here";
+            } else
+            {
+                dialog.Content = content;
+            }
+            
+            dialog.CloseButtonText = "Close";
+            var result = await dialog.ShowAsync();
+        }
     }
 }

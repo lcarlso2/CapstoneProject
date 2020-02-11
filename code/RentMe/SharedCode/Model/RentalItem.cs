@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SharedCode.Model
 {
-	/// <summary>
-	/// The rental item class
-	/// </summary>
-	public class RentalItem : InventoryItem
-	{
+    /// <summary>
+    /// The rental item class
+    /// </summary>
+    public class RentalItem : InventoryItem
+    {
         /// <summary>
         /// Gets or sets the member id that rented the item
         /// </summary>
@@ -56,7 +56,7 @@ namespace SharedCode.Model
         [Display(Name = "Return Date")]
         public DateTime ReturnDate { get; set; }
 
-        
+
         /// <summary>
         /// Gets or sets the status
         /// </summary>
@@ -65,6 +65,14 @@ namespace SharedCode.Model
         /// </value>
         [Display(Name = "Order Status")]
         public string Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date time for when the status of a rental item is updated
+        /// </summary>
+        /// <value>
+        ///The update date time
+        /// </value>
+        public DateTime UpdateDateTime {get; set; }
 
 
         /// <summary>

@@ -22,5 +22,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\RentalItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestObjects\MockEmployeeDal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestObjects\MockRentalDal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\OutputFormatter.cs" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedCode.DAL;
 using SharedCode.Model;
+using SharedCode.View;
 
 namespace RentMeDesktop.ViewModel
 {
@@ -48,13 +49,15 @@ namespace RentMeDesktop.ViewModel
             }
         }
 
+        
+
         /// <summary>
-		/// Gets or sets property depending on if update can be clicked
-		/// </summary>
-		/// <value>
-		/// True if a rental has been selected and the rental hasn't been returned otherwise false
-		/// </value>
-		public bool CanViewDetailsBeClicked
+        /// Gets or sets property depending on if update can be clicked
+        /// </summary>
+        /// <value>
+        /// True if a rental has been selected and the rental hasn't been returned otherwise false
+        /// </value>
+        public bool CanViewDetailsBeClicked
         {
             get => this.canViewDetailsBeClicked;
             set
@@ -93,5 +96,15 @@ namespace RentMeDesktop.ViewModel
             this.Inventory = new ObservableCollection<InventoryItem>(this.inventoryDal.GetInventoryItems());
         }
 
+        /// <summary>
+        /// Gets a detailed summary of the selected inventory item
+        /// </summary>
+        /// <returns>Returns a details string output of the selected inventory item</returns>
+        public string GetSelectedItemDetailSummary()
+        {
+            var summaryItems = this.inventoryDal.GetItemDetailSummary(this.selectedInventoryItem.InventoryId);
+            OutputFormatter formatter = new OutputFormatter();
+            return formatter.GenerateHistoryOfInventoryItem(summaryItems);
+        }
     }
 }

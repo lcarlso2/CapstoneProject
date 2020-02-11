@@ -63,12 +63,12 @@ namespace RentMeDesktop.View
 
 		private void logoutButton_Click(object sender, RoutedEventArgs e)
 		{
-			Frame.Navigate(typeof(Login));
+			Frame.Navigate(typeof(Login), this.ViewModel);
 		}
 
-		private void button_Click(object sender, RoutedEventArgs e)
+		private void viewInventoryButton_Click(object sender, RoutedEventArgs e)
 		{
-			Frame.Navigate(typeof(ViewInventoryPage));
+			Frame.Navigate(typeof(ViewInventoryPage), this.ViewModel);
 		}
 	}
 }
