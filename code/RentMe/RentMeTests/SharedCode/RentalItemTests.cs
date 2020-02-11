@@ -6,6 +6,9 @@ using SharedCode.Model;
 
 namespace RentMeTests.SharedCode
 {
+	/// <summary>
+	/// The test class for the rental item
+	/// </summary>
 	[TestClass()]
 	public class RentalItemTests
 	{
