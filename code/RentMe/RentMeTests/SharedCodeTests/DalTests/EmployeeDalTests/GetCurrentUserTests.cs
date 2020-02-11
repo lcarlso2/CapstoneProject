@@ -7,7 +7,7 @@ using SharedCode.DAL;
 namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 {
 	/// <summary>
-	/// The test class for add employee
+	/// The test class for get current user
 	/// </summary>
 	[TestClass()]
 	public class GetCurrentUserTests

@@ -8,7 +8,7 @@ using SharedCode.Model;
 namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 {
 	/// <summary>
-	/// The test class for add employee
+	/// The test class for get employee
 	/// </summary>
 	[TestClass()]
 	public class GetEmployeesTests
