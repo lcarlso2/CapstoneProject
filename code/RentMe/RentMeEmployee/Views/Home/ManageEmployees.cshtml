@@ -44,20 +44,17 @@
                             <td>
                                 @Html.DisplayFor(model => employee.Username)
                             </td>
-	                        <td>
-		                        @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
-	                        </td>
                             <td>
-	                            <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">
-		                            <input type="submit" value="Delete" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;" />
-	                            </a>
+                                @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
                             </td>
+                            <td>
 
-	                        @*<td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal">
+                                <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="@("#modal"+employee.EmployeeId)">
                                     Remove Employee
                                 </button>
-                                <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+                            </td>
+                            <td>
+                                <div class="modal fade" id="@("modal"+employee.EmployeeId)" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -71,9 +68,9 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="col-sm-6">
-	                                                <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">
-		                                                <input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;"/>
-	                                                </a>
+                                                    <a asp-controller="Home" asp-action="DeleteEmployee" asp-route-username="@employee.Username">
+                                                        <input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;" />
+                                                    </a>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancel</button>
@@ -82,7 +79,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </td>*@
+                            </td>
                         </tr>
                     }
                 </tbody>
