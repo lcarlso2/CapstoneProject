@@ -58,7 +58,7 @@ namespace RentMeDesktop.ViewModel
 					}
 					else
 					{
-						this.Employees = new ObservableCollection<Employee>(this.employeeDal.SearchEmployees(this.CurrentEmployee, this.EmployeeSearchTerm));
+						this.Employees = new ObservableCollection<Employee>(this.employeeDal.GetEmployees(this.CurrentEmployee));
 					}
 				}
 				catch (Exception)

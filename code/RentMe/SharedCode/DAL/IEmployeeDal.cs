@@ -28,11 +28,6 @@ namespace SharedCode.DAL
 		/// @postcondition the employee is removed
 		void RemoveEmployee(string username);
 
-		/// <summary>
-		/// Searches the employees and returns the one matching the search term
-		/// </summary>
-		/// <returns>the employees matching the term</returns>
-		List<Employee> SearchEmployees(Employee currentEmployee, string searchTerm);
 
 		/// <summary>
 		/// Gets the employees

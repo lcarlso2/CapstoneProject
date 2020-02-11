@@ -112,66 +112,6 @@ namespace SharedCode.DAL
             }
         }
 
-        /// <summary>
-        /// Searches the employees and returns the one matching the search term
-        /// </summary>
-        /// <returns>the employees matching the term or an error is thrown if something goes wrong on the database</returns>
-        /// @precondition none
-        /// @postcondition none
-        public List<Employee> SearchEmployees(Employee currentEmployee, string searchTerm)
-        {
-            List<Employee> employees = new List<Employee>();
-            try
-            {
-                var conn = DbConnection.GetConnection();
-                using (conn)
-                {
-                    conn.Open();
-                    var query = "select * from Employee where Username like concat('%', @searchTerm, '%') or concat(FName, LName) like concat('%', @searchTerm, '%')";
-                    using (var cmd = new MySqlCommand(query, conn))
-                    {
-
-                        cmd.Parameters.Add("@searchTerm", MySqlDbType.VarChar);
-                        cmd.Parameters["@searchTerm"].Value = searchTerm;
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            var usernameOrdinal = reader.GetOrdinal("Username");
-                            var fNameOrdinal = reader.GetOrdinal("FName");
-                            var lNameOrdinal = reader.GetOrdinal("LName");
-                            var isManagerOrdinal = reader.GetOrdinal("Manager");
-
-                            while (reader.Read())
-                            {
-                                var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
-                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
-                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
-                                var isManager = reader.GetInt32(isManagerOrdinal);
-
-
-
-                                var employee = new Employee(fName, lName);
-                                employee.Username = username;
-                                employee.IsManager = isManager == 1;
-
-                                if (employee.Username != currentEmployee.Username)
-                                {
-                                    employees.Add(employee);
-                                }
-
-                            }
-                        }
-                    }
-                    conn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return employees;
-        }
 
         /// <summary>
         /// Gets the employees
