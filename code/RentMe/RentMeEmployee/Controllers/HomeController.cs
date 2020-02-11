@@ -56,10 +56,10 @@ namespace RentMeEmployee.Controllers
         /// 
         /// @precondition none
         /// @postcondition getRentalDal() == rentalDal && getEmployeeDal() == employeeDal && getInventoryDal() == inventoryDal
-        public HomeController(IRentalDal rentalDal, IEmployeeDal employeeDal, IInventoryDal inventoryDal)
+        public HomeController(IInventoryDal inventoryDal)
         {
-            this.rentalDal = rentalDal;
-            this.employeeDal = employeeDal;
+            this.rentalDal = new RentalDal();
+            this.employeeDal = new EmployeeDal();
             this.inventoryDal = inventoryDal;
         }
 
@@ -134,9 +134,9 @@ namespace RentMeEmployee.Controllers
             {
                 inventory = this.inventoryDal.GetInventoryItems();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.ErrorMessage = "Uh-oh something went wrong";
             }
 
             return View(inventory);
