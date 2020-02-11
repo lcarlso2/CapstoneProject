@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RentMeEmployee.Models;
 using SharedCode.DAL;
 using SharedCode.Model;
+using SharedCode.View;
 
 namespace RentMeEmployee.Controllers
 {
@@ -18,6 +19,7 @@ namespace RentMeEmployee.Controllers
 	{
 		private readonly IRentalDal rentalDal;
 		private readonly IEmployeeDal employeeDal;
+        private readonly IInventoryDal inventoryDal;
 
 		/// <summary>
         /// The current employee logged in
@@ -42,6 +44,23 @@ namespace RentMeEmployee.Controllers
         {
 	       this.rentalDal = new RentalDal();
            this.employeeDal = new EmployeeDal();
+           this.inventoryDal = new InventoryDal();
+        }
+
+        /// <summary>
+        /// Creates a new controller with the given dals passed in
+        /// </summary>
+        /// <param name="rentalDal">The rental dal to be passed in</param>
+        /// <param name="employeeDal">The employee dal to be passed in</param>
+        /// <param name="inventoryDal">The inventory dal to be passed in</param>
+        /// 
+        /// @precondition none
+        /// @postcondition getRentalDal() == rentalDal && getEmployeeDal() == employeeDal && getInventoryDal() == inventoryDal
+        public HomeController(IRentalDal rentalDal, IEmployeeDal employeeDal, IInventoryDal inventoryDal)
+        {
+            this.rentalDal = rentalDal;
+            this.employeeDal = employeeDal;
+            this.inventoryDal = inventoryDal;
         }
 
         /// <summary>
@@ -102,6 +121,25 @@ namespace RentMeEmployee.Controllers
             }
 
             return View(employees);
+        }
+
+        /// <summary>
+        /// The action results for managing employees
+        /// </summary>
+        /// <returns>the view for managing employees</returns>
+        public IActionResult ViewInventory()
+        {
+            List<InventoryItem> inventory = new List<InventoryItem>();
+            try
+            {
+                inventory = this.inventoryDal.GetInventoryItems();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+            }
+
+            return View(inventory);
         }
 
 
@@ -294,7 +332,26 @@ namespace RentMeEmployee.Controllers
             return RedirectToAction("EmployeeLanding");
         }
 
-   
+
+        /// <summary>
+        /// Returns a formatted output string for an inventory items history
+        /// </summary>
+        /// <param name="inventoryId">The id of the inventory item to get the history of</param>
+        /// <returns>Returns a formatted output string for an inventory items history</returns>
+        public IActionResult InventoryItemDetails(int id)
+        {
+            try
+            {
+                var inventoryItems = this.inventoryDal.GetItemDetailSummary(id);
+                var formatter = new OutputFormatter();
+                return PartialView("ItemDetail", formatter.GenerateHistoryOfInventoryItem(inventoryItems));
+                    //
+            } catch (Exception)
+            {
+                return PartialView("ItemDetail");
+            }
+            
+        }
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

@@ -23,9 +23,14 @@ namespace RentMeDesktop.View
     /// </summary>
     public sealed partial class ViewInventoryPage : Page
     {
-
+        /// <summary>
+        /// The view model
+        /// </summary>
         public InventoryViewModel ViewModel;
 
+        /// <summary>
+        /// Initializes the data contect and the view model
+        /// </summary>
         public ViewInventoryPage()
         {
             this.InitializeComponent();
