@@ -17,7 +17,7 @@ namespace RentMeTests.MockDal
 	
 		public bool ThrowException { get; set; }
 
-		public void BorrowItem(Customer customer, Media media)
+		public int BorrowItem(Customer customer, Media media)
 		{
 			if (this.ThrowNullReference)
 			{
@@ -28,6 +28,8 @@ namespace RentMeTests.MockDal
 			{
 				throw new Exception();
 			}
+
+			return 3;
 		}
 	}
 }
