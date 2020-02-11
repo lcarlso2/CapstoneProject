@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SharedCode.Model
@@ -42,11 +43,13 @@ namespace SharedCode.Model
         /// <summary>
         /// True if item is rented and false if it is not
         /// </summary>
+        [Display(Name = "Is Rented")]
         public bool IsRented;
 
         /// <summary>
         /// True if the item is in stock and false if it is not
         /// </summary>
+        [Display(Name = "In Stock")]
         public bool InStock;
 
         /// <summary>

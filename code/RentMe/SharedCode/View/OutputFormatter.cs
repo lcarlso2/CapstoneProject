@@ -1,6 +1,7 @@
 ﻿using SharedCode.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SharedCode.View
@@ -22,6 +23,7 @@ namespace SharedCode.View
             StringBuilder sb = new StringBuilder();
             var rentalId = DEFAULT_ID;
             var isFirstItem = true;
+            rentalItems = rentalItems.OrderBy(item => item.RentalDate).ToList();
             foreach (var rentalItem in rentalItems)
             {
                 
