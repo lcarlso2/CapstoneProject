@@ -32,11 +32,8 @@ namespace RentMeTests.DalTests.BorrowDalTest
 
 			var rowCount = borrowDal.BorrowItem(customer, media);
 
-			
-			Assert.AreEqual(3, rowCount);
 			this.cleanDataBase(media);
-
-
+			Assert.AreEqual(3, rowCount);
 		}
 
 		private void cleanDataBase(Media media)

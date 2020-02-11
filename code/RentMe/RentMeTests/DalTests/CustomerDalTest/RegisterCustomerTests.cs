@@ -34,9 +34,9 @@ namespace RentMeTests.DalTests.CustomerDalTest
 			customerDal.RegisterCustomer(customer);
 
 			var result = customerDal.Authenticate("confirmEmail", "confirmPassword");
-
-			Assert.AreEqual(1, result);
 			this.cleanDataBase(customer);
+			Assert.AreEqual(1, result);
+			
 		}
 
 		private void cleanDataBase(RegisteringCustomer customer)
