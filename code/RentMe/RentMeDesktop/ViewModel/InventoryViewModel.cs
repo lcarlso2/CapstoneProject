@@ -46,7 +46,7 @@ namespace RentMeDesktop.ViewModel
             }
         }
 
-        
+
 
         /// <summary>
         /// Gets or sets property depending on if update can be clicked
@@ -90,7 +90,14 @@ namespace RentMeDesktop.ViewModel
         /// @postcondition this.Inventory == all inventory items from db
         public void RetrieveAllInventoryItems()
         {
-            this.Inventory = new ObservableCollection<InventoryItem>(this.inventoryDal.GetInventoryItems());
+            try
+            {
+                this.Inventory = new ObservableCollection<InventoryItem>(this.inventoryDal.GetInventoryItems());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
