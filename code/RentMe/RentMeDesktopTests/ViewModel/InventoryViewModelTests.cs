@@ -38,6 +38,21 @@ namespace RentMeDesktopTests.ViewModel
             Assert.AreEqual(null, viewModel.Inventory);
         }
 
+
+        [TestMethod()]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetSelectedItemDetailSummaryTestIsInValid()
+        {
+            var inventoryDal = new MockInventoryDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new InventoryViewModel(inventoryDal);
+
+            var output = viewModel.GetSelectedItemDetailSummary();
+            
+        }
+
     }
 
 }
