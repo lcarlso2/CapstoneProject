@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="ViewModel\BaseViewModelTests.cs" />
     <Compile Include="ViewModel\InventoryViewModelTests.cs" />
+    <Compile Include="ViewModel\MainPageViewModelTests.cs" />
     <Compile Include="View\OutputFormatterTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,17 @@ namespace RentMeDesktop.ViewModel
 		}
 
 		/// <summary>
+		/// Creates a main page view model with the given rentalDal
+		/// </summary>
+		/// <param name="rentalDal">The rental dal to be used for tests</param>
+		public MainPageViewModel(IRentalDal rentalDal)
+		{
+			this.SelectedStatusFilter = "All";
+			this.StatusFilters = new ObservableCollection<string> { "All", "Ordered", "Shipped", "Returned" };
+			this.rentalDal = rentalDal;
+		}
+
+		/// <summary>
 		/// Gets or sets the rental filters
 		/// </summary>
 		/// <value>
@@ -125,19 +136,20 @@ namespace RentMeDesktop.ViewModel
 		}
 
 		/// <summary>
-		/// Updates the rental item
+		/// Updates the rental item in the db with the selected status
 		/// </summary>
-		public void UpdateRentalItem()
+		public int UpdateRentalItem()
 		{
+			int rowsAffected = -1;
 			try
 			{
-				this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
+				rowsAffected = this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
 			}
 			catch (Exception)
 			{
-				DbError.showErrorWindow();
+				DbError.showErrorWindow();	
 			}
-
+			return rowsAffected;
 		}
 
     }
