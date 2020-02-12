@@ -203,6 +203,18 @@ namespace RentMeDesktop.ViewModel
 			this.employeeDal = new EmployeeDal();
 
 		}
+		/// <summary>
+		/// Creates a new employee management view model
+		/// <param name="employeeDal">the dal to use for the class. For testing purposes</param>
+		/// </summary>
+		public EmployeeManagementViewModel(IEmployeeDal employeeDal)
+		{
+			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
+			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
+			this.employeeDal = employeeDal;
+
+		}
+
 
 		/// <summary>
 		/// Sets the employees from the db
