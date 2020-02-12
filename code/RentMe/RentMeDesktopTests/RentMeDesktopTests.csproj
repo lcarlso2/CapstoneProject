@@ -124,6 +124,7 @@
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BaseViewModelTests.cs" />
+    <Compile Include="ViewModel\EmployeeManagmentViewModelTests.cs" />
     <Compile Include="ViewModel\InventoryViewModelTests.cs" />
     <Compile Include="ViewModel\MainPageViewModelTests.cs" />
     <Compile Include="View\OutputFormatterTests.cs" />

@@ -64,7 +64,9 @@ namespace RentMeDesktop.Utility
         /// <summary>
         ///     Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        ///     The event
+        /// </returns>
         public event EventHandler CanExecuteChanged;
 
         /// <summary>
