@@ -25,6 +25,10 @@ namespace SharedCode.TestObjects
             {
                 throw new Exception();
             }
+            else if (this.ThrowError)
+            {
+                throw new Exception();
+            }
             else
             {
                 this.employeeList.Add(employee);
