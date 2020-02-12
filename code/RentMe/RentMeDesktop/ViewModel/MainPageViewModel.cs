@@ -97,12 +97,11 @@ namespace RentMeDesktop.ViewModel
                                     this.rentalDal.RetrieveSelectRentedItems(this.SelectedStatusFilter));
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        DbError.showErrorWindow();
+                        throw ex;
                     }
                 }
-
                 this.OnPropertyChanged();
             }
         }
@@ -146,14 +145,14 @@ namespace RentMeDesktop.ViewModel
         /// </summary>
         public int UpdateRentalItem()
         {
-            int rowsAffected = -1;
+            var rowsAffected = -1;
             try
             {
                 rowsAffected = this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                DbError.showErrorWindow();
+                throw ex;
             }
             return rowsAffected;
         }

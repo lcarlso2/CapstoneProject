@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentMeDesktop.ViewModel;
+using SharedCode.Model;
 using SharedCode.TestObjects;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,18 @@ namespace RentMeDesktopTests.ViewModel
 			{
 				ThrowError = false
 			};
-			var viewModel = new MainPageViewModel(rentalDal);
-
-			
+			var viewModel = new MainPageViewModel(rentalDal)
+			{
+				SelectedRental = new RentalItem
+				{
+					RentalId = 1,
+					Status = "Ordered"
+				},
+				CurrentEmployee = new Employee
+				{
+					EmployeeId = 1
+				}
+			};
 
 			Assert.AreEqual(1, viewModel.UpdateRentalItem());
 		}
@@ -35,6 +45,15 @@ namespace RentMeDesktopTests.ViewModel
 				ThrowError = true
 			};
 			var viewModel = new MainPageViewModel(rentalDal);
+			viewModel.SelectedRental = new RentalItem
+			{
+				RentalId = 1,
+				Status = "Ordered"
+			};
+			viewModel.CurrentEmployee = new Employee
+			{
+				EmployeeId = 1
+			};
 			viewModel.UpdateRentalItem();
 
 		}
@@ -63,6 +82,23 @@ namespace RentMeDesktopTests.ViewModel
 			viewModel.SelectedStatusFilter = "Ordered";
 
 			Assert.AreEqual(0, viewModel.RentalItems.Count);
+		}
+
+		[TestMethod()]
+		[ExpectedException(typeof(Exception))]
+		public void SetSelectedStatusFilterWithFilterIsInvalid()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var viewModel = new MainPageViewModel(rentalDal)
+			{
+				SelectedStatusFilter = "Ordered"
+			};
+
+			viewModel.SelectedStatusFilter = "Shipped";
+
 		}
 	}
 }
