@@ -40,7 +40,8 @@ namespace RentMeDesktop.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
+            var oldViewModel = (MainPageViewModel)e.Parameter;
+            this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
             try
             {
                 this.ViewModel.RetrieveAllInventoryItems();
