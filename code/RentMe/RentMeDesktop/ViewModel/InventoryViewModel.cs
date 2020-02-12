@@ -9,6 +9,7 @@ namespace RentMeDesktop.ViewModel
 {
     /// <summary>
     /// The view model for the view inventory page
+    ///      Inherits from BaseViewModel
     /// </summary>
     public class InventoryViewModel : BaseViewModel
     {
@@ -67,6 +68,7 @@ namespace RentMeDesktop.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryViewModel"/> class.
         /// </summary>
+        /// @procondition none
         /// @postcondition this.inventoryDal is created as a new InventoryDal
         public InventoryViewModel()
         {
@@ -78,7 +80,7 @@ namespace RentMeDesktop.ViewModel
         /// Initializes a new instance of the <see cref="InventoryViewModel"/> class.
         /// </summary>
         /// <param name="inventoryDal">The inventory dal.</param>
-        /// /// @postcondition this.inventoryDal is set to the inventory dal that is passed in
+        /// @postcondition this.inventoryDal is set to the inventory dal that is passed in
         public InventoryViewModel(IInventoryDal inventoryDal)
         {
             this.inventoryDal = inventoryDal;
@@ -87,6 +89,7 @@ namespace RentMeDesktop.ViewModel
         /// <summary>
         /// Retrieves all inventory items from the db
         /// </summary>
+		/// @precondition none
         /// @postcondition this.Inventory == all inventory items from db
         public void RetrieveAllInventoryItems()
         {
@@ -104,6 +107,8 @@ namespace RentMeDesktop.ViewModel
         /// Gets a detailed summary of the selected inventory item
         /// </summary>
         /// <returns>Returns a details string output of the selected inventory item</returns>
+        /// @precondition none
+		/// @postcondition none
         public string GetSelectedItemDetailSummary()
         {
             var summaryItems = this.inventoryDal.GetItemDetailSummary(this.selectedInventoryItem.InventoryId);

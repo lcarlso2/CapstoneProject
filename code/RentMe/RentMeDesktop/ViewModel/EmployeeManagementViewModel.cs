@@ -14,6 +14,7 @@ namespace RentMeDesktop.ViewModel
 {
 	/// <summary>
 	/// The view model for the employee management page
+	///      Inherits from BaseViewModel
 	/// </summary>
 	public class EmployeeManagementViewModel : BaseViewModel
 	{
@@ -196,6 +197,8 @@ namespace RentMeDesktop.ViewModel
 		/// <summary>
 		/// Creates a new employee management view model
 		/// </summary>
+		/// @precondition none
+		/// @postcondition Created EmployeeManagmentViewModel with new RelayCommands and EmployeeDal
 		public EmployeeManagementViewModel()
 		{
 			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
@@ -207,6 +210,8 @@ namespace RentMeDesktop.ViewModel
 		/// Creates a new employee management view model
 		/// <param name="employeeDal">the dal to use for the class. For testing purposes</param>
 		/// </summary>
+		/// @precondition none
+		/// @postcondition Created EmployeeManagmentViewModel with new RelayCommands and EmployeeDal equal to employeeDal
 		public EmployeeManagementViewModel(IEmployeeDal employeeDal)
 		{
 			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
@@ -220,6 +225,8 @@ namespace RentMeDesktop.ViewModel
 		/// Sets the employees from the db
 		/// </summary>
 		/// <param name="currentEmployee">the current employee logged in</param>
+		/// @precondition none
+		/// @postcondition this.Employees equal to the employee list from the database
 		public void RetrieveEmployees(Employee currentEmployee)
 		{
 			this.Employees = new ObservableCollection<Employee>(this.employeeDal.GetEmployees(currentEmployee));
