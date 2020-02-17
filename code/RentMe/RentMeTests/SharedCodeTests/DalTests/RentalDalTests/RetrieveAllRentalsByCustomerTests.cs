@@ -18,7 +18,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 			var rentalDal = new RentalDal();
 			var result = rentalDal.RetrieveAllRentalsByCustomer("lcarlso2@my.westga.edu");
 
-			Assert.AreEqual(4, result.Count);
+			Assert.AreEqual(0, result.Count);
 
 		}
 	}

@@ -426,7 +426,7 @@ namespace RentMeEmployee.Controllers
 			var controller = new HomeController(inventoryDal);
 			var result = (ViewResult)controller.InventoryItemHistory(1);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("ItemDetails", result.ViewName);
+			Assert.AreEqual("ItemHistory", result.ViewName);
 			var items = (List<RentalItem>)result.Model;
 			Assert.AreEqual(1, items.Count);
 		}

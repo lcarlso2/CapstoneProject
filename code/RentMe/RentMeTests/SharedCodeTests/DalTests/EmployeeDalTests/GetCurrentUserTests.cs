@@ -14,15 +14,15 @@ namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 	{
 
 		[TestMethod()]
-		public void AddEmployeeValidTest()
+		public void GetCurrentUserValidTest()
 		{
 			var employeeDal = new EmployeeDal();
 
-			var result = employeeDal.GetCurrentUser("lukec", "luke");
+			var result = employeeDal.GetCurrentUser("Username", "Password");
 
-			Assert.AreEqual("lukec", result.Username);
-			Assert.AreEqual("Luke", result.FirstName);
-			Assert.IsTrue(result.IsManager);
+			Assert.AreEqual("Username", result.Username);
+			Assert.AreEqual("EmployeeFirst", result.FirstName);
+			Assert.IsFalse(result.IsManager);
 		}
 	}
 }

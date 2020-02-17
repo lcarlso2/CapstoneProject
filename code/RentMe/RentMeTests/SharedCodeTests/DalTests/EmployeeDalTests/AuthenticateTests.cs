@@ -17,7 +17,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 		public void AuthenticateEmployeeValidTest()
 		{
 			var employeeDal = new EmployeeDal();
-			var result = employeeDal.Authenticate("lukec", "luke");
+			var result = employeeDal.Authenticate("Username", "Password");
 			Assert.AreEqual(1, result);
 
 		}

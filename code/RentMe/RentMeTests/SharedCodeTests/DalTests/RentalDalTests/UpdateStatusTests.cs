@@ -36,7 +36,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 
 			var rentalDal = new RentalDal();
 
-			rentalDal.UpdateStatus(rentalId, "Shipped", 17);
+			rentalDal.UpdateStatus(rentalId, "Shipped", 2);
 
 			var result = rentalDal.RetrieveSelectRentedItems("Shipped");
 			var selectedItem = result.First(item => item.RentalId == rentalId);
@@ -66,7 +66,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 
 			var rentalDal = new RentalDal();
 
-			rentalDal.UpdateStatus(rentalId, "Returned", 17);
+			rentalDal.UpdateStatus(rentalId, "Returned", 2);
 
 			var result = rentalDal.RetrieveSelectRentedItems("Returned");
 			var selectedItem = result.First(item => item.RentalId == rentalId);

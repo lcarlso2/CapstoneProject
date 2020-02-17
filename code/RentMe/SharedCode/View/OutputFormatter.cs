@@ -23,7 +23,7 @@ namespace SharedCode.View
             StringBuilder sb = new StringBuilder();
             var rentalId = DEFAULT_ID;
             var isFirstItem = true;
-            rentalItems = rentalItems.OrderBy(item => item.RentalDate).ToList();
+            rentalItems = rentalItems.OrderByDescending(item => item.RentalDate).ToList();
             foreach (var rentalItem in rentalItems)
             {
                 

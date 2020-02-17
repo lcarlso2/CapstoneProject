@@ -20,7 +20,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 			var employeeDal = new EmployeeDal();
 			var currentEmployee = new Employee {Username = "testUserNameForTestingPurposes"};
 			var result = employeeDal.GetEmployees(currentEmployee);
-			Assert.AreEqual(3, result.Count);
+			Assert.AreEqual(2, result.Count);
 		}
 	}
 }
