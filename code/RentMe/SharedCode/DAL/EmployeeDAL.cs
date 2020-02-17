@@ -191,7 +191,7 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select count(*) from user, employee where userID = employeeID and username = @username and Password = @password";
+                    var query = "select count(*) from user, employee where userID = employeeID and username = @username and Password = @password and isActive = 1";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@username", MySqlDbType.VarChar);
