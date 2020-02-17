@@ -338,14 +338,14 @@ namespace RentMeEmployee.Controllers
         /// </summary>
         /// <param name="inventoryId">The id of the inventory item to get the history of</param>
         /// <returns>Returns a formatted output string for an inventory items history</returns>
-        public IActionResult InventoryItemDetails(int id)
+        public IActionResult InventoryItemHistory(int id)
         {
             try
             {
-                var inventoryItems = this.inventoryDal.GetItemDetailSummary(id);
+                var inventoryItems = this.inventoryDal.GetItemHistorySummary(id);
                 var items = inventoryItems.OrderBy(item => item.RentalId).ThenBy(item => item.UpdateDateTime).ToList();
                    
-                return View("ItemDetails", items);
+                return View("ItemHistory", items);
                     
             } catch (Exception)
             {

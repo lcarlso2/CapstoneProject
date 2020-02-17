@@ -21,7 +21,7 @@ namespace SharedCode.TestObjects
             return items;
         }
 
-        public List<RentalItem> GetItemDetailSummary(int inventoryId)
+        public List<RentalItem> GetItemHistorySummary(int inventoryId)
         {
             var items = new List<RentalItem> { new RentalItem { Title = "Lord of the Rings" } };
             if (this.ThrowError)

@@ -14,11 +14,12 @@ namespace RentMeDesktop.ViewModel
     public class InventoryViewModel : BaseViewModel
     {
         private IInventoryDal inventoryDal;
+
         private ObservableCollection<InventoryItem> inventory;
 
         private InventoryItem selectedInventoryItem;
 
-        private bool canViewDetailsBeClicked;
+        private bool canItemHistoryBeClicked;
 
         /// <summary>
         /// The selected inventory item
@@ -29,7 +30,7 @@ namespace RentMeDesktop.ViewModel
             set
             {
                 this.selectedInventoryItem = value;
-                this.CanViewDetailsBeClicked = (this.SelectedInventoryItem != null);
+                this.CanItemHistoryBeClicked = (this.SelectedInventoryItem != null);
                 this.OnPropertyChanged();
             }
         }
@@ -55,12 +56,12 @@ namespace RentMeDesktop.ViewModel
         /// <value>
         /// True if a rental has been selected and the rental hasn't been returned otherwise false
         /// </value>
-        public bool CanViewDetailsBeClicked
+        public bool CanItemHistoryBeClicked
         {
-            get => this.canViewDetailsBeClicked;
+            get => this.canItemHistoryBeClicked;
             set
             {
-                this.canViewDetailsBeClicked = value;
+                this.canItemHistoryBeClicked = value;
                 this.OnPropertyChanged();
             }
         }
@@ -104,14 +105,14 @@ namespace RentMeDesktop.ViewModel
         }
 
         /// <summary>
-        /// Gets a detailed summary of the selected inventory item
+        /// Gets a detailed history summary of the selected inventory item
         /// </summary>
-        /// <returns>Returns a details string output of the selected inventory item</returns>
+        /// <returns>Returns a details string output of the selected inventory item's history</returns>
         /// @precondition none
 		/// @postcondition none
-        public string GetSelectedItemDetailSummary()
+        public string GetSelectedItemHistorySummary()
         {
-            var summaryItems = this.inventoryDal.GetItemDetailSummary(this.selectedInventoryItem.InventoryId);
+            var summaryItems = this.inventoryDal.GetItemHistorySummary(this.selectedInventoryItem.InventoryId);
             OutputFormatter formatter = new OutputFormatter();
             return formatter.GenerateHistoryOfInventoryItem(summaryItems);
         }

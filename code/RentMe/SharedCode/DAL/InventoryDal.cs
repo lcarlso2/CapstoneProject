@@ -78,7 +78,11 @@ namespace SharedCode.DAL
             return inventory;
         }
 
-        public List<RentalItem> GetItemDetailSummary(int inventoryId)
+        /// <summary>
+        /// Gets history of an item and returns a list of rental items for that item
+        /// </summary>
+        /// <returns>A list of rental items with information about a specified inventory item</returns>
+        public List<RentalItem> GetItemHistorySummary(int inventoryId)
         {
             List<RentalItem> rentalItems = new List<RentalItem>();
             try

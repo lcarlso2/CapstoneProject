@@ -61,7 +61,7 @@
             </ListView.ItemTemplate>
         </ListView>
         <TextBlock HorizontalAlignment="Center" Margin="0,64,0,0" Text="Browse Inventory" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <Button x:Name="detailsButton" IsEnabled="{Binding CanViewDetailsBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="View Details" Margin="862,750,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="detailsButton_Click"/>
+        <Button x:Name="itemHistoryButton" IsEnabled="{Binding CanItemHistoryBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="View Item History" Margin="862,750,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="itemHistoryButton_Click"/>
         <Button x:Name="backButton" Content="Back" Margin="440,750,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="backButton_Click"/>
     </Grid>
 </Page>

@@ -18,9 +18,9 @@ namespace SharedCode.DAL
         List<InventoryItem> GetInventoryItems();
 
         /// <summary>
-        /// Gets detail summary of an item and returns a list of rental items for that item
+        /// Gets history of an item and returns a list of rental items for that item
         /// </summary>
         /// <returns>A list of rental items with information about a specified inventory item</returns>
-        List<RentalItem> GetItemDetailSummary(int inventoryId);
+        List<RentalItem> GetItemHistorySummary(int inventoryId);
     }
 }

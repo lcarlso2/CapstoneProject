@@ -57,14 +57,14 @@ namespace RentMeDesktop.View
             Frame.Navigate(typeof(MainPage), this.ViewModel);
         }
 
-        private async void detailsButton_Click(object sender, RoutedEventArgs e)
+        private async void itemHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            var content = this.ViewModel.GetSelectedItemDetailSummary();
+            var content = this.ViewModel.GetSelectedItemHistorySummary();
             ContentDialog dialog = new ContentDialog();
-            dialog.Title = "Details";
+            dialog.Title = "History";
             if (String.IsNullOrEmpty(content))
             {
-                dialog.Content = "It seems there is no information here";
+                dialog.Content = "It seems this item has no history";
             } else
             {
                 dialog.Content = new ScrollViewer()
