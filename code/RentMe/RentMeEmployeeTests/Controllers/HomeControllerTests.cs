@@ -424,7 +424,7 @@ namespace RentMeEmployee.Controllers
 				ThrowError = false
 			};
 			var controller = new HomeController(inventoryDal);
-			var result = (ViewResult)controller.InventoryItemDetails(1);
+			var result = (ViewResult)controller.InventoryItemHistory(1);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("ItemDetails", result.ViewName);
 			var items = (List<RentalItem>)result.Model;
@@ -439,7 +439,7 @@ namespace RentMeEmployee.Controllers
 				ThrowError = true
 			};
 			var controller = new HomeController(mockInventoryDal);
-			var result = (ViewResult)controller.InventoryItemDetails(1);
+			var result = (ViewResult)controller.InventoryItemHistory(1);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("ViewInventory", result.ViewName);
 			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);

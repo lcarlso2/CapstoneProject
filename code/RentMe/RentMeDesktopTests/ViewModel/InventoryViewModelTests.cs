@@ -49,7 +49,7 @@ namespace RentMeDesktopTests.ViewModel
             };
             var viewModel = new InventoryViewModel(inventoryDal);
 
-            var output = viewModel.GetSelectedItemDetailSummary();
+            var output = viewModel.GetSelectedItemHistorySummary();
             
         }
 
