@@ -94,7 +94,7 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "delete from user where userID = (select employeeID from employee where username = @username)";
+                    var query = "update employee set isActive = 0 where username = @username;";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@username", MySqlDbType.VarChar);
@@ -128,7 +128,7 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from employee, user where employeeID = userID";
+                    var query = "select * from employee, user where employeeID = userID and isActive = 1";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         using (var reader = cmd.ExecuteReader())
