@@ -1,13 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RentMeEmployee.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using SharedCode.Model;
 using SharedCode.TestObjects;
 
-namespace RentMeEmployee.Controllers
+namespace RentMeEmployeeTests.Controllers
 {
 	/// <summary>
 	/// The test class for the home controller of the RentMeEmployee app
@@ -15,38 +12,7 @@ namespace RentMeEmployee.Controllers
 	[TestClass()]
 	public class HomeControllerTests
 	{
-		[TestMethod()]
-		public void UpdateStatusTestValidOutput()
-		{
-			var rentalDal = new MockRentalDal
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.UpdateStatus(1);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			var item = (RentalItem) result.Model;
-			Assert.AreEqual(1, item.RentalId);
-		}
-
-	
-
-		[TestMethod()]
-		public void UpdateStatusTestExceptionThrown()
-		{
-			var rentalDal = new MockRentalDal
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.UpdateStatus(1);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-			var item = (RentalItem)result.Model;
-			Assert.AreEqual(0, item.RentalId);
-		}
+		
 
 		[TestMethod()]
 		public void LoginTestWithValidEmployee()
@@ -61,10 +27,12 @@ namespace RentMeEmployee.Controllers
 				AuthenticateValueToReturn = 1,
 				ThrowError = false
 			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var controller = new HomeController(employeeDal);
 			var result = (RedirectToActionResult)controller.Login(employee);
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.IsTrue(controller.ModelState.IsValid);
 			Assert.AreEqual("EmployeeLanding", result.ActionName);
+			Assert.AreEqual("Orders", result.ControllerName);
 		}
 
 		[TestMethod()]
@@ -80,7 +48,7 @@ namespace RentMeEmployee.Controllers
 				AuthenticateValueToReturn = 0,
 				ThrowError = false
 			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var controller = new HomeController(employeeDal);
 			var result = (ViewResult)controller.Login(employee);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Index", result.ViewName);
@@ -100,7 +68,7 @@ namespace RentMeEmployee.Controllers
 				AuthenticateValueToReturn = 1,
 				ThrowError = false
 			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			var controller = new HomeController(employeeDal);
 			controller.ModelState.AddModelError("Test", "Test");
 			var result = (ViewResult)controller.Login(employee);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -117,249 +85,19 @@ namespace RentMeEmployee.Controllers
 				Username = "",
 				Password = ""
 			};
-			var employeeDal = new MockEmployeeDal()
+			var mockEmployeeDal = new MockEmployeeDal()
 			{
 				AuthenticateValueToReturn = 1,
 				ThrowError = true
 			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
+			
+			var controller = new HomeController(mockEmployeeDal);
+			Assert.IsTrue(controller.ModelState.IsValid);
 			var result = (ViewResult)controller.Login(employee);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Index", result.ViewName);
-			Assert.AreEqual("Whoops, try again. Something went wrong.", result.ViewData["Error"]);
-
 		}
 
-		[TestMethod()]
-		public void AddEmployeeTestValid()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = false
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (ViewResult)controller.AddEmployee(employee);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Employee added!", result.ViewData["SuccessMessage"]);
-
-		}
-
-		[TestMethod()]
-		public void AddEmployeeTestWithException()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = true
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (ViewResult)controller.AddEmployee(employee);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Uh-oh...something went wrong", result.ViewData["ErrorMessage"]);
-			Assert.AreEqual(0, controller.ModelState.Count);
-		}
-
-		[TestMethod()]
-		public void EmployeeLandingValidTest()
-		{
-			var rentalDal = new MockRentalDal()
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.EmployeeLanding();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			var items = (List<RentalItem>) result.Model;
-			Assert.AreEqual(1, items.Count);
-
-		}
-
-		[TestMethod()]
-		public void EmployeeLandingTestExceptionThrown()
-		{
-			var rentalDal = new MockRentalDal()
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.EmployeeLanding();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-		}
-
-		[TestMethod()]
-		public void ManageEmployeesTestValid()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = false
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (ViewResult)controller.ManageEmployees();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			var employees = (List<Employee>)result.Model;
-			Assert.AreEqual(0, employees.Count);
-		}
-
-		[TestMethod()]
-		public void ManageEmployeesTestExceptionThrown()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = true
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (ViewResult)controller.ManageEmployees();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-			var employees = (List<Employee>)result.Model;
-			Assert.AreEqual(0, employees.Count);
-		}
-
-		[TestMethod()]
-		public void ConfirmedUpdateTestValid()
-		{
-			var rentalDal = new MockRentalDal()
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			HomeController.CurrentEmployee = new Employee();
-			var result = (RedirectToActionResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = "Ordered" });
-			
-			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("EmployeeLanding", result.ActionName);
-			HomeController.CurrentEmployee = null;
-		}
-
-		[TestMethod()]
-		public void ConfirmedUpdateTestExceptionThrown()
-		{
-			var rentalDal = new MockRentalDal()
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.ConfirmedUpdate(new RentalItem());
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("UpdateStatus", result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-			
-		}
-
-		[TestMethod()]
-		public void DeleteEmployeeTestValid()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = false
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (RedirectToActionResult)controller.DeleteEmployee("test");
-			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("ManageEmployees", result.ActionName);
-
-		}
-
-		[TestMethod()]
-		public void DeleteEmployeeTestExceptionThrown()
-		{
-			var employee = new Employee
-			{
-				Username = "",
-				Password = ""
-			};
-			var employeeDal = new MockEmployeeDal()
-			{
-				AuthenticateValueToReturn = 1,
-				ThrowError = true
-			};
-			var controller = new HomeController(new MockRentalDal(), employeeDal);
-			var result = (RedirectToActionResult)controller.DeleteEmployee("test");
-			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("ManageEmployees", result.ActionName);
-		}
-
-		[TestMethod()]
-		public void StatusFilterTestAll()
-		{
-			var rentalDal = new MockRentalDal
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.StatusFilter("All");
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("EmployeeLanding", result.ViewName);
-			var items = (List<RentalItem>)result.Model;
-			Assert.AreEqual(1, items.Count);
-		}
-
-		[TestMethod()]
-		public void StatusFilterTestEmpty()
-		{
-			var rentalDal = new MockRentalDal
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.StatusFilter("");
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("EmployeeLanding", result.ViewName);
-			var items = (List<RentalItem>)result.Model;
-			Assert.AreEqual(0, items.Count);
-		}
-
-		[TestMethod()]
-		public void StatusFilterExceptionThrown()
-		{
-			var rentalDal = new MockRentalDal
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(rentalDal, new MockEmployeeDal());
-			var result = (ViewResult)controller.StatusFilter("");
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("EmployeeLanding", result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
-			var item = (List<RentalItem>)result.Model;
-			Assert.AreEqual(0, item.Count);
-		}
 
 		[TestMethod()]
 		public void IndexTestEmployeeNotNull()
@@ -404,81 +142,6 @@ namespace RentMeEmployee.Controllers
 			Assert.AreEqual("Index", result.ViewName);
 			
 		}
-
-		[TestMethod()]
-		public void AddEmployeeTest()
-		{
-			var controller = new HomeController();
-			var result = (ViewResult)controller.AddEmployee();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-
-		}
-
-
-		[TestMethod()]
-		public void InventoryItemDetailsValidTest()
-		{
-			var inventoryDal = new MockInventoryDal()
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(inventoryDal);
-			var result = (ViewResult)controller.InventoryItemHistory(1);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("ItemHistory", result.ViewName);
-			var items = (List<RentalItem>)result.Model;
-			Assert.AreEqual(1, items.Count);
-		}
-
-		[TestMethod()]
-		public void InventoryItemDetailsTestExceptionThrown()
-		{
-			var mockInventoryDal = new MockInventoryDal()
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(mockInventoryDal);
-			var result = (ViewResult)controller.InventoryItemHistory(1);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("ViewInventory", result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-		}
-
-		[TestMethod()]
-		public void ViewInventoryValidTest()
-		{
-			var inventoryDal = new MockInventoryDal()
-			{
-				ThrowError = false
-			};
-			var controller = new HomeController(inventoryDal);
-			var result = (ViewResult)controller.ViewInventory();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			var items = (List<InventoryItem>)result.Model;
-			Assert.AreEqual(1, items.Count);
-		}
-
-		[TestMethod()]
-		public void ViewInventoryTestExceptionThrown()
-		{
-			var mockInventoryDal = new MockInventoryDal()
-			{
-				ThrowError = true
-			};
-			var controller = new HomeController(mockInventoryDal);
-			var result = (ViewResult)controller.ViewInventory();
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
-		}
-
-
-
-
-
-
 
 
 

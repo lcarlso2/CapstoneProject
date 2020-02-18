@@ -11,6 +11,9 @@ using SharedCode.Model;
 
 namespace RentMe.Controllers
 {
+	/// <summary>
+	/// The AccountsController responsible for all pages that have to do with customer accounts 
+	/// </summary>
     public class AccountsController : Controller
     {
 	    private readonly IRentalDal rentalDal;

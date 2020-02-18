@@ -8,6 +8,9 @@ using RentMe.Models;
 
 namespace RentMe.Controllers
 {
+    /// <summary>
+    /// The BorrowController responsible for all pages that have to do with borrowing 
+    /// </summary>
     public class BorrowController : Controller
     {
 	    private readonly IBorrowDal borrowDal;

@@ -1,0 +1,112 @@
+﻿
+@using RentMeEmployee.Controllers;
+@model IEnumerable<SharedCode.Model.InventoryItem>
+
+@{
+    ViewData["Title"] = "ViewInventory";
+}
+
+<style>
+    @@media screen and (max-width: 1200px) {
+        .body-container {
+            margin: unset !important;
+        }
+    }
+
+    .btn-primary {
+        background-color: unset;
+        color: unset;
+        border: unset;
+    }
+
+    .filter-label {
+        background-color: #007bff;
+        margin-bottom: .5em;
+        color: white;
+    }
+</style>
+
+
+<div>
+    <div class="text-center row">
+        <h2 style="margin: .5em auto;">
+            View Inventory
+        </h2>
+    </div>
+</div>
+<div class="container">
+    
+    <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Condition)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.InventoryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.InStock)
+                        </th>
+	                    <th>
+		                    @Html.DisplayNameFor(model => model.IsRented)
+	                    </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Condition)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InventoryId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InStock)
+                        </td>
+	                    <td>
+		                    @Html.DisplayFor(modelItem => item.IsRented)
+	                    </td>
+                        <td>
+                            <button class="btn btn-primary">
+                                <a asp-controller="Inventory" asp-action="InventoryItemHistory" asp-route-id="@item.InventoryId">View Item History</a>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-2">
+                    <label class=" label-danger">@ViewBag.ErrorMessage</label>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+
+
+

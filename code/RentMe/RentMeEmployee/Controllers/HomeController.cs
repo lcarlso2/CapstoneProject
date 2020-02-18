@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using RentMeEmployee.Models;
 using SharedCode.DAL;
 using SharedCode.Model;
-using SharedCode.View;
 
 namespace RentMeEmployee.Controllers
 {
@@ -17,9 +15,8 @@ namespace RentMeEmployee.Controllers
 	/// </summary>
 	public class HomeController : Controller
 	{
-		private readonly IRentalDal rentalDal;
 		private readonly IEmployeeDal employeeDal;
-        private readonly IInventoryDal inventoryDal;
+   
 
 		/// <summary>
         /// The current employee logged in
@@ -31,10 +28,6 @@ namespace RentMeEmployee.Controllers
         /// </summary>
         public static bool IsManager;
 
-        /// <summary>
-        /// The possible status for the current rental item
-        /// </summary>
-        public static List<SelectListItem> Statuses = new List<SelectListItem>();
 
         /// <summary>
         /// Creates a new default home controller 
@@ -42,160 +35,19 @@ namespace RentMeEmployee.Controllers
         [ActivatorUtilitiesConstructor]
         public HomeController()
         {
-	       this.rentalDal = new RentalDal();
-           this.employeeDal = new EmployeeDal();
-           this.inventoryDal = new InventoryDal();
+	        this.employeeDal = new EmployeeDal();
         }
 
         /// <summary>
         /// Creates a new controller with the given dals passed in
         /// </summary>
-        /// <param name="rentalDal">The rental dal to be passed in</param>
         /// <param name="employeeDal">The employee dal to be passed in</param>
-        /// <param name="inventoryDal">The inventory dal to be passed in</param>
-        /// 
         /// @precondition none
-        /// @postcondition getRentalDal() == rentalDal && getEmployeeDal() == employeeDal && getInventoryDal() == inventoryDal
-        public HomeController(IInventoryDal inventoryDal)
+        /// @postcondition getEmployeeDal() == employeeDal
+        public HomeController(IEmployeeDal employeeDal)
         {
-            this.rentalDal = new RentalDal();
-            this.employeeDal = new EmployeeDal();
-            this.inventoryDal = inventoryDal;
-        }
-
-        /// <summary>
-        /// Creates a new home controller with the desired dals
-        /// </summary>
-        /// <param name="rentalDal">the rental dal</param>
-        /// <param name="employeeDal">the employee dal</param>
-        public HomeController(IRentalDal rentalDal, IEmployeeDal employeeDal)
-        {
-	        this.rentalDal = rentalDal;
 	        this.employeeDal = employeeDal;
         }
-
-        /// <summary>
-        /// The action result for filtering the rentals by status
-        /// </summary>
-        /// <returns>The given view based on the desired status</returns>
-        public IActionResult StatusFilter(string status)
-        {
-
-	        List<RentalItem> rentals = new List<RentalItem>();
-	        try
-	        {
-
-		        if (status.Equals("All"))
-		        {
-			        rentals = new List<RentalItem>(this.rentalDal.RetrieveAllRentedItems());
-		        }
-		        else
-		        {
-			        rentals = new List<RentalItem>(this.rentalDal.RetrieveSelectRentedItems(status));
-		        }
-	        }
-	        catch (Exception)
-	        {
-		        ViewBag.Error = "Uh-oh something went wrong";
-		        return View("EmployeeLanding", rentals);
-            }
-
-	        ViewBag.Status = status;
-	        return View("EmployeeLanding", rentals);
-
-        }
-
-        /// <summary>
-        /// The action results for managing employees
-        /// </summary>
-        /// <returns>the view for managing employees</returns>
-        public IActionResult ManageEmployees()
-        {
-            List<Employee> employees = new List<Employee>();
-            try
-            {
-                employees = this.employeeDal.GetEmployees(CurrentEmployee);
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-            }
-
-            return View(employees);
-        }
-
-        /// <summary>
-        /// The action results for managing employees
-        /// </summary>
-        /// <returns>the view for managing employees</returns>
-        public IActionResult ViewInventory()
-        {
-            List<InventoryItem> inventory = new List<InventoryItem>();
-            try
-            {
-                inventory = this.inventoryDal.GetInventoryItems();
-            }
-            catch (Exception )
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-            }
-
-            return View(inventory);
-        }
-
-
-        /// <summary>
-        /// The Delete employee action result
-        /// </summary>
-        /// <param name="username">the username of the employee being deleted</param>
-        /// <returns>the manage employee view</returns>
-        public IActionResult DeleteEmployee(string username)
-        {
-            try
-            {
-	            this.employeeDal.RemoveEmployee(username);
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-            }
-
-            return RedirectToAction("ManageEmployees");
-        }
-
-        /// <summary>
-        /// The get request for the add employee page
-        /// </summary>
-        /// <returns>the add employee page</returns>
-        [HttpGet]
-        public IActionResult AddEmployee()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// The post request for the add employee page
-        /// </summary>
-        /// <param name="employee">the employee being added</param>
-        /// <returns>the add employee page</returns>
-        [HttpPost]
-        public IActionResult AddEmployee(Employee employee)
-        {
-            try
-            {
-	            this.employeeDal.AddEmployee(employee, employee.Password);
-
-                ViewBag.SuccessMessage = "Employee added!";
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh...something went wrong";
-            }
-
-            ModelState.Clear();
-            return View(new Employee());
-        }
-
 
         /// <summary>
         /// The action result for the index page
@@ -205,7 +57,7 @@ namespace RentMeEmployee.Controllers
 		{
 			if (CurrentEmployee != null)
 			{
-				return RedirectToAction("EmployeeLanding");
+				return RedirectToAction("EmployeeLanding", "Orders");
 			}
 			else
 			{
@@ -251,7 +103,7 @@ namespace RentMeEmployee.Controllers
                     CurrentEmployee = this.employeeDal.GetCurrentUser(employee.Username, employee.Password);
                     IsManager = CurrentEmployee.IsManager;
 
-                    return RedirectToAction("EmployeeLanding");
+                    return RedirectToAction("EmployeeLanding", "Orders");
                 }
             }
             catch (Exception)
@@ -264,96 +116,7 @@ namespace RentMeEmployee.Controllers
             return View("Index");
         }
 
-        /// <summary>
-        /// The employee landing page
-        /// </summary>
-        /// <returns>the employee landing page</returns>
-        public IActionResult EmployeeLanding()
-        {
-            List<RentalItem> items = new List<RentalItem>();
-
-            try
-            {
-	            items = this.rentalDal.RetrieveAllRentedItems();
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-            }
-
-            ViewBag.Status = "Select Status";
-            return View(items);
-        }
-
-        /// <summary>
-        /// The update status action result
-        /// </summary>
-        /// <param name="id">the id of the order being updated</param>
-        /// <returns>the update status page</returns>
-		public IActionResult UpdateStatus(int? id)
-        {
-            RentalItem item = new RentalItem();
-            try
-            {
-                Statuses.Clear();
-                item = this.rentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
-                var statuses = RentalItem.GetPossibleStatuses(item.Status);
-                foreach (var current in statuses)
-                {
-	                Statuses.Add(new SelectListItem(current, current));
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-            }
-
-
-            return View(item);
-        }
-
-        /// <summary>
-        /// The http post for the confirm update action
-        /// </summary>
-        /// <param name="borrowedItem">the borrowed item</param>
-        /// <returns>the employee landing page</returns>
-        [HttpPost]
-        public IActionResult ConfirmedUpdate(RentalItem borrowedItem)
-        {
-            try
-            {
-                this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, CurrentEmployee.EmployeeId);
-            }
-            catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-                return View("UpdateStatus");
-            }
-
-            return RedirectToAction("EmployeeLanding");
-        }
-
-
-        /// <summary>
-        /// Returns a formatted output string for an inventory items history
-        /// </summary>
-        /// <param name="id">The id of the inventory item to get the history of</param>
-        /// <returns>Returns a formatted output string for an inventory items history</returns>
-        public IActionResult InventoryItemHistory(int id)
-        {
-            try
-            {
-                var inventoryItems = this.inventoryDal.GetItemHistorySummary(id);
-
-                return View("ItemHistory", inventoryItems);
-                    
-            } catch (Exception)
-            {
-                ViewBag.ErrorMessage = "Uh-oh something went wrong";
-                return View("ViewInventory");
-            }
-            
-        }
+        
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

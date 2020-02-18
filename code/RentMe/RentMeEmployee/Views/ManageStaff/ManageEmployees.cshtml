@@ -1,0 +1,106 @@
+﻿@model IEnumerable<SharedCode.Model.Employee>
+@{
+    ViewData["Title"] = "ManageEmployees";
+}
+
+<div class="container">
+    <div class="text-center">
+        <h2>Employees</h2>
+    </div>
+
+    <div class="row">
+
+        <div class="col">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.LastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Username)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsManager)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => employee.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => employee.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => employee.Username)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="@("#modal"+employee.EmployeeId)">
+                                    Remove Employee
+                                </button>
+                            </td>
+                            <td>
+                                <div class="modal fade" id="@("modal"+employee.EmployeeId)" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-center" id="exampleModalLabel">Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                Are you sure you want to remove this employee?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="col-sm-6">
+                                                    <a asp-controller="ManageStaff" asp-action="DeleteEmployee" asp-route-username="@employee.Username">
+                                                        <input type="submit" value="Confirm" class="btn btn-lg btn-primary btn-block text-uppercase" style="float: left;" />
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+	        <div class="row">
+		        <div class="col text-center">
+			        <a asp-controller="ManageStaff" asp-action="AddEmployee" class="btn btn-primary">Add Employee</a>
+		        </div>
+	        </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-2">
+                    <label class=" label-danger">@ViewBag.ErrorMessage</label>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
