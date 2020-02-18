@@ -33,9 +33,9 @@ namespace RentMe.Controllers
         /// <summary>
         /// Creates a new home controller with the desired dals
         /// </summary>
-        /// <param name="borrowDal">the borrow dal for communitaction</param>
-        /// <param name="customerDal">The customer dal for communitaction</param>
-        /// <param name="mediaDal">the media dal for communitaction</param>
+        /// <param name="borrowDal">the borrow dal for communication</param>
+        /// <param name="customerDal">The customer dal for communication</param>
+        /// <param name="mediaDal">the media dal for communication</param>
         /// @precondition none
         /// @postcondition the controller is created with the input dals
         public HomeController(IBorrowDal borrowDal, ICustomerDal customerDal, IMediaDal mediaDal, IRentalDal rentalDal)
@@ -142,7 +142,8 @@ namespace RentMe.Controllers
             try
             {
                 var media = this.mediaDal.RetrieveAllMedia();
-
+                ViewBag.Type = "Type";
+                ViewBag.Category = "Category";
                 return View("Browse", media);
             }
             catch (Exception ex)
@@ -203,6 +204,8 @@ namespace RentMe.Controllers
                 return View("Browse");
             }
 
+            ViewBag.Category = "Category";
+            ViewBag.Type = type;
             return View("Browse", media);
 
         }
@@ -273,6 +276,8 @@ namespace RentMe.Controllers
                 return View("Browse");
             }
 
+            ViewBag.Type = "Type";
+            ViewBag.Category = category;
             return View("Browse", media);
 
         }

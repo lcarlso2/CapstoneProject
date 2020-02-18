@@ -31,95 +31,93 @@
 	</div>
 </div>
 <div class="container body-container">
-	<div class="col-sm-4">
+	<div class="col">
 		<div class="text-center">
 			<div class="dropdown">
 				<button class="btn dropdown-toggle filter-label" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Status Filter
-				</button>
-				<ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
-					<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="All" class="btn btn-primary">All</a></li>
-					<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Ordered" class="btn btn-primary">Ordered</a></li>
-					<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Shipped" class="btn btn-primary">Shipped</a></li>
-					<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Returned" class="btn btn-primary">Returned</a></li>
-				</ul>
+						@ViewBag.Status
+					</button>
+					<ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
+						<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="All" class="btn btn-primary">All</a></li>
+						<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Ordered" class="btn btn-primary">Ordered</a></li>
+						<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Shipped" class="btn btn-primary">Shipped</a></li>
+						<li><a asp-controller="Home" asp-action="StatusFilter" asp-route-status="Returned" class="btn btn-primary">Returned</a></li>
+					</ul>
 			</div>
 		</div>
 
 	</div>
 
 	<div class="row">
-
 		<div>
-
 			<table class="table">
 				<thead>
-					<tr>
-						<th>
-							@Html.DisplayNameFor(model => model.RentalId)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.InventoryId)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.MemberEmail)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Category)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Title)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.RentalDate)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.ReturnDate)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Status)
-						</th>
-						<th></th>
-					</tr>
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.RentalId)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.InventoryId)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.MemberEmail)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Category)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Title)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.RentalDate)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.ReturnDate)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Status)
+					</th>
+					<th></th>
+				</tr>
 				</thead>
 				<tbody>
-					@foreach (var item in Model)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.RentalId)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.InventoryId)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.MemberEmail)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Category)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Title)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.RentalDate)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.ReturnDate)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Status)
-							</td>
-							<td>
-								@{
-									if (item.Status != "Returned")
-									{
-										<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
-									}
+				@foreach (var item in Model)
+				{
+					<tr>
+						<td>
+							@Html.DisplayFor(modelItem => item.RentalId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.InventoryId)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.MemberEmail)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Category)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Title)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.RentalDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.ReturnDate)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Status)
+						</td>
+						<td>
+							@{
+								if (item.Status != "Returned")
+								{
+									<a asp-controller="Home" asp-action="UpdateStatus" asp-route-id="@item.RentalId">Update</a>
 								}
-							</td>
-						</tr>
-					}
+							}
+						</td>
+					</tr>
+				}
 				</tbody>
 			</table>
 			<div class="form-group">
@@ -132,4 +130,5 @@
 		</div>
 	</div>
 </div>
+
 

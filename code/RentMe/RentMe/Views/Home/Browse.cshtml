@@ -33,7 +33,7 @@
                 <div class="text-center">
                     <div class="btn-group">
                         <button class="btn dropdown-toggle filter-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Type
+                            @ViewBag.Type
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu text-center">
@@ -51,7 +51,7 @@
                 <div class="text-center">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle filter-label" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Category
+                            @ViewBag.Category
                         </button>
                         <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
                             <li><a asp-controller="Home" asp-action="CategoryFilter" asp-route-category="All" class="btn btn-primary">All Categories</a></li>

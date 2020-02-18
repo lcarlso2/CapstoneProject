@@ -28,7 +28,7 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from inventory_item, media where inventory_item.mediaID = media.mediaID and inStock = true and isRented = false";
+                    var query = "select * from inventory_item, media where inventory_item.mediaID = media.mediaID and inStock = true and isRented = false and inventoryID != 1";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         using var reader = cmd.ExecuteReader();

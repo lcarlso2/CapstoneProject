@@ -100,6 +100,7 @@ namespace RentMeEmployee.Controllers
 		        return View("EmployeeLanding", rentals);
             }
 
+	        ViewBag.Status = status;
 	        return View("EmployeeLanding", rentals);
 
         }
@@ -280,7 +281,7 @@ namespace RentMeEmployee.Controllers
                 ViewBag.ErrorMessage = "Uh-oh something went wrong";
             }
 
-
+            ViewBag.Status = "Select Status";
             return View(items);
         }
 
@@ -343,9 +344,8 @@ namespace RentMeEmployee.Controllers
             try
             {
                 var inventoryItems = this.inventoryDal.GetItemHistorySummary(id);
-                var items = inventoryItems.OrderBy(item => item.RentalId).ThenBy(item => item.UpdateDateTime).ToList();
-                   
-                return View("ItemHistory", items);
+
+                return View("ItemHistory", inventoryItems);
                     
             } catch (Exception)
             {

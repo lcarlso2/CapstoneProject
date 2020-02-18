@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 using SharedCode.Model;
@@ -151,7 +152,7 @@ namespace SharedCode.DAL
                 throw ex;
             }
 
-            return rentalItems;
+            return rentalItems.OrderByDescending(item => item.RentalDate).ThenByDescending(item => item.UpdateDateTime).ToList();
         }
     }
 }

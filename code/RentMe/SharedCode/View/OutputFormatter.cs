@@ -23,7 +23,6 @@ namespace SharedCode.View
             StringBuilder sb = new StringBuilder();
             var rentalId = DEFAULT_ID;
             var isFirstItem = true;
-            rentalItems = rentalItems.OrderByDescending(item => item.RentalDate).ToList();
             foreach (var rentalItem in rentalItems)
             {
                 
@@ -35,7 +34,7 @@ namespace SharedCode.View
                     }
                     
                     sb.Append("Title: " + rentalItem.Title + "     Category: " + rentalItem.Category + Environment.NewLine + "Member ID: " + rentalItem.MemberId + "     Member Email: " + rentalItem.MemberEmail + Environment.NewLine + Environment.NewLine +
-                    "Date Rented: " + rentalItem.RentalDate + "     Date Returned: " + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
+                    "Date Rented: " + rentalItem.RentalDate + "     Return Date: " + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
                     rentalId = rentalItem.RentalId;
                     isFirstItem = false;
                 } 
