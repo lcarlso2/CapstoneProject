@@ -19,7 +19,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 
 			var result = inventoryDal.GetItemHistorySummary(1);
 
-			Assert.AreEqual(0, result.Count);
+			Assert.AreEqual(3, result.Count);
 		}
 	}
 }

@@ -1,0 +1,118 @@
+﻿@model IEnumerable<SharedCode.Model.RentalItem>
+@{
+    ViewData["Title"] = "Rental History";
+}
+<head>
+    <style>
+        @@media screen and (max-width: 576px) {
+            .col-sm-4 {
+                max-width: 33.333%;
+            }
+        }
+    </style>
+</head>
+<div class="container" style="margin-top: 100px">
+    <div>
+        <div class="row">
+            <h4 class="text-center" style="margin: .5em auto;">Rental History</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Accounts" asp-action="RentalFilter" asp-route-type="Date" class="btn btn-primary">Date</a>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Accounts" asp-action="RentalFilter" asp-route-type="Title" class="btn btn-primary">Title</a>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="text-center">
+                <button class="btn" type="button">
+                    <a asp-controller="Accounts" asp-action="RentalFilter" asp-route-type="Status" class="btn btn-primary">Status</a>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.RentalDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentalDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="@("#modal"+item.RentalId)">
+                            View
+                        </button>
+                        <div class="modal fade" id="@("modal"+item.RentalId)" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center" id="exampleModalLabel">View Rental</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <ul>
+                                            <li><h5>Email: </h5><h6>@Html.DisplayFor(modelItem => item.MemberEmail)</h6></li>
+                                            <li><h5>Rental Date: </h5><h6>@Html.DisplayFor(modelItem => item.RentalDate)</h6></li>
+                                            <li><h5>Return Date: </h5><h6>@Html.DisplayFor(modelItem => item.ReturnDate)</h6></li>
+                                            <li><h5>Item Category: </h5><h6>@Html.DisplayFor(modelItem => item.Category)</h6></li>
+                                            <li><h5>Item Title: </h5><h6>@Html.DisplayFor(modelItem => item.Title)</h6></li>
+                                            <li><h5>Current Status: </h5><h6>@Html.DisplayFor(modelItem => item.Status)</h6></li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+

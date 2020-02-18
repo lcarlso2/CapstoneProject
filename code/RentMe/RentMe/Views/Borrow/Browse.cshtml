@@ -1,0 +1,118 @@
+﻿@model IEnumerable<RentMe.Models.Media>
+@{
+    ViewData["Title"] = "Browse";
+}
+<head>
+    <style>
+        .btn-primary {
+            background-color: unset;
+            color: unset;
+            border: unset;
+        }
+
+        .filter-label {
+            background-color: #007bff;
+            margin-bottom: .5em;
+            color: white;
+        }
+
+        @@media screen and (max-width: 576px) {
+            .col-sm-4 {
+                max-width: 33.333%;
+            }
+        }
+    </style>
+</head>
+<div class="container" style="margin-top: 100px">
+    <div>
+        <div class="row">
+            <h4 class="text-center" style="margin: .5em auto;">Browse Inventory</h4>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="text-center">
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle filter-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @ViewBag.Type
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu text-center">
+                            <li><a asp-controller="Borrow" asp-action="TypeFilter" asp-route-type="All" class="btn btn-primary">All Types</a></li>
+                            <li><a asp-controller="Borrow" asp-action="TypeFilter" asp-route-type="Book" class="btn btn-primary">Books</a></li>
+                            <li><a asp-controller="Borrow" asp-action="TypeFilter" asp-route-type="Movie" class="btn btn-primary">Movies</a></li>
+                            <li><a asp-controller="Borrow" asp-action="TypeFilter" asp-route-type="TV Show" class="btn btn-primary">TV Shows</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+                <div class="text-center">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle filter-label" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @ViewBag.Category
+                        </button>
+                        <ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="All" class="btn btn-primary">All Categories</a></li>
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="Action" class="btn btn-primary">Action</a></li>
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="Adventure" class="btn btn-primary">Adventure</a></li>
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="Comedy" class="btn btn-primary">Comedy</a></li>
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="Horror" class="btn btn-primary">Horror</a></li>
+                            <li><a asp-controller="Borrow" asp-action="CategoryFilter" asp-route-category="Romance" class="btn btn-primary">Romance</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+
+                <th>@Html.DisplayNameFor(model => model.Type)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        <a asp-controller="Borrow" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+</div>
+
+
+
+

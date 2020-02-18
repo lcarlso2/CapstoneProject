@@ -49,12 +49,12 @@
                 <ul class="nav navbar-nav">
                     @if (HomeController.CurrentUser == null)
                     {
-                        <li><a asp-area="" asp-controller="Home" asp-action="Register">Sign up</a></li>
+                        <li><a asp-area="" asp-controller="Accounts" asp-action="Register">Sign up</a></li>
                     }
                     @if (HomeController.CurrentUser != null)
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="RentalHistory">Rental History</a></li>
+                        <li><a asp-area="" asp-controller="Accounts" asp-action="RentalHistory">Rental History</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Signout">Sign out</a></li>
                     }
                 </ul>

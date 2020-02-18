@@ -337,7 +337,7 @@ namespace RentMeEmployee.Controllers
         /// <summary>
         /// Returns a formatted output string for an inventory items history
         /// </summary>
-        /// <param name="inventoryId">The id of the inventory item to get the history of</param>
+        /// <param name="id">The id of the inventory item to get the history of</param>
         /// <returns>Returns a formatted output string for an inventory items history</returns>
         public IActionResult InventoryItemHistory(int id)
         {
