@@ -77,5 +77,10 @@ namespace RentMeEmployee.Controllers
 		    return View(inventory);
 	    }
 
+	    public IActionResult AddInventory()
+	    {
+		    return View();
+	    }
+
 	}
 }
