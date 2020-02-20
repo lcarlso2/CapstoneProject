@@ -13,7 +13,7 @@ namespace SharedCode.DAL
     public class InventoryDal : IInventoryDal
     {
         /// <summary>
-        /// Gets the inventory items from the database  
+        /// Gets the inventory items from the database that are in stock or rented 
         /// </summary>
         /// <returns>The inventory items from the database or an error if something goes wrong on the database </returns>
         public List<InventoryItem> GetInventoryItems()

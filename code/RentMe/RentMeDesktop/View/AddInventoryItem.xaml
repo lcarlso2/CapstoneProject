@@ -1,0 +1,29 @@
+﻿<Page
+    x:Class="RentMeDesktop.View.AddInventoryItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:RentMeDesktop.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:vm="using:RentMeDesktop.ViewModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.DataContext>
+        <vm:InventoryViewModel/>
+    </Page.DataContext>
+
+    <Grid>
+        <TextBlock x:Name="titleTextBlock" HorizontalAlignment="Left" Margin="451,212,0,0" Text="Title:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock x:Name="categoryTextBlock" HorizontalAlignment="Left" Margin="408,312,0,0" Text="Category:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock x:Name="typeTextBlock" HorizontalAlignment="Left" Margin="446,406,0,0" Text="Type:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock x:Name="conditionTextBlock" HorizontalAlignment="Left" Margin="401,500,0,0" Text="Condition:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.585,0.259"/>
+        <TextBlock x:Name="textBlock_Copy3" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Add Inventory Item" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
+        <TextBox x:Name="titleTextBox" HorizontalAlignment="Center" Margin="0,200,0,0" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Title" FontSize="20"/>
+        <ComboBox x:Name="categoryComboBox" PlaceholderText="Category" SelectedItem="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,303,0,0" Width="400" Height="50" HorizontalAlignment="Center"/>
+        <ComboBox x:Name="typeComboBox" PlaceholderText="Type" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,394,0,0" Width="400" Height="50" HorizontalAlignment="Center"/>
+        <ComboBox x:Name="conditionComboBox" PlaceholderText="Condition" SelectedItem="{Binding Condition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,488,0,0" Width="400" Height="50" HorizontalAlignment="Center"/>
+        <Button x:Name="cancelButton" Content="Cancel" Width="135" Height="45" Margin="550,693,0,0" VerticalAlignment="Top" Click="cancelButton_Click" />
+        <Button x:Name="addButton" IsEnabled="{Binding CanAddItemBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" Content="Add" Width="135" Height="45" Margin="815,693,0,0" VerticalAlignment="Top" Click="addButton_Click"/>
+        
+    </Grid>
+</Page>

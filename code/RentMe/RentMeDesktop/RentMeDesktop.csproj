@@ -128,6 +128,9 @@
     <Compile Include="View\AddEmployeePage.xaml.cs">
       <DependentUpon>AddEmployeePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AddInventoryItem.xaml.cs">
+      <DependentUpon>AddInventoryItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DbError.cs" />
     <Compile Include="View\EmployeeManagementPage.xaml.cs">
       <DependentUpon>EmployeeManagementPage.xaml</DependentUpon>
@@ -166,6 +169,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="View\AddEmployeePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddInventoryItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

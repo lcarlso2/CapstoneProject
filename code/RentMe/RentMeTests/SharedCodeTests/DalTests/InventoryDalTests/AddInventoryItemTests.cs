@@ -31,7 +31,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 			inventoryDal.AddInventoryItem(item);
 
 			var items = inventoryDal.GetInventoryItems();
-			this.cleanDataBaseWhenAlreadyExistsInMedia();
+			this.cleanDataBaseWhenAlreadyExistsInMedia(items.OrderByDescending(itemSort => itemSort.InventoryId).First().InventoryId);
 			var itemsAfterDelete = inventoryDal.GetInventoryItems();
 			Assert.AreEqual("Superman", items.OrderByDescending(itemSort => itemSort.InventoryId).First().Title);
 			Assert.AreNotEqual("Superman", itemsAfterDelete.OrderByDescending(itemSort => itemSort.InventoryId).First().Title);
@@ -54,13 +54,14 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 			inventoryDal.AddInventoryItem(item);
 
 			var items = inventoryDal.GetInventoryItems();
-			this.cleanDataBaseWhenDoesNotExistInMedia(items.OrderByDescending(itemSort => itemSort.InventoryId).First().MediaId);
+			var itemAdded = items.OrderByDescending(itemSort => itemSort.InventoryId).First();
+			this.cleanDataBaseWhenDoesNotExistInMedia(itemAdded.MediaId, itemAdded.InventoryId);
 			var itemsAfterDelete = inventoryDal.GetInventoryItems();
 			Assert.AreEqual("TESTTITLEFORTESTING", items.OrderByDescending(itemSort => itemSort.InventoryId).First().Title);
 			Assert.AreNotEqual("TESTTITLEFORTESTING", itemsAfterDelete.OrderByDescending(itemSort => itemSort.InventoryId).First().Title);
 		}
 
-		private void cleanDataBaseWhenAlreadyExistsInMedia()
+		private void cleanDataBaseWhenAlreadyExistsInMedia(int inventoryId)
 		{
 			try
 			{
@@ -80,6 +81,12 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 							transaction.Rollback();
 						}
 
+						cmd.Parameters.Clear();
+						cmd.CommandText = "alter table inventory_item AUTO_INCREMENT = @id";
+						cmd.Parameters.AddWithValue("@id", inventoryId);
+
+						cmd.ExecuteNonQuery();
+
 						transaction.Commit();
 					}
 
@@ -95,7 +102,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 		}
 
 
-		private void cleanDataBaseWhenDoesNotExistInMedia(int id)
+		private void cleanDataBaseWhenDoesNotExistInMedia(int mediaId, int inventoryId)
 		{
 			try
 			{
@@ -118,13 +125,20 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 
 						cmd.CommandText =
 							"delete from media where mediaID = @mediaID";
-						cmd.Parameters.AddWithValue("@mediaID", id);
+						cmd.Parameters.AddWithValue("@mediaID", mediaId);
 
 						if (cmd.ExecuteNonQuery() != 1)
 						{
 							transaction.Rollback();
 						}
 
+						cmd.Parameters.Clear();
+						cmd.CommandText = "alter table inventory_item AUTO_INCREMENT = @inventoryId; " +
+										  "alter table media AUTO_INCREMENT = @mediaId;";
+						cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+						cmd.Parameters.AddWithValue("@mediaId", mediaId);
+
+						cmd.ExecuteNonQuery();
 
 						transaction.Commit();
 					}

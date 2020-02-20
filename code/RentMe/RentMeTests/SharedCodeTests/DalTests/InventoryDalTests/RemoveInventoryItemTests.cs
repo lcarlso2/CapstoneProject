@@ -36,7 +36,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 
 			inventoryDal.RemoveInventoryItem(itemBefore.InventoryId);
 
-			this.cleanDataBaseWhenDoesNotExistInMedia(itemBefore.MediaId);
+			this.cleanDataBaseWhenDoesNotExistInMedia(itemBefore.MediaId, itemBefore.InventoryId);
 
 			var itemsAfterDelete = inventoryDal.GetInventoryItems();
 
@@ -49,7 +49,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 		}
 
 
-		private void cleanDataBaseWhenDoesNotExistInMedia(int id)
+		private void cleanDataBaseWhenDoesNotExistInMedia(int mediaId, int inventoryId)
 		{
 			try
 			{
@@ -72,12 +72,19 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 
 						cmd.CommandText =
 							"delete from media where mediaID = @mediaID";
-						cmd.Parameters.AddWithValue("@mediaID", id);
+						cmd.Parameters.AddWithValue("@mediaID", mediaId);
 
 						if (cmd.ExecuteNonQuery() != 1)
 						{
 							transaction.Rollback();
 						}
+						cmd.Parameters.Clear();
+						cmd.CommandText = "alter table inventory_item AUTO_INCREMENT = @inventoryId; " +
+						                  "alter table media AUTO_INCREMENT = @mediaId;";
+						cmd.Parameters.AddWithValue("@inventoryId", inventoryId);
+						cmd.Parameters.AddWithValue("@mediaId", mediaId);
+
+						cmd.ExecuteNonQuery();
 
 
 						transaction.Commit();

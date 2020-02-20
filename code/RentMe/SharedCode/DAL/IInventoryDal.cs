@@ -12,7 +12,7 @@ namespace SharedCode.DAL
     {
 
         /// <summary>
-        /// Gets the inventory from the db
+        /// Gets the inventory items from the db that are in stock or rented 
         /// </summary>
         /// <returns>List of inventory items from the db </returns>
         List<InventoryItem> GetInventoryItems();

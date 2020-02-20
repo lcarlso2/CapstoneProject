@@ -40,7 +40,7 @@ namespace RentMeDesktop.View
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var oldViewModel = (MainPageViewModel)e.Parameter;
+            var oldViewModel = (BaseViewModel)e.Parameter;
             this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
             try
             {
@@ -59,22 +59,59 @@ namespace RentMeDesktop.View
 
         private async void itemHistoryButton_Click(object sender, RoutedEventArgs e)
         {
-            var content = this.ViewModel.GetSelectedItemHistorySummary();
-            ContentDialog dialog = new ContentDialog();
-            dialog.Title = "History";
-            if (String.IsNullOrEmpty(content))
-            {
-                dialog.Content = "It seems this item has no history";
-            } else
-            {
-                dialog.Content = new ScrollViewer()
-                {
-                    Content = new TextBlock() { Text = content}
-                };
-            }
-            
-            dialog.CloseButtonText = "Close";
-            var result = await dialog.ShowAsync();
+	        try
+	        {
+		        var content = this.ViewModel.GetSelectedItemHistorySummary();
+		        ContentDialog dialog = new ContentDialog();
+		        dialog.Title = "History";
+		        if (String.IsNullOrEmpty(content))
+		        {
+			        dialog.Content = "It seems this item has no history";
+		        }
+		        else
+		        {
+			        dialog.Content = new ScrollViewer()
+			        {
+				        Content = new TextBlock() {Text = content}
+			        };
+		        }
+
+		        dialog.CloseButtonText = "Close";
+		        var result = await dialog.ShowAsync();
+	        }
+	        catch (Exception)
+	        {
+                DbError.showErrorWindow();
+	        }
+        }
+
+        private void addItemButton_Click(object sender, RoutedEventArgs e)
+        {
+	        Frame.Navigate(typeof(AddInventoryItem), this.ViewModel);
+        }
+
+        private async void removeItemButton_Click(object sender, RoutedEventArgs e)
+        {
+	        var dialog = new ContentDialog
+	        {
+		        Title = "Confirm",
+		        Content = $"Are you sure you want to remove this item?",
+		        CloseButtonText = "Cancel",
+		        PrimaryButtonText = "Confirm"
+	        };
+	        var result = await dialog.ShowAsync();
+	        if (result == ContentDialogResult.Primary)
+	        {
+		        try
+		        {
+			        this.ViewModel.RemoveInventoryItem();
+			        this.ViewModel.RetrieveAllInventoryItems();
+		        }
+		        catch (Exception)
+		        {
+			        DbError.showErrorWindow();
+		        }
+	        }
         }
     }
 }

@@ -21,9 +21,7 @@ namespace RentMeDesktop.ViewModel
 
 		private string fName;
 
-
 		private string lName;
-
 
 		private string username;
 

@@ -49,6 +49,7 @@ namespace RentMeDesktop.View
 			this.ViewModel.SelectedRental = oldViewModel?.SelectedRental;
 
 			this.StatusTypes = new ObservableCollection<string>(RentalItem.GetPossibleStatuses(this.ViewModel?.SelectedRental?.Status));
+			this.comboBox.ItemsSource = this.StatusTypes;
 		}
 
 		private void cancelButton_Click(object sender, RoutedEventArgs e)
