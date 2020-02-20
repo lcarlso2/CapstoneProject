@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using SharedCode.DAL;
 using SharedCode.Model;
@@ -15,11 +16,10 @@ namespace RentMeEmployee.Controllers
 
 	    private readonly IInventoryDal inventoryDal;
 
-
 	    /// <summary>
-	    /// Creates a new default inventory controller 
-	    /// </summary>
-	    [ActivatorUtilitiesConstructor]
+		/// Creates a new default inventory controller 
+		/// </summary>
+		[ActivatorUtilitiesConstructor]
 	    public InventoryController()
 	    {
 		    this.inventoryDal = new InventoryDal();
@@ -77,10 +77,47 @@ namespace RentMeEmployee.Controllers
 		    return View(inventory);
 	    }
 
+		/// <summary>
+		/// Gets the view for adding an inventory item
+		/// </summary>
+		/// <returns> The view for adding an inventory item</returns>
+		[HttpGet]
 	    public IActionResult AddInventory()
 	    {
 		    return View();
 	    }
+
+		/// <summary>
+		/// The http post action for adding an inventory item
+		/// </summary>
+		/// <param name="item">the item being added</param>
+		/// <returns>the Add inventory page with either a success or error message</returns>
+		/// @precondition none
+		/// @postcondition the item is added, or an error is displayed if something went wrong
+		[HttpPost]
+		public IActionResult AddInventory(InventoryItem item)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					this.inventoryDal.AddInventoryItem(item);
+				}
+				catch (Exception ex)
+				{
+					ViewBag.ErrorMessage = "Uh-oh, something bad happened";
+					return View(item);
+				}
+			}
+			else
+			{
+				return View(item);
+			}
+			ModelState.Clear();
+			ViewBag.SuccessMessage = "Item Added!";
+			return View(new InventoryItem());
+
+		}
 
 	}
 }

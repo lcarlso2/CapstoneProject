@@ -92,18 +92,26 @@ namespace RentMeEmployee.Controllers
 	    [HttpPost]
 	    public IActionResult AddEmployee(Employee employee)
 	    {
-		    try
+		    if (ModelState.IsValid)
 		    {
-			    this.employeeDal.AddEmployee(employee, employee.Password);
+			    try
+			    {
+				    this.employeeDal.AddEmployee(employee, employee.Password);
 
-			    ViewBag.SuccessMessage = "Employee added!";
+				    ViewBag.SuccessMessage = "Employee added!";
+			    }
+			    catch (Exception)
+			    {
+				    ViewBag.ErrorMessage = "Uh-oh...something went wrong";
+			    }
+
+			    ModelState.Clear();
 		    }
-		    catch (Exception)
+		    else
 		    {
-			    ViewBag.ErrorMessage = "Uh-oh...something went wrong";
-		    }
+			    return View(employee);
+			}
 
-		    ModelState.Clear();
 		    return View(new Employee());
 	    }
 

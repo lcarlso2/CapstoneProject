@@ -30,5 +30,10 @@ namespace SharedCode.TestObjects
             }
             return items;
         }
+
+        public void AddInventoryItem(InventoryItem item)
+        {
+
+        }
     }
 }

@@ -22,5 +22,13 @@ namespace SharedCode.DAL
         /// </summary>
         /// <returns>A list of rental items with information about a specified inventory item</returns>
         List<RentalItem> GetItemHistorySummary(int inventoryId);
+
+        /// <summary>
+        /// Adds an inventory item to the DB
+        /// </summary>
+        /// <param name="item">the item being added</param>
+        /// @precondition none
+        /// @postcondition the item is added
+        void AddInventoryItem(InventoryItem item);
     }
 }

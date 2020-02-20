@@ -39,6 +39,7 @@ namespace SharedCode.Model
         /// The first name.
         /// </value>
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -48,6 +49,7 @@ namespace SharedCode.Model
         /// The last name.
         /// </value>
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
 

@@ -154,5 +154,119 @@ namespace SharedCode.DAL
 
             return rentalItems.OrderByDescending(item => item.RentalDate).ThenByDescending(item => item.UpdateDateTime).ToList();
         }
+
+        /// <summary>
+        /// Adds an inventory item to the DB
+        /// </summary>
+        /// <param name="item">the item being added</param>
+        /// @precondition none
+        /// @postcondition the item is added or an error is thrown if something went wrong
+        public void AddInventoryItem(InventoryItem item)
+        {
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+
+                    using (var transaction = conn.BeginTransaction())
+                    {
+
+                        var query = "select mediaID from media where LOWER(type) like concat('%', @type, '%') and " +
+                                    "LOWER(title) like concat('%', @title, '%') " +
+                                    "and LOWER(category) like concat('%', @category, '%')";
+
+                        using (var cmd = new MySqlCommand(query, conn))
+                        {
+                            cmd.Transaction = transaction;
+
+                            var mediaId = -1;
+                            cmd.Parameters.AddWithValue("@type", item.Type.ToLower());
+                            cmd.Parameters.AddWithValue("@title", item.Title.ToLower());
+                            cmd.Parameters.AddWithValue("@category", item.Category.ToLower());
+
+                            using (var reader = cmd.ExecuteReader())
+                            {
+	                            var idOrdinal = reader.GetOrdinal("mediaID");
+
+	                            while (reader.Read())
+	                            {
+		                            mediaId = reader.GetInt32(idOrdinal);
+	                            }
+                            }
+
+                            if (mediaId == -1)
+                            {
+	                            addItemToDbWhenItemDoesNotExistInMediaTableAlready(item, cmd, transaction);
+                            }
+                            else
+                            {
+	                            addItemToDbWhenItemDoesExist(item, cmd, mediaId, transaction);
+                            }
+                            transaction.Commit();
+                        }
+                        conn.Close();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private static void addItemToDbWhenItemDoesExist(InventoryItem item, MySqlCommand cmd, int mediaId,
+	        MySqlTransaction transaction)
+        {
+	        cmd.Parameters.Clear();
+	        cmd.CommandText =
+		        "insert into inventory_item(mediaID, `condition`, inStock, isRented) values (@mediaId, @condition, @inStock, @isRented);";
+
+	        cmd.Parameters.AddWithValue("@mediaId", mediaId);
+	        cmd.Parameters.AddWithValue("@condition", item.Condition);
+	        cmd.Parameters.AddWithValue("@inStock", 1);
+	        cmd.Parameters.AddWithValue("@isRented", 0);
+
+
+            if (cmd.ExecuteNonQuery() != 1)
+	        {
+		        transaction.Rollback();
+	        }
+        }
+
+        private static void addItemToDbWhenItemDoesNotExistInMediaTableAlready(InventoryItem item, MySqlCommand cmd,
+	        MySqlTransaction transaction)
+        {
+	        cmd.Parameters.Clear();
+            
+		        cmd.CommandText =
+			        "insert into media(type, title, category) values (@type, @title, @category)";
+
+		        cmd.Parameters.AddWithValue("@type", item.Type);
+		        cmd.Parameters.AddWithValue("@title", item.Title);
+		        cmd.Parameters.AddWithValue("@category", item.Category);
+
+		        if (cmd.ExecuteNonQuery() != 1)
+		        {
+			        transaction.Rollback();
+		        }
+
+		        cmd.Parameters.Clear();
+		        cmd.CommandText =
+                    "insert into inventory_item(mediaID, `condition`, inStock, isRented) values (last_insert_id(), @condition, @inStock, @isRented);";
+
+
+		        cmd.Parameters.AddWithValue("@condition", item.Condition);
+		        cmd.Parameters.AddWithValue("@inStock", 1);
+		        cmd.Parameters.AddWithValue("@isRented", 0);
+
+
+            if (cmd.ExecuteNonQuery() != 1)
+		        {
+			        transaction.Rollback();
+		        }
+        }
     }
 }
