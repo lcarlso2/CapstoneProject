@@ -19,7 +19,7 @@ namespace RentMeTests.SharedCode.MediaDalTest
 
 			var result = mediaDal.RetrieveAllMedia();
 
-			Assert.AreEqual(4, result.Count);
+			Assert.AreEqual(9, result.Count);
 		}
 	}
 }

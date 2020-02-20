@@ -19,7 +19,7 @@ namespace RentMeTests.DalTests.MediaDalTest
 
 			var result = mediaDal.RetrieveMediaByType("Movie");
 
-			Assert.AreEqual(4, result.Count);
+			Assert.AreEqual(5, result.Count);
 		}
 	}
 }

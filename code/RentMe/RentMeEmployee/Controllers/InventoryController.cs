@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using SharedCode.DAL;
 using SharedCode.Model;
@@ -12,9 +12,18 @@ namespace RentMeEmployee.Controllers
 	/// The inventoryController responsible for all pages that manage inventory 
 	/// </summary>
     public class InventoryController : Controller
-    {
+	{
+		public static bool TitleOrderAscending = true;
 
-	    private readonly IInventoryDal inventoryDal;
+		public static bool CategoryOrderAscending = true;
+
+		public static bool TypeOrderAscending = true;
+
+		public static bool ConditionOrderAscending = true;
+
+		public static bool IdOrderAscending = true;
+
+		private readonly IInventoryDal inventoryDal;
 
 	    /// <summary>
 		/// Creates a new default inventory controller 
@@ -103,7 +112,7 @@ namespace RentMeEmployee.Controllers
 				{
 					this.inventoryDal.AddInventoryItem(item);
 				}
-				catch (Exception ex)
+				catch (Exception)
 				{
 					ViewBag.ErrorMessage = "Uh-oh, something bad happened";
 					return View(item);
@@ -127,11 +136,12 @@ namespace RentMeEmployee.Controllers
 			}
 			catch (Exception)
 			{
-				ViewBag.ErrorMessage = "Uh-oh something went wrong";
-				return View("ViewInventory");
+				ViewBag.ErrorMessage = "Uh-oh something bad happened";
+				return View("ViewInventory", new List<InventoryItem>());
 			}
 			return RedirectToAction("ViewInventory");
 		}
+
 
 	}
 }

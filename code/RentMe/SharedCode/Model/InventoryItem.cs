@@ -63,7 +63,7 @@ namespace SharedCode.Model
         /// </summary>
         public InventoryItem()
         {
-	        this.Title = "";
+	  
         }
     }
 }
