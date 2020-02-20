@@ -22,14 +22,14 @@ namespace RentMeDesktop.View
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class AddInventoryItem : Page
+	public sealed partial class AddInventoryItemPage : Page
 	{
 		/// <summary>
 		/// The view model
 		/// </summary>
 		public InventoryViewModel ViewModel;
 
-		public AddInventoryItem()
+		public AddInventoryItemPage()
 		{
 			this.InitializeComponent();
 			this.ViewModel = new InventoryViewModel();

@@ -87,7 +87,7 @@ namespace RentMeDesktop.View
 
         private void addItemButton_Click(object sender, RoutedEventArgs e)
         {
-	        Frame.Navigate(typeof(AddInventoryItem), this.ViewModel);
+	        Frame.Navigate(typeof(AddInventoryItemPage), this.ViewModel);
         }
 
         private async void removeItemButton_Click(object sender, RoutedEventArgs e)
