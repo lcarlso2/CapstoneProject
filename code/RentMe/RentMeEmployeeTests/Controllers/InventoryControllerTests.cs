@@ -82,6 +82,105 @@ namespace RentMeEmployeeTests.Controllers
 			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
 		}
 
+		[TestMethod()]
+		public void AddInventoryTestGetMethod()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+			var controller = new InventoryController(mockInventoryDal);
+			var result = (ViewResult)controller.AddInventory();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			
+		}
+
+		[TestMethod()]
+		public void AddInventoryTestPostMethodValidItem()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+
+			var item = new InventoryItem();
+			var controller = new InventoryController(mockInventoryDal);
+			var result = (ViewResult)controller.AddInventory(item);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual("Item Added!", result.ViewData["SuccessMessage"]);
+
+		}
+
+		[TestMethod()]
+		public void AddInventoryTestPostMethodInvalidItem()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+
+			var item = new InventoryItem();
+			var controller = new InventoryController(mockInventoryDal);
+			controller.ModelState.AddModelError("test", "test");
+			var result = (ViewResult)controller.AddInventory(item);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(item, (InventoryItem)result.Model);
+
+		}
+
+		[TestMethod()]
+		public void AddInventoryTestPostMethodExceptionThrown()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = true
+			};
+
+			var item = new InventoryItem();
+			var controller = new InventoryController(mockInventoryDal);
+			var result = (ViewResult)controller.AddInventory(item);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(item, (InventoryItem)result.Model);
+			Assert.AreEqual("Uh-oh, something bad happened", result.ViewData["ErrorMessage"]);
+
+		}
+
+		[TestMethod()]
+		public void RemoveInventoryItemValid()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = false
+			};
+
+			var controller = new InventoryController(mockInventoryDal);
+			var result = (RedirectToActionResult)controller.RemoveInventoryItem(1);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("ViewInventory", result.ActionName);
+			
+
+		}
+
+		[TestMethod()]
+		public void RemoveInventoryItemExceptionThrown()
+		{
+			var mockInventoryDal = new MockInventoryDal()
+			{
+				ThrowError = true
+			};
+
+			var controller = new InventoryController(mockInventoryDal);
+			var result = (ViewResult)controller.RemoveInventoryItem(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("ViewInventory", result.ViewName);
+			Assert.AreEqual("Uh-oh something bad happened", result.ViewData["ErrorMessage"]);
+			var items = (List<InventoryItem>) result.Model;
+			Assert.AreEqual(0, items.Count);
+		}
 
 	}
 }

@@ -56,6 +56,28 @@ namespace RentMeEmployeeTests.Controllers
 		}
 
 		[TestMethod()]
+		public void AddEmployeeTestInValid()
+		{
+			var employee = new Employee
+			{
+				Username = "",
+				Password = ""
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new ManageStaffController(employeeDal);
+			controller.ModelState.AddModelError("test", "test");
+			var result = (ViewResult)controller.AddEmployee(employee);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(employee, (Employee)result.Model);
+
+		}
+
+		[TestMethod()]
 		public void AddEmployeeTestWithException()
 		{
 			var employee = new Employee

@@ -13,15 +13,6 @@ namespace RentMeEmployee.Controllers
 	/// </summary>
     public class InventoryController : Controller
 	{
-		public static bool TitleOrderAscending = true;
-
-		public static bool CategoryOrderAscending = true;
-
-		public static bool TypeOrderAscending = true;
-
-		public static bool ConditionOrderAscending = true;
-
-		public static bool IdOrderAscending = true;
 
 		private readonly IInventoryDal inventoryDal;
 
@@ -128,6 +119,13 @@ namespace RentMeEmployee.Controllers
 
 		}
 
+		/// <summary>
+		/// Removes an item from the inventory 
+		/// </summary>
+		/// <param name="id">the id of the item to be removed</param>
+		/// <returns> the view inventory page with either the item removed, or an error message if something went wrong </returns>
+		/// @precondition none
+		/// @postcondition the item is removed or an error is displayed if something went wrong
 		public IActionResult RemoveInventoryItem(int id)
 		{
 			try

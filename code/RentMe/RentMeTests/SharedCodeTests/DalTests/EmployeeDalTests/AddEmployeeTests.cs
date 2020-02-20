@@ -66,7 +66,6 @@ namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
 
 						cmd.CommandText =
 							"delete from user where userID = last_insert_id()";
-						cmd.Parameters.AddWithValue("@userID", employee.EmployeeId);
 
 						if (cmd.ExecuteNonQuery() != 1)
 						{

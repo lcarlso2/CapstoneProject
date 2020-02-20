@@ -33,12 +33,18 @@ namespace SharedCode.TestObjects
 
         public void AddInventoryItem(InventoryItem item)
         {
-
+	        if (this.ThrowError)
+	        {
+                throw new Exception();
+	        }
         }
 
         public void RemoveInventoryItem(int inventoryId)
         {
-
+	        if (this.ThrowError)
+	        {
+		        throw new Exception();
+	        }
         }
     }
 }
