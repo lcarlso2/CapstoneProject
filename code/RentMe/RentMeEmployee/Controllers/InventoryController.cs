@@ -119,5 +119,19 @@ namespace RentMeEmployee.Controllers
 
 		}
 
+		public IActionResult RemoveInventoryItem(int id)
+		{
+			try
+			{
+				this.inventoryDal.RemoveInventoryItem(id);
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = "Uh-oh something went wrong";
+				return View("ViewInventory");
+			}
+			return RedirectToAction("ViewInventory");
+		}
+
 	}
 }

@@ -30,5 +30,13 @@ namespace SharedCode.DAL
         /// @precondition none
         /// @postcondition the item is added
         void AddInventoryItem(InventoryItem item);
+
+        /// <summary>
+        /// Removes the inventory item from the db
+        /// </summary>
+        /// <param name="inventoryId"> the inventory id of the item to be removed </param>
+        /// @precondition none
+        /// @postcondition the item is removed
+        void RemoveInventoryItem(int inventoryId);
     }
 }

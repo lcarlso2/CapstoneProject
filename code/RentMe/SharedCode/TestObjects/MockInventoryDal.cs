@@ -35,5 +35,10 @@ namespace SharedCode.TestObjects
         {
 
         }
+
+        public void RemoveInventoryItem(int inventoryId)
+        {
+
+        }
     }
 }

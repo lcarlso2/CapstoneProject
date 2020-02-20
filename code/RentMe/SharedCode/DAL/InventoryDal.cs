@@ -25,7 +25,7 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from inventory_item i, media m where i.mediaID = m.mediaID";
+                    var query = "select * from inventory_item i, media m where i.mediaID = m.mediaID and m.mediaID not in (select mediaID from media where inStock = 0 and isRented = 0)";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         using (var reader = cmd.ExecuteReader())
@@ -215,6 +215,36 @@ namespace SharedCode.DAL
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Removes the inventory item from the db
+        /// </summary>
+        /// <param name="inventoryId"> the inventory id of the item to be removed</param>
+        /// @precondition none
+        /// @postcondition the item is removed or an error is thrown if something went wrong
+        public void RemoveInventoryItem(int inventoryId)
+        {
+	        try
+	        {
+		        var conn = DbConnection.GetConnection();
+		        using (conn)
+		        {
+			        conn.Open();
+			        var query = "update inventory_item set inStock = 0, isRented = 0 where inventoryID = @inventoryID;";
+			        using (var cmd = new MySqlCommand(query, conn))
+			        {
+				        cmd.Parameters.AddWithValue("@inventoryID", inventoryId);
+				        cmd.ExecuteScalar();
+			        }
+			        conn.Close();
+
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+		        throw ex;
+	        }
         }
 
         private static void addItemToDbWhenItemDoesExist(InventoryItem item, MySqlCommand cmd, int mediaId,
