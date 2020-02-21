@@ -52,8 +52,14 @@ namespace RentMe.Controllers
 	    {
 		    try
 		    {
+		
 			    var media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
-			    return View(media);
+			    var borrow = new Borrow
+			    {
+				    MediaItem = media
+			    };
+
+			    return View(borrow);
 		    }
 		    catch (Exception)
 		    {
@@ -63,34 +69,46 @@ namespace RentMe.Controllers
 
 	    }
 
-	    /// <summary>
-	    /// The confirmed borrow action result
-	    /// </summary>
-	    /// <param name="id">the id of the item being borrowed</param>
-	    /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs</returns>
-	    public IActionResult ConfirmedBorrow(int? id)
-	    {
-		    Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+        /// <summary>
+        /// The confirmed borrow action result
+        /// </summary>
+        /// <param name="id">the id of the item being borrowed</param>
+        /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs</returns>
+        [HttpPost]
+        public IActionResult ConfirmedBorrow(Borrow item)
+        {
+	        if (ModelState.IsValid)
+	        {
+		        var test = item;
+		        //Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+		        //var borrow = new Borrow
+		        //{
+		        // MediaItem = media
+		        //};
 
-		    try
-		    {
-			    this.borrowDal.BorrowItem(HomeController.CurrentUser, media);
+		        try
+		        {
+			        this.borrowDal.BorrowItem(HomeController.CurrentUser, item.MediaItem);
 
-			    return RedirectToAction("Browse");
-		    }
-		    catch (NullReferenceException ex)
-		    {
-			    ViewBag.ErrorMessage = ex.Message;
-			    ViewBag.Error = "Please log in again.";
-			    return View("ConfirmBorrow", media);
-		    }
-		    catch (Exception ex)
-		    {
-			    ViewBag.ErrorMessage = ex.Message;
-			    ViewBag.Error = ex.Message;
-			    return View("ConfirmBorrow", media);
-		    }
-	    }
+			        return RedirectToAction("Browse");
+		        }
+		        catch (NullReferenceException ex)
+		        {
+			        ViewBag.ErrorMessage = ex.Message;
+			        ViewBag.Error = "Please log in again.";
+			        return View("ConfirmBorrow", item);
+		        }
+		        catch (Exception ex)
+		        {
+			        ViewBag.ErrorMessage = ex.Message;
+			        ViewBag.Error = ex.Message;
+			        return View("ConfirmBorrow", item);
+		        }
+	        }
+
+	        ViewBag.Error = "Please select a shipping address";
+	        return View("ConfirmBorrow", item);
+        }
 
         /// <summary>
         /// The browse action
@@ -181,6 +199,24 @@ namespace RentMe.Controllers
             ViewBag.Category = category;
             return View("Browse", media);
 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddAddress(Borrow borrowItem)
+        {
+	        if (ModelState.IsValid)
+	        {
+
+		        borrowItem.ShippingAddress.AddressId = HomeController.CurrentUser.Addresses.Count;
+
+		        HomeController.CurrentUser.Addresses.Add(borrowItem.ShippingAddress);
+
+		        return View("ConfirmBorrow", borrowItem);
+	        }
+	        ViewBag.Error = "Invalid Address";
+	        return View("ConfirmBorrow", borrowItem);
+            
         }
 
 

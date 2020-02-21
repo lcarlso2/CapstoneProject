@@ -25,5 +25,12 @@ namespace RentMe.Models
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
 
+		public List<Address> Addresses { get; set; }
+
+		public Customer()
+		{
+			this.Addresses = new List<Address>{new Address{State = "GA", StreetAddress = "7801 HWY 166", Zip = "30135", AddressId = 1}};
+		}
+
 	}
 }

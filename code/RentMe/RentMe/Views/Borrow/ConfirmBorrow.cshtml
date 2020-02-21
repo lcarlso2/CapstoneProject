@@ -1,31 +1,125 @@
-﻿@model Media
-
+﻿@model Borrow
+@using RentMe.Controllers
 @{
-    ViewData["Title"] = "ConfirmBorrow";
+	ViewData["Title"] = "ConfirmBorrow";
+}
+@using (Html.BeginForm("ConfirmedBorrow", "Borrow", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+	<h1 class="text-center">Confirm your order!</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2>You are trying to order @Html.DisplayFor(media => media.MediaItem.Title).</h2>
+				@Html.HiddenFor(model => model.MediaItem.InventoryId)
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="card">
+					<div class="card-header text-center">
+						<h3>Select Shipping Address</h3>
+					</div>
+					<div class="card-body">
+						@foreach (var address in HomeController.CurrentUser.Addresses)
+						{
+							<div class="row">
+								<div class="col text-center">
+									@Html.RadioButtonFor(model => model.ShippingAddress.AddressId, address.AddressId) @address.StreetAddress @address.State @address.Zip
+								</div>
+							</div>
+						
+							Model.ShippingAddress.Zip = address.Zip;
+							Model.ShippingAddress.StreetAddress = address.StreetAddress;
+							Model.ShippingAddress.State = address.State;
+							
+							
+						}
+						<br />
+						<br />
+						<div class="row">
+							<button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="#confirmationModal">
+								Add Address
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="form-group row text-center">
+			<div class="button-container col-md-10">
+				<input type="submit" value="Borrow Item" class="btn btn-lg btn-primary btn-block text-uppercase" />
+			</div>
+		</div>
+
+		<div class="form-group text-center">
+			<div class="col-md-2 offset-md-2 ">
+				<label class="text-danger">@ViewBag.Error</label>
+			</div>
+		</div>
+
+	</div>
 }
 
-<h2 class="text-center">Confirm your order!</h2>
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            You are trying to order @Html.DisplayFor(MediaModel => MediaModel.Title).
-        </div>
+	<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-center" id="exampleModalLabel">Add New Address</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				@using (Html.BeginForm("AddAddress", "Borrow", FormMethod.Post))
+				{
+					@Html.AntiForgeryToken()
+					<hr />
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+			<div class="modal-body text-center">
+				<div class="form-group row">
+					@Html.LabelFor(model => model.ShippingAddress.StreetAddress, htmlAttributes: new { @class = "col-md-2", @style = "float: left" })
+					<div class="input-container">
+						@Html.EditorFor(model => model.ShippingAddress.StreetAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Street Address" } })
+						@Html.ValidationMessageFor(model => model.ShippingAddress.StreetAddress, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="form-group row">
+					@Html.LabelFor(model => model.ShippingAddress.State, htmlAttributes: new { @class = "col-md-2", @style = "float: left" })
+					<div class="input-container">
+						@Html.EditorFor(model => model.ShippingAddress.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
+						@Html.ValidationMessageFor(model => model.ShippingAddress.State, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="form-group row">
+					@Html.LabelFor(model => model.ShippingAddress.Zip, htmlAttributes: new { @class = "col-md-2", @style = "float: left" })
+					<div class="input-container">
+						@Html.EditorFor(model => model.ShippingAddress.Zip, new { htmlAttributes = new { @class = "form-control", placeholder = "Zip" } })
+						@Html.ValidationMessageFor(model => model.ShippingAddress.Zip, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				@Html.HiddenFor(model => model.MediaItem.InventoryId)
+				@Html.HiddenFor(model => model.MediaItem.Title)
 
-    </div>
-    <br>
-    <br>
-    <br>
-    <div class="row">
+			</div>
+					<div class="modal-footer">
 
-        <div class="col-12 text-center">
-            <a asp-controller="Borrow" asp-action="ConfirmedBorrow" asp-route-id="@Model.InventoryId" class="btn btn-primary">Confirm</a>
-        </div>
-    </div>
-</div>
+						<div class="button-container col-md-10">
+							<input type="submit" value="Add Address" class="btn btn-lg btn-primary btn-block text-uppercase" />
+						</div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Cancel</button>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
 
 
-<div class="form-group text-center">
-    <div class="col-md-offset-2 col-md-2 ">
-        <label class=" label-danger">@ViewBag.Error</label>
-    </div>
-</div>
+	
+
