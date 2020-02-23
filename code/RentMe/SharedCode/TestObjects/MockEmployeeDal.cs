@@ -92,6 +92,16 @@ namespace SharedCode.TestObjects
             }
             return employee;
         }
+
+        public List<RentalItem> GetEmployeeHistory(int employeeId)
+        {
+            var items = new List<RentalItem> { new RentalItem { Title = "Lord of the Rings" } };
+            if (this.ThrowError)
+            {
+                throw new Exception();
+            }
+            return items;
+        }
     }
 
 }

@@ -60,5 +60,32 @@ namespace RentMeDesktop.View
 			Frame.Navigate(typeof(MainPage), this.ViewModel);
 		}
 
-    }
+		private async void employeeHistoryButton_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				var content = this.ViewModel.GetEmployeeHistory();
+				ContentDialog dialog = new ContentDialog();
+				dialog.Title = "History";
+				if (String.IsNullOrEmpty(content))
+				{
+					dialog.Content = "It seems this employee has no history";
+				}
+				else
+				{
+					dialog.Content = new ScrollViewer()
+					{
+						Content = new TextBlock() { Text = content }
+					};
+				}
+
+				dialog.CloseButtonText = "Close";
+				var result = await dialog.ShowAsync();
+			}
+			catch (Exception)
+			{
+				DbError.showErrorWindow();
+			}
+		}
+	}
 }

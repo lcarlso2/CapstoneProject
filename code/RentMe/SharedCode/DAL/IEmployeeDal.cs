@@ -50,5 +50,12 @@ namespace SharedCode.DAL
 		/// <param name="password">The password.</param>
 		/// <returns>The current user</returns>
 		Employee GetCurrentUser(string username, string password);
+
+		/// <summary>
+		/// Gets the history of an employee and returns a list of rental items for that employee
+		/// </summary>
+		/// <param name="employeeId">The id of the employee.</param>
+		/// <returns>History of an employee and returns a list of rental items for that employee</returns>
+		List<RentalItem> GetEmployeeHistory(int employeeId);
 	}
 }

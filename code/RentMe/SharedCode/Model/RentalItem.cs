@@ -75,6 +75,11 @@ namespace SharedCode.Model
          [Display(Name = "Update Date")]
         public DateTime UpdateDateTime {get; set; }
 
+        /// <summary>
+        /// Gets or sets the employee username
+        /// </summary>
+        public string EmployeeUsername { get; set; }
+
 
         /// <summary>
         /// Creates a new rental item 

@@ -9,6 +9,7 @@ using RentMeDesktop.Utility;
 using RentMeDesktop.View;
 using SharedCode.DAL;
 using SharedCode.Model;
+using SharedCode.View;
 
 namespace RentMeDesktop.ViewModel
 {
@@ -216,6 +217,19 @@ namespace RentMeDesktop.ViewModel
 			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
 			this.employeeDal = employeeDal;
 
+		}
+
+		/// <summary>
+		/// Generates a formatted history for the selected employee
+		/// </summary>
+		/// @precondition none
+		/// @postcondition none
+		/// <returns>A formatted history of all items associated with the selected employee</returns>
+		public string GetEmployeeHistory()
+		{
+			var summaryItems = this.employeeDal.GetEmployeeHistory(this.selectedEmployee.EmployeeId);
+			OutputFormatter formatter = new OutputFormatter();
+			return formatter.GenerateEmployeeHistory(summaryItems);
 		}
 
 

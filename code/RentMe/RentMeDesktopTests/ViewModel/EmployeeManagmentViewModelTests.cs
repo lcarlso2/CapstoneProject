@@ -111,7 +111,17 @@ namespace RentMeDesktopTests.ViewModel
             employeeDal.RemoveEmployee("Invalid");
         }
 
-
+        [TestMethod()]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetEmployeeHistoryIsInValid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+            var output = viewModel.GetEmployeeHistory();
+        }
     }
 
 }

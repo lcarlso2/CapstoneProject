@@ -33,8 +33,9 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = false
 			};
 			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new Borrow();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
-			var result = (RedirectToActionResult)controller.ConfirmedBorrow(1);
+			var result = (RedirectToActionResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
 			Assert.AreEqual("Browse", result.ActionName);
 		}
@@ -48,8 +49,9 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = true
 			};
 			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new Borrow();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
-			var result = (ViewResult)controller.ConfirmedBorrow(1);
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("ConfirmBorrow", result.ViewName);
 			Assert.AreEqual("Please log in again.", result.ViewData["Error"]);
@@ -65,8 +67,9 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = false
 			};
 			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new Borrow();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
-			var result = (ViewResult)controller.ConfirmedBorrow(1);
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("ConfirmBorrow", result.ViewName);
 			Assert.AreEqual("Exception of type 'System.Exception' was thrown.", result.ViewData["Error"]);

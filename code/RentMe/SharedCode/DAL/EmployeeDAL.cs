@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 using SharedCode.Model;
@@ -292,6 +293,75 @@ namespace SharedCode.DAL
 
             return currentUser;
 
+        }
+
+        public List<RentalItem> GetEmployeeHistory(int employeeId)
+        {
+            List<RentalItem> rentalItems = new List<RentalItem>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select e.username, r.rentalID, r.rentalDateTime, r.returnDateTime, r.inventoryID, category, title, status, s2.updateDateTime from rental_transaction r, employee e, media, inventory_item i, status_history s2, status where e.employeeId = @employeeId and e.employeeId = s2.employeeId and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and s2.rentalTransactionID = r.rentalID and s2.statusID = status.statusID";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+
+                        cmd.Parameters.Add("@employeeId", MySqlDbType.Int32);
+                        cmd.Parameters["@employeeId"].Value = employeeId;
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var usernameOrdinal = reader.GetOrdinal("username");
+                            var rentalIdOrdinal = reader.GetOrdinal("rentalID");
+                            var rentalDateTimeOrdinal = reader.GetOrdinal("rentalDateTime");
+                            var returnDateTimeOrdinal = reader.GetOrdinal("returnDateTime");
+                            var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
+                            var categoryOrdinal = reader.GetOrdinal("category");
+                            var titleOrdinal = reader.GetOrdinal("title");
+                            var statusOrdinal = reader.GetOrdinal("status");
+                            var updateDateTimeOrdinal = reader.GetOrdinal("updateDateTime");
+
+                            while (reader.Read())
+                            {
+                                var username = reader[usernameOrdinal] == DBNull.Value ? "null" : reader.GetString(usernameOrdinal);
+                                var rentalID = reader.GetInt32(rentalIdOrdinal);
+                                var rentalDateTime = reader.GetDateTime(rentalDateTimeOrdinal);
+                                var returnDateTime = reader.GetDateTime(returnDateTimeOrdinal);
+                                var inventoryID = reader.GetInt32(inventoryIdOrdinal);
+                                var category = reader[categoryOrdinal] == DBNull.Value ? "null" : reader.GetString(categoryOrdinal);
+                                var title = reader[titleOrdinal] == DBNull.Value ? "null" : reader.GetString(titleOrdinal);
+                                var status = reader[statusOrdinal] == DBNull.Value ? "null" : reader.GetString(statusOrdinal);
+                                var updateDateTime = reader.GetDateTime(updateDateTimeOrdinal);
+
+
+                                var rentalItem = new RentalItem
+                                {
+                                    RentalId = rentalID,
+                                    RentalDate = rentalDateTime,
+                                    ReturnDate = returnDateTime,
+                                    InventoryId = inventoryID,
+                                    Category = category,
+                                    Title = title,
+                                    Status = status,
+                                    UpdateDateTime = updateDateTime,
+                                    EmployeeUsername = username
+                                };
+
+                                rentalItems.Add(rentalItem);
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return rentalItems.OrderByDescending(item => item.RentalDate).ThenByDescending(item => item.UpdateDateTime).ToList();
         }
     }
 }

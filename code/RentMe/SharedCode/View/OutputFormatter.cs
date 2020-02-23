@@ -20,7 +20,7 @@ namespace SharedCode.View
         /// <returns>Returns a formatted summary of an inventory items history</returns>
         public string GenerateHistoryOfInventoryItem(List<RentalItem> rentalItems)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             var rentalId = DEFAULT_ID;
             var isFirstItem = true;
             foreach (var rentalItem in rentalItems)
@@ -41,6 +41,40 @@ namespace SharedCode.View
 
                 sb.Append("Status: " + rentalItem.Status + "     Update Date: " + rentalItem.UpdateDateTime + Environment.NewLine);
               
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Generates a formatted history for an employee
+        /// </summary>
+        /// <param name="rentalItems">List of rental items associated with a given employee</param>
+        /// <returns>Formatted history for an employee</returns>
+        public string GenerateEmployeeHistory(List<RentalItem> rentalItems)
+        {
+            var sb = new StringBuilder();
+            var rentalId = DEFAULT_ID;
+            var isFirstItem = true;
+
+            sb.Append("Employee Username: " + rentalItems[0].EmployeeUsername + Environment.NewLine + Environment.NewLine);
+            foreach (var rentalItem in rentalItems)
+            {
+
+                if (rentalId != rentalItem.RentalId)
+                {
+                    if (!isFirstItem)
+                    {
+                        sb.Append("------------------------------------------------------------------------" + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    sb.Append("Title: " + rentalItem.Title + "     Category: " + rentalItem.Category + Environment.NewLine + Environment.NewLine +
+                    "Date Rented: " + rentalItem.RentalDate + "     Return Date: " + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
+                    rentalId = rentalItem.RentalId;
+                    isFirstItem = false;
+                }
+
+                sb.Append("Status: " + rentalItem.Status + "     Update Date: " + rentalItem.UpdateDateTime + Environment.NewLine);
+
             }
             return sb.ToString();
         }
