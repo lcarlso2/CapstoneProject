@@ -119,8 +119,7 @@ namespace RentMe.DAL
 				using (conn)
 				{
 					conn.Open();
-					var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, " +
-								"r.returnDateTime, r.inventoryID, category, title, status from rental_transaction " +
+					var query = "select count(*) from rental_transaction " +
 								"r, user, member, media, inventory_item i, status where " +
 								"userID = member.memberID and member.memberID = r.memberID and " +
 								"r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
@@ -132,9 +131,7 @@ namespace RentMe.DAL
 					using (var cmd = new MySqlCommand(query, conn))
 					{
 						cmd.Parameters.AddWithValue("@email", customer.Email);
-
 						count = Convert.ToInt32(cmd.ExecuteScalar());
-
 					}
 
 					conn.Close();

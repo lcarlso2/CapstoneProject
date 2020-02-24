@@ -41,6 +41,24 @@ namespace RentMeTests.Controllers
 		}
 
 		[TestMethod()]
+		public void ConfirmedBorrowTestWithValidInputButMoreThanAllowRentals()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
+		}
+
+		[TestMethod()]
 		public void ConfirmedBorrowTestWithInvalidInput()
 		{
 			var mockBorrowDal = new MockBorrowDal
@@ -56,6 +74,26 @@ namespace RentMeTests.Controllers
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("ConfirmBorrow", result.ViewName);
 			Assert.AreEqual("Please select a shipping address", result.ViewData["Error"]);
+
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithInvalidInputAndMoreThanAllowedRentals()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			controller.ModelState.AddModelError("Error", "Error");
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
 
 		}
 
@@ -237,6 +275,27 @@ namespace RentMeTests.Controllers
 		}
 
 		[TestMethod()]
+		public void ConfirmBorrowTestWithMoreThanAllowedRentals()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			HomeController.CurrentUser = new Customer();
+			var controller = new BorrowController(mockBorrowDal, mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual($"Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
+		}
+
+		[TestMethod()]
 		public void ConfirmBorrowTestWithException()
 		{
 			var mediaDal = new MockMediaDal
@@ -251,37 +310,50 @@ namespace RentMeTests.Controllers
 		[TestMethod()]
 		public void AddAddressTestValid()
 		{
-			var mediaDal = new MockMediaDal
+			var customerDal = new MockCustomerDal()
 			{
-				ThrowError = true
+				ThrowError = false
 			};
-			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
-			var result = (RedirectToActionResult)controller.ConfirmBorrow(1);
-			Assert.AreEqual("Browse", result.ActionName);
+			HomeController.CurrentUser = new Customer();
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
 		}
 
 		[TestMethod()]
 		public void AddAddressTestInvalid()
 		{
-			var mediaDal = new MockMediaDal
+			var customerDal = new MockCustomerDal()
 			{
-				ThrowError = true
+				ThrowError = false
 			};
-			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
-			var result = (RedirectToActionResult)controller.ConfirmBorrow(1);
-			Assert.AreEqual("Browse", result.ActionName);
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			controller.ModelState.AddModelError("Error", "Error");
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Invalid Address", result.ViewData["Error"]);
+			
 		}
 
 		[TestMethod()]
 		public void AddAddressTestExceptionThrown()
 		{
-			var mediaDal = new MockMediaDal
+			var customerDal = new MockCustomerDal()
 			{
 				ThrowError = true
 			};
-			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
-			var result = (RedirectToActionResult)controller.ConfirmBorrow(1);
-			Assert.AreEqual("Browse", result.ActionName);
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual("ConfirmBorrow", result.ViewName);
+			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+		}
+
+		[TestMethod()]
+		public void AddAddressTestPage()
+		{
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), new MockCustomerDal());
+			var result = (PartialViewResult) controller.AddAddress();
+			Assert.AreEqual("AddAddress", result.ViewName);
 		}
 
 
