@@ -17,6 +17,8 @@ namespace RentMe.Controllers
 
 	    private readonly IMediaDal mediaDal;
 
+	    public static Media SelectedItem;
+
 	    /// <summary>
 	    /// Creates a new borrow controller with the desired dals
 	    /// </summary>
@@ -54,12 +56,11 @@ namespace RentMe.Controllers
 		    {
 		
 			    var media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
-			    var borrow = new Borrow
-			    {
-				    MediaItem = media
-			    };
+			
 
-			    return View(borrow);
+			    SelectedItem = media;
+
+			    return View(new ConfirmBorrowObject());
 		    }
 		    catch (Exception)
 		    {
@@ -75,20 +76,13 @@ namespace RentMe.Controllers
         /// <param name="id">the id of the item being borrowed</param>
         /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs</returns>
         [HttpPost]
-        public IActionResult ConfirmedBorrow(Borrow item)
+        public IActionResult ConfirmedBorrow(ConfirmBorrowObject item)
         {
 	        if (ModelState.IsValid)
 	        {
-		        var test = item;
-		        //Media media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
-		        //var borrow = new Borrow
-		        //{
-		        // MediaItem = media
-		        //};
-
 		        try
 		        {
-			        this.borrowDal.BorrowItem(HomeController.CurrentUser, item.MediaItem);
+			        this.borrowDal.BorrowItem(HomeController.CurrentUser, SelectedItem);
 
 			        return RedirectToAction("Browse");
 		        }
@@ -203,20 +197,28 @@ namespace RentMe.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAddress(Borrow borrowItem)
+        public IActionResult AddAddress(Address address)
         {
+	        var item = new ConfirmBorrowObject
+	        {
+		        AddressId = 2
+	        };
+            
 	        if (ModelState.IsValid)
 	        {
 
-		        borrowItem.ShippingAddress.AddressId = HomeController.CurrentUser.Addresses.Count;
+		        HomeController.CurrentUser.Addresses.Add(address);
 
-		        HomeController.CurrentUser.Addresses.Add(borrowItem.ShippingAddress);
-
-		        return View("ConfirmBorrow", borrowItem);
+		        return View("ConfirmBorrow", item);
 	        }
 	        ViewBag.Error = "Invalid Address";
-	        return View("ConfirmBorrow", borrowItem);
+	        return View("ConfirmBorrow", item);
             
+        }
+
+        public IActionResult AddAddress()
+        {
+	        return PartialView("AddAddress");
         }
 
 

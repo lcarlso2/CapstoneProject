@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using RentMe.Controllers;
 
 namespace RentMe.Models
 {
@@ -11,6 +12,9 @@ namespace RentMe.Models
 	/// </summary>
 	public class Address
 	{
+
+		private const int DEFAULT_ID = 2;
+
 		[Required]
 		[Range(1, int.MaxValue)]
 		public int AddressId { get; set; }
@@ -35,5 +39,10 @@ namespace RentMe.Models
 		[RegularExpression(@"\b\d{5}\b", ErrorMessage = "Must be five digits")]
 		[Required]
 		public string Zip { get; set; }
+
+		public Address()
+		{
+			this.AddressId = DEFAULT_ID;
+		}
 	}
 }

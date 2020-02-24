@@ -39,9 +39,12 @@ namespace RentMeTests.Controllers
 				ConfirmEmail = "Test",
 				Password = "Password",
 				ConfirmPassword = "Password",
-				Address = "Address",
-				State = "GA",
-				Zip = "31035"
+				Address = new Address
+				{
+					StreetAddress = "Address",
+					State = "GA",
+					Zip = "31035"
+				}
 			};
 			var mockCustomerDal = new MockCustomerDal
 			{
