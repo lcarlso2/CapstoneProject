@@ -20,10 +20,11 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="customer">the customer borrowing the item</param>
 		/// <param name="media">the item being borrowed</param>
+		/// <param name="addressId"> the id of the address the item is being shipped to </param>
 		/// <returns>the number of rows altered in the database</returns>
 		/// @precondition none
 		/// @postcondition the item is borrowed or an error is thrown if something goes wrong on the database
-		public int BorrowItem(Customer customer, Media media)
+		public int BorrowItem(Customer customer, Media media, int addressId)
 		{
 
 			try
@@ -33,8 +34,8 @@ namespace RentMe.DAL
 				{
 					conn.Open();
 					using var transaction = conn.BeginTransaction();
-					var query = "insert into rental_transaction(memberID, rentalDateTime, returnDateTime, inventoryID) " +
-								"values ((select memberID from member where email = @memberEmail), @rentalDateTime, @returnDateTime, @inventoryID)";
+					var query = "insert into rental_transaction(memberID, rentalDateTime, returnDateTime, inventoryID, addressID) " +
+								"values ((select memberID from member where email = @memberEmail), @rentalDateTime, @returnDateTime, @inventoryID, @addressId)";
 
 					using (var cmd = new MySqlCommand(query, conn))
 					{
@@ -51,6 +52,9 @@ namespace RentMe.DAL
 
 						cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
 						cmd.Parameters["@inventoryID"].Value = media.InventoryId;
+
+						cmd.Parameters.Add("@addressId", MySqlDbType.Int32);
+						cmd.Parameters["@addressId"].Value = addressId;
 
 						if (cmd.ExecuteNonQuery() != 1)
 						{
@@ -99,6 +103,50 @@ namespace RentMe.DAL
 			}
 
 			return 3;
+		}
+
+		/// <summary>
+		/// Gets the number of open rentals a member has
+		/// </summary>
+		/// <param name="customer">the customer being checked </param>
+		/// <returns>the number of open rentals or an error if something goes wrong </returns>
+		public int GetNumberOfOpenRentals(Customer customer)
+		{
+			var count = 0;
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, " +
+								"r.returnDateTime, r.inventoryID, category, title, status from rental_transaction " +
+								"r, user, member, media, inventory_item i, status where " +
+								"userID = member.memberID and member.memberID = r.memberID and " +
+								"r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+								"status.status != 'Returned' and " +
+								"status.statusID = (select max(s1.statusID) from status_history s1 " +
+								"where r.rentalID = s1.rentalTransactionID and r.memberId = (select memberID from member where email = @email) " +
+								"group by s1.rentalTransactionID);";
+
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						cmd.Parameters.AddWithValue("@email", customer.Email);
+
+						count = Convert.ToInt32(cmd.ExecuteScalar());
+
+					}
+
+					conn.Close();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return count;
 		}
 	}
 }

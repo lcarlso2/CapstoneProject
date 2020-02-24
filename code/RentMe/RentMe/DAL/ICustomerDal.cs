@@ -25,5 +25,21 @@ namespace RentMe.DAL
 		/// <param name="customer">The customer to register.</param>
 		void RegisterCustomer(RegisteringCustomer customer);
 
+		/// <summary>
+		/// Adds an address to the db for the given customer 
+		/// </summary>
+		/// <param name="address"> the address being added</param>
+		/// <param name="customer"> the customer the address is being added to</param>
+		/// @precondition none
+		/// @postcondition the address is added to the db
+		void AddAddress(Address address, Customer customer);
+
+		/// <summary>
+		/// Gets the addresses stored for the given customer 
+		/// </summary>
+		/// <param name="customer"> the customer the addresses are being gotten for</param>
+		/// <returns>the addresses for the given customer</returns>
+		List<Address> GetAddresses(Customer customer);
+
 	}
 }

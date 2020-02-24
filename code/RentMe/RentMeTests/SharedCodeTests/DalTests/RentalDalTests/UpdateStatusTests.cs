@@ -31,7 +31,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 				InventoryId = 1
 			};
 
-			borrowDal.BorrowItem(customer, media);
+			borrowDal.BorrowItem(customer, media, 1);
 			var rentalId = this.getLastRentalTransactionID();
 
 			var rentalDal = new RentalDal();
@@ -61,7 +61,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 				InventoryId = 1
 			};
 
-			borrowDal.BorrowItem(customer, media);
+			borrowDal.BorrowItem(customer, media, 1);
 			var rentalId = this.getLastRentalTransactionID();
 
 			var rentalDal = new RentalDal();

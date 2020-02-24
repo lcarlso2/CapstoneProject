@@ -30,7 +30,7 @@ namespace RentMeTests.DalTests.BorrowDalTest
 				InventoryId = 1
 			};
 
-			var rowCount = borrowDal.BorrowItem(customer, media);
+			var rowCount = borrowDal.BorrowItem(customer, media, 1);
 
 			this.cleanDataBase(media);
 			Assert.AreEqual(3, rowCount);

@@ -18,7 +18,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
 			var inventoryDal = new InventoryDal();
 			var result = inventoryDal.GetInventoryItems();
 
-			Assert.AreEqual(12, result.Count);
+			Assert.AreEqual(17, result.Count);
 		}
 	}
 }

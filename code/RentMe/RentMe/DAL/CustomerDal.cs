@@ -14,6 +14,116 @@ namespace RentMe.DAL
 	public class CustomerDal : ICustomerDal
 	{
 
+		/// <summary>
+		/// Adds an address to the db for the given customer 
+		/// </summary>
+		/// <param name="address"> the address being added</param>
+		/// <param name="customer"> the customer the address is being added to</param>
+		/// @precondition none
+		/// @postcondition the address is added to the db
+		public void AddAddress(Address address, Customer customer)
+		{
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+
+                    using var transaction = conn.BeginTransaction();
+                    var query = "insert into address(memberID, address, state, zip) values ((select memberID from member where email = @memberEmail), @address, @state, @zip)";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Transaction = transaction;
+
+                        cmd.Parameters.AddWithValue("@memberEmail", customer.Email);
+                        cmd.Parameters.AddWithValue("@address", address.StreetAddress);
+                        cmd.Parameters.AddWithValue("@state", address.State);
+                        cmd.Parameters.AddWithValue("@zip", address.Zip);
+
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+                            transaction.Rollback();
+                        }
+
+                        transaction.Commit();
+                    }
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+		/// <summary>
+		/// Gets the addresses stored for the given customer 
+		/// </summary>
+		/// <param name="customer"> the customer the addresses are being gotten for</param>
+		/// <returns>the addresses for the given customer</returns>
+		public List<Address> GetAddresses(Customer customer)
+		{
+			var addresses = new List<Address>();
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					var query = "select * from address where memberID = (select memberID from member where email = @memberEmail)";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+					{
+                        cmd.Parameters.AddWithValue("@memberEmail", customer.Email);
+
+						using var reader = cmd.ExecuteReader();
+						var addressIdOrdinal = reader.GetOrdinal("addressID");
+						var streetAddressOrdinal = reader.GetOrdinal("address");
+						var stateOrdinal = reader.GetOrdinal("state");
+						var zipOrdinal = reader.GetOrdinal("zip");
+
+
+
+						while (reader.Read())
+						{
+							var addressId = reader.GetInt32((addressIdOrdinal));
+
+							var streetAddress = reader[streetAddressOrdinal] == DBNull.Value
+								? "null"
+								: reader.GetString(streetAddressOrdinal);
+
+							var state = reader[stateOrdinal] == DBNull.Value
+								? "null"
+								: reader.GetString(stateOrdinal);
+
+							var zip = reader[zipOrdinal] == DBNull.Value
+								? "null"
+								: reader.GetString(zipOrdinal);
+
+
+
+							var address = new Address { AddressId = addressId, StreetAddress = streetAddress, State = state, Zip = zip};
+
+							addresses.Add(address);
+						}
+					}
+					conn.Close();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+            return addresses;
+		}
+
         /// <summary>
         /// Authenticates the customer's sign in on the database
         /// </summary>
@@ -94,23 +204,29 @@ namespace RentMe.DAL
 
                         cmd.Parameters.Clear();
                         cmd.CommandText =
-                            "insert into member(memberID, address, email, state, zip) values (last_insert_id(), @address, @email, @state, @zip)";
+                            "insert into member(memberID, email) values (last_insert_id(), @email)";
 
-
-                        cmd.Parameters.Add("@address", MySqlDbType.VarChar);
                         cmd.Parameters.Add("@email", MySqlDbType.VarChar);
-                        cmd.Parameters.Add("@state", MySqlDbType.VarChar);
-                        cmd.Parameters.Add("@zip", MySqlDbType.VarChar);
-
-
-                        cmd.Parameters["@address"].Value = customer.Address.StreetAddress;
                         cmd.Parameters["@email"].Value = customer.Email;
-                        cmd.Parameters["@state"].Value = customer.Address.State;
-                        cmd.Parameters["@zip"].Value = customer.Address.Zip;
+         
 
                         if (cmd.ExecuteNonQuery() != 1)
                         {
                             transaction.Rollback();
+                        }
+
+                        cmd.Parameters.Clear();
+                        cmd.CommandText = "insert into address(memberID, address, state, zip) values " +
+                                          "((select memberID from member where email = @memberEmail), @address, @state, @zip)";
+
+                        cmd.Parameters.AddWithValue("@memberEmail", customer.Email);
+                        cmd.Parameters.AddWithValue("@address", customer.Address.StreetAddress);
+                        cmd.Parameters.AddWithValue("@state", customer.Address.State);
+                        cmd.Parameters.AddWithValue("@zip", customer.Address.Zip);
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+	                        transaction.Rollback();
                         }
                         transaction.Commit();
                     }

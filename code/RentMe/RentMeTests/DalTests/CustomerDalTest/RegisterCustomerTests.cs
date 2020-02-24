@@ -51,7 +51,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 				{
 					conn.Open();
 					using var transaction = conn.BeginTransaction();
-					var query = "delete from member where email = @email;";
+					var query = "delete from address where memberID = (select memberID from member where email = @email);";
 
 					using (var cmd = new MySqlCommand(query, conn))
 					{
@@ -59,6 +59,17 @@ namespace RentMeTests.DalTests.CustomerDalTest
 
 						cmd.Parameters.Add("@email", MySqlDbType.VarChar);
 						cmd.Parameters["@email"].Value = customer.Email;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+						cmd.Parameters.Clear();
+
+						cmd.CommandText = "delete from member where email = @email;";
+						cmd.Parameters.Add("@email", MySqlDbType.VarChar);
+						cmd.Parameters["@email"].Value = customer.Email;
+
 						if (cmd.ExecuteNonQuery() != 1)
 						{
 							transaction.Rollback();
