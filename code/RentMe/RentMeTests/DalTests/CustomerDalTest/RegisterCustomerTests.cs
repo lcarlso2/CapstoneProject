@@ -21,15 +21,18 @@ namespace RentMeTests.DalTests.CustomerDalTest
 			var customerDal = new CustomerDal();
 			var customer = new RegisteringCustomer
 			{
-				Address = "Address", 
 				ConfirmEmail = "confirmEmail", 
 				ConfirmPassword = "confirmPassword", 
 				Email = "confirmEmail", 
 				First = "TestCustomerForTesting", 
 				Last = "TestCustomer",
 				Password = "confirmPassword", 
-				State = "GA", 
-				Zip = "30135"
+				Address = new Address
+				{
+					StreetAddress = "Address",
+					State = "GA",
+					Zip = "30135"
+				}
 			};
 			customerDal.RegisterCustomer(customer);
 

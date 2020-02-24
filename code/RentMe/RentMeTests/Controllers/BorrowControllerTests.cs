@@ -33,7 +33,7 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = false
 			};
 			var mockMediaDal = new MockMediaDal();
-			var borrowItem = new Borrow();
+			var borrowItem = new ConfirmBorrowObject();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
 			var result = (RedirectToActionResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
@@ -49,7 +49,7 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = true
 			};
 			var mockMediaDal = new MockMediaDal();
-			var borrowItem = new Borrow();
+			var borrowItem = new ConfirmBorrowObject();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
 			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -67,7 +67,7 @@ namespace RentMeTests.Controllers
 				ThrowNullReference = false
 			};
 			var mockMediaDal = new MockMediaDal();
-			var borrowItem = new Borrow();
+			var borrowItem = new ConfirmBorrowObject();
 			var controller = new BorrowController(mockBorrowDal, mockMediaDal);
 			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -205,8 +205,8 @@ namespace RentMeTests.Controllers
 			var controller = new BorrowController(new MockBorrowDal(), mediaDal);
 			var result = (ViewResult)controller.ConfirmBorrow(1);
 			Assert.AreEqual(null, result.ViewName);
-			var actualItem = (Media)result.Model;
-			Assert.AreEqual(1, actualItem.InventoryId);
+			var actualItem = (ConfirmBorrowObject)result.Model;
+			Assert.AreEqual(1, BorrowController.SelectedItem.InventoryId);
 		}
 
 		[TestMethod()]

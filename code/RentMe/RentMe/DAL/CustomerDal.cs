@@ -103,10 +103,10 @@ namespace RentMe.DAL
                         cmd.Parameters.Add("@zip", MySqlDbType.VarChar);
 
 
-                        cmd.Parameters["@address"].Value = customer.Address;
+                        cmd.Parameters["@address"].Value = customer.Address.StreetAddress;
                         cmd.Parameters["@email"].Value = customer.Email;
-                        cmd.Parameters["@state"].Value = customer.State;
-                        cmd.Parameters["@zip"].Value = customer.Zip;
+                        cmd.Parameters["@state"].Value = customer.Address.State;
+                        cmd.Parameters["@zip"].Value = customer.Address.Zip;
 
                         if (cmd.ExecuteNonQuery() != 1)
                         {

@@ -48,23 +48,8 @@ namespace RentMe.Models
 
 
 		/// <summary>
-		/// Gets or sets the password
+		/// Gets or sets the Address
 		/// </summary>
-		[Required]
-		public string Address { get; set; }
-
-		/// <summary>
-		/// Gets or sets the state 
-		/// </summary>
-		[Required]
-		public string State { get; set; }
-
-
-		/// <summary>
-		/// Gets or sets the zip
-		/// </summary>
-		[RegularExpression(@"\b\d{5}\b", ErrorMessage = "Must be five digits")]
-		[Required]
-		public string Zip { get; set; }
+		public Address Address { get; set; }
 	}
 }
