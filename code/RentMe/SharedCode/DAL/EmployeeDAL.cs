@@ -295,6 +295,11 @@ namespace SharedCode.DAL
 
         }
 
+        /// <summary>
+        /// Gets all actions that the given employee has down on the system
+        /// </summary>
+        /// <param name="employeeId">the given employee's id</param>
+        /// <returns>the items the employee has updated</returns>
         public List<RentalItem> GetEmployeeHistory(int employeeId)
         {
             List<RentalItem> rentalItems = new List<RentalItem>();

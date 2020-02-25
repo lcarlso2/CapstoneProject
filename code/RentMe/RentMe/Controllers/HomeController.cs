@@ -16,9 +16,7 @@ namespace RentMe.Controllers
 
 	    private readonly ICustomerDal customerDal;
 
-        
-
-        /// <summary>
+	    /// <summary>
         /// The current user that is logged into the system.
         /// If there is no-one logged in, the user is null.
         /// </summary>
@@ -50,6 +48,8 @@ namespace RentMe.Controllers
         /// The index action result
         /// </summary>
         /// <returns>the browse page if someone is logged in, otherwise the index page if no one is logged in.</returns>
+        /// @precondition none
+        /// @postcondition none
         public IActionResult Index()
         {
             if (CurrentUser != null)
@@ -64,6 +64,8 @@ namespace RentMe.Controllers
         /// The signout action result
         /// </summary>
         /// <returns>The index page and the state of the system changes to no one being logged in</returns>
+        /// @precondition none
+        /// @postcondition the current user is set to null
         public IActionResult Signout()
         {
             CurrentUser = null;
@@ -78,8 +80,9 @@ namespace RentMe.Controllers
         /// The http post for the action result login
         /// </summary>
         /// <param name="customer">the customer logging in</param>
-        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs
-        /// If the log in is successful then the state of the system changes to that of a valid member</returns>
+        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs</returns>
+        /// @precondition state of system is that of no one logged in
+        /// @postcondition If the log in is successful then the state of the system changes to that of a valid member
         [HttpPost]
         public IActionResult Login(Customer customer)
         {

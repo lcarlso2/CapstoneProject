@@ -8,11 +8,19 @@ namespace SharedCode.Model
     /// </summary>
     public class InventoryItem
     {
-
+        /// <summary>
+        /// The list of options for categories
+        /// </summary>
         public static List<string> CategoryOptions = new List<string>{ "Action", "Adventure", "Horror", "Comedy", "Romance"};
 
+        /// <summary>
+        /// The list of options for types
+        /// </summary>
         public static List<string> TypeOptions = new List<string> { "Movie", "Book", "TV Show"};
 
+        /// <summary>
+        /// The list of options for conditions
+        /// </summary>
         public static List<string> ConditionOptions = new List<string> { "New", "Used", "Poor" };
 
         /// <summary>

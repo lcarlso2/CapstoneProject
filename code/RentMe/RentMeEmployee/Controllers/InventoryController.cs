@@ -62,7 +62,7 @@ namespace RentMeEmployee.Controllers
 	    /// <summary>
 	    /// The action results for managing employees
 	    /// </summary>
-	    /// <returns>the view for managing employees</returns>
+	    /// <returns>the view for managing employees with an error message if something went wrong</returns>
 	    public IActionResult ViewInventory()
 	    {
 		    List<InventoryItem> inventory = new List<InventoryItem>();

@@ -23,6 +23,7 @@ namespace RentMeDesktop.ViewModel
         private ObservableCollection<RentalItem> rentalItems;
 
         private IRentalDal rentalDal;
+
         private IEmployeeDal employeeDal;
 
 
@@ -112,7 +113,8 @@ namespace RentMeDesktop.ViewModel
         /// </summary>
         /// <param name="username">the username</param>
         /// <param name="password">the password</param>
-        /// <returns>True if the login was valid, otherwise false</returns>
+        /// <returns>True if the login was valid, otherwise false. The state of the system changes
+        /// if a valid login is supplied to that of a valid user using the system</returns>
         public bool ValidateLoginCredentials(string username, string password)
         {
             bool isValidEmployee;

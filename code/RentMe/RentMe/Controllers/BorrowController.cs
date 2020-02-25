@@ -61,6 +61,8 @@ namespace RentMe.Controllers
         /// <returns>The confirm borrow screen or if an error occurs redirected to the browse action.
         /// If the user has too many rentals out then they are directed to the confirm borrow page with a message
         /// letting them know they have too many rentals </returns>
+        /// @precondition none
+        /// @postcondition system changes to confirmborrow page
         public IActionResult ConfirmBorrow(int? id)
 	    {
 		    try
@@ -91,6 +93,9 @@ namespace RentMe.Controllers
         /// <param name="item">the confirmed borrow object for the page</param>
         /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs
         /// with a descriptive error message</returns>
+        /// @precondition none
+        /// @postcondition the item is borrowed if everything was correct (address selected, max number of current open rentals
+        /// not reached, and nothing went wrong with the DB connection) and browse page is shown 
         [HttpPost]
         public IActionResult ConfirmedBorrow(ConfirmBorrowObject item)
         {
@@ -143,6 +148,8 @@ namespace RentMe.Controllers
         /// The browse action
         /// </summary>
         /// <returns>The browse page or the browse page with an error message if something went wrong </returns>
+        /// @precondition none
+        /// @postcondition browse page is shown
         public IActionResult Browse()
         {
             try
@@ -169,6 +176,8 @@ namespace RentMe.Controllers
         /// </summary>
         /// <param name="type">the type to filter the media by</param>
         /// <returns>The browse page with filtered items or the browse page with an error message if something went wrong </returns>
+        /// @precondition none
+        /// @postcondition items are filtered 
         public IActionResult TypeFilter(string type)
         {
             List<Media> media = new List<Media>();
@@ -204,6 +213,8 @@ namespace RentMe.Controllers
         /// </summary>
         /// <param name="category">the category to filter the media by</param>
         /// <returns>The browse page with filtered items or the browse page with an error message if something went wrong </returns>
+        /// @precondition none
+        /// @postcondition items are filtered 
         public IActionResult CategoryFilter(string category)
         {
             List<Media> media = new List<Media>();
@@ -266,6 +277,8 @@ namespace RentMe.Controllers
         /// Gets the partial view for adding an address
         /// </summary>
         /// <returns>The partial view for adding an address</returns>
+        /// @precondition none
+        /// @postcondition page being showed is the partial view add address
         public IActionResult AddAddress()
         {
 	        return PartialView("AddAddress");

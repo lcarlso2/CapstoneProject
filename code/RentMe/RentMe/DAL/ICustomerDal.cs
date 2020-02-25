@@ -23,6 +23,8 @@ namespace RentMe.DAL
 		/// Registers the customer.
 		/// </summary>
 		/// <param name="customer">The customer to register.</param>
+		/// @precondition none
+		/// @postcondition the customer is added to the db
 		void RegisterCustomer(RegisteringCustomer customer);
 
 		/// <summary>
