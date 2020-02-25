@@ -111,6 +111,29 @@ namespace RentMe.Controllers
 	    }
 
 		/// <summary>
+		/// The profile action
+		/// </summary>
+		/// <returns>The profile page with the customer information or an error if something went wrong</returns>
+		/// @precondition none
+		/// @postcondition the profile page is shown 
+		public IActionResult Profile()
+		{
+			try
+			{
+				//var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(HomeController.CurrentUser.Email);
+
+				return View("Profile");
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = ex.Message;
+				ViewBag.Error = "Uh-oh.. something went wrong";
+				return View(new List<RentalItem>());
+			}
+
+		}
+
+		/// <summary>
 		/// The register action result
 		/// </summary>
 		/// <returns>The register page</returns>
