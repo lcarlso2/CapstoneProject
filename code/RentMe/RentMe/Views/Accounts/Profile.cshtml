@@ -1,1 +1,142 @@
-﻿
+﻿@model Customer
+@using RentMe.Controllers
+@{
+    ViewData["Title"] = "profile";
+}
+
+<head>
+    <style>
+        .card-container {
+            margin-left: 16.667%;
+        }
+
+        .button-container {
+            margin: 0 10% !important;
+            max-width: 80% !important;
+        }
+
+        .card {
+            box-shadow: .5em .2em 1em .3em #9494b8;
+            border-radius: .5em;
+        }
+
+        .alert-danger {
+            color: red;
+            background-color: unset;
+            font-weight: 600;
+        }
+
+        .col-md-2 {
+            margin: auto;
+            white-space: nowrap;
+        }
+
+        @@media screen and (max-width: 1200px) {
+
+            .col-md-8 {
+                max-width: 80% !important;
+            }
+
+            .col-md-2 {
+                max-width: unset !important;
+            }
+
+            label {
+                min-width: 110px !important;
+            }
+
+            .form-input {
+                max-width: 100% !important;
+                flex: unset;
+            }
+        }
+
+        @@media screen and (max-width: 768px) {
+
+            .card-container {
+                margin-left: 10%;
+            }
+        }
+    </style>
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 card-container">
+            <div class="card">
+                <div class="text-center">
+                    <h2>Profile</h2>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="container">
+
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="form-group row">
+                                @Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-8 form-input">
+                                    @Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
+                                    @Html.ValidationMessageFor(customer => customer.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-2">
+                                    <a asp-controller="Accounts" asp-action="TypeFilter" class="btn btn-primary">Update</a>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h3>Current Addresses On File</h3>
+                                </div>
+                            </div>
+                            @foreach (var address in HomeController.CurrentUser.Addresses)
+                            {
+
+
+                                <div class="form-group row">
+                                    <div class="col text-center">
+                                        @address.StreetAddress @address.State @address.Zip
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="row">
+                                <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="#confirmationModal">
+                                    Add Address
+                                </button>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <div class="col-md-2 text-center">
+                                    <label class="alert-danger">@ViewBag.Error</label>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLabel">Add New Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @await Html.PartialAsync("AddAddress", new Address())
+
+        </div>
+    </div>
+</div>

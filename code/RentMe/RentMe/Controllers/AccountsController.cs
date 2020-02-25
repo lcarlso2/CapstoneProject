@@ -120,15 +120,15 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				//var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(HomeController.CurrentUser.Email);
+				HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
 
 				return View("Profile");
+
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				ViewBag.ErrorMessage = ex.Message;
 				ViewBag.Error = "Uh-oh.. something went wrong";
-				return View(new List<RentalItem>());
+				return RedirectToAction("Browse");
 			}
 
 		}
@@ -181,5 +181,48 @@ namespace RentMe.Controllers
 		    }
 
 	    }
-    }
+
+		/// <summary>
+		/// Adds an address and returns the profile page
+		/// </summary>
+		/// <param name="address"> the address being added</param>
+		/// <returns>the profile page</returns>
+		/// @precondition none
+		/// @postcondition the address is added or an error is displayed if something went wrong 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddAddress(Address address)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					this.customerDal.AddAddress(address, HomeController.CurrentUser);
+
+					HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
+
+					return View("Profile");
+				}
+				catch (Exception)
+				{
+					ViewBag.Error = "Uh-oh something went wrong";
+					return View("Profile");
+				}
+			}
+			ViewBag.Error = "Invalid Address";
+			return View("Profile");
+
+		}
+
+		/// <summary>
+		/// Gets the partial view for adding an address
+		/// </summary>
+		/// <returns>The partial view for adding an address</returns>
+		/// @precondition none
+		/// @postcondition page being showed is the partial view add address
+		public IActionResult AddAddress()
+		{
+			return PartialView("AddAddress");
+		}
+	}
 }
