@@ -38,7 +38,7 @@ namespace RentMeEmployee.Controllers
 		/// <summary>
 		/// The action results for managing employees
 		/// </summary>
-		/// <returns>the view for managing employees</returns>
+		/// <returns>the view for managing employees or an error message if something went wrong</returns>
 		public IActionResult ManageEmployees()
 	    {
 		    List<Employee> employees = new List<Employee>();
@@ -59,7 +59,7 @@ namespace RentMeEmployee.Controllers
 		/// The Delete employee action result
 		/// </summary>
 		/// <param name="username">the username of the employee being deleted</param>
-		/// <returns>the manage employee view</returns>
+		/// <returns>the manage employee view with an error message if something went wrong</returns>
 		public IActionResult DeleteEmployee(string username)
 	    {
 		    try
@@ -88,7 +88,7 @@ namespace RentMeEmployee.Controllers
 	    /// The post request for the add employee page
 	    /// </summary>
 	    /// <param name="employee">the employee being added</param>
-	    /// <returns>the add employee page</returns>
+	    /// <returns>The employee is added and a success message is displayed or an error message if something went wrong</returns>
 	    [HttpPost]
 	    public IActionResult AddEmployee(Employee employee)
 	    {

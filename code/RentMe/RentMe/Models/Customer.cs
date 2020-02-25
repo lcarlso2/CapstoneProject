@@ -14,6 +14,8 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or sets the email of the customer
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the email address is set 
 		[Required]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
@@ -21,6 +23,8 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or set the password
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the address is set
 		[Required]
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
@@ -28,6 +32,8 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or sets the list of addresses for the customer
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the addresses are set 
 		public List<Address> Addresses { get; set; }
 
 		/// <summary>

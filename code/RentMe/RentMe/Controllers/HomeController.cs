@@ -20,7 +20,7 @@ namespace RentMe.Controllers
 
         /// <summary>
         /// The current user that is logged into the system.
-        /// If there is noone logged in, the user is null.
+        /// If there is no-one logged in, the user is null.
         /// </summary>
         public static Customer CurrentUser;
 
@@ -49,7 +49,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The index action result
         /// </summary>
-        /// <returns>the browse page if someone is logged in, otherwise the index page if no one is logged in</returns>
+        /// <returns>the browse page if someone is logged in, otherwise the index page if no one is logged in.</returns>
         public IActionResult Index()
         {
             if (CurrentUser != null)
@@ -63,7 +63,7 @@ namespace RentMe.Controllers
         /// <summary>
         /// The signout action result
         /// </summary>
-        /// <returns>The index page</returns>
+        /// <returns>The index page and the state of the system changes to no one being logged in</returns>
         public IActionResult Signout()
         {
             CurrentUser = null;
@@ -78,7 +78,8 @@ namespace RentMe.Controllers
         /// The http post for the action result login
         /// </summary>
         /// <param name="customer">the customer logging in</param>
-        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs</returns>
+        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs
+        /// If the log in is successful then the state of the system changes to that of a valid member</returns>
         [HttpPost]
         public IActionResult Login(Customer customer)
         {
@@ -102,6 +103,10 @@ namespace RentMe.Controllers
         }
 
 
+        /// <summary>
+        /// The error page
+        /// </summary>
+        /// <returns>the error page</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

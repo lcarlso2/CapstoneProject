@@ -48,7 +48,8 @@ namespace RentMeEmployee.Controllers
 		/// <summary>
 		/// The action result for filtering the rentals by status
 		/// </summary>
-		/// <returns>The given view based on the desired status</returns>
+		/// <returns>The given list of rentals on the employee landing page
+		/// based on the desired status or an error message if something goes wrong</returns>
 		public IActionResult StatusFilter(string status)
 		{
 
@@ -79,7 +80,7 @@ namespace RentMeEmployee.Controllers
 		/// <summary>
 		/// The employee landing page
 		/// </summary>
-		/// <returns>the employee landing page</returns>
+		/// <returns>the employee landing page with an error message if anything went wrong</returns>
 		public IActionResult EmployeeLanding()
 		{
 			List<RentalItem> items = new List<RentalItem>();
@@ -101,7 +102,7 @@ namespace RentMeEmployee.Controllers
 		/// The update status action result
 		/// </summary>
 		/// <param name="id">the id of the order being updated</param>
-		/// <returns>the update status page</returns>
+		/// <returns>the update status page with an error message if something went wrong</returns>
 		public IActionResult UpdateStatus(int? id)
 		{
 			RentalItem item = new RentalItem();
@@ -128,7 +129,9 @@ namespace RentMeEmployee.Controllers
 		/// The http post for the confirm update action
 		/// </summary>
 		/// <param name="borrowedItem">the borrowed item</param>
-		/// <returns>the employee landing page</returns>
+		/// <returns>the employee landing page or the update status page with an error message if something went wrong</returns>
+		/// @precondition none
+		/// @postcondition the status of the RentalItem is changed if no errors occured 
 		[HttpPost]
 		public IActionResult ConfirmedUpdate(RentalItem borrowedItem)
 		{

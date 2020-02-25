@@ -90,7 +90,9 @@ namespace RentMe.Controllers
 	    /// <summary>
 	    /// The rental history action
 	    /// </summary>
-	    /// <returns>The rental history page</returns>
+	    /// <returns>The rental history page with the list of rented items or an error if something went wrong</returns>
+	    /// @precondition none
+	    /// @postcondition the rental history page is shown 
 	    public IActionResult RentalHistory()
 	    {
 		    try
@@ -112,6 +114,8 @@ namespace RentMe.Controllers
 		/// The register action result
 		/// </summary>
 		/// <returns>The register page</returns>
+		/// @precondition none
+		/// @postcondition the register page is shown
 		[HttpGet]
 	    public IActionResult Register()
 	    {
@@ -122,7 +126,10 @@ namespace RentMe.Controllers
 	    /// The http post for the register page
 	    /// </summary>
 	    /// <param name="customer">the customer being registered</param>
-	    /// <returns> Registers the customer</returns>
+	    /// <returns> Registers the customer and shows a success message or shows an error message. If
+	    /// invalid data is entered then messages are also displayed to notify the user</returns>
+	    /// @precondition none
+	    /// @postcondition the member is added to the DB
 	    [HttpPost]
 	    [ValidateAntiForgeryToken]
 	    public IActionResult Register(RegisteringCustomer customer)

@@ -52,7 +52,7 @@ namespace RentMeEmployee.Controllers
         /// <summary>
         /// The action result for the index page
         /// </summary>
-        /// <returns>the index page</returns>
+        /// <returns>the index page or the employee landing page if the currentemployee is not null</returns>
         public IActionResult Index()
 		{
 			if (CurrentEmployee != null)
@@ -69,6 +69,8 @@ namespace RentMeEmployee.Controllers
         /// The sign out action result
         /// </summary>
         /// <returns>The index page</returns>
+        /// @precondition none
+        /// @postcondition the current employee is set to null
         public IActionResult SignOut()
         {
             CurrentEmployee = null;
@@ -90,7 +92,8 @@ namespace RentMeEmployee.Controllers
         /// The action result for the post request from the login page
         /// </summary>
         /// <param name="employee">the employee being logged in</param>
-        /// <returns>the login page</returns>
+        /// <returns>the login page. If the credentials provided are valid then the state of the
+        /// system changes to a valid user being logged in</returns>
         [HttpPost]
         public IActionResult Login(BaseEmployee employee)
         {
@@ -117,7 +120,10 @@ namespace RentMeEmployee.Controllers
         }
 
         
-
+        /// <summary>
+        /// The error page
+        /// </summary>
+        /// <returns>The error page </returns>
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

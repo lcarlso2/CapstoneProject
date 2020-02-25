@@ -58,7 +58,9 @@ namespace RentMe.Controllers
         /// The confirm borrow action result
         /// </summary>
         /// <param name="id">the id of the item being borrowed</param>
-        /// <returns>The confirm borrow screen or if an error occurs redirected to the browse action</returns>
+        /// <returns>The confirm borrow screen or if an error occurs redirected to the browse action.
+        /// If the user has too many rentals out then they are directed to the confirm borrow page with a message
+        /// letting them know they have too many rentals </returns>
         public IActionResult ConfirmBorrow(int? id)
 	    {
 		    try
@@ -87,7 +89,8 @@ namespace RentMe.Controllers
         /// The confirmed borrow action result
         /// </summary>
         /// <param name="item">the confirmed borrow object for the page</param>
-        /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs</returns>
+        /// <returns>Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs
+        /// with a descriptive error message</returns>
         [HttpPost]
         public IActionResult ConfirmedBorrow(ConfirmBorrowObject item)
         {

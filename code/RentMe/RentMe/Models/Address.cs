@@ -15,6 +15,12 @@ namespace RentMe.Models
 
 		private const int DEFAULT_ID = 2;
 
+
+		/// <summary>
+		/// Gets or sets the address id 
+		/// </summary>
+		/// @precondition none
+		/// @postcondition the address id is set
 		[Required]
 		[Range(1, int.MaxValue)]
 		public int AddressId { get; set; }
@@ -22,6 +28,8 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or sets the password
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the street address is set 
 		[Required]
 		[Display(Name = "Street Address")]
 		public string StreetAddress { get; set; }
@@ -29,6 +37,8 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or sets the state 
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the state is set 
 		[Required]
 		public string State { get; set; }
 
@@ -36,10 +46,17 @@ namespace RentMe.Models
 		/// <summary>
 		/// Gets or sets the zip
 		/// </summary>
+		/// @precondition none
+		/// @postcondition the zip is set
 		[RegularExpression(@"\b\d{5}\b", ErrorMessage = "Must be five digits")]
 		[Required]
 		public string Zip { get; set; }
 
+		/// <summary>
+		/// Creates a new address object with the default id
+		/// </summary>
+		/// @precondition none
+		/// @postcondition a new address object is created 
 		public Address()
 		{
 			this.AddressId = DEFAULT_ID;
