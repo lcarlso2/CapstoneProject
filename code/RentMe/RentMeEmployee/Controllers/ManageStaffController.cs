@@ -115,5 +115,28 @@ namespace RentMeEmployee.Controllers
 		    return View(new Employee());
 	    }
 
-    }
+
+		/// <summary>
+		/// Displays the Employee History page
+		/// </summary>
+		/// <param name="id">The id of the employee to get the history of</param>
+		/// <returns>The employee history view with an error message if something went wrong</returns>
+		public IActionResult EmployeeHistory(int id)
+		{
+			try
+			{
+				var employeeHistory = this.employeeDal.GetEmployeeHistory(id);
+
+				return View("EmployeeHistory", employeeHistory);
+
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = "Uh-oh something went wrong";
+				return View("EmployeeHistory");
+			}
+
+		}
+
+	}
 }

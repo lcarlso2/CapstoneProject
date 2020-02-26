@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Downloads\\College Work\\CLASSES\\Computing Capstone\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {}
+    "C:\\Users\\Carson\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {}
   },
   "projects": {
-    "D:\\Downloads\\College Work\\CLASSES\\Computing Capstone\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {
+    "C:\\Users\\Carson\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Downloads\\College Work\\CLASSES\\Computing Capstone\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
+        "projectUniqueName": "C:\\Users\\Carson\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
         "projectName": "RentMe",
-        "projectPath": "D:\\Downloads\\College Work\\CLASSES\\Computing Capstone\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
-        "packagesPath": "C:\\Users\\trist\\.nuget\\packages\\",
-        "outputPath": "D:\\Downloads\\College Work\\CLASSES\\Computing Capstone\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\obj\\",
+        "projectPath": "C:\\Users\\Carson\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\RentMe.csproj",
+        "packagesPath": "C:\\Users\\Carson\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Carson\\Source\\Repos\\CS4982CapstoneProject\\code\\RentMe\\RentMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\trist\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Carson\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
