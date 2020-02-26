@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktopTests\ViewModel\EmployeeManagmentViewModelTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.TestObjects;
+using RentMeDesktop.ViewModel;
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SharedCode.Model;
+
+namespace RentMeDesktopTests.ViewModel
+{
+    [TestClass]
+    public class EmployeeManagmentViewModelTests
+    {
+
+        [TestMethod()]
+        public void AddEmployeeTestValid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+
+
+            employeeDal.employeeToAdd.FirstName = &quot;Fname&quot;;
+            employeeDal.employeeToAdd.LastName = &quot;Lname&quot;;
+            employeeDal.employeeToAdd.Username = &quot;Username&quot;;
+            employeeDal.employeeToAdd.Password = &quot;Password&quot;;
+            employeeDal.employeeToAdd.IsManager = true;
+
+            var count = employeeDal.employeeList.Count;
+
+            employeeDal.AddEmployee(employeeDal.employeeToAdd, employeeDal.employeeToAdd.Password);
+
+            var countAfter = employeeDal.employeeList.Count;
+
+            Assert.AreEqual(count + 1, countAfter);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(Exception))]
+        public void AddEmployeeTestInvalid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+
+
+            employeeDal.employeeToAdd.FirstName = &quot;Fname&quot;;
+            employeeDal.employeeToAdd.LastName = &quot;Lname&quot;;
+            employeeDal.employeeToAdd.Username = &quot;Username&quot;;
+            employeeDal.employeeToAdd.Password = &quot;Password&quot;;
+            employeeDal.employeeToAdd.IsManager = true;
+
+            var count = employeeDal.employeeList.Count;
+
+            employeeDal.AddEmployee(employeeDal.employeeToAdd, &quot;Invalid&quot;);
+        }
+
+        [TestMethod()]
+        public void RemoveEmployeeTestValid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+
+
+            employeeDal.employeeToAdd.FirstName = &quot;Fname&quot;;
+            employeeDal.employeeToAdd.LastName = &quot;Lname&quot;;
+            employeeDal.employeeToAdd.Username = &quot;Username&quot;;
+            employeeDal.employeeToAdd.Password = &quot;Password&quot;;
+            employeeDal.employeeToAdd.IsManager = true;
+
+            employeeDal.AddEmployee(employeeDal.employeeToAdd, employeeDal.employeeToAdd.Password);
+
+            var count = employeeDal.employeeList.Count;
+
+            employeeDal.RemoveEmployee(employeeDal.employeeToAdd.Username);
+
+            var countAfter = employeeDal.employeeList.Count;
+
+            Assert.AreEqual(count - 1, countAfter);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(Exception))]
+        public void RemoveEmployeeTestInvalid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+
+
+            employeeDal.employeeToAdd.FirstName = &quot;Fname&quot;;
+            employeeDal.employeeToAdd.LastName = &quot;Lname&quot;;
+            employeeDal.employeeToAdd.Username = &quot;Username&quot;;
+            employeeDal.employeeToAdd.Password = &quot;Password&quot;;
+            employeeDal.employeeToAdd.IsManager = true;
+
+            employeeDal.AddEmployee(employeeDal.employeeToAdd, employeeDal.employeeToAdd.Password);
+
+            var count = employeeDal.employeeList.Count;
+
+            employeeDal.RemoveEmployee(&quot;Invalid&quot;);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetEmployeeHistoryIsInValid()
+        {
+            var employeeDal = new MockEmployeeDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new EmployeeManagementViewModel(employeeDal);
+            var output = viewModel.GetEmployeeHistory();
+        }
+    }
+
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,9,18,10,0],[19,13,22,15,0],[23,13,23,74,0],[26,13,26,59,0],[27,13,27,58,0],[28,13,28,61,0],[29,13,29,61,0],[30,13,30,56,0],[32,13,32,56,0],[34,13,34,100,0],[36,13,36,61,0],[38,13,38,52,0],[39,9,39,10,0],[44,9,44,10,0],[45,13,48,15,0],[49,13,49,74,0],[52,13,52,59,0],[53,13,53,58,0],[54,13,54,61,0],[55,13,55,61,0],[56,13,56,56,0],[58,13,58,56,0],[60,13,60,75,0],[61,9,61,10,0],[65,9,65,10,0],[66,13,69,15,0],[70,13,70,74,0],[73,13,73,59,0],[74,13,74,58,0],[75,13,75,61,0],[76,13,76,61,0],[77,13,77,56,0],[79,13,79,100,0],[81,13,81,56,0],[83,13,83,76,0],[85,13,85,61,0],[87,13,87,52,0],[88,9,88,10,0],[93,9,93,10,0],[94,13,97,15,0],[98,13,98,74,0],[101,13,101,59,0],[102,13,102,58,0],[103,13,103,61,0],[104,13,104,61,0],[105,13,105,56,0],[107,13,107,100,0],[109,13,109,56,0],[111,13,111,51,0],[112,9,112,10,0],[117,9,117,10,0],[118,13,121,15,0],[122,13,122,74,0],[123,13,123,57,0],[124,9,124,10,0]]);
+    </script>
+  </body>
+</html>

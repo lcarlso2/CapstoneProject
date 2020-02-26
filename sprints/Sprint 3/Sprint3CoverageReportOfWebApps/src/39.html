@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktopTests\ViewModel\InventoryViewModelTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.TestObjects;
+using RentMeDesktop.ViewModel;
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RentMeDesktopTests.ViewModel
+{
+    [TestClass]
+    public class InventoryViewModelTests
+    {
+
+        [TestMethod()]
+        public void RetrieveAllInventoryItemsTestIsValid()
+        {
+            var inventoryDal = new MockInventoryDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new InventoryViewModel(inventoryDal);
+
+            viewModel.RetrieveAllInventoryItems();
+
+            Assert.AreEqual(1, viewModel.Inventory.Count);
+        }
+
+        [TestMethod()]
+        public void RetrieveAllInventoryItemsTestIsInValid()
+        {
+            var inventoryDal = new MockInventoryDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new InventoryViewModel(inventoryDal);
+
+            Assert.AreEqual(null, viewModel.Inventory);
+        }
+
+
+        [TestMethod()]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void GetSelectedItemDetailSummaryTestIsInValid()
+        {
+            var inventoryDal = new MockInventoryDal
+            {
+                ThrowError = false
+            };
+            var viewModel = new InventoryViewModel(inventoryDal);
+
+            var output = viewModel.GetSelectedItemHistorySummary();
+            
+        }
+
+    }
+
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,9,17,10,0],[18,13,21,15,0],[22,13,22,66,0],[24,13,24,51,0],[26,13,26,59,0],[27,9,27,10,0],[31,9,31,10,0],[32,13,35,15,0],[36,13,36,66,0],[38,13,38,56,0],[39,9,39,10,0],[45,9,45,10,0],[46,13,49,15,0],[50,13,50,66,0],[52,13,52,68,0],[54,9,54,10,0]]);
+    </script>
+  </body>
+</html>

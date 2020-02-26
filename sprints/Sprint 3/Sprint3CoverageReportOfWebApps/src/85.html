@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\Controllers\HomeControllerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using RentMe.Models;
+using RentMeTests.MockDal;
+
+namespace RentMeTests.Controllers
+{
+	/// &lt;summary&gt;
+	/// The test class for the home controller of the RentMe project
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class HomeControllerTests
+	{
+		[TestMethod()]
+		public void IndexTestWithCurrentUser()
+		{
+			var controller = new HomeController();
+			HomeController.CurrentUser = new Customer();
+			var result = (RedirectToActionResult)controller.Index();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+			Assert.AreEqual(&quot;Borrow&quot;, result.ControllerName);
+		}
+
+		[TestMethod()]
+		public void IndexTestWithoutCurrentUser()
+		{
+			HomeController.CurrentUser = null;
+		
+			var controller = new HomeController();
+			var result = (ViewResult)controller.Index();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			
+		}
+
+
+		[TestMethod()]
+		public void LoginTestWithValidCustomer()
+		{
+			var customer = new Customer
+			{
+				Email = &quot;email&quot;,
+				Password = &quot;password&quot;
+			};
+			var customerDal = new MockCustomerDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal);
+			var result = (RedirectToActionResult) controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidCustomerLogin()
+		{
+			var customer = new Customer
+			{
+				Email = &quot;email&quot;,
+				Password = &quot;password&quot;
+			};
+			var customerDal = new MockCustomerDal
+			{
+				AuthenticateValueToReturn = 2
+			};
+			var controller = new HomeController(customerDal);
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidCustomer()
+		{
+			var customer = new Customer
+			{
+				Email = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var customerDal = new MockCustomerDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal);
+			controller.ModelState.AddModelError(&quot;Test&quot;, &quot;Test&quot;);
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void LoginTestWithException()
+		{
+			var customer = new Customer
+			{
+				Email = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var customerDal = new MockCustomerDal
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(customerDal);
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Whoops, try again. Something went wrong.&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		
+
+		[TestMethod()]
+		public void SignoutTest()
+		{
+			var controller = new HomeController(new MockCustomerDal());
+			var result = (RedirectToActionResult)controller.Signout();
+			Assert.AreEqual(&quot;Index&quot;, result.ActionName);
+			Assert.AreEqual(null, HomeController.CurrentUser);
+
+		}
+
+
+	}
+
+
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,3,17,4,1],[18,4,18,42,1],[19,4,19,48,1],[20,4,20,60,1],[21,4,21,68,1],[22,4,22,49,1],[23,4,23,53,1],[24,3,24,4,1],[28,3,28,4,1],[29,4,29,38,1],[31,4,31,42,1],[32,4,32,48,1],[33,4,33,56,1],[34,4,34,46,1],[36,3,36,4,1],[41,3,41,4,1],[42,4,46,6,1],[47,4,50,6,1],[51,4,51,53,1],[52,4,52,69,1],[53,4,53,68,1],[54,4,54,49,1],[55,3,55,4,1],[59,3,59,4,1],[60,4,64,6,1],[65,4,68,6,1],[69,4,69,53,1],[70,4,70,56,1],[71,4,71,56,1],[72,4,72,46,1],[73,4,73,63,1],[74,3,74,4,1],[78,3,78,4,1],[79,4,83,6,1],[84,4,87,6,1],[88,4,88,53,1],[89,4,89,56,1],[90,4,90,56,1],[91,4,91,56,1],[92,4,92,46,1],[93,4,93,63,1],[95,3,95,4,1],[99,3,99,4,1],[100,4,104,6,1],[105,4,109,6,1],[110,4,110,53,1],[111,4,111,56,1],[112,4,112,56,1],[113,4,113,46,1],[114,4,114,90,1],[116,3,116,4,1],[122,3,122,4,1],[123,4,123,63,1],[124,4,124,62,1],[125,4,125,48,1],[126,4,126,54,1],[128,3,128,4,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\MockDal\MockMediaDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMeTests.MockDal
+{
+	/// &lt;summary&gt;
+	/// The mock media dal class used for testing purposes 
+	/// &lt;/summary&gt;
+	public class MockMediaDal : IMediaDal
+	{
+
+		public bool ThrowError { get; set; }
+
+		public List&lt;Media&gt; RetrieveAllMedia()
+		{
+			var media = new List&lt;Media&gt;{new Media{InventoryId = 1}};
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return media;
+		}
+
+		public List&lt;Media&gt; RetrieveMediaByCategory(string category)
+		{
+			var media = new List&lt;Media&gt;();
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return media;
+		}
+
+		public List&lt;Media&gt; RetrieveMediaByType(string type)
+		{
+			var media = new List&lt;Media&gt;();
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return media;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,28,15,32,1],[15,33,15,37,1],[18,3,18,4,1],[19,4,19,60,1],[20,4,20,24,1],[21,4,21,5,1],[22,5,22,27,1],[24,4,24,17,1],[25,3,25,4,1],[28,3,28,4,1],[29,4,29,34,1],[30,4,30,24,1],[31,4,31,5,1],[32,5,32,27,1],[34,4,34,17,1],[35,3,35,4,1],[38,3,38,4,1],[39,4,39,34,1],[40,4,40,24,1],[41,4,41,5,1],[42,5,42,27,1],[44,4,44,17,1],[45,3,45,4,1]]);
+    </script>
+  </body>
+</html>

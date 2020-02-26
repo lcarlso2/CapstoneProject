@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeEmployee\Controllers\ManageStaffController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The ManageStaffController responsible for all pages related to managing staff
+	/// &lt;/summary&gt;
+    public class ManageStaffController : Controller
+    {
+	    private readonly IEmployeeDal employeeDal;
+
+		/// &lt;summary&gt;
+		/// Creates a new default ManageStaff controller 
+		/// &lt;/summary&gt;
+		[ActivatorUtilitiesConstructor]
+	    public ManageStaffController()
+	    {
+		    this.employeeDal = new EmployeeDal();
+	    }
+
+	    /// &lt;summary&gt;
+	    /// Creates a new controller with the given dals passed in
+	    /// &lt;/summary&gt;
+	    /// &lt;param name=&quot;employeeDal&quot;&gt;The employee dal to be passed in&lt;/param&gt;
+	    /// @precondition none
+	    /// @postcondition getEmployeeDal() == employeeDal
+	    public ManageStaffController(IEmployeeDal employeeDal)
+	    {
+		    this.employeeDal = employeeDal;
+	    }
+
+
+		/// &lt;summary&gt;
+		/// The action results for managing employees
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;the view for managing employees or an error message if something went wrong&lt;/returns&gt;
+		public IActionResult ManageEmployees()
+	    {
+		    List&lt;Employee&gt; employees = new List&lt;Employee&gt;();
+		    try
+		    {
+			    employees = this.employeeDal.GetEmployees(HomeController.CurrentEmployee);
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+		    }
+
+		    return View(employees);
+	    }
+
+
+		/// &lt;summary&gt;
+		/// The Delete employee action result
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;username&quot;&gt;the username of the employee being deleted&lt;/param&gt;
+		/// &lt;returns&gt;the manage employee view with an error message if something went wrong&lt;/returns&gt;
+		public IActionResult DeleteEmployee(string username)
+	    {
+		    try
+		    {
+			    this.employeeDal.RemoveEmployee(username);
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+		    }
+
+		    return RedirectToAction(&quot;ManageEmployees&quot;);
+	    }
+
+	    /// &lt;summary&gt;
+	    /// The get request for the add employee page
+	    /// &lt;/summary&gt;
+	    /// &lt;returns&gt;the add employee page&lt;/returns&gt;
+	    [HttpGet]
+	    public IActionResult AddEmployee()
+	    {
+		    return View();
+	    }
+
+	    /// &lt;summary&gt;
+	    /// The post request for the add employee page
+	    /// &lt;/summary&gt;
+	    /// &lt;param name=&quot;employee&quot;&gt;the employee being added&lt;/param&gt;
+	    /// &lt;returns&gt;The employee is added and a success message is displayed or an error message if something went wrong&lt;/returns&gt;
+	    [HttpPost]
+	    public IActionResult AddEmployee(Employee employee)
+	    {
+		    if (ModelState.IsValid)
+		    {
+			    try
+			    {
+				    this.employeeDal.AddEmployee(employee, employee.Password);
+
+				    ViewBag.SuccessMessage = &quot;Employee added!&quot;;
+			    }
+			    catch (Exception)
+			    {
+				    ViewBag.ErrorMessage = &quot;Uh-oh...something went wrong&quot;;
+			    }
+
+			    ModelState.Clear();
+		    }
+		    else
+		    {
+			    return View(employee);
+			}
+
+		    return View(new Employee());
+	    }
+
+
+		/// &lt;summary&gt;
+		/// Displays the Employee History page
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;The id of the employee to get the history of&lt;/param&gt;
+		/// &lt;returns&gt;The employee history view with an error message if something went wrong&lt;/returns&gt;
+		public IActionResult EmployeeHistory(int id)
+		{
+			try
+			{
+				var employeeHistory = this.employeeDal.GetEmployeeHistory(id);
+
+				return View(&quot;EmployeeHistory&quot;, employeeHistory);
+
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+				return View(&quot;EmployeeHistory&quot;);
+			}
+
+		}
+
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,6,21,36,1],[22,6,22,7,1],[23,7,23,44,1],[24,6,24,7,1],[32,6,32,60,1],[33,6,33,7,1],[34,7,34,38,1],[35,6,35,7,1],[43,6,43,7,1],[44,7,44,55,1],[46,7,46,8,1],[47,8,47,82,1],[48,7,48,8,1],[49,7,49,24,1],[50,7,50,8,1],[51,8,51,60,1],[52,7,52,8,1],[54,7,54,30,1],[55,6,55,7,1],[64,6,64,7,1],[66,7,66,8,1],[67,8,67,50,1],[68,7,68,8,1],[69,7,69,24,1],[70,7,70,8,1],[71,8,71,60,1],[72,7,72,8,1],[74,7,74,50,1],[75,6,75,7,1],[83,6,83,7,1],[84,7,84,21,1],[85,6,85,7,1],[94,6,94,7,1],[95,7,95,30,1],[96,7,96,8,1],[98,8,98,9,1],[99,9,99,67,1],[101,9,101,52,1],[102,8,102,9,1],[103,8,103,25,1],[104,8,104,9,1],[105,9,105,63,1],[106,8,106,9,1],[108,8,108,27,1],[109,7,109,8,1],[111,7,111,8,1],[112,8,112,30,1],[115,7,115,35,1],[116,6,116,7,1],[125,3,125,4,1],[127,4,127,5,1],[128,5,128,67,1],[130,5,130,53,1],[133,4,133,21,1],[134,4,134,5,1],[135,5,135,57,1],[136,5,136,36,1],[139,3,139,4,1]]);
+    </script>
+  </body>
+</html>

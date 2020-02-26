@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The home controller responsible for the page communication of the Rent Me Application (Member Side).
+    /// &lt;/summary&gt;
+    public class HomeController : Controller
+    {
+
+	    private readonly ICustomerDal customerDal;
+
+	    /// &lt;summary&gt;
+        /// The current user that is logged into the system.
+        /// If there is no-one logged in, the user is null.
+        /// &lt;/summary&gt;
+        public static Customer CurrentUser;
+
+        /// &lt;summary&gt;
+        /// Creates a new home controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;customerDal&quot;&gt;The customer dal for communication&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the input dals
+        public HomeController(ICustomerDal customerDal)
+        {
+	        this.customerDal = customerDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the CustomerDal
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	        this.customerDal = new CustomerDal();
+        }
+
+        /// &lt;summary&gt;
+        /// The index action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the browse page if someone is logged in, otherwise the index page if no one is logged in.&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition none
+        public IActionResult Index()
+        {
+            if (CurrentUser != null)
+            {
+                return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+            }
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The signout action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page and the state of the system changes to no one being logged in&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the current user is set to null
+        public IActionResult Signout()
+        {
+            CurrentUser = null;
+
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+
+
+
+        /// &lt;summary&gt;
+        /// The http post for the action result login
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;customer&quot;&gt;the customer logging in&lt;/param&gt;
+        /// &lt;returns&gt;The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs&lt;/returns&gt;
+        /// @precondition state of system is that of no one logged in
+        /// @postcondition If the log in is successful then the state of the system changes to that of a valid member
+        [HttpPost]
+        public IActionResult Login(Customer customer)
+        {
+            try
+            {
+                if (ModelState.IsValid &amp;&amp; this.customerDal.Authenticate(customer.Email, customer.Password) == 1)
+                {
+                    CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
+                    return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The error page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the error page&lt;/returns&gt;
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[31,9,31,56,1],[32,9,32,10,1],[33,10,33,41,1],[34,9,34,10,1],[42,9,42,32,1],[43,9,43,10,1],[44,10,44,47,1],[45,9,45,10,1],[54,9,54,10,1],[55,13,55,37,1],[56,13,56,14,1],[57,17,57,61,1],[59,13,59,34,1],[60,9,60,10,1],[70,9,70,10,1],[71,13,71,32,1],[73,13,73,46,1],[74,9,74,10,1],[88,9,88,10,1],[90,13,90,14,1],[91,17,91,113,1],[92,17,92,18,1],[93,21,93,105,1],[94,21,94,65,1],[96,13,96,14,1],[97,13,97,33,1],[98,13,98,14,1],[99,17,99,51,1],[100,17,100,76,1],[101,17,101,38,1],[104,13,104,45,1],[105,13,105,34,1],[106,9,106,10,1],[115,9,115,10,0],[116,13,116,113,0],[117,9,117,10,0]]);
+    </script>
+  </body>
+</html>

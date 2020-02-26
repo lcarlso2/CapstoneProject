@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\MockDal\MockBorrowDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMeTests.MockDal
+{
+	/// &lt;summary&gt;
+	/// The mock borrow dal class used for testing purposes 
+	/// &lt;/summary&gt;
+	public class MockBorrowDal : IBorrowDal
+	{
+
+		public bool ThrowNullReference { get; set; }
+		
+	
+		public bool ThrowException { get; set; }
+
+		public int NumberToReturn { get; set; }
+
+		public int BorrowItem(Customer customer, Media media, int addressId)
+		{
+			if (this.ThrowNullReference)
+			{
+				throw new NullReferenceException();
+			}
+
+			if (this.ThrowException)
+			{
+				throw new Exception();
+			}
+
+			return 3;
+		}
+
+		public int GetNumberOfOpenRentals(Customer customer)
+		{
+			if (this.ThrowException)
+			{
+				throw new Exception();
+			}
+
+			return this.NumberToReturn;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,36,15,40,1],[15,41,15,45,1],[18,32,18,36,1],[18,37,18,41,1],[20,31,20,35,1],[20,36,20,40,1],[23,3,23,4,1],[24,4,24,32,1],[25,4,25,5,1],[26,5,26,40,1],[29,4,29,28,1],[30,4,30,5,0],[31,5,31,27,0],[34,4,34,13,1],[35,3,35,4,1],[38,3,38,4,1],[39,4,39,28,1],[40,4,40,5,1],[41,5,41,27,1],[44,4,44,31,1],[45,3,45,4,1]]);
+    </script>
+  </body>
+</html>

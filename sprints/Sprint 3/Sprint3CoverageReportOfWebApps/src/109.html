@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktop\View\AddEmployeePage.xaml.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+using RentMeDesktop.ViewModel;
+
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace RentMeDesktop.View
+{
+	/// &lt;summary&gt;
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// &lt;/summary&gt;
+	public sealed partial class AddEmployeePage : Page
+	{
+		/// &lt;summary&gt;
+		/// The view Model
+		/// &lt;/summary&gt;
+		public EmployeeManagementViewModel ViewModel;
+
+		public AddEmployeePage()
+		{
+			this.InitializeComponent();
+			this.ViewModel = new EmployeeManagementViewModel();
+			this.DataContext = this.ViewModel;
+		}
+
+		private void cancelButton_Click(object sender, RoutedEventArgs e)
+		{
+			Frame.Navigate(typeof(EmployeeManagementPage), this.ViewModel);
+		}
+
+		protected override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			var oldViewModel = (BaseViewModel)e.Parameter;
+			this.ViewModel.CurrentEmployee = oldViewModel?.CurrentEmployee;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[31,3,31,27,0],[32,3,32,4,0],[33,4,33,31,0],[34,4,34,55,0],[35,4,35,38,0],[36,3,36,4,0],[39,3,39,4,0],[40,4,40,67,0],[41,3,41,4,0],[44,3,44,4,0],[45,4,45,50,0],[46,4,46,67,0],[47,3,47,4,0]]);
+    </script>
+  </body>
+</html>

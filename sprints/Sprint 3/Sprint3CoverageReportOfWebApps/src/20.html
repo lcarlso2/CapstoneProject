@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\RegisteringCustomer.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of the registering customer
+	/// &lt;/summary&gt;
+	public class RegisteringCustomer : Customer
+	{
+
+		/// &lt;summary&gt;
+		/// Gets or sets the first name
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the first name is set
+		[Required]
+		[Display(Name = &quot;First Name&quot;)]
+		public string First { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the last name
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the last name is set
+		[Required]
+		[Display(Name = &quot;Last Name&quot;)]
+		public string Last { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm email
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the confirm email is set
+		[Required]
+		[Display(Name = &quot;Confirm Email&quot;)]
+		[DataType(DataType.EmailAddress)]
+		[Compare(&quot;Email&quot;)]
+		public string ConfirmEmail { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm password
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the confirm password is set
+		[Required]
+		[Display(Name = &quot;Confirm Password&quot;)]
+		[DataType(DataType.Password)]
+		[Compare(&quot;Password&quot;)]
+		public string ConfirmPassword { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the Address
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the address is set
+		public Address Address { get; set; }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,25,22,29,1],[22,30,22,34,1],[32,24,32,28,1],[32,29,32,33,1],[44,32,44,36,0],[44,37,44,41,1],[55,35,55,39,0],[55,40,55,44,1],[63,28,63,32,1],[63,33,63,37,1]]);
+    </script>
+  </body>
+</html>

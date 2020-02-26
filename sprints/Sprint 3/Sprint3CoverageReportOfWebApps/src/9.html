@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\SharedCode\DAL\DbConnection.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using MySql.Data.MySqlClient;
+
+namespace SharedCode.DAL
+{
+	/// &lt;summary&gt;
+	/// The class responsible for establishing a connection the DB 
+	/// &lt;/summary&gt;
+	public class DbConnection
+	{
+
+        /// &lt;summary&gt;
+		/// The connection string for the current database
+		/// &lt;/summary&gt;
+        public static readonly string ConnString = &quot;server=160.10.25.16; port=3306; uid=cs4982s20c; &quot; +
+                                                   &quot;pwd=zOAIfJ3BhiAeUryr; database=cs4982s20c;&quot;;
+        /// &lt;summary&gt;
+        /// Gets the connection to the DB
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the connection &lt;/returns&gt;
+        public static MySqlConnection GetConnection()
+        {
+            var conn = new MySqlConnection(ConnString);
+
+            return conn;
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,9,18,97,1],[17,9,18,97,0],[17,9,18,97,0],[24,9,24,10,1],[24,9,24,10,0],[24,9,24,10,0],[25,13,25,56,1],[25,13,25,56,0],[25,13,25,56,0],[27,13,27,25,1],[27,13,27,25,0],[27,13,27,25,0],[28,9,28,10,1],[28,9,28,10,0],[28,9,28,10,0]]);
+    </script>
+  </body>
+</html>

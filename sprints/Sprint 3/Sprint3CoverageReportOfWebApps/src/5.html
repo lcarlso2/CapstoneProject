@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\SharedCode\Model\BaseEmployee.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.ComponentModel.DataAnnotations;
+
+namespace SharedCode.Model
+{
+    /// &lt;summary&gt;
+	/// The base employee class
+	/// &lt;/summary&gt;
+	public class BaseEmployee
+	{
+
+        /// &lt;summary&gt;
+        /// Gets or sets the username
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// The username
+        /// &lt;/value&gt;
+        [Required]
+        public string Username { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the password
+        /// &lt;/summary&gt;
+        /// /// &lt;value&gt;
+        /// The password
+        /// &lt;/value&gt;
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,34,21,38,1],[21,34,21,38,1],[21,34,21,38,0],[21,39,21,43,1],[21,39,21,43,1],[21,39,21,43,0],[31,34,31,38,1],[31,34,31,38,1],[31,34,31,38,0],[31,39,31,43,1],[31,39,31,43,1],[31,39,31,43,0]]);
+    </script>
+  </body>
+</html>

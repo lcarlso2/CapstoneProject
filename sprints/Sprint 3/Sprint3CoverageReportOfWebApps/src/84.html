@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\Controllers\BorrowControllerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.Controllers;
+using RentMe.Models;
+using RentMeTests.MockDal;
+using SharedCode.TestObjects;
+
+namespace RentMeTests.Controllers
+{
+	/// &lt;summary&gt;
+	/// The test class for the borrow controller 
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class BorrowControllerTests
+	{
+
+		[TestMethod()]
+		public void DefaultControllerTest()
+		{
+			var controller = new BorrowController();
+			Assert.IsInstanceOfType(controller, typeof(BorrowController));
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithValidInput()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			var result = (RedirectToActionResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithValidInputButMoreThanAllowRentals()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Looks like you have already rented 3 items. Please return something to rent another.&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithInvalidInput()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			controller.ModelState.AddModelError(&quot;Error&quot;, &quot;Error&quot;);
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Please select a shipping address&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithInvalidInputAndMoreThanAllowedRentals()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			controller.ModelState.AddModelError(&quot;Error&quot;, &quot;Error&quot;);
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Looks like you have already rented 3 items. Please return something to rent another.&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithNullReference()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = true
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Please log in again.&quot;, result.ViewData[&quot;Error&quot;]);
+			Assert.AreEqual(&quot;Object reference not set to an instance of an object.&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+		}
+
+		[TestMethod()]
+		public void ConfirmedBorrowTestWithException()
+		{
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = true,
+				ThrowNullReference = false
+			};
+			var mockMediaDal = new MockMediaDal();
+			var borrowItem = new ConfirmBorrowObject();
+			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Exception of type &#39;System.Exception&#39; was thrown.&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void CategoryFilterTestWithAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.CategoryFilter(&quot;All&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(1, actualList.Count);
+
+		}
+
+		[TestMethod()]
+		public void CategoryFilterTestWithoutAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.CategoryFilter(&quot;Action&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(0, actualList.Count);
+
+		}
+
+
+		[TestMethod()]
+		public void CategoryFilterTestWithExceptionThrown()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.CategoryFilter(&quot;Action&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void TypeFilterTestWithAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.TypeFilter(&quot;All&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(1, actualList.Count);
+
+		}
+
+		[TestMethod()]
+		public void TypeFilterTestWithoutAll()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.TypeFilter(&quot;Action&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(0, actualList.Count);
+
+		}
+
+
+		[TestMethod()]
+		public void TypeFilterTestWithExceptionThrown()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.TypeFilter(&quot;Action&quot;);
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void BrowseTest()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.Browse();
+			Assert.AreEqual(&quot;Browse&quot;, result.ViewName);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(1, actualList.Count);
+		}
+
+		[TestMethod()]
+		public void BrowseTestWithException()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.Browse();
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh.. something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+			var actualList = (List&lt;Media&gt;)result.Model;
+			Assert.AreEqual(0, actualList.Count);
+		}
+
+		[TestMethod()]
+		public void ConfirmBorrowTest()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 1
+			};
+			HomeController.CurrentUser = new Customer();
+			var controller = new BorrowController(mockBorrowDal, mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual(null, result.ViewName);
+			var actualItem = (ConfirmBorrowObject)result.Model;
+			Assert.AreEqual(1, BorrowController.SelectedItem.InventoryId);
+		}
+
+		[TestMethod()]
+		public void ConfirmBorrowTestWithMoreThanAllowedRentals()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+
+			var mockBorrowDal = new MockBorrowDal
+			{
+				ThrowException = false,
+				ThrowNullReference = false,
+				NumberToReturn = 3
+			};
+			HomeController.CurrentUser = new Customer();
+			var controller = new BorrowController(mockBorrowDal, mediaDal, new MockCustomerDal());
+			var result = (ViewResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual($&quot;Looks like you have already rented 3 items. Please return something to rent another.&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void ConfirmBorrowTestWithException()
+		{
+			var mediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mediaDal, new MockCustomerDal());
+			var result = (RedirectToActionResult)controller.ConfirmBorrow(1);
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void AddAddressTestValid()
+		{
+			var customerDal = new MockCustomerDal()
+			{
+				ThrowError = false
+			};
+			HomeController.CurrentUser = new Customer();
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+		}
+
+		[TestMethod()]
+		public void AddAddressTestInvalid()
+		{
+			var customerDal = new MockCustomerDal()
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			controller.ModelState.AddModelError(&quot;Error&quot;, &quot;Error&quot;);
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid Address&quot;, result.ViewData[&quot;Error&quot;]);
+			
+		}
+
+		[TestMethod()]
+		public void AddAddressTestExceptionThrown()
+		{
+			var customerDal = new MockCustomerDal()
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), customerDal);
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.AreEqual(&quot;ConfirmBorrow&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void AddAddressTestPage()
+		{
+			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), new MockCustomerDal());
+			var result = (PartialViewResult) controller.AddAddress();
+			Assert.AreEqual(&quot;AddAddress&quot;, result.ViewName);
+		}
+
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,3,22,4,1],[23,4,23,44,1],[24,4,24,66,1],[25,3,25,4,1],[29,3,29,4,1],[30,4,34,6,1],[35,4,35,42,1],[36,4,36,47,1],[37,4,37,94,1],[38,4,38,80,1],[39,4,39,68,1],[40,4,40,49,1],[41,3,41,4,1],[45,3,45,4,1],[46,4,51,6,1],[52,4,52,42,1],[53,4,53,47,1],[54,4,54,94,1],[55,4,55,68,1],[56,4,56,56,1],[57,4,57,54,1],[58,4,58,134,1],[59,3,59,4,1],[63,3,63,4,1],[64,4,68,6,1],[69,4,69,42,1],[70,4,70,47,1],[71,4,71,94,1],[72,4,72,58,1],[73,4,73,68,1],[74,4,74,56,1],[75,4,75,54,1],[76,4,76,82,1],[78,3,78,4,1],[82,3,82,4,1],[83,4,88,6,1],[89,4,89,42,1],[90,4,90,47,1],[91,4,91,94,1],[92,4,92,58,1],[93,4,93,68,1],[94,4,94,56,1],[95,4,95,54,1],[96,4,96,134,1],[98,3,98,4,1],[102,3,102,4,1],[103,4,107,6,1],[108,4,108,42,1],[109,4,109,47,1],[110,4,110,94,1],[111,4,111,68,1],[112,4,112,56,1],[113,4,113,54,1],[114,4,114,70,1],[115,4,115,110,1],[116,3,116,4,1],[120,3,120,4,1],[121,4,125,6,1],[126,4,126,42,1],[127,4,127,47,1],[128,4,128,94,1],[129,4,129,68,1],[130,4,130,56,1],[131,4,131,54,1],[132,4,132,98,1],[134,3,134,4,1],[138,3,138,4,1],[139,4,142,6,1],[143,4,143,96,1],[144,4,144,62,1],[145,4,145,47,1],[146,4,146,47,1],[147,4,147,41,1],[149,3,149,4,1],[153,3,153,4,1],[154,4,157,6,1],[158,4,158,96,1],[159,4,159,65,1],[160,4,160,47,1],[161,4,161,47,1],[162,4,162,41,1],[164,3,164,4,1],[169,3,169,4,1],[170,4,173,6,1],[174,4,174,96,1],[175,4,175,65,1],[176,4,176,47,1],[177,4,177,76,1],[179,3,179,4,1],[183,3,183,4,1],[184,4,187,6,1],[188,4,188,96,1],[189,4,189,58,1],[190,4,190,47,1],[191,4,191,47,1],[192,4,192,41,1],[194,3,194,4,1],[198,3,198,4,1],[199,4,202,6,1],[203,4,203,96,1],[204,4,204,61,1],[205,4,205,47,1],[206,4,206,47,1],[207,4,207,41,1],[209,3,209,4,1],[214,3,214,4,1],[215,4,218,6,1],[219,4,219,96,1],[220,4,220,61,1],[221,4,221,47,1],[222,4,222,76,1],[224,3,224,4,1],[228,3,228,4,1],[229,4,232,6,1],[233,4,233,96,1],[234,4,234,49,1],[235,4,235,47,1],[236,4,236,47,1],[237,4,237,41,1],[238,3,238,4,1],[242,3,242,4,1],[243,4,246,6,1],[247,4,247,96,1],[248,4,248,49,1],[249,4,249,43,1],[250,4,250,78,1],[251,4,251,47,1],[252,4,252,41,1],[253,3,253,4,1],[257,3,257,4,1],[258,4,261,6,1],[263,4,268,6,1],[269,4,269,48,1],[270,4,270,90,1],[271,4,271,57,1],[272,4,272,43,1],[273,4,273,55,1],[274,4,274,66,1],[275,3,275,4,1],[279,3,279,4,1],[280,4,283,6,1],[285,4,290,6,1],[291,4,291,48,1],[292,4,292,90,1],[293,4,293,57,1],[294,4,294,43,1],[295,4,295,135,1],[296,3,296,4,1],[300,3,300,4,1],[301,4,304,6,1],[305,4,305,96,1],[306,4,306,69,1],[307,4,307,49,1],[308,3,308,4,1],[312,3,312,4,1],[313,4,316,6,1],[317,4,317,48,1],[318,4,318,96,1],[319,4,319,66,1],[320,4,320,54,1],[321,3,321,4,1],[325,3,325,4,1],[326,4,329,6,1],[330,4,330,96,1],[331,4,331,58,1],[332,4,332,66,1],[333,4,333,54,1],[334,4,334,65,1],[336,3,336,4,1],[340,3,340,4,1],[341,4,344,6,1],[345,4,345,96,1],[346,4,346,66,1],[347,4,347,54,1],[348,4,348,76,1],[349,3,349,4,1],[353,3,353,4,1],[354,4,354,106,1],[355,4,355,61,1],[356,4,356,51,1],[357,3,357,4,1]]);
+    </script>
+  </body>
+</html>

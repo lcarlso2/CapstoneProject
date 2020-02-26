@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeEmployee\Controllers\InventoryController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The inventoryController responsible for all pages that manage inventory 
+	/// &lt;/summary&gt;
+    public class InventoryController : Controller
+	{
+
+		private readonly IInventoryDal inventoryDal;
+
+	    /// &lt;summary&gt;
+		/// Creates a new default inventory controller 
+		/// &lt;/summary&gt;
+		[ActivatorUtilitiesConstructor]
+	    public InventoryController()
+	    {
+		    this.inventoryDal = new InventoryDal();
+	    }
+
+	    /// &lt;summary&gt;
+	    /// Creates a new controller with the given dals passed in
+	    /// &lt;/summary&gt;
+	    /// &lt;param name=&quot;inventoryDal&quot;&gt;The inventory dal to be passed in&lt;/param&gt;
+	    /// @precondition none
+	    /// @postcondition getInventoryDal() == inventoryDal
+	    public InventoryController(IInventoryDal inventoryDal)
+	    {
+		    this.inventoryDal = inventoryDal;
+	    }
+
+		/// &lt;summary&gt;
+		/// Returns a formatted output string for an inventory items history
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;The id of the inventory item to get the history of&lt;/param&gt;
+		/// &lt;returns&gt;Returns a formatted output string for an inventory items history or the view inventory page with an error
+		/// message if something went wrong&lt;/returns&gt;
+		public IActionResult InventoryItemHistory(int id)
+	    {
+		    try
+		    {
+			    var inventoryItems = this.inventoryDal.GetItemHistorySummary(id);
+
+			    return View(&quot;ItemHistory&quot;, inventoryItems);
+
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+			    return View(&quot;ViewInventory&quot;);
+		    }
+
+	    }
+
+	    /// &lt;summary&gt;
+	    /// The action results for managing employees
+	    /// &lt;/summary&gt;
+	    /// &lt;returns&gt;the view for managing employees with an error message if something went wrong&lt;/returns&gt;
+	    public IActionResult ViewInventory()
+	    {
+		    List&lt;InventoryItem&gt; inventory = new List&lt;InventoryItem&gt;();
+		    try
+		    {
+			    inventory = this.inventoryDal.GetInventoryItems();
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+		    }
+
+		    return View(inventory);
+	    }
+
+		/// &lt;summary&gt;
+		/// Gets the view for adding an inventory item
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt; The view for adding an inventory item&lt;/returns&gt;
+		[HttpGet]
+	    public IActionResult AddInventory()
+	    {
+		    return View();
+	    }
+
+		/// &lt;summary&gt;
+		/// The http post action for adding an inventory item
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;item&quot;&gt;the item being added&lt;/param&gt;
+		/// &lt;returns&gt;the Add inventory page with either a success or error message&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the item is added, or an error is displayed if something went wrong
+		[HttpPost]
+		public IActionResult AddInventory(InventoryItem item)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					this.inventoryDal.AddInventoryItem(item);
+				}
+				catch (Exception)
+				{
+					ViewBag.ErrorMessage = &quot;Uh-oh, something bad happened&quot;;
+					return View(item);
+				}
+			}
+			else
+			{
+				return View(item);
+			}
+			ModelState.Clear();
+			ViewBag.SuccessMessage = &quot;Item Added!&quot;;
+			return View(new InventoryItem());
+
+		}
+
+		/// &lt;summary&gt;
+		/// Removes an item from the inventory 
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;the id of the item to be removed&lt;/param&gt;
+		/// &lt;returns&gt; the view inventory page with either the item removed, or an error message if something went wrong &lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the item is removed or an error is displayed if something went wrong
+		public IActionResult RemoveInventoryItem(int id)
+		{
+			try
+			{
+				this.inventoryDal.RemoveInventoryItem(id);
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = &quot;Uh-oh something bad happened&quot;;
+				return View(&quot;ViewInventory&quot;, new List&lt;InventoryItem&gt;());
+			}
+			return RedirectToAction(&quot;ViewInventory&quot;);
+		}
+
+
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[23,6,23,34,1],[24,6,24,7,1],[25,7,25,46,1],[26,6,26,7,1],[34,6,34,60,1],[35,6,35,7,1],[36,7,36,40,1],[37,6,37,7,1],[46,6,46,7,1],[48,7,48,8,1],[49,8,49,73,1],[51,8,51,51,1],[54,7,54,24,1],[55,7,55,8,1],[56,8,56,60,1],[57,8,57,37,1],[60,6,60,7,1],[67,6,67,7,1],[68,7,68,65,1],[70,7,70,8,1],[71,8,71,58,1],[72,7,72,8,1],[73,7,73,24,1],[74,7,74,8,1],[75,8,75,60,1],[76,7,76,8,1],[78,7,78,30,1],[79,6,79,7,1],[87,6,87,7,1],[88,7,88,21,1],[89,6,89,7,1],[100,3,100,4,1],[101,4,101,27,1],[102,4,102,5,1],[104,5,104,6,1],[105,6,105,47,1],[106,5,106,6,1],[107,5,107,22,1],[108,5,108,6,1],[109,6,109,61,1],[110,6,110,24,1],[112,4,112,5,1],[114,4,114,5,1],[115,5,115,23,1],[117,4,117,23,1],[118,4,118,43,1],[119,4,119,37,1],[121,3,121,4,1],[131,3,131,4,1],[133,4,133,5,1],[134,5,134,47,1],[135,4,135,5,1],[136,4,136,21,1],[137,4,137,5,1],[138,5,138,59,1],[139,5,139,61,1],[141,4,141,45,1],[142,3,142,4,1]]);
+    </script>
+  </body>
+</html>

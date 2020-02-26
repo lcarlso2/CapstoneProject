@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Startup.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace RentMe
+{
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
+
+		public IConfiguration Configuration { get; }
+
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddControllersWithViews();
+		}
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseExceptionHandler(&quot;/Home/Error&quot;);
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				app.UseHsts();
+			}
+			app.UseHttpsRedirection();
+			app.UseStaticFiles();
+
+			app.UseRouting();
+
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =&gt;
+			{
+				endpoints.MapControllerRoute(
+					name: &quot;default&quot;,
+					pattern: &quot;{controller=Home}/{action=Index}/{id?}&quot;);
+			});
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,3,16,47,0],[17,3,17,4,0],[18,4,18,34,0],[19,3,19,4,0],[21,41,21,45,0],[25,3,25,4,0],[26,4,26,39,0],[27,3,27,4,0],[31,3,31,4,0],[32,4,32,28,0],[33,4,33,5,0],[34,5,34,37,0],[35,4,35,5,0],[37,4,37,5,0],[38,5,38,44,0],[40,5,40,19,0],[41,4,41,5,0],[42,4,42,30,0],[43,4,43,25,0],[45,4,45,21,0],[47,4,47,27,0],[49,4,50,4,0],[50,4,50,5,0],[50,5,51,5,0],[51,5,53,57,0],[53,57,54,4,0],[54,4,54,5,0],[54,5,54,7,0],[49,4,54,7,0],[55,3,55,4,0]]);
+    </script>
+  </body>
+</html>

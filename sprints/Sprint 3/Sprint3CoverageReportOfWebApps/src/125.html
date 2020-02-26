@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktop\ViewModel\InventoryViewModel.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.ObjectModel;
+
+using SharedCode.DAL;
+using SharedCode.Model;
+using SharedCode.View;
+
+namespace RentMeDesktop.ViewModel
+{
+    /// &lt;summary&gt;
+    /// The view model for the view inventory page
+    ///      Inherits from BaseViewModel
+    /// &lt;/summary&gt;
+    public class InventoryViewModel : BaseViewModel
+    {
+        private IInventoryDal inventoryDal;
+
+        private ObservableCollection&lt;InventoryItem&gt; inventory;
+
+        private InventoryItem selectedInventoryItem;
+
+        private bool canItemHistoryBeClicked;
+
+        private bool canAddItemBeClicked;
+
+        private string title;
+
+        private string category;
+
+        private string type;
+
+        private string condition;
+
+        /// &lt;summary&gt;
+        /// Gets or sets the add item can be clicked
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the canAddItemBeClicked is set
+        public bool CanAddItemBeClicked
+        {
+	        get =&gt; this.canAddItemBeClicked;
+	        set
+	        {
+		        this.canAddItemBeClicked = value;
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the title 
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the title is set
+        public string Title
+        {
+	        get =&gt; this.title;
+	        set
+	        {
+		        this.title = value;
+		        this.CanAddItemBeClicked = this.canAddBeClicked();
+		        this.OnPropertyChanged();
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the category 
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the category is set
+        public string Category
+        {
+	        get =&gt; this.category;
+	        set
+	        {
+		        this.category = value;
+		        this.CanAddItemBeClicked = this.canAddBeClicked();
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the type 
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the type is set
+        public string Type
+        {
+	        get =&gt; this.type;
+	        set
+	        {
+		        this.type = value;
+		        this.CanAddItemBeClicked = this.canAddBeClicked();
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the condition 
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the condition is set
+        public string Condition
+        {
+	        get =&gt; this.condition;
+	        set
+	        {
+		        this.condition = value;
+		        this.CanAddItemBeClicked = this.canAddBeClicked();
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// The selected inventory item
+        /// &lt;/summary&gt;
+        public InventoryItem SelectedInventoryItem
+        {
+            get =&gt; this.selectedInventoryItem;
+            set
+            {
+                this.selectedInventoryItem = value;
+                this.CanItemHistoryBeClicked = (this.SelectedInventoryItem != null);
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// The entire inventory for the app
+        /// &lt;/summary&gt;
+        public ObservableCollection&lt;InventoryItem&gt; Inventory
+        {
+            get =&gt; this.inventory;
+            set
+            {
+                this.inventory = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+
+
+        /// &lt;summary&gt;
+        /// Gets or sets property depending on if update can be clicked
+        /// &lt;/summary&gt;
+        /// &lt;value&gt;
+        /// True if a rental has been selected and the rental hasn&#39;t been returned otherwise false
+        /// &lt;/value&gt;
+        public bool CanItemHistoryBeClicked
+        {
+            get =&gt; this.canItemHistoryBeClicked;
+            set
+            {
+                this.canItemHistoryBeClicked = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// @procondition none
+        /// @postcondition this.inventoryDal is created as a new InventoryDal
+        public InventoryViewModel()
+        {
+            this.inventoryDal = new InventoryDal();
+        }
+
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryViewModel&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;inventoryDal&quot;&gt;The inventory dal.&lt;/param&gt;
+        /// @postcondition this.inventoryDal is set to the inventory dal that is passed in
+        public InventoryViewModel(IInventoryDal inventoryDal)
+        {
+            this.inventoryDal = inventoryDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Retrieves all inventory items from the db
+        /// &lt;/summary&gt;
+		/// @precondition none
+        /// @postcondition this.Inventory == all inventory items from db
+        public void RetrieveAllInventoryItems()
+        {
+            try
+            {
+                this.Inventory = new ObservableCollection&lt;InventoryItem&gt;(this.inventoryDal.GetInventoryItems());
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets a detailed history summary of the selected inventory item
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;Returns a details string output of the selected inventory item&#39;s history&lt;/returns&gt;
+        /// @precondition none
+		/// @postcondition none
+        public string GetSelectedItemHistorySummary()
+        {
+            var summaryItems = this.inventoryDal.GetItemHistorySummary(this.selectedInventoryItem.InventoryId);
+            OutputFormatter formatter = new OutputFormatter();
+            return formatter.GenerateHistoryOfInventoryItem(summaryItems);
+        }
+
+
+        /// &lt;summary&gt;
+        /// Adds an inventory item
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the item is added or an error is thrown if something went wrong with connecting to the db
+        public void AddInventoryItem()
+        {
+	        var item = new InventoryItem
+	        {
+                Title = this.Title,
+                Category = this.Category,
+                Type = this.Type,
+                Condition = this.Condition
+	        };
+
+            this.inventoryDal.AddInventoryItem(item);
+            this.resetFields();
+        }
+
+        private void resetFields()
+        {
+	        this.Title = null;
+	        this.Category = null;
+	        this.Type = null;
+	        this.Condition = null;
+        }
+        /// &lt;summary&gt;
+        /// Removes the currently selected item from the inventory
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the item is removed or an error is thrown if something went wrong with connecting to the db
+        public void RemoveInventoryItem()
+        {
+            this.inventoryDal.RemoveInventoryItem(this.SelectedInventoryItem.InventoryId);
+        }
+
+        private bool canAddBeClicked()
+        {
+	        return !string.IsNullOrEmpty(this.Title) &amp;&amp; !string.IsNullOrEmpty(this.Category) &amp;&amp;
+	               !string.IsNullOrEmpty(this.Type) &amp;&amp; !string.IsNullOrEmpty(this.Condition);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[41,17,41,41,0],[43,10,43,11,0],[44,11,44,44,0],[45,17,45,42,0],[46,10,46,11,0],[56,17,56,27,0],[58,10,58,11,0],[59,11,59,30,0],[60,11,60,61,0],[61,11,61,36,0],[62,10,62,11,0],[72,17,72,30,0],[74,10,74,11,0],[75,11,75,33,0],[76,11,76,61,0],[77,17,77,42,0],[78,10,78,11,0],[88,17,88,26,0],[90,10,90,11,0],[91,11,91,29,0],[92,11,92,61,0],[93,17,93,42,0],[94,10,94,11,0],[104,17,104,31,0],[106,10,106,11,0],[107,11,107,34,0],[108,11,108,61,0],[109,17,109,42,0],[110,10,110,11,0],[118,20,118,46,0],[120,13,120,14,0],[121,17,121,52,0],[122,17,122,85,0],[123,17,123,42,0],[124,13,124,14,0],[132,20,132,34,0],[134,13,134,14,0],[135,17,135,40,0],[136,17,136,42,0],[137,13,137,14,0],[150,20,150,48,0],[152,13,152,14,0],[153,17,153,54,0],[154,17,154,42,0],[155,13,155,14,0],[163,9,163,36,0],[164,9,164,10,0],[165,13,165,52,0],[166,9,166,10,0],[174,9,174,62,0],[175,9,175,10,0],[176,13,176,46,0],[177,9,177,10,0],[185,9,185,10,0],[187,13,187,14,0],[188,17,188,113,0],[189,13,189,14,0],[190,13,190,33,0],[191,13,191,14,0],[192,17,192,26,0],[194,9,194,10,0],[203,9,203,10,0],[204,13,204,112,0],[205,13,205,63,0],[206,13,206,75,0],[207,9,207,10,0],[216,9,216,10,0],[217,10,223,12,0],[225,13,225,54,0],[226,13,226,32,0],[227,9,227,10,0],[230,9,230,10,0],[231,10,231,28,0],[232,10,232,31,0],[233,10,233,27,0],[234,10,234,32,0],[235,9,235,10,0],[242,9,242,10,0],[243,13,243,91,0],[244,9,244,10,0],[247,9,247,10,0],[248,10,249,91,0],[250,9,250,10,0]]);
+    </script>
+  </body>
+</html>

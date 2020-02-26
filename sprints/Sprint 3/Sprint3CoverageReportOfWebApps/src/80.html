@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\CustomerDalTest\RegisterCustomerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MySql.Data.MySqlClient;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+
+namespace RentMeTests.DalTests.CustomerDalTest
+{
+	/// &lt;summary&gt;
+	/// The test class for registering a customer
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class RegisterCustomerTests
+	{
+		[TestMethod()]
+		public void RegisterCustomerValidTest()
+		{
+			var customerDal = new CustomerDal();
+			var customer = new RegisteringCustomer
+			{
+				ConfirmEmail = &quot;confirmEmail&quot;, 
+				ConfirmPassword = &quot;confirmPassword&quot;, 
+				Email = &quot;confirmEmail&quot;, 
+				First = &quot;TestCustomerForTesting&quot;, 
+				Last = &quot;TestCustomer&quot;,
+				Password = &quot;confirmPassword&quot;, 
+				Address = new Address
+				{
+					StreetAddress = &quot;Address&quot;,
+					State = &quot;GA&quot;,
+					Zip = &quot;30135&quot;
+				}
+			};
+			customerDal.RegisterCustomer(customer);
+
+			var result = customerDal.Authenticate(&quot;confirmEmail&quot;, &quot;confirmPassword&quot;);
+			this.cleanDataBase(customer);
+			Assert.AreEqual(1, result);
+			
+		}
+
+		private void cleanDataBase(RegisteringCustomer customer)
+		{
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					using var transaction = conn.BeginTransaction();
+					var query = &quot;delete from address where memberID = (select memberID from member where email = @email);&quot;;
+
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						cmd.Transaction = transaction;
+
+						cmd.Parameters.Add(&quot;@email&quot;, MySqlDbType.VarChar);
+						cmd.Parameters[&quot;@email&quot;].Value = customer.Email;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+						cmd.Parameters.Clear();
+
+						cmd.CommandText = &quot;delete from member where email = @email;&quot;;
+						cmd.Parameters.Add(&quot;@email&quot;, MySqlDbType.VarChar);
+						cmd.Parameters[&quot;@email&quot;].Value = customer.Email;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+						cmd.Parameters.Clear();
+
+						cmd.CommandText =
+							&quot;delete from user where fname = @fname&quot;;
+						cmd.Parameters.Add(&quot;@fname&quot;, MySqlDbType.VarChar);
+						cmd.Parameters[&quot;@fname&quot;].Value = customer.First;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+					
+						transaction.Commit();
+					}
+
+				}
+				conn.Close();
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,3,20,4,1],[21,4,21,40,1],[22,4,36,6,1],[37,4,37,43,1],[39,4,39,77,1],[40,4,40,33,1],[41,4,41,31,1],[43,3,43,4,1],[46,3,46,4,1],[48,4,48,5,1],[49,5,49,45,1],[50,5,50,17,1],[51,5,51,6,1],[52,6,52,18,1],[53,6,53,54,1],[54,6,54,109,1],[56,13,56,52,1],[57,6,57,7,1],[58,7,58,37,1],[60,7,60,57,1],[61,7,61,55,1],[63,7,63,38,1],[64,7,64,8,0],[65,8,65,31,0],[66,7,66,8,0],[67,7,67,30,1],[69,7,69,68,1],[70,7,70,57,1],[71,7,71,55,1],[73,7,73,38,1],[74,7,74,8,0],[75,8,75,31,0],[76,7,76,8,0],[77,7,77,30,1],[79,7,80,48,1],[81,7,81,57,1],[82,7,82,55,1],[84,7,84,38,1],[85,7,85,8,0],[86,8,86,31,0],[87,7,87,8,0],[89,7,89,28,1],[90,6,90,7,1],[92,5,92,6,1],[93,5,93,18,1],[95,4,95,5,1],[96,4,96,24,0],[97,4,97,5,0],[99,5,99,14,0],[101,3,101,4,1]]);
+    </script>
+  </body>
+</html>

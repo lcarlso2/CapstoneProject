@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\SharedCodeTests\DalTests\RentalDalTests\UpdateStatusTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MySql.Data.MySqlClient;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+
+namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
+{
+	/// &lt;summary&gt;
+	/// The test class update status
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class UpdateStatusTests
+	{
+		[TestMethod()]
+		public void UpdateStatusToShippedTest()
+		{
+			var borrowDal = new BorrowDal();
+			var customer = new Customer
+			{
+				Email = &quot;email@email.com&quot;,
+				Password = &quot;password&quot;
+			};
+
+			var media = new Media
+			{
+				InventoryId = 1
+			};
+
+			borrowDal.BorrowItem(customer, media, 1);
+			var rentalId = this.getLastRentalTransactionID();
+
+			var rentalDal = new RentalDal();
+
+			rentalDal.UpdateStatus(rentalId, &quot;Shipped&quot;, 2);
+
+			var result = rentalDal.RetrieveSelectRentedItems(&quot;Shipped&quot;);
+			var selectedItem = result.First(item =&gt; item.RentalId == rentalId);
+			this.cleanDataBase(rentalId, media);
+			Assert.AreEqual(&quot;Shipped&quot;, selectedItem.Status);
+
+			
+		}
+
+		[TestMethod()]
+		public void UpdateStatusToReturnedTest()
+		{
+			var borrowDal = new BorrowDal();
+			var customer = new Customer
+			{
+				Email = &quot;email@email.com&quot;,
+				Password = &quot;password&quot;
+			};
+
+			var media = new Media
+			{
+				InventoryId = 1
+			};
+
+			borrowDal.BorrowItem(customer, media, 1);
+			var rentalId = this.getLastRentalTransactionID();
+
+			var rentalDal = new RentalDal();
+
+			rentalDal.UpdateStatus(rentalId, &quot;Returned&quot;, 2);
+
+			var result = rentalDal.RetrieveSelectRentedItems(&quot;Returned&quot;);
+			var selectedItem = result.First(item =&gt; item.RentalId == rentalId);
+			this.cleanDataBase(rentalId, media);
+			Assert.AreEqual(&quot;Returned&quot;, selectedItem.Status);
+
+			
+		}
+
+		private void cleanDataBase(int rentalId, Media media)
+		{
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					using var transaction = conn.BeginTransaction();
+					var query = &quot;delete from status_history where rentalTransactionID = @rentalID;&quot;;
+
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						cmd.Transaction = transaction;
+						cmd.Parameters.Add(&quot;@rentalID&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@rentalID&quot;].Value = rentalId;
+						if (cmd.ExecuteNonQuery() != 2)
+						{
+							transaction.Rollback();
+						}
+						cmd.Parameters.Clear();
+
+						cmd.CommandText =
+							&quot;delete from rental_transaction order by rentalID desc limit 1&quot;;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+						cmd.Parameters.Clear();
+
+						cmd.CommandText =
+							&quot;update inventory_item set isRented = false, inStock = true where inventoryID = @inventoryID;&quot;;
+						cmd.Parameters.Add(&quot;@inventoryID&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@inventoryID&quot;].Value = media.InventoryId;
+
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+						transaction.Commit();
+					}
+
+				}
+				conn.Close();
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		}
+
+		private int getLastRentalTransactionID()
+		{
+			var id = 0;
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					var query = &quot;select max(rental_transaction.rentalID) as rentalID from rental_transaction ORDER BY rental_transaction.rentalID;&quot;;
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						using (var reader = cmd.ExecuteReader())
+						{
+							var rentalIDOrdinal = reader.GetOrdinal(&quot;rentalID&quot;);
+							while (reader.Read())
+							{
+								id = reader.GetInt32(rentalIDOrdinal);
+							}
+						}
+					}
+					conn.Close();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return id;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,3,21,4,1],[22,4,22,36,1],[23,4,27,6,1],[29,4,32,6,1],[34,4,34,45,1],[35,4,35,53,1],[37,4,37,36,1],[39,4,39,51,1],[41,4,41,64,1],[42,4,42,44,1],[42,44,42,69,1],[42,69,42,71,1],[42,4,42,71,1],[43,4,43,40,1],[44,4,44,52,1],[47,3,47,4,1],[51,3,51,4,1],[52,4,52,36,1],[53,4,57,6,1],[59,4,62,6,1],[64,4,64,45,1],[65,4,65,53,1],[67,4,67,36,1],[69,4,69,52,1],[71,4,71,65,1],[72,4,72,44,1],[72,44,72,69,1],[72,69,72,71,1],[72,4,72,71,1],[73,4,73,40,1],[74,4,74,53,1],[77,3,77,4,1],[80,3,80,4,1],[82,4,82,5,1],[83,5,83,45,1],[84,5,84,17,1],[85,5,85,6,1],[86,6,86,18,1],[87,6,87,54,1],[88,6,88,86,1],[90,13,90,52,1],[91,6,91,7,1],[92,7,92,37,1],[93,7,93,58,1],[94,7,94,52,1],[95,7,95,38,1],[96,7,96,8,0],[97,8,97,31,0],[98,7,98,8,0],[99,7,99,30,1],[101,7,102,72,1],[104,7,104,38,1],[105,7,105,8,0],[106,8,106,31,0],[107,7,107,8,0],[108,7,108,30,1],[110,7,111,103,1],[112,7,112,61,1],[113,7,113,64,1],[116,7,116,38,1],[117,7,117,8,0],[118,8,118,31,0],[119,7,119,8,0],[120,7,120,28,1],[121,6,121,7,1],[123,5,123,6,1],[124,5,124,18,1],[126,4,126,5,1],[127,4,127,24,0],[128,4,128,5,0],[130,5,130,14,0],[132,3,132,4,1],[135,3,135,4,1],[136,4,136,15,1],[138,4,138,5,1],[139,5,139,45,1],[140,5,140,17,1],[141,5,141,6,1],[142,6,142,18,1],[143,6,143,134,1],[144,13,144,52,1],[145,6,145,7,1],[146,14,146,46,1],[147,7,147,8,1],[148,8,148,60,1],[149,8,149,29,1],[150,8,150,9,1],[151,9,151,47,1],[152,8,152,9,1],[153,7,153,8,1],[154,6,154,7,1],[155,6,155,19,1],[156,5,156,6,1],[158,4,158,5,1],[159,4,159,24,0],[160,4,160,5,0],[161,5,161,14,0],[164,4,164,14,1],[165,3,165,4,1]]);
+    </script>
+  </body>
+</html>

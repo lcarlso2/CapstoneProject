@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\SharedCodeTests\DalTests\RentalDalTests\RetrieveAllRentedItemsTest.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.DAL;
+
+namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
+{
+	/// &lt;summary&gt;
+	/// The test class for retrieve all rented items 
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class RetrieveAllRentedItemsTest
+	{
+
+		[TestMethod()]
+		public void RetrieveAllRentedItemsValidTest()
+		{
+			var rentalDal = new RentalDal();
+
+			var result = rentalDal.RetrieveAllRentedItems();
+
+			Assert.AreEqual(4, result.Count);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,4,1],[19,4,19,36,1],[21,4,21,52,1],[23,4,23,37,1],[24,3,24,4,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktopTests\ViewModel\MainPageViewModelTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMeDesktop.ViewModel;
+using SharedCode.Model;
+using SharedCode.TestObjects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace RentMeDesktopTests.ViewModel
+{
+	[TestClass]
+	public class MainPageViewModelTests
+    {
+		[TestMethod()]
+		public void UpdateRentalItemsTestIsValid()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var viewModel = new MainPageViewModel(rentalDal)
+			{
+				SelectedRental = new RentalItem
+				{
+					RentalId = 1,
+					Status = &quot;Ordered&quot;
+				},
+				CurrentEmployee = new Employee
+				{
+					EmployeeId = 1
+				}
+			};
+
+			Assert.AreEqual(1, viewModel.UpdateRentalItem());
+		}
+
+		[TestMethod()]
+		[ExpectedException(typeof(Exception))]
+		public void UpdateRentalItemsTestIsInvalid()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var viewModel = new MainPageViewModel(rentalDal);
+			viewModel.SelectedRental = new RentalItem
+			{
+				RentalId = 1,
+				Status = &quot;Ordered&quot;
+			};
+			viewModel.CurrentEmployee = new Employee
+			{
+				EmployeeId = 1
+			};
+			viewModel.UpdateRentalItem();
+
+		}
+
+		[TestMethod()]
+		public void SetSelectedStatusFilterWithFilterSetToAll()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var viewModel = new MainPageViewModel(rentalDal);
+			viewModel.SelectedStatusFilter = &quot;All&quot;;
+
+			Assert.AreEqual(1, viewModel.RentalItems.Count);
+		}
+
+		[TestMethod()]
+		public void SetSelectedStatusFilterWithFilterNotSetToAll()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var viewModel = new MainPageViewModel(rentalDal);
+			viewModel.SelectedStatusFilter = &quot;Ordered&quot;;
+
+			Assert.AreEqual(0, viewModel.RentalItems.Count);
+		}
+
+		[TestMethod()]
+		[ExpectedException(typeof(Exception))]
+		public void SetSelectedStatusFilterWithFilterIsInvalid()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var viewModel = new MainPageViewModel(rentalDal)
+			{
+				SelectedStatusFilter = &quot;Ordered&quot;
+			};
+
+			viewModel.SelectedStatusFilter = &quot;Shipped&quot;;
+
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,4,0],[19,4,22,6,0],[23,4,34,6,0],[36,4,36,53,0],[37,3,37,4,0],[42,3,42,4,0],[43,4,46,6,0],[47,4,47,53,0],[48,4,52,6,0],[53,4,56,6,0],[57,4,57,33,0],[59,3,59,4,0],[63,3,63,4,0],[64,4,67,6,0],[68,4,68,53,0],[69,4,69,43,0],[71,4,71,52,0],[72,3,72,4,0],[76,3,76,4,0],[77,4,80,6,0],[81,4,81,53,0],[82,4,82,47,0],[84,4,84,52,0],[85,3,85,4,0],[90,3,90,4,0],[91,4,94,6,0],[95,4,98,6,0],[100,4,100,47,0],[102,3,102,4,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeDesktop\View\Login.xaml.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+using RentMeDesktop.ViewModel;
+
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace RentMeDesktop.View
+{
+	/// &lt;summary&gt;
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// &lt;/summary&gt;
+	public sealed partial class Login : Page
+	{
+		/// &lt;summary&gt;
+		/// The view model
+		/// &lt;/summary&gt;
+		public BaseViewModel ViewModel;
+
+		public Login()
+		{
+			this.InitializeComponent();
+			this.ViewModel = new BaseViewModel();
+			this.DataContext = this.ViewModel;
+		}
+
+		private void loginButton_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				if (this.ViewModel.ValidateLoginCredentials(this.usernameTextBox.Text, this.passwordBox.Password))
+				{
+					Frame.Navigate(typeof(MainPage), this.ViewModel);
+				}
+				else
+				{
+					this.usernameTextBox.BorderBrush = new SolidColorBrush(Colors.Red);
+					this.passwordBox.BorderBrush = new SolidColorBrush(Colors.Red);
+					this.usernameTextBox.PlaceholderText = &quot;Invalid Username&quot;;
+					this.passwordBox.PlaceholderText = &quot;Invalid Password&quot;;
+				}
+			}
+			catch (Exception)
+			{
+				DbError.showErrorWindow();
+			}
+		}
+
+		private void usernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			this.usernameTextBox.BorderBrush = new SolidColorBrush(Colors.Gray);
+			this.usernameTextBox.PlaceholderText = &quot;Username&quot;;
+		}
+
+		private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+		{
+			this.passwordBox.PlaceholderText = &quot;Password&quot;;
+			this.passwordBox.BorderBrush = new SolidColorBrush(Colors.Gray);
+		}
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[32,3,32,17,0],[33,3,33,4,0],[34,4,34,31,0],[35,4,35,41,0],[36,4,36,38,0],[37,3,37,4,0],[40,3,40,4,0],[42,4,42,5,0],[43,5,43,103,0],[44,5,44,6,0],[45,6,45,55,0],[46,5,46,6,0],[48,5,48,6,0],[49,6,49,73,0],[50,6,50,69,0],[51,6,51,64,0],[52,6,52,60,0],[53,5,53,6,0],[54,4,54,5,0],[55,4,55,21,0],[56,4,56,5,0],[57,5,57,31,0],[58,4,58,5,0],[59,3,59,4,0],[62,3,62,4,0],[63,4,63,72,0],[64,4,64,54,0],[65,3,65,4,0],[68,3,68,4,0],[69,4,69,50,0],[70,4,70,68,0],[71,3,71,4,0]]);
+    </script>
+  </body>
+</html>

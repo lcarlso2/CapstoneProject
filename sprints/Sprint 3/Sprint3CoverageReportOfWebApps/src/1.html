@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\SharedCode\View\OutputFormatter.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using SharedCode.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SharedCode.View
+{
+    /// &lt;summary&gt;
+    /// Holds methods used for formatting and generating output for the view
+    /// &lt;/summary&gt;
+    public class OutputFormatter
+    {
+        private const int DEFAULT_ID = -1;
+
+        /// &lt;summary&gt;
+        /// Generates a summary of an inventory items history
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalItems&quot;&gt;&lt;/param&gt;
+        /// &lt;returns&gt;Returns a formatted summary of an inventory items history&lt;/returns&gt;
+        public string GenerateHistoryOfInventoryItem(List&lt;RentalItem&gt; rentalItems)
+        {
+            var sb = new StringBuilder();
+            var rentalId = DEFAULT_ID;
+            var isFirstItem = true;
+            foreach (var rentalItem in rentalItems)
+            {
+                
+                if (rentalId != rentalItem.RentalId)
+                {
+                    if(!isFirstItem)
+                    {
+                        sb.Append(&quot;------------------------------------------------------------------------&quot; + Environment.NewLine + Environment.NewLine);
+                    }
+                    
+                    sb.Append(&quot;Title: &quot; + rentalItem.Title + &quot;     Category: &quot; + rentalItem.Category + Environment.NewLine + &quot;Member ID: &quot; + rentalItem.MemberId + &quot;     Member Email: &quot; + rentalItem.MemberEmail + Environment.NewLine + Environment.NewLine +
+                    &quot;Date Rented: &quot; + rentalItem.RentalDate + &quot;     Return Date: &quot; + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
+                    rentalId = rentalItem.RentalId;
+                    isFirstItem = false;
+                } 
+
+                sb.Append(&quot;Status: &quot; + rentalItem.Status + &quot;     Update Date: &quot; + rentalItem.UpdateDateTime + Environment.NewLine);
+              
+            }
+            return sb.ToString();
+        }
+
+        /// &lt;summary&gt;
+        /// Generates a formatted history for an employee
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rentalItems&quot;&gt;List of rental items associated with a given employee&lt;/param&gt;
+        /// &lt;returns&gt;Formatted history for an employee&lt;/returns&gt;
+        public string GenerateEmployeeHistory(List&lt;RentalItem&gt; rentalItems)
+        {
+            var sb = new StringBuilder();
+            var rentalId = DEFAULT_ID;
+            var isFirstItem = true;
+
+            sb.Append(&quot;Employee Username: &quot; + rentalItems[0].EmployeeUsername + Environment.NewLine + Environment.NewLine);
+            foreach (var rentalItem in rentalItems)
+            {
+
+                if (rentalId != rentalItem.RentalId)
+                {
+                    if (!isFirstItem)
+                    {
+                        sb.Append(&quot;------------------------------------------------------------------------&quot; + Environment.NewLine + Environment.NewLine);
+                    }
+
+                    sb.Append(&quot;Title: &quot; + rentalItem.Title + &quot;     Category: &quot; + rentalItem.Category + Environment.NewLine + Environment.NewLine +
+                    &quot;Date Rented: &quot; + rentalItem.RentalDate + &quot;     Return Date: &quot; + rentalItem.ReturnDate + Environment.NewLine + Environment.NewLine);
+                    rentalId = rentalItem.RentalId;
+                    isFirstItem = false;
+                }
+
+                sb.Append(&quot;Status: &quot; + rentalItem.Status + &quot;     Update Date: &quot; + rentalItem.UpdateDateTime + Environment.NewLine);
+
+            }
+            return sb.ToString();
+        }
+
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,9,22,10,0],[22,9,22,10,0],[22,9,22,10,0],[23,13,23,42,0],[23,13,23,42,0],[23,13,23,42,0],[24,13,24,39,0],[24,13,24,39,0],[24,13,24,39,0],[25,13,25,36,0],[25,13,25,36,0],[25,13,25,36,0],[26,13,26,20,0],[26,13,26,20,0],[26,13,26,20,0],[26,22,26,36,0],[26,22,26,36,0],[26,22,26,36,0],[26,37,26,39,0],[26,37,26,39,0],[26,37,26,39,0],[26,40,26,51,0],[26,40,26,51,0],[26,40,26,51,0],[27,13,27,14,0],[27,13,27,14,0],[27,13,27,14,0],[29,17,29,53,0],[29,17,29,53,0],[29,17,29,53,0],[30,17,30,18,0],[30,17,30,18,0],[30,17,30,18,0],[31,21,31,37,0],[31,21,31,37,0],[31,21,31,37,0],[32,21,32,22,0],[32,21,32,22,0],[32,21,32,22,0],[33,25,33,155,0],[33,25,33,155,0],[33,25,33,155,0],[34,21,34,22,0],[34,21,34,22,0],[34,21,34,22,0],[36,21,37,153,0],[36,21,37,153,0],[36,21,37,153,0],[38,21,38,52,0],[38,21,38,52,0],[38,21,38,52,0],[39,21,39,41,0],[39,21,39,41,0],[39,21,39,41,0],[40,17,40,18,0],[40,17,40,18,0],[40,17,40,18,0],[42,17,42,132,0],[42,17,42,132,0],[42,17,42,132,0],[44,13,44,14,0],[44,13,44,14,0],[44,13,44,14,0],[45,13,45,34,0],[45,13,45,34,0],[45,13,45,34,0],[46,9,46,10,0],[46,9,46,10,0],[46,9,46,10,0],[54,9,54,10,0],[54,9,54,10,0],[54,9,54,10,0],[55,13,55,42,0],[55,13,55,42,0],[55,13,55,42,0],[56,13,56,39,0],[56,13,56,39,0],[56,13,56,39,0],[57,13,57,36,0],[57,13,57,36,0],[57,13,57,36,0],[59,13,59,124,0],[59,13,59,124,0],[59,13,59,124,0],[60,13,60,20,0],[60,13,60,20,0],[60,13,60,20,0],[60,22,60,36,0],[60,22,60,36,0],[60,22,60,36,0],[60,37,60,39,0],[60,37,60,39,0],[60,37,60,39,0],[60,40,60,51,0],[60,40,60,51,0],[60,40,60,51,0],[61,13,61,14,0],[61,13,61,14,0],[61,13,61,14,0],[63,17,63,53,0],[63,17,63,53,0],[63,17,63,53,0],[64,17,64,18,0],[64,17,64,18,0],[64,17,64,18,0],[65,21,65,38,0],[65,21,65,38,0],[65,21,65,38,0],[66,21,66,22,0],[66,21,66,22,0],[66,21,66,22,0],[67,25,67,155,0],[67,25,67,155,0],[67,25,67,155,0],[68,21,68,22,0],[68,21,68,22,0],[68,21,68,22,0],[70,21,71,153,0],[70,21,71,153,0],[70,21,71,153,0],[72,21,72,52,0],[72,21,72,52,0],[72,21,72,52,0],[73,21,73,41,0],[73,21,73,41,0],[73,21,73,41,0],[74,17,74,18,0],[74,17,74,18,0],[74,17,74,18,0],[76,17,76,132,0],[76,17,76,132,0],[76,17,76,132,0],[78,13,78,14,0],[78,13,78,14,0],[78,13,78,14,0],[79,13,79,34,0],[79,13,79,34,0],[79,13,79,34,0],[80,9,80,10,0],[80,9,80,10,0],[80,9,80,10,0]]);
+    </script>
+  </body>
+</html>
