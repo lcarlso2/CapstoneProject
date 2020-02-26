@@ -19,7 +19,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.EmployeeDalTests
         {
             var employeeDal = new EmployeeDal();
             var result = employeeDal.GetEmployeeHistory(4);
-            Assert.AreEqual(0, result.Count);
+            Assert.AreEqual(2, result.Count);
         }
     }
 }

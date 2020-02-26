@@ -128,7 +128,7 @@ namespace RentMe.Controllers
 			catch (Exception)
 			{
 				ViewBag.Error = "Uh-oh.. something went wrong";
-				return RedirectToAction("Browse");
+				return View("Profile");
 			}
 
 		}

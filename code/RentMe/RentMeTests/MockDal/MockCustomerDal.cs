@@ -53,5 +53,13 @@ namespace RentMeTests.MockDal
 
 			return new List<Address>();
 		}
+		public void UpdateEmail(string originalEmail, string updatedEmail)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
+
 	}
 }

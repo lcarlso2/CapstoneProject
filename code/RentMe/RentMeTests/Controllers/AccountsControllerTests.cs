@@ -214,5 +214,74 @@ namespace RentMeTests.Controllers
 			HomeController.CurrentUser = null;
 
 		}
+
+
+		[TestMethod()]
+		public void ProfileTest()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			HomeController.CurrentUser = new Customer { Email = "test" };
+			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			var result = (ViewResult)controller.Profile();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Profile", result.ViewName);
+			var customer = (Customer)result.Model;
+			Assert.AreEqual("test", HomeController.CurrentUser.Email);
+			HomeController.CurrentUser = null;
+
+		}
+
+		[TestMethod()]
+		public void ProfileTestException()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			HomeController.CurrentUser = new Customer { Email = "test" };
+			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			var result = (ViewResult)controller.Profile();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Profile", result.ViewName);
+			HomeController.CurrentUser = null;
+
+		}
+
+		[TestMethod()]
+		public void UpdateEmailTest()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			HomeController.CurrentUser = new Customer { Email = "test" };
+			var user = new Customer { Email = "updated" };
+			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			var result = (ViewResult)controller.UpdateEmail(user);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			var customer = (Customer)result.Model;
+			Assert.AreEqual("updated", HomeController.CurrentUser.Email);
+			HomeController.CurrentUser = null;
+
+		}
+
+		[TestMethod()]
+		public void UpdateEmailException()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			HomeController.CurrentUser = new Customer { Email = "test" };
+			var user = new Customer { Email = "updated" };
+			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			var result = (ViewResult)controller.UpdateEmail(user);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			HomeController.CurrentUser = null;
+
+		}
 	}
 }
