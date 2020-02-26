@@ -68,7 +68,7 @@
                     <h2>Profile</h2>
                 </div>
                 <div class="card-body">
-                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    @using (Html.BeginForm("UpdateEmail", "Accounts", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
 
@@ -80,11 +80,11 @@
                             <div class="form-group row">
                                 @Html.LabelFor(customer => customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-8 form-input">
-                                    @Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email" } })
+                                    @Html.EditorFor(customer => customer.Email, new { htmlAttributes = new { @class = "form-control", placeholder = HomeController.CurrentUser.Email } })
                                     @Html.ValidationMessageFor(customer => customer.Email, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-2">
-                                    <a asp-controller="Accounts" asp-action="TypeFilter" class="btn btn-primary">Update</a>
+                                    <input type="submit" value="Update" class="btn btn-lg btn-primary btn-block text-uppercase" style="font-size: 1em;" />
                                 </div>
                             </div>
 
