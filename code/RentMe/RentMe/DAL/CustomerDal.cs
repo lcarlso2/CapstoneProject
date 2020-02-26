@@ -241,5 +241,49 @@ namespace RentMe.DAL
 
 
         }
+
+        /// <summary>
+		/// Updates the customers email that has a matching original email
+		/// </summary>
+		/// <param name="originalEmail"> The current logged in members email</param>
+		/// <param name="updatedEmail"> The email to update for the customer</param>
+		/// @precondition none
+		/// @postcondition the email is updated
+        public void UpdateEmail(string originalEmail, string updatedEmail)
+        {
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+
+                    using var transaction = conn.BeginTransaction();
+                    var query = "update member set email = @updatedEmail where email = @originalEmail";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Transaction = transaction;
+
+                        cmd.Parameters.AddWithValue("@updatedEmail", updatedEmail);
+                        cmd.Parameters.AddWithValue("@originalEmail", originalEmail);
+
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+                            transaction.Rollback();
+                        }
+
+                        transaction.Commit();
+                    }
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

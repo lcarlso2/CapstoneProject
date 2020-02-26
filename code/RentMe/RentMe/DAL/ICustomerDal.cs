@@ -43,5 +43,14 @@ namespace RentMe.DAL
 		/// <returns>the addresses for the given customer</returns>
 		List<Address> GetAddresses(Customer customer);
 
+		/// <summary>
+		/// Updates the customers email that has a matching original email
+		/// </summary>
+		/// <param name="originalEmail"> The current logged in members email</param>
+		/// <param name="updatedEmail"> The email to update for the customer</param>
+		/// @precondition none
+		/// @postcondition the email is updated
+		void UpdateEmail(string originalEmail, string updatedEmail);
+
 	}
 }

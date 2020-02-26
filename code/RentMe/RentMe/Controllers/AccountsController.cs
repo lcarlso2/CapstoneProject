@@ -224,5 +224,25 @@ namespace RentMe.Controllers
 		{
 			return PartialView("AddAddress");
 		}
+
+		/// <summary>
+		/// Updates the customers email that has a matching original email
+		/// </summary>
+		/// <param name="customer"> The customer object submitted by the form</param>
+		/// @precondition none
+		/// @postcondition the email is updated
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult UpdateEmail(Customer customer)
+		{
+			if (customer.Email != null && customer.Email != "")
+			{
+				this.customerDal.UpdateEmail(HomeController.CurrentUser.Email, customer.Email);
+				HomeController.CurrentUser.Email = customer.Email;
+				
+			}
+			return View("Profile");
+
+		}
 	}
 }
