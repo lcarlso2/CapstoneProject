@@ -2,6 +2,7 @@ RENT ME
 
 Instructions for running applications. 
 	Use Visual Studio
+	Resharper extension will run unit tests without opening the desktop application.
 
 Member Web Application
 	Member portal to sign-up/sign-in, browse items to borrow, and to borrow items.
