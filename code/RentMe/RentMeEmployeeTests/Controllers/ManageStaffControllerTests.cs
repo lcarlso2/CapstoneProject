@@ -181,5 +181,47 @@ namespace RentMeEmployeeTests.Controllers
 			Assert.AreEqual(0, employees.Count);
 		}
 
+
+		[TestMethod()]
+		public void EmployeeHistoryTestValid()
+		{
+			var employee = new Employee
+			{
+				Username = "",
+				Password = ""
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = false
+			};
+			var controller = new ManageStaffController(employeeDal);
+			var result = (ViewResult)controller.EmployeeHistory(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("EmployeeHistory", result.ViewName);
+			var items = (List<RentalItem>)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void EmployeeHistoryTestExceptionThrown()
+		{
+			var employee = new Employee
+			{
+				Username = "",
+				Password = ""
+			};
+			var employeeDal = new MockEmployeeDal()
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new ManageStaffController(employeeDal);
+			var result = (ViewResult)controller.EmployeeHistory(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("EmployeeHistory", result.ViewName);
+			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["ErrorMessage"]);
+		}
+
 	}
 }

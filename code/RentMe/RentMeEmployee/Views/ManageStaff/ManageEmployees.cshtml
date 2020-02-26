@@ -48,8 +48,10 @@
                                 @Html.CheckBoxFor(model => employee.IsManager, new { disabled = "disabled" })
                             </td>
                             <td>
-
-                                <button type="button" class="btn btn-primary text-center mx-auto" data-toggle="modal" data-target="@("#modal"+employee.EmployeeId)">
+                                <button class="btn text-center mx-auto">
+                                    <a asp-controller="ManageStaff" asp-action="EmployeeHistory" asp-route-id="@employee.EmployeeId">View Employee History</a>
+                                </button>
+                                <button type="button" class="btn btn-danger text-center mx-auto" data-toggle="modal" data-target="@("#modal"+employee.EmployeeId)">
                                     Remove Employee
                                 </button>
                             </td>

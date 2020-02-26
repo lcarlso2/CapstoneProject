@@ -78,6 +78,7 @@ namespace SharedCode.Model
         /// <summary>
         /// Gets or sets the employee username
         /// </summary>
+         [Display(Name = "Username")]
         public string EmployeeUsername { get; set; }
 
 
