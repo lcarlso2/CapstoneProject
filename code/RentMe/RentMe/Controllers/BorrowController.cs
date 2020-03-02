@@ -74,10 +74,9 @@ namespace RentMe.Controllers
                 {
 	                return View(new ConfirmBorrowObject());
 			    }
-	
-			    ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
-			    return View(new ConfirmBorrowObject());
-			    
+
+                return this.handleTooManyOpenRentals();
+
 		    }
 		    catch (Exception)
 		    {
@@ -86,6 +85,24 @@ namespace RentMe.Controllers
 		    }
 
 	    }
+
+        private IActionResult handleTooManyOpenRentals()
+        {
+	        List<Media> media = new List<Media>();
+	        try
+	        {
+		        media = this.mediaDal.RetrieveAllMedia();
+		        ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
+            }
+	        catch (Exception)
+	        {
+		        ViewBag.Error = "Uh-oh. Something went wrong";
+
+	        }
+	        ViewBag.Type = "Type";
+	        ViewBag.Category = "Category";
+            return View("Browse", media);
+        }
 
         /// <summary>
         /// The confirmed borrow action result
@@ -101,33 +118,16 @@ namespace RentMe.Controllers
         {
 	        try
 	        {
-		        var rentalCount = this.borrowDal.GetNumberOfOpenRentals(HomeController.CurrentUser);
-                if (ModelState.IsValid)
+		        if (ModelState.IsValid)
 				{
 		       
-			        if (rentalCount < MAX_NUMBER_OF_BORROWS)
-			        {
+			     
+					this.borrowDal.BorrowItem(HomeController.CurrentUser, SelectedItem, item.AddressId);
 
-				        this.borrowDal.BorrowItem(HomeController.CurrentUser, SelectedItem, item.AddressId);
+					return RedirectToAction("Browse");
 
-				        return RedirectToAction("Browse");
-			        }
-			        else
-			        {
-				        ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
-				        return View("ConfirmBorrow",new ConfirmBorrowObject());
-                    }
-		        
-		        }
-                if (rentalCount >= MAX_NUMBER_OF_BORROWS)
-                {
-	                ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
-                }
-                else
-                {
-	                ViewBag.Error = "Please select a shipping address";
-                }
-
+				}
+                ViewBag.Error = "Please select a shipping address";
                 return View("ConfirmBorrow", item);
             }
 	        catch (NullReferenceException ex)
@@ -183,9 +183,7 @@ namespace RentMe.Controllers
             List<Media> media = new List<Media>();
             try
             {
-
-
-                if (type == "All")
+	            if (type == "All")
                 {
                     media = this.mediaDal.RetrieveAllMedia();
                 }
