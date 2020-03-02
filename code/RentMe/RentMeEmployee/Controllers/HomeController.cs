@@ -30,7 +30,8 @@ namespace RentMeEmployee.Controllers
 
 
         /// <summary>
-        /// Creates a new default home controller 
+        /// Creates a new default home controller
+        /// with a default employee dal 
         /// </summary>
         [ActivatorUtilitiesConstructor]
         public HomeController()
