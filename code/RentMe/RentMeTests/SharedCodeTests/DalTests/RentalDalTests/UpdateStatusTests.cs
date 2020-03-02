@@ -36,11 +36,12 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 
 			var rentalDal = new RentalDal();
 
-			rentalDal.UpdateStatus(rentalId, "Shipped", 2);
+			rentalDal.UpdateStatus(rentalId, "Shipped", 2, "New");
 
 			var result = rentalDal.RetrieveSelectRentedItems("Shipped");
 			var selectedItem = result.First(item => item.RentalId == rentalId);
-			this.cleanDataBase(rentalId, media);
+			this.deleteStatusUpdates(rentalId);
+			this.deleteRentalTransaction(rentalId, media);
 			Assert.AreEqual("Shipped", selectedItem.Status);
 
 			
@@ -66,17 +67,50 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 
 			var rentalDal = new RentalDal();
 
-			rentalDal.UpdateStatus(rentalId, "Returned", 2);
+			rentalDal.UpdateStatus(rentalId, "Returned", 2, "New");
 
 			var result = rentalDal.RetrieveSelectRentedItems("Returned");
 			var selectedItem = result.First(item => item.RentalId == rentalId);
-			this.cleanDataBase(rentalId, media);
+			this.deleteReturnCondition(rentalId);
+			this.deleteStatusUpdates(rentalId);
+			this.deleteRentalTransaction(rentalId, media);
 			Assert.AreEqual("Returned", selectedItem.Status);
 
 			
 		}
 
-		private void cleanDataBase(int rentalId, Media media)
+		private void deleteReturnCondition(int rentalId)
+		{
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					using var transaction = conn.BeginTransaction();
+					var query = "delete from return_condition where rentalID = @rentalID";
+
+					using var cmd = new MySqlCommand(query, conn);
+					cmd.Transaction = transaction;
+					cmd.Parameters.AddWithValue("@rentalID", rentalId);
+					if (cmd.ExecuteNonQuery() != 1)
+					{
+						transaction.Rollback();
+					}
+					transaction.Commit();
+
+				}
+				conn.Close();
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		}
+
+		private void deleteStatusUpdates(int rentalId)
 		{
 			try
 			{
@@ -87,38 +121,59 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 					using var transaction = conn.BeginTransaction();
 					var query = "delete from status_history where rentalTransactionID = @rentalID;";
 
-					using (var cmd = new MySqlCommand(query, conn))
+					using var cmd = new MySqlCommand(query, conn);
+					cmd.Transaction = transaction;
+					cmd.Parameters.AddWithValue("@rentalID", rentalId);
+					if (cmd.ExecuteNonQuery() != 2)
 					{
-						cmd.Transaction = transaction;
-						cmd.Parameters.Add("@rentalID", MySqlDbType.Int32);
-						cmd.Parameters["@rentalID"].Value = rentalId;
-						if (cmd.ExecuteNonQuery() != 2)
-						{
-							transaction.Rollback();
-						}
-						cmd.Parameters.Clear();
-
-						cmd.CommandText =
-							"delete from rental_transaction order by rentalID desc limit 1";
-
-						if (cmd.ExecuteNonQuery() != 1)
-						{
-							transaction.Rollback();
-						}
-						cmd.Parameters.Clear();
-
-						cmd.CommandText =
-							"update inventory_item set isRented = false, inStock = true where inventoryID = @inventoryID;";
-						cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
-						cmd.Parameters["@inventoryID"].Value = media.InventoryId;
-
-
-						if (cmd.ExecuteNonQuery() != 1)
-						{
-							transaction.Rollback();
-						}
-						transaction.Commit();
+						transaction.Rollback();
 					}
+					transaction.Commit();
+
+				}
+				conn.Close();
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		}
+
+
+
+		private void deleteRentalTransaction(int rentalId, Media media)
+		{
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					using var transaction = conn.BeginTransaction();
+					var query = "delete from rental_transaction where rentalID = @rentalID";
+
+					using var cmd = new MySqlCommand(query, conn);
+					cmd.Transaction = transaction;
+					cmd.Parameters.AddWithValue("@rentalID", rentalId);
+					if (cmd.ExecuteNonQuery() != 1)
+					{
+						transaction.Rollback();
+					}
+					cmd.Parameters.Clear();
+
+					cmd.CommandText =
+						"update inventory_item set isRented = false, inStock = true where inventoryID = @inventoryID;";
+					cmd.Parameters.Add("@inventoryID", MySqlDbType.Int32);
+					cmd.Parameters["@inventoryID"].Value = media.InventoryId;
+
+
+					if (cmd.ExecuteNonQuery() != 1)
+					{
+						transaction.Rollback();
+					}
+					transaction.Commit();
 
 				}
 				conn.Close();

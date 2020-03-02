@@ -36,7 +36,8 @@ namespace SharedCode.DAL
 		/// <param name="transactionId">the rental transaction id</param>
 		/// <param name="status"> the status </param>
 		/// <param name="employeeId">the employee updating the rental</param>
+		/// <param name="condition">the condition of the rental</param>
 		/// <returns>the rows affected</returns>
-		int UpdateStatus(int transactionId, string status, int employeeId);
+		int UpdateStatus(int transactionId, string status, int employeeId, string condition);
 	}
 }

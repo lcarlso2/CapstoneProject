@@ -40,24 +40,7 @@ namespace RentMeTests.Controllers
 			Assert.AreEqual("Browse", result.ActionName);
 		}
 
-		[TestMethod()]
-		public void ConfirmedBorrowTestWithValidInputButMoreThanAllowRentals()
-		{
-			var mockBorrowDal = new MockBorrowDal
-			{
-				ThrowException = false,
-				ThrowNullReference = false,
-				NumberToReturn = 3
-			};
-			var mockMediaDal = new MockMediaDal();
-			var borrowItem = new ConfirmBorrowObject();
-			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
-			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("ConfirmBorrow", result.ViewName);
-			Assert.AreEqual("Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
-		}
-
+		
 		[TestMethod()]
 		public void ConfirmedBorrowTestWithInvalidInput()
 		{
@@ -77,25 +60,6 @@ namespace RentMeTests.Controllers
 
 		}
 
-		[TestMethod()]
-		public void ConfirmedBorrowTestWithInvalidInputAndMoreThanAllowedRentals()
-		{
-			var mockBorrowDal = new MockBorrowDal
-			{
-				ThrowException = false,
-				ThrowNullReference = false,
-				NumberToReturn = 3
-			};
-			var mockMediaDal = new MockMediaDal();
-			var borrowItem = new ConfirmBorrowObject();
-			var controller = new BorrowController(mockBorrowDal, mockMediaDal, new MockCustomerDal());
-			controller.ModelState.AddModelError("Error", "Error");
-			var result = (ViewResult)controller.ConfirmedBorrow(borrowItem);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual("ConfirmBorrow", result.ViewName);
-			Assert.AreEqual("Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
-
-		}
 
 		[TestMethod()]
 		public void ConfirmedBorrowTestWithNullReference()
@@ -291,7 +255,7 @@ namespace RentMeTests.Controllers
 			HomeController.CurrentUser = new Customer();
 			var controller = new BorrowController(mockBorrowDal, mediaDal, new MockCustomerDal());
 			var result = (ViewResult)controller.ConfirmBorrow(1);
-			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual("Browse", result.ViewName);
 			Assert.AreEqual($"Looks like you have already rented 3 items. Please return something to rent another.", result.ViewData["Error"]);
 		}
 

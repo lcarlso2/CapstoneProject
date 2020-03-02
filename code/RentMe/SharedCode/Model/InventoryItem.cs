@@ -21,7 +21,7 @@ namespace SharedCode.Model
         /// <summary>
         /// The list of options for conditions
         /// </summary>
-        public static List<string> ConditionOptions = new List<string> { "New", "Used", "Poor" };
+        public static List<string> ConditionOptions = new List<string> { "New", "Used", "Poor", "Damaged" };
 
         /// <summary>
         /// The id for an individual inventory item
@@ -36,6 +36,7 @@ namespace SharedCode.Model
         /// <summary>
         /// The condition of the inventory item
         /// </summary>
+        [Required]
         public string Condition { get; set; }
 
         /// <summary>

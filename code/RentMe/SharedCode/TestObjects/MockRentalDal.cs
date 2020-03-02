@@ -45,7 +45,7 @@ namespace SharedCode.TestObjects
 		}
 
 
-		public int UpdateStatus(int transactionId, string status, int employeeId)
+		public int UpdateStatus(int transactionId, string status, int employeeId, string condition)
 		{
 			if (this.ThrowError)
 			{

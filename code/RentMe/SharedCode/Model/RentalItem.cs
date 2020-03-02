@@ -10,7 +10,8 @@ namespace SharedCode.Model
     /// </summary>
     public class RentalItem : InventoryItem
     {
-        /// <summary>
+
+	    /// <summary>
         /// Gets or sets the member id that rented the item
         /// </summary>
         /// <value>

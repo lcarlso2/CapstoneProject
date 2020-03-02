@@ -24,6 +24,11 @@ namespace RentMeEmployee.Controllers
 	    public static List<SelectListItem> Statuses = new List<SelectListItem>();
 
 		/// <summary>
+		/// The possible conditions for the current rental item
+		/// </summary>
+		public static List<SelectListItem> Conditions = new List<SelectListItem>();
+
+		/// <summary>
 		/// Creates a new default order controller with the default rental dal 
 		/// </summary>
 		/// @precondition none
@@ -109,12 +114,22 @@ namespace RentMeEmployee.Controllers
 			try
 			{
 				Statuses.Clear();
+				Conditions.Clear();
+
 				item = this.rentalDal.RetrieveAllRentedItems().First(currentItem => currentItem.RentalId == id);
 				var statuses = RentalItem.GetPossibleStatuses(item.Status);
 				foreach (var current in statuses)
 				{
 					Statuses.Add(new SelectListItem(current, current));
 				}
+
+				var conditions = InventoryItem.ConditionOptions;
+				Conditions.Add(new SelectListItem(null,null));
+				foreach (var current in conditions)
+				{
+					Conditions.Add(new SelectListItem(current, current));
+				}
+
 			}
 			catch (Exception)
 			{
@@ -137,12 +152,20 @@ namespace RentMeEmployee.Controllers
 		{
 			try
 			{
-				this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status, HomeController.CurrentEmployee.EmployeeId);
+				if (ModelState.IsValid)
+				{
+					this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status,
+						HomeController.CurrentEmployee.EmployeeId, borrowedItem.Condition);
+				}
+				else
+				{
+					return View("UpdateStatus", borrowedItem);
+				}
 			}
 			catch (Exception)
 			{
 				ViewBag.ErrorMessage = "Uh-oh something went wrong";
-				return View("UpdateStatus");
+				return View("UpdateStatus", borrowedItem);
 			}
 
 			return RedirectToAction("EmployeeLanding");

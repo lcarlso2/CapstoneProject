@@ -95,7 +95,8 @@ namespace SharedCode.DAL
                                     InventoryId = inventoryId,
                                     Category = category,
                                     Title = title,
-                                    Status = status
+                                    Status = status,
+                                    Condition = null
                                 };
 
                                 rentedItems.Add(item);
@@ -325,7 +326,7 @@ namespace SharedCode.DAL
         /// <param name="status"> the status </param>
         /// <param name="employeeId">the employee updating the rental</param>
         /// <returns>the rows affected or an error if something goes wrong on the database</returns>
-        public int UpdateStatus(int transactionId, string status, int employeeId)
+        public int UpdateStatus(int transactionId, string status, int employeeId, string condition)
         {
 
 	        var rowsEffected = 0;
@@ -364,8 +365,9 @@ namespace SharedCode.DAL
 
 					        if (statusId == 4)
 					        {
-						        updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction);
-					        }
+						        updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction, condition);
+						        insertIntoReturnConditionTable(transactionId, cmd, transaction, condition);
+                            }
 
 					        transaction.Commit();
 
@@ -384,17 +386,33 @@ namespace SharedCode.DAL
         }
 
         private static void updateInventoryItemForReturnedStatus(int transactionId, int statusId, MySqlCommand cmd,
-	        MySqlTransaction transaction)
+	        MySqlTransaction transaction, string condition)
         {
 	       
 	        cmd.Parameters.Clear();
 
 	        cmd.CommandText =
-			        "update inventory_item set inStock = true, isRented = false where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
+			        "update inventory_item set inStock = true, isRented = false, `condition` = @condition where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
 	        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+	        cmd.Parameters.AddWithValue("@condition", condition);
 
 
-	        if (cmd.ExecuteNonQuery() != 1) { 
+            if (cmd.ExecuteNonQuery() != 1) { 
+		        transaction.Rollback();
+	        }
+        }
+
+        private static void insertIntoReturnConditionTable(int transactionId, MySqlCommand cmd, MySqlTransaction transaction,
+	        string condition)
+        {
+	        cmd.Parameters.Clear();
+
+	        cmd.CommandText = "insert into return_condition values (@rentalID, @condition)";
+	        cmd.Parameters.AddWithValue("@rentalID", transactionId);
+	        cmd.Parameters.AddWithValue("@condition", condition);
+
+	        if (cmd.ExecuteNonQuery() != 1)
+	        {
 		        transaction.Rollback();
 	        }
         }

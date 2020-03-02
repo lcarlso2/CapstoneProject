@@ -16,6 +16,10 @@
         margin-bottom: .5em;
         color: white;
     }
+
+    table.table td {
+        white-space: nowrap
+    }
 </style>
 
 
@@ -103,8 +107,8 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-2">
-                    <label class=" label-danger">@ViewBag.ErrorMessage</label>
+                <div class="col-md-2 offset-md-2">
+                    <label class="text-danger">@ViewBag.ErrorMessage</label>
                 </div>
             </div>
 
