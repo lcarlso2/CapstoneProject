@@ -17,7 +17,8 @@ namespace RentMeEmployee.Controllers
 		private readonly IInventoryDal inventoryDal;
 
 	    /// <summary>
-		/// Creates a new default inventory controller 
+		/// Creates a new default inventory controller with the
+		/// default inventory dal also being created 
 		/// </summary>
 		[ActivatorUtilitiesConstructor]
 	    public InventoryController()

@@ -41,10 +41,10 @@ namespace RentMe.Controllers
         
 
 	    /// <summary>
-	    /// Creates a new default borrow controller
+	    /// Creates a new default borrow controller with the default borrow, media, and customer dals 
 	    /// </summary>
 	    /// @precondition none
-	    /// @postcondition the controller is created with new borrowDals and MediaDals.
+	    /// @postcondition the controller is created with new borrowDals, MediaDals, and customer dals.
 	    [ActivatorUtilitiesConstructor]
 	    public BorrowController()
 	    {

@@ -34,7 +34,7 @@ namespace RentMe.Controllers
         }
 
         /// <summary>
-        /// Creates a new default home controller
+        /// Creates a new default home controller with the default customer dal
         /// </summary>
         /// @precondition none
         /// @postcondition the controller is created with the CustomerDal

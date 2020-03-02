@@ -24,7 +24,7 @@ namespace RentMeEmployee.Controllers
 	    public static List<SelectListItem> Statuses = new List<SelectListItem>();
 
 		/// <summary>
-		/// Creates a new default order controller with the dals
+		/// Creates a new default order controller with the default rental dal 
 		/// </summary>
 		/// @precondition none
 		/// @postcondition the controller is created

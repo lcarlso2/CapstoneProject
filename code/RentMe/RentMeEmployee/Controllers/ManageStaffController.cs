@@ -15,7 +15,8 @@ namespace RentMeEmployee.Controllers
 	    private readonly IEmployeeDal employeeDal;
 
 		/// <summary>
-		/// Creates a new default ManageStaff controller 
+		/// Creates a new default ManageStaff controller
+		/// with a default employee dal
 		/// </summary>
 		[ActivatorUtilitiesConstructor]
 	    public ManageStaffController()

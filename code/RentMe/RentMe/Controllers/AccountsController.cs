@@ -35,7 +35,7 @@ namespace RentMe.Controllers
 	    }
 
 	    /// <summary>
-	    /// Creates a new default accounts controller
+	    /// Creates a new default accounts controller with the default customer and rental dals 
 	    /// </summary>
 	    /// @precondition none
 	    /// @postcondition the controller is created with CustomerDals and RentalDals.
