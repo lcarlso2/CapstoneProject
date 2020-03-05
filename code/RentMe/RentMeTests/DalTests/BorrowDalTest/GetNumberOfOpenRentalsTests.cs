@@ -19,7 +19,7 @@ namespace RentMeTests.DalTests.BorrowDalTest
 			var borrowDal = new BorrowDal();
 
 			var result = borrowDal.GetNumberOfOpenRentals(new Customer {Email = "email@email.com"});
-			Assert.AreEqual(1, result);
+			Assert.AreEqual(0, result);
 		}
 	}
 }
