@@ -20,7 +20,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 		public void UpdateStatusToShippedTest()
 		{
 			var borrowDal = new BorrowDal();
-			var customer = new Customer
+			var customer = new Member
 			{
 				Email = "email@email.com",
 				Password = "password"
@@ -51,7 +51,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 		public void UpdateStatusToReturnedTest()
 		{
 			var borrowDal = new BorrowDal();
-			var customer = new Customer
+			var customer = new Member
 			{
 				Email = "email@email.com",
 				Password = "password"

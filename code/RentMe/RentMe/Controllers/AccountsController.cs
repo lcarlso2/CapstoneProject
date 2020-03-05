@@ -19,30 +19,30 @@ namespace RentMe.Controllers
 	    private readonly IRentalDal rentalDal;
 
 
-	    private readonly ICustomerDal customerDal;
+	    private readonly IMemberDal memberDal;
 
 		/// <summary>
 		/// Creates a new accounts controller with the desired dals
 		/// </summary>
-		/// <param name="customerDal">The customer dal for communication</param>
+		/// <param name="memberDal">The customer dal for communication</param>
 		/// <param name="rentalDal">the rentalDal dal for communication</param>
 		/// @precondition none
 		/// @postcondition the controller is created with the input dals
-		public AccountsController(ICustomerDal customerDal, IRentalDal rentalDal)
+		public AccountsController(IMemberDal memberDal, IRentalDal rentalDal)
 	    {
-		    this.customerDal = customerDal;
+		    this.memberDal = memberDal;
 		    this.rentalDal = rentalDal;
 	    }
 
-	    /// <summary>
-	    /// Creates a new default accounts controller with the default customer and rental dals 
-	    /// </summary>
-	    /// @precondition none
-	    /// @postcondition the controller is created with CustomerDals and RentalDals.
-	    [ActivatorUtilitiesConstructor]
+		/// <summary>
+		/// Creates a new default accounts controller with the default memberDal and rental dals 
+		/// </summary>
+		/// @precondition none
+		/// @postcondition the controller is created with memberDal and RentalDals.
+		[ActivatorUtilitiesConstructor]
 	    public AccountsController()
 	    {
-		    this.customerDal = new CustomerDal();
+		    this.memberDal = new MemberDal();
 		    this.rentalDal = new RentalDal();
 	    }
 
@@ -120,7 +120,7 @@ namespace RentMe.Controllers
 		{
 			try
 			{
-				HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
+				HomeController.CurrentUser.Addresses = this.memberDal.GetAddresses(HomeController.CurrentUser);
 
 				return View("Profile");
 
@@ -145,39 +145,39 @@ namespace RentMe.Controllers
 		    return View("Register");
 	    }
 
-	    /// <summary>
-	    /// The http post for the register page
-	    /// </summary>
-	    /// <param name="customer">the customer being registered</param>
-	    /// <returns> Registers the customer and shows a success message or shows an error message. If
-	    /// invalid data is entered then messages are also displayed to notify the user</returns>
-	    /// @precondition none
-	    /// @postcondition the member is added to the DB
-	    [HttpPost]
+		/// <summary>
+		/// The http post for the register page
+		/// </summary>
+		/// <param name="member">the member being registered</param>
+		/// <returns> Registers the member and shows a success message or shows an error message. If
+		/// invalid data is entered then messages are also displayed to notify the user</returns>
+		/// @precondition none
+		/// @postcondition the member is added to the DB
+		[HttpPost]
 	    [ValidateAntiForgeryToken]
-	    public IActionResult Register(RegisteringCustomer customer)
+	    public IActionResult Register(RegisteringMember member)
 	    {
 		    if (ModelState.IsValid)
 		    {
 			    try
 			    {
-				    this.customerDal.RegisterCustomer(customer);
+				    this.memberDal.RegisterMember(member);
 			    }
 			    catch (Exception ex)
 			    {
 
 				    ViewBag.ErrorMessage = ex.Message;
-				    return View(customer);
+				    return View(member);
 			    }
 
 			    ModelState.Clear();
 			    ViewBag.SuccessMessage = "You're Registered!";
 
-			    return View("Register", new RegisteringCustomer());
+			    return View("Register", new RegisteringMember());
 		    }
 		    else
 		    {
-			    return View(customer);
+			    return View(member);
 		    }
 
 	    }
@@ -197,9 +197,9 @@ namespace RentMe.Controllers
 			{
 				try
 				{
-					this.customerDal.AddAddress(address, HomeController.CurrentUser);
+					this.memberDal.AddAddress(address, HomeController.CurrentUser);
 
-					HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
+					HomeController.CurrentUser.Addresses = this.memberDal.GetAddresses(HomeController.CurrentUser);
 
 					return View("Profile");
 				}
@@ -226,19 +226,19 @@ namespace RentMe.Controllers
 		}
 
 		/// <summary>
-		/// Updates the customers email that has a matching original email
+		/// Updates the members email that has a matching original email
 		/// </summary>
-		/// <param name="customer"> The customer object submitted by the form</param>
+		/// <param name="member"> The member object submitted by the form</param>
 		/// @precondition none
 		/// @postcondition the email is updated
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult UpdateEmail(Customer customer)
+		public IActionResult UpdateEmail(Member member)
 		{
-			if (customer.Email != null && customer.Email != "")
+			if (!string.IsNullOrEmpty(member.Email))
 			{
-				this.customerDal.UpdateEmail(HomeController.CurrentUser.Email, customer.Email);
-				HomeController.CurrentUser.Email = customer.Email;
+				this.memberDal.UpdateEmail(HomeController.CurrentUser.Email, member.Email);
+				HomeController.CurrentUser.Email = member.Email;
 				
 			}
 			return View("Profile");

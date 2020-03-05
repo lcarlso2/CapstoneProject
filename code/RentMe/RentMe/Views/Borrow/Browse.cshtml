@@ -1,4 +1,5 @@
-﻿@model IEnumerable<RentMe.Models.Media>
+﻿@using RentMe.Controllers
+@model IEnumerable<RentMe.Models.Media>
 @{
     ViewData["Title"] = "Browse";
 }
@@ -106,7 +107,10 @@
 						@Html.DisplayFor(modelItem => item.Type)
 					</td>
 					<td>
-						<a asp-controller="Borrow" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
+						@if (HomeController.CurrentLibrarian == null)
+						{
+							<a asp-controller="Borrow" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
+						}
 					</td>
 				</tr>
 			}

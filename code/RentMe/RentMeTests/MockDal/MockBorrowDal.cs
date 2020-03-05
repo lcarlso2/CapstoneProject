@@ -19,7 +19,7 @@ namespace RentMeTests.MockDal
 
 		public int NumberToReturn { get; set; }
 
-		public int BorrowItem(Customer customer, Media media, int addressId)
+		public int BorrowItem(Member member, Media media, int addressId)
 		{
 			if (this.ThrowNullReference)
 			{
@@ -34,7 +34,7 @@ namespace RentMeTests.MockDal
 			return 3;
 		}
 
-		public int GetNumberOfOpenRentals(Customer customer)
+		public int GetNumberOfOpenRentals(Member customer)
 		{
 			if (this.ThrowException)
 			{

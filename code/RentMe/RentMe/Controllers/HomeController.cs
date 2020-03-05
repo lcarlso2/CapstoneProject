@@ -14,34 +14,41 @@ namespace RentMe.Controllers
     public class HomeController : Controller
     {
 
-	    private readonly ICustomerDal customerDal;
+	    private readonly IMemberDal memberDal;
+
+	    private readonly ILibrarianDal librarianDal;
 
 	    /// <summary>
         /// The current user that is logged into the system.
         /// If there is no-one logged in, the user is null.
         /// </summary>
-        public static Customer CurrentUser;
+        public static Member CurrentUser;
+
+	    public static Librarian CurrentLibrarian;
 
         /// <summary>
         /// Creates a new home controller with the desired dals
         /// </summary>
-        /// <param name="customerDal">The customer dal for communication</param>
+        /// <param name="memberDal">The member dal for communication</param
+        /// <param name="librarianDal">The librarian dal for communication</param>
         /// @precondition none
         /// @postcondition the controller is created with the input dals
-        public HomeController(ICustomerDal customerDal)
+        public HomeController(IMemberDal memberDal, ILibrarianDal librarianDal)
         {
-	        this.customerDal = customerDal;
+	        this.memberDal = memberDal;
+	        this.librarianDal = librarianDal;
         }
 
         /// <summary>
-        /// Creates a new default home controller with the default customer dal
+        /// Creates a new default home controller with the default customer dal and librarian dal
         /// </summary>
         /// @precondition none
-        /// @postcondition the controller is created with the CustomerDal
+        /// @postcondition the controller is created with the CustomerDal and the librarian dal
         [ActivatorUtilitiesConstructor]
         public HomeController()
         {
-	        this.customerDal = new CustomerDal();
+	        this.memberDal = new MemberDal();
+            this.librarianDal = new LibrarianDal();
         }
 
         /// <summary>
@@ -52,7 +59,7 @@ namespace RentMe.Controllers
         /// @postcondition none
         public IActionResult Index()
         {
-            if (CurrentUser != null)
+            if (CurrentUser != null || CurrentLibrarian != null)
             {
                 return RedirectToAction("Browse", "Borrow");
             }
@@ -69,7 +76,7 @@ namespace RentMe.Controllers
         public IActionResult Signout()
         {
             CurrentUser = null;
-
+            CurrentLibrarian = null;
             return RedirectToAction("Index");
         }
 
@@ -79,19 +86,27 @@ namespace RentMe.Controllers
         /// <summary>
         /// The http post for the action result login
         /// </summary>
-        /// <param name="customer">the customer logging in</param>
-        /// <returns>The browse page if the customer is signed in otherwise stays on the index page if the login is invalid or an error occurs</returns>
+        /// <param name="user">the user logging in</param>
+        /// <returns>The browse page if the user is signed in otherwise stays on the index page if the login is invalid or an error occurs</returns>
         /// @precondition state of system is that of no one logged in
         /// @postcondition If the log in is successful then the state of the system changes to that of a valid member
         [HttpPost]
-        public IActionResult Login(Customer customer)
+        public IActionResult Login(Member user)
         {
             try
             {
-                if (ModelState.IsValid && this.customerDal.Authenticate(customer.Email, customer.Password) == 1)
+                if (ModelState.IsValid)
                 {
-                    CurrentUser = new Customer { Email = customer.Email, Password = customer.Password };
-                    return RedirectToAction("Browse", "Borrow");
+	                if (this.memberDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
+		                return RedirectToAction("Browse", "Borrow");
+	                } 
+	                if (this.librarianDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+                        CurrentLibrarian = new Librarian { Email = user.Email, Password = user.Password };
+                        return RedirectToAction("Browse", "Borrow");
+                    }
                 }
             }
             catch (Exception ex)

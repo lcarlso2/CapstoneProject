@@ -20,8 +20,8 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void AddAddress()
 		{
-			var customer = new Customer {Email = "email@email.com"};
-			var customerDal = new CustomerDal();
+			var customer = new Member { Email = "email@email.com"};
+			var customerDal = new MemberDal();
 
 			customerDal.AddAddress(
 					new Address

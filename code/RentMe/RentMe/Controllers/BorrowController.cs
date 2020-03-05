@@ -19,7 +19,7 @@ namespace RentMe.Controllers
 
 	    private readonly IMediaDal mediaDal;
 
-	    private readonly ICustomerDal customerDal;
+	    private readonly IMemberDal customerDal;
 
 	    public static Media SelectedItem;
 
@@ -31,7 +31,7 @@ namespace RentMe.Controllers
         /// <param name="customerDal">the customer dal for communication</param>
         /// @precondition none
         /// @postcondition the controller is created with the input dals
-        public BorrowController(IBorrowDal borrowDal, IMediaDal mediaDal, ICustomerDal customerDal)
+        public BorrowController(IBorrowDal borrowDal, IMediaDal mediaDal, IMemberDal customerDal)
 	    {
 		    this.borrowDal = borrowDal;
 		    this.mediaDal = mediaDal;
@@ -50,7 +50,7 @@ namespace RentMe.Controllers
 	    {
 		    this.borrowDal = new BorrowDal();
 		    this.mediaDal = new MediaDal();
-            this.customerDal = new CustomerDal();
+            this.customerDal = new MemberDal();
 	    }
 
 

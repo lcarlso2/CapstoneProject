@@ -19,7 +19,7 @@ namespace RentMeTests.DalTests.BorrowDalTest
 		public void BorrowItemValidTest()
 		{
 			var borrowDal = new BorrowDal();
-			var customer = new Customer
+			var customer = new Member
 			{
 				Email = "email@email.com",
 				Password = "password"

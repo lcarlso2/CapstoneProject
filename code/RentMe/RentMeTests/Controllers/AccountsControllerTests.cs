@@ -29,9 +29,9 @@ namespace RentMeTests.Controllers
 		}
 
 		[TestMethod()]
-		public void RegisterTestWithValidCustomer()
+		public void RegisterTestWithValidMember()
 		{
-			var customer = new RegisteringCustomer
+			var customer = new RegisteringMember
 			{
 				First = "First",
 				Last = "Last",
@@ -46,7 +46,7 @@ namespace RentMeTests.Controllers
 					Zip = "31035"
 				}
 			};
-			var mockCustomerDal = new MockCustomerDal
+			var mockCustomerDal = new MockMemberDal
 			{
 				ThrowError = false
 			};
@@ -60,8 +60,8 @@ namespace RentMeTests.Controllers
 		[TestMethod()]
 		public void RegisterTestWithInValidCustomer()
 		{
-			var customer = new RegisteringCustomer();
-			var mockCustomerDal = new MockCustomerDal
+			var customer = new RegisteringMember();
+			var mockCustomerDal = new MockMemberDal
 			{
 				ThrowError = false
 			};
@@ -77,8 +77,8 @@ namespace RentMeTests.Controllers
 		[TestMethod()]
 		public void RegisterTestWithExceptionThrownFromDb()
 		{
-			var customer = new RegisteringCustomer();
-			var mockCustomerDal = new MockCustomerDal
+			var customer = new RegisteringMember();
+			var mockCustomerDal = new MockMemberDal
 			{
 				ThrowError = true
 			};
@@ -99,8 +99,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalFilter("Date");
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("RentalHistory", result.ViewName);
@@ -117,8 +117,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalFilter("Status");
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("RentalHistory", result.ViewName);
@@ -135,8 +135,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalFilter("Title");
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("RentalHistory", result.ViewName);
@@ -153,8 +153,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalFilter("");
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("RentalHistory", result.ViewName);
@@ -171,8 +171,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = true
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (RedirectToActionResult)controller.RentalFilter("");
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
 			Assert.AreEqual("Browse", result.ActionName);
@@ -187,8 +187,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalHistory();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual(null, result.ViewName);
@@ -205,8 +205,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = true
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.RentalHistory();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual(null, result.ViewName);
@@ -223,12 +223,12 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.Profile();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Profile", result.ViewName);
-			var customer = (Customer)result.Model;
+			var customer = (Member)result.Model;
 			Assert.AreEqual("test", HomeController.CurrentUser.Email);
 			HomeController.CurrentUser = null;
 
@@ -241,8 +241,8 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = true
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.Profile();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Profile", result.ViewName);
@@ -257,12 +257,12 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = false
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var user = new Customer { Email = "updated" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var user = new Member { Email = "updated" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.UpdateEmail(user);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			var customer = (Customer)result.Model;
+			var customer = (Member)result.Model;
 			Assert.AreEqual("updated", HomeController.CurrentUser.Email);
 			HomeController.CurrentUser = null;
 
@@ -275,9 +275,9 @@ namespace RentMeTests.Controllers
 			{
 				ThrowError = true
 			};
-			HomeController.CurrentUser = new Customer { Email = "test" };
-			var user = new Customer { Email = "updated" };
-			var controller = new AccountsController(new MockCustomerDal(), rentalDal);
+			HomeController.CurrentUser = new Member { Email = "test" };
+			var user = new Member { Email = "updated" };
+			var controller = new AccountsController(new MockMemberDal(), rentalDal);
 			var result = (ViewResult)controller.UpdateEmail(user);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			HomeController.CurrentUser = null;

@@ -18,13 +18,13 @@ namespace RentMe.DAL
 		/// <summary>
 		/// Borrows an item from the database. Throws an error if there is an error on the database
 		/// </summary>
-		/// <param name="customer">the customer borrowing the item</param>
+		/// <param name="member">the member borrowing the item</param>
 		/// <param name="media">the item being borrowed</param>
 		/// <param name="addressId"> the id of the address the item is being shipped to </param>
 		/// <returns>the number of rows altered in the database</returns>
 		/// @precondition none
 		/// @postcondition the item is borrowed or an error is thrown if something goes wrong on the database
-		public int BorrowItem(Customer customer, Media media, int addressId)
+		public int BorrowItem(Member member, Media media, int addressId)
 		{
 
 			try
@@ -42,7 +42,7 @@ namespace RentMe.DAL
 						cmd.Transaction = transaction;
 
 						cmd.Parameters.Add("@memberEmail", MySqlDbType.VarChar);
-						cmd.Parameters["@memberEmail"].Value = customer.Email;
+						cmd.Parameters["@memberEmail"].Value = member.Email;
 
 						cmd.Parameters.Add("@rentalDateTime", MySqlDbType.DateTime);
 						cmd.Parameters["@rentalDateTime"].Value = DateTime.Now;
@@ -108,9 +108,9 @@ namespace RentMe.DAL
 		/// <summary>
 		/// Gets the number of open rentals a member has
 		/// </summary>
-		/// <param name="customer">the customer being checked </param>
+		/// <param name="member">the member being checked </param>
 		/// <returns>the number of open rentals or an error if something goes wrong </returns>
-		public int GetNumberOfOpenRentals(Customer customer)
+		public int GetNumberOfOpenRentals(Member member)
 		{
 			var count = 0;
 			try
@@ -130,7 +130,7 @@ namespace RentMe.DAL
 
 					using (var cmd = new MySqlCommand(query, conn))
 					{
-						cmd.Parameters.AddWithValue("@email", customer.Email);
+						cmd.Parameters.AddWithValue("@email", member.Email);
 						count = Convert.ToInt32(cmd.ExecuteScalar());
 					}
 

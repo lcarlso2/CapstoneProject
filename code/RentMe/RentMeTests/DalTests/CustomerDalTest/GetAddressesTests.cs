@@ -17,9 +17,9 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void GetAddressesTest()
 		{
-			var customerDal = new CustomerDal();
+			var customerDal = new MemberDal();
 
-			var result = customerDal.GetAddresses(new Customer {Email = "email@email.com"});
+			var result = customerDal.GetAddresses(new Member {Email = "email@email.com"});
 
 			Assert.AreEqual(3, result.Count);
 		}

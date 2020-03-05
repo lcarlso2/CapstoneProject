@@ -20,9 +20,9 @@ namespace RentMeTests.DalTests.CustomerDalTest
         [TestMethod()]
         public void UpdateEmail()
         {
-            var customer = new Customer { Email = "email@email.com" };
+            var customer = new Member { Email = "email@email.com" };
             var testEmail = "test@test.com";
-            var customerDal = new CustomerDal();
+            var customerDal = new MemberDal();
 
             Assert.AreEqual(1, customerDal.Authenticate(customer.Email, "Password"));
 

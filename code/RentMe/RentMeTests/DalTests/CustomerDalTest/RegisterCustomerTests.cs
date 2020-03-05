@@ -18,8 +18,8 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void RegisterCustomerValidTest()
 		{
-			var customerDal = new CustomerDal();
-			var customer = new RegisteringCustomer
+			var customerDal = new MemberDal();
+			var customer = new RegisteringMember
 			{
 				ConfirmEmail = "confirmEmail", 
 				ConfirmPassword = "confirmPassword", 
@@ -34,7 +34,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 					Zip = "30135"
 				}
 			};
-			customerDal.RegisterCustomer(customer);
+			customerDal.RegisterMember(customer);
 
 			var result = customerDal.Authenticate("confirmEmail", "confirmPassword");
 			this.cleanDataBase(customer);
@@ -42,7 +42,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 			
 		}
 
-		private void cleanDataBase(RegisteringCustomer customer)
+		private void cleanDataBase(RegisteringMember customer)
 		{
 			try
 			{

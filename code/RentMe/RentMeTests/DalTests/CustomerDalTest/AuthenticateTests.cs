@@ -16,7 +16,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void AuthenticateValidTest()
 		{
-			var customerDal = new CustomerDal();
+			var customerDal = new MemberDal();
 
 			var result = customerDal.Authenticate("email@email.com", "password");
 
@@ -26,7 +26,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void AuthenticateInValidEmailTest()
 		{
-			var customerDal = new CustomerDal();
+			var customerDal = new MemberDal();
 
 			var result = customerDal.Authenticate("invalid@email.com", "password");
 
@@ -36,7 +36,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 		[TestMethod()]
 		public void AuthenticateInValidPasswordTest()
 		{
-			var customerDal = new CustomerDal();
+			var customerDal = new MemberDal();
 
 			var result = customerDal.Authenticate("email@email.com", "nope");
 
