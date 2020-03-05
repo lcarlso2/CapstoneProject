@@ -1,0 +1,123 @@
+﻿@using RentMe.Controllers
+@model IEnumerable<SharedCode.Model.RentalItem>
+@{
+    ViewData["Title"] = "RentalDetails";
+}
+
+
+<style>
+    @@media screen and (max-width: 1200px) {
+        .body-container {
+            margin: unset !important;
+        }
+    }
+
+
+    .filter-label {
+        background-color: #007bff;
+        margin-bottom: .5em;
+        color: white;
+    }
+
+    table.table td {
+        white-space: nowrap
+    }
+</style>
+
+
+<div>
+    <div class="text-center row">
+        <h2 style="margin: .5em auto;">
+            Rental Details for @LibrarianController.CurrentRentalId id rented by @LibrarianController.CurrentMemberEmail
+        </h2>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-2 offset-md-2">
+        <label class="text-danger">@ViewBag.Error</label>
+    </div>
+</div>
+
+
+
+<div class="container body-container">
+
+    <div class="row">
+
+        <div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RentalId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MemberId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MemberEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RentalDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ReturnDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+	                    <th>
+		                    @Html.DisplayNameFor(model => model.UpdateDateTime)
+	                    </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RentalId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RentalDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReturnDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+	                            @Html.DisplayFor(modelItem => item.UpdateDateTime)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+</div>

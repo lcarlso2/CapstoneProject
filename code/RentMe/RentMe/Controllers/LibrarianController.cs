@@ -20,6 +20,8 @@ namespace RentMe.Controllers
 
 	    private readonly IRentalDal rentalDal;
 
+	    private readonly IInventoryDal inventoryDal;
+
 
 		/// <summary>
 		/// The current selected members email
@@ -27,8 +29,13 @@ namespace RentMe.Controllers
 	    public static string CurrentMemberEmail;
 
 		/// <summary>
+		/// The current selected rentals id
+		/// </summary>
+		public static int CurrentRentalId;
+
+		/// <summary>
 		/// The default constructor for the librarian page which instantiates the default
-		/// librarian dal and rental dal
+		/// librarian dal, rental dal, and inventory dal
 		/// </summary>
 		/// @precondition none
 		/// @postcondition the librarian controller is created with the default dals
@@ -37,19 +44,23 @@ namespace RentMe.Controllers
 	    {
 			this.librarianDal = new LibrarianDal();
 			this.rentalDal = new RentalDal();
+			this.inventoryDal = new InventoryDal();
+			
 	    }
 
 		/// <summary>
-		/// The constructor for the librarian page where you pass in the desired librarian dal and rental dal
+		/// The constructor for the librarian page where you pass in the desired librarian dal, rental dal, and inventory dal
 		/// </summary>
 		/// <param name="librarianDal"> the librarian dal being passed in</param>
 		/// <param name="rentalDal"> the rentalDal dal being passed in</param>
+		/// <param name="inventoryDal"> the inventoryDal dal being passed in</param>
 		/// @precondition none
 		/// @postcondition the librarian controller is created with the desired dals
-		public LibrarianController(ILibrarianDal librarianDal, IRentalDal rentalDal)
+		public LibrarianController(ILibrarianDal librarianDal, IRentalDal rentalDal, IInventoryDal inventoryDal)
 		{
 			this.librarianDal = librarianDal;
 			this.rentalDal = rentalDal;
+			this.inventoryDal = inventoryDal;
 		}
 
 		/// <summary>
@@ -92,6 +103,22 @@ namespace RentMe.Controllers
 			    return View("MemberHistory", new List<RentalItem>());
 			}
 	    }
+
+		public IActionResult RentalDetails(int id)
+		{
+			CurrentRentalId = id;
+			try
+			{
+				var rentalDetails = new List<RentalItem>(); //todo Implement db call for fetching this information
+				return View("RentalDetails", rentalDetails);
+			}
+			catch (Exception)
+			{
+				ViewBag.Error = "Uh-oh.. something went wrong";
+				return View("RentalDetails", new List<RentalItem>());
+			}
+		
+		}
 
 	}
 }
