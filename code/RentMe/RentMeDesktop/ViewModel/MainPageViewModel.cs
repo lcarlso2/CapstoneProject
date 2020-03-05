@@ -27,6 +27,13 @@ namespace RentMeDesktop.ViewModel
 
         private IRentalDal rentalDal;
 
+        private bool shouldUpdateConditionShow;
+
+        private bool canConfirmUpdateBeClicked;
+
+        private string condition;
+
+
         /// <summary>
         /// Creates a new main page view model
         /// </summary>
@@ -35,6 +42,7 @@ namespace RentMeDesktop.ViewModel
         ///     and this.SelectedStatusFilter set to all
         public MainPageViewModel()
         {
+	        this.Condition = "Select Condition";
             this.SelectedStatusFilter = "All";
             this.StatusFilters = new ObservableCollection<string> { "All", "Ordered", "Shipped", "Returned" };
             this.rentalDal = new RentalDal();
@@ -49,10 +57,68 @@ namespace RentMeDesktop.ViewModel
         ///     and this.SelectedStatusFilter set to all
 		public MainPageViewModel(IRentalDal rentalDal)
         {
+	        this.Condition = "Select Condition";
             this.SelectedStatusFilter = "All";
             this.StatusFilters = new ObservableCollection<string> { "All", "Ordered", "Shipped", "Returned" };
             this.rentalDal = rentalDal;
         }
+
+        /// <summary>
+        /// Gets or sets the condition
+        /// </summary>
+        /// <value>
+        ///The condition
+        /// </value>
+        public string Condition
+        {
+	        get => this.condition;
+	        set
+	        {
+		        this.condition = value;
+
+		        if (this.SelectedRental != null && this.SelectedRental.Status.Equals("Shipped"))
+		        {
+			        this.CanConfirmUpdateBeClicked = !this.Condition.Equals("Select Condition");
+                }
+		        else
+		        {
+			        this.CanConfirmUpdateBeClicked = true;
+		        }
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// <summary>
+        /// Simply true if the item is in a status besides shipped. If the item is in shipped then
+        /// a condition must also be selected 
+        /// </summary>
+        public bool CanConfirmUpdateBeClicked
+        {
+	        get => this.canConfirmUpdateBeClicked;
+	        set
+	        {
+		        this.canConfirmUpdateBeClicked = value;
+                this.OnPropertyChanged();
+	        }
+        }
+
+        /// <summary>
+        /// Gets or sets if the update condition should be shown
+        /// </summary>
+        /// <value>
+        /// true or false if the update condition should be shown
+        /// (True if the item is being returned otherwise false)
+        /// </value>
+        public bool ShouldUpdateConditionShow
+        {
+	        get => this.shouldUpdateConditionShow;
+	        set
+	        {
+		        this.shouldUpdateConditionShow = value;
+		        this.OnPropertyChanged();
+	        }
+        }
+
         /// <summary>
         /// Gets or sets the rental filters
         /// </summary>
@@ -120,6 +186,15 @@ namespace RentMeDesktop.ViewModel
             {
                 this.selectedRental = value;
                 this.CanUpdateBeClicked = (this.SelectedRental != null) && !this.SelectedRental.Status.Equals("Returned");
+                this.ShouldUpdateConditionShow = (this.SelectedRental != null) && this.SelectedRental.Status.Equals("Shipped");
+                if (this.SelectedRental != null && this.SelectedRental.Status.Equals("Shipped"))
+                {
+	                this.CanConfirmUpdateBeClicked = !this.Condition.Equals("Select Condition");
+                }
+                else
+                {
+	                this.CanConfirmUpdateBeClicked = true;
+                }
                 this.OnPropertyChanged();
             }
         }
@@ -148,7 +223,7 @@ namespace RentMeDesktop.ViewModel
             var rowsAffected = -1;
             try
             {
-                rowsAffected = this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId);
+                rowsAffected = this.rentalDal.UpdateStatus(this.SelectedRental.RentalId, this.SelectedRental.Status, this.CurrentEmployee.EmployeeId, this.Condition);
             }
             catch (Exception ex)
             {

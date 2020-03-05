@@ -365,9 +365,10 @@ namespace SharedCode.DAL
 
 					        if (statusId == 4)
 					        {
-						        updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction, condition);
 						        insertIntoReturnConditionTable(transactionId, cmd, transaction, condition);
-                            }
+						        updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction,
+							        condition);
+					        }
 
 					        transaction.Commit();
 
@@ -407,7 +408,9 @@ namespace SharedCode.DAL
         {
 	        cmd.Parameters.Clear();
 
-	        cmd.CommandText = "insert into return_condition values (@rentalID, @condition)";
+	        cmd.CommandText = "insert into return_condition values (@rentalID, @condition, " +
+	                          "(select `condition` from inventory_item, rental_transaction where " +
+	                          "rental_transaction.rentalID = @rentalID and rental_transaction.inventoryID = inventory_item.inventoryID))";
 	        cmd.Parameters.AddWithValue("@rentalID", transactionId);
 	        cmd.Parameters.AddWithValue("@condition", condition);
 

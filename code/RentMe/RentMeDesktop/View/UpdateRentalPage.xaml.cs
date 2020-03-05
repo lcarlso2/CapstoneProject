@@ -50,6 +50,11 @@ namespace RentMeDesktop.View
 
 			this.StatusTypes = new ObservableCollection<string>(RentalItem.GetPossibleStatuses(this.ViewModel?.SelectedRental?.Status));
 			this.comboBox.ItemsSource = this.StatusTypes;
+
+			var conditionOptions = new ObservableCollection<string>();
+			conditionOptions.Add("Select Condition");
+			InventoryItem.ConditionOptions.ForEach(current => conditionOptions.Add(current));
+			this.conditionComboBox.ItemsSource = new ObservableCollection<string>(conditionOptions);
 		}
 
 		private void cancelButton_Click(object sender, RoutedEventArgs e)

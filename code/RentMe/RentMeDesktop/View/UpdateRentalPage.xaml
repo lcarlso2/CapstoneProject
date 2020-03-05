@@ -13,16 +13,21 @@
     </Page.DataContext>
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Update Rental" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="402,212,0,0" Text="Transaction ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="378,312,0,0" Text="Customer Email:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="417,412,0,0" Text="Status:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox x:Name="textBox" IsReadOnly="True" HorizontalAlignment="Left" Margin="550,200,0,0" Text="{Binding SelectedRental.RentalId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Order #" FontSize="20"/>
-        <TextBox x:Name="textBox1" IsReadOnly="True" HorizontalAlignment="Left" Margin="550,300,0,0" Text="{Binding SelectedRental.MemberEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Member #" FontSize="20"/>
-        <ComboBox x:Name="comboBox" SelectedItem="{Binding SelectedRental.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="550,398,0,0" Height="45" Width="400" HorizontalAlignment="Left">
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Center" Margin="-600,161,0,0" Text="Transaction ID:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Center" Margin="-600,261,0,0" Text="Customer Email:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock x:Name="textBlock3" HorizontalAlignment="Center" Margin="-600,343,0,0" Text="Status:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="textBox" IsReadOnly="True" HorizontalAlignment="Center" Margin="0,149,0,0" Text="{Binding SelectedRental.RentalId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Order #" FontSize="20"/>
+        <TextBox x:Name="textBox1" IsReadOnly="True" HorizontalAlignment="Center" Margin="0,249,0,0" Text="{Binding SelectedRental.MemberEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" Width="400" Height="50" PlaceholderText="Member Email" FontSize="20"/>
+        <ComboBox x:Name="comboBox" SelectedItem="{Binding SelectedRental.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,337,0,0" Height="45" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top">
             <ListView/>
         </ComboBox>
-        <Button x:Name="cancelButton"  Width="135" Height="45" Content="Cancel" Margin="550,553,0,0" VerticalAlignment="Top" Click="cancelButton_Click"/>
-        <Button x:Name="updateButton" Command="{Binding UpdateStatusCommand}" Width="135" Height="45" Content="Update" Margin="815,553,0,0" VerticalAlignment="Top" Click="updateButton_Click"/>
+        <TextBlock x:Name="conditionTextBlock" Visibility="{Binding ShouldUpdateConditionShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="-600,436,0,0" Text="Condition:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <ComboBox x:Name="conditionComboBox" Visibility="{Binding ShouldUpdateConditionShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Condition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="45" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,427,0,0">
+            <ListView/>
+        </ComboBox>
+        <Button x:Name="cancelButton"  Width="135" Height="45" Content="Cancel" Margin="-250,500,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="cancelButton_Click"/>
+        <Button x:Name="updateButton" IsEnabled="{Binding CanConfirmUpdateBeClicked}" Width="135" Height="45" HorizontalAlignment="Center"  Content="Update" Margin="250,500,0,0" VerticalAlignment="Top" Click="updateButton_Click"/>
+
 
 
     </Grid>
