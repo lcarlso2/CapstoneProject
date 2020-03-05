@@ -18,7 +18,7 @@
 	<div class="col-sm-3 text-center">
 		<h4>Status</h4>
 	</div>
-	@if (Model.Status == "Shipped")
+	@if (Model.Status == "Shipped" || Model.Status == "Returned")
 	{
 		<div class="col-sm-3 text-center">
 			<h4>Condition</h4>
@@ -47,7 +47,7 @@
 
 		</div>
 		
-		@if (Model.Status == "Shipped")
+		@if (Model.Status == "Shipped" || Model.Status == "Returned")
 		{
 	<div class="col-sm-3 text-center">
 		@Html.DropDownListFor(item => item.Condition, new List<SelectListItem>(OrdersController.Conditions))

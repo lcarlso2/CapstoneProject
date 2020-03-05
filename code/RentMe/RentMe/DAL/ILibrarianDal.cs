@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RentMe.Models;
+using SharedCode.Model;
 
 namespace RentMe.DAL
 {
@@ -21,5 +22,6 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <returns>all the customers from the db or an error if something went wrong</returns>
 		List<RegisteringMember> GetAllMembers();
+
 	}
 }

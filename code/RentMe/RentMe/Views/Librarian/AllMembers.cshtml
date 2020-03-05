@@ -77,7 +77,7 @@
 					@Html.DisplayFor(member => currentMember.MemberId)
 				</td>
 				<td>
-					<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-id="@currentMember.MemberId">History</a>
+					<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
 				</td>
 			</tr>
 			}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using RentMe.DAL;
 using RentMe.Models;
+using SharedCode.Model;
 
 namespace RentMeTests.MockDal
 {
@@ -35,5 +36,6 @@ namespace RentMeTests.MockDal
 
 			return members;
 		}
+
 	}
 }

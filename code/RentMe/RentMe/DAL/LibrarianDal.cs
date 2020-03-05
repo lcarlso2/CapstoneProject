@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using RentMe.Models;
 using SharedCode.DAL;
+using SharedCode.Model;
 
 namespace RentMe.DAL
 {
@@ -94,5 +95,6 @@ namespace RentMe.DAL
 			}
 			return customers;
 		}
+
 	}
 }

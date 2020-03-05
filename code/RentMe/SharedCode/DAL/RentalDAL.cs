@@ -154,6 +154,7 @@ namespace SharedCode.DAL
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
+                     
 
                             while (reader.Read())
                             {
@@ -182,6 +183,7 @@ namespace SharedCode.DAL
                                 var status = reader[statusOrdinal] == DBNull.Value
                                     ? "null"
                                     : reader.GetString(statusOrdinal);
+
 
 
                                 var item = new RentalItem

@@ -157,6 +157,11 @@ namespace RentMeEmployee.Controllers
 					this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status,
 						HomeController.CurrentEmployee.EmployeeId, borrowedItem.Condition);
 				}
+				else if (!borrowedItem.Status.Equals("Returned"))
+				{
+					this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status,
+						HomeController.CurrentEmployee.EmployeeId, borrowedItem.Condition);
+				}
 				else
 				{
 					return View("UpdateStatus", borrowedItem);

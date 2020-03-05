@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace RentMe.Models
 {
+	/// <summary>
+	/// The class responsible for keeping track of the librarian object
+	/// </summary>
 	public class Librarian 
 	{
 		/// <summary>
-		/// Gets or sets the email of the customer
+		/// Gets or sets the email of the librarian
 		/// </summary>
 		/// @precondition none
 		/// @postcondition the email address is set 
