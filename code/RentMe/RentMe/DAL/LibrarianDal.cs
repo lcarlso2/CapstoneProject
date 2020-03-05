@@ -78,7 +78,7 @@ namespace RentMe.DAL
 
 
 								var member = new RegisteringMember
-								{ Email = email, First = fName, Last = lName, CustomerId = memberId};
+								{ Email = email, First = fName, Last = lName, MemberId = memberId};
 								customers.Add(member);
 
 

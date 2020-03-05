@@ -12,12 +12,12 @@ namespace RentMe.Models
 	public class RegisteringMember : Member
 	{
 		/// <summary>
-		/// Gets or sets the customer id
+		/// Gets or sets the members id
 		/// </summary>
 		/// <value>
 		///The customer id
 		/// </value>
-		public int CustomerId { get; set; }
+		public int MemberId { get; set; }
 
 		/// <summary>
 		/// Gets or sets the first name
