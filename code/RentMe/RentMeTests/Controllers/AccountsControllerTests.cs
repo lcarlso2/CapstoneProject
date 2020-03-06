@@ -237,12 +237,12 @@ namespace RentMeTests.Controllers
 		[TestMethod()]
 		public void ProfileTestException()
 		{
-			var rentalDal = new MockRentalDal()
+			var mockMemberDal = new MockMemberDal()
 			{
 				ThrowError = true
 			};
 			HomeController.CurrentUser = new Member { Email = "test" };
-			var controller = new AccountsController(new MockMemberDal(), rentalDal);
+			var controller = new AccountsController(mockMemberDal, new MockRentalDal());
 			var result = (ViewResult)controller.Profile();
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Profile", result.ViewName);
@@ -281,6 +281,66 @@ namespace RentMeTests.Controllers
 			var result = (ViewResult)controller.UpdateEmail(user);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			HomeController.CurrentUser = null;
+
+		}
+
+		[TestMethod()]
+		public void AddAddressGetTest()
+		{
+
+			var controller = new AccountsController();
+			var result = (PartialViewResult) controller.AddAddress();
+			Assert.IsInstanceOfType(result, typeof(PartialViewResult));
+			Assert.AreEqual("AddAddress", result.ViewName);
+
+		}
+
+		[TestMethod()]
+		public void AddAddressValidTest()
+		{
+			HomeController.CurrentUser = new Member();
+			var mockMemberDal = new MockMemberDal()
+			{
+				ThrowError = false
+			};
+			var controller = new AccountsController(mockMemberDal, new MockRentalDal());
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Profile", result.ViewName);
+
+		}
+
+		[TestMethod()]
+		public void AddAddressInvalidTest()
+		{
+
+			var mockMemberDal = new MockMemberDal()
+			{
+				ThrowError = false
+			};
+			var controller = new AccountsController(mockMemberDal, new MockRentalDal());
+			controller.ModelState.AddModelError("error", "error");
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Profile", result.ViewName);
+			Assert.AreEqual("Invalid Address", result.ViewData["Error"]);
+
+		}
+
+		[TestMethod()]
+		public void AddAddressExceptionTest()
+		{
+
+			var mockMemberDal = new MockMemberDal()
+			{
+				ThrowError = true
+			};
+			var controller = new AccountsController(mockMemberDal, new MockRentalDal());
+			var result = (ViewResult)controller.AddAddress(new Address());
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Profile", result.ViewName);
+			Assert.AreEqual("Uh-oh something went wrong", result.ViewData["Error"]);
+
 
 		}
 	}

@@ -27,6 +27,7 @@ namespace RentMeTests.Controllers
 		public void IndexTestWithoutCurrentUser()
 		{
 			HomeController.CurrentUser = null;
+			HomeController.CurrentLibrarian = null;
 		
 			var controller = new HomeController();
 			var result = (ViewResult)controller.Index();
