@@ -14,6 +14,7 @@ namespace RentMeTests.MockDal
 
 		public bool ThrowError { get; set; }
 
+
 		public List<Media> RetrieveAllMedia()
 		{
 			var media = new List<Media>{new Media{InventoryId = 1}};
@@ -21,6 +22,8 @@ namespace RentMeTests.MockDal
 			{
 				throw new Exception();
 			}
+
+		
 			return media;
 		}
 

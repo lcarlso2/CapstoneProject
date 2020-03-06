@@ -54,6 +54,29 @@ namespace RentMeTests.Controllers
 			Assert.AreEqual("Browse", result.ActionName);
 		}
 
+
+		[TestMethod()]
+		public void LoginTestWithValidLibrarian()
+		{
+			var librarian = new Member
+			{
+				Email = "email",
+				Password = "password"
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 0
+			};
+			var librarianDal = new MockLibrarianDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal, librarianDal);
+			var result = (RedirectToActionResult)controller.Login(librarian);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("Browse", result.ActionName);
+		}
+
 		[TestMethod()]
 		public void LoginTestWithInValidCustomerLogin()
 		{

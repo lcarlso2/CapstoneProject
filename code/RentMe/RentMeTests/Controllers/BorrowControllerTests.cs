@@ -271,6 +271,8 @@ namespace RentMeTests.Controllers
 			Assert.AreEqual("Browse", result.ActionName);
 		}
 
+	
+
 		[TestMethod()]
 		public void AddAddressTestValid()
 		{
