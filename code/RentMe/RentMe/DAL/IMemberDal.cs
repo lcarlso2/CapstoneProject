@@ -52,5 +52,17 @@ namespace RentMe.DAL
 		/// @postcondition the email is updated
 		void UpdateEmail(string originalEmail, string updatedEmail);
 
+		/// <summary>
+		/// Gets all the members from the db
+		/// </summary>
+		/// <returns>all the members from the db or an error if something went wrong</returns>
+		List<RegisteringMember> GetAllMembers();
+
+
+		/// <summary>
+		/// Gets all members that have overdue rentals 
+		/// </summary>
+		/// <returns> all members that have overdue rentals or an error if something went wrong with thd DB</returns>
+		List<RegisteringMember> GetOverdueMembers();
 	}
 }

@@ -25,17 +25,7 @@ namespace RentMeTests.MockDal
 			return AuthenticateValueToReturn;
 		}
 
-		public List<RegisteringMember> GetAllMembers()
-		{
-			var members = new List<RegisteringMember>();
-
-			if (this.ThrowError)
-			{
-				throw new Exception();
-			}
-
-			return members;
-		}
+		
 
 	}
 }

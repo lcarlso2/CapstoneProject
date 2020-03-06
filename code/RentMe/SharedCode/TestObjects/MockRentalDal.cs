@@ -55,5 +55,14 @@ namespace SharedCode.TestObjects
 			return 1;
 		}
 
+		public List<RentalItem> RetrieveHistoryForRentalTransaction(int rentalId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return new List<RentalItem>();
+		}
+
 	}
 }

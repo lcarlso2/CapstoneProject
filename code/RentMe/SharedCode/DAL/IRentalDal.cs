@@ -39,5 +39,12 @@ namespace SharedCode.DAL
 		/// <param name="condition">the condition of the rental</param>
 		/// <returns>the rows affected</returns>
 		int UpdateStatus(int transactionId, string status, int employeeId, string condition);
+
+		/// <summary>
+		/// Gets the history for a specific rental transaction id
+		/// </summary>
+		/// <param name="rentalId"> the desired rental id</param>
+		/// <returns>the history for the specific rental transaction or an error if something went wrong on the DB</returns>
+		List<RentalItem> RetrieveHistoryForRentalTransaction(int rentalId);
 	}
 }

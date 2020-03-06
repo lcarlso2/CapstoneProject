@@ -125,13 +125,13 @@ namespace RentMe.DAL
 		}
 
         /// <summary>
-        /// Authenticates the customer's sign in on the database
+        /// Authenticates the member's sign in on the database
         /// </summary>
-        /// <param name="email">the customers email</param>
-        /// <param name="password">the customer password</param>
-        /// <returns>1 if the customer is valid, otherwise 0 and the customer is invalid</returns>
+        /// <param name="email">the members email</param>
+        /// <param name="password">the members password</param>
+        /// <returns>1 if the member is valid, otherwise 0 and the customer is invalid</returns>
         /// @precondition none
-        /// @postcondition the customer is signed in or an error is thrown if something goes wrong on the database
+        /// @postcondition the member is signed in or an error is thrown if something goes wrong on the database
         public int Authenticate(string email, string password)
         {
 	        var validUser = 0;
@@ -243,7 +243,7 @@ namespace RentMe.DAL
         }
 
         /// <summary>
-		/// Updates the customers email that has a matching original email
+		/// Updates the members email that has a matching original email
 		/// </summary>
 		/// <param name="originalEmail"> The current logged in members email</param>
 		/// <param name="updatedEmail"> The email to update for the customer</param>
@@ -284,6 +284,111 @@ namespace RentMe.DAL
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// Gets all the members from the db
+        /// </summary>
+        /// <returns>all the members from the db or an error if something went wrong</returns>
+        public List<RegisteringMember> GetAllMembers()
+        {
+	        var members = new List<RegisteringMember>();
+	        try
+	        {
+		        var conn = DbConnection.GetConnection();
+		        using (conn)
+		        {
+			        conn.Open();
+			        var query = "select * from member, user where memberID = userID";
+			        using (var cmd = new MySqlCommand(query, conn))
+			        {
+				        using (var reader = cmd.ExecuteReader())
+				        {
+					        var emailOrdinal = reader.GetOrdinal("email");
+					        var idOrdinal = reader.GetOrdinal("memberID");
+					        var fNameOrdinal = reader.GetOrdinal("fname");
+					        var lNameOrdinal = reader.GetOrdinal("lname");
+
+					        while (reader.Read())
+					        {
+						        var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
+						        var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+						        var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+						        var memberId = reader.GetInt32(idOrdinal);
+
+
+
+						        var member = new RegisteringMember
+							        { Email = email, First = fName, Last = lName, MemberId = memberId };
+						        members.Add(member);
+
+
+					        }
+				        }
+			        }
+			        conn.Close();
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+		        throw ex;
+	        }
+	        return members;
+        }
+
+
+        /// <summary>
+        /// Gets all members that have overdue rentals 
+        /// </summary>
+        /// <returns> all members that have overdue rentals or an error if something went wrong with thd DB</returns>
+        public List<RegisteringMember> GetOverdueMembers()
+        {
+	        var members = new List<RegisteringMember>();
+	        try
+	        {
+		        var conn = DbConnection.GetConnection();
+		        using (conn)
+		        {
+			        conn.Open();
+			        var query = "select email, member.memberID, fname, lname from member, user, rental_transaction, status_history, `status` " +
+			                    "where member.memberID = userID and member.memberID = rental_transaction.memberID " +
+			                    "and rentalTransactionID = rentalID and status_history.statusID = `status`.statusID and returnDateTime < CURDATE() and `status`.`status` != 'Returned' and status_history.statusID = (select max(s1.statusID) from status_history s1 where " +
+			                    "s1.rentalTransactionID = rental_transaction.rentalID);";
+                    using (var cmd = new MySqlCommand(query, conn))
+			        {
+				        using (var reader = cmd.ExecuteReader())
+				        {
+					        var emailOrdinal = reader.GetOrdinal("email");
+					        var idOrdinal = reader.GetOrdinal("memberID");
+					        var fNameOrdinal = reader.GetOrdinal("fname");
+					        var lNameOrdinal = reader.GetOrdinal("lname");
+
+					        while (reader.Read())
+					        {
+						        var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
+						        var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+						        var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+						        var memberId = reader.GetInt32(idOrdinal);
+
+
+
+						        var member = new RegisteringMember
+							        { Email = email, First = fName, Last = lName, MemberId = memberId };
+						        members.Add(member);
+
+
+					        }
+				        }
+			        }
+			        conn.Close();
+		        }
+	        }
+	        catch (Exception ex)
+	        {
+		        throw ex;
+	        }
+
+            return members;
         }
     }
 }

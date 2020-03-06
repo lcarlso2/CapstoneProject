@@ -17,11 +17,7 @@ namespace RentMe.DAL
 		/// <returns>1 if the librarian is valid otherwise 0</returns>
 		int Authenticate(string email, string password);
 
-		/// <summary>
-		/// Gets all the customers from the db
-		/// </summary>
-		/// <returns>all the customers from the db or an error if something went wrong</returns>
-		List<RegisteringMember> GetAllMembers();
+	
 
 	}
 }

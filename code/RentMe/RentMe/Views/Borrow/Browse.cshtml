@@ -88,6 +88,8 @@
 				</th>
 
 				<th>@Html.DisplayNameFor(model => model.Type)</th>
+
+				<th>@Html.DisplayNameFor(model => model.InventoryId)</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -96,23 +98,26 @@
 
 			@foreach (var item in Model)
 			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.Title)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Category)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Type)
-					</td>
-					<td>
-						@if (HomeController.CurrentLibrarian == null)
-						{
-							<a asp-controller="Borrow" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
-						}
-					</td>
-				</tr>
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Title)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Type)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.InventoryId)
+				</td>
+				<td>
+					@if (HomeController.CurrentLibrarian == null)
+					{
+						<a asp-controller="Borrow" asp-action="ConfirmBorrow" asp-route-id="@item.InventoryId">Borrow</a>
+					}
+				</td>
+			</tr>
 			}
 		</tbody>
 	</table>

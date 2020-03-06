@@ -25,17 +25,29 @@
 </style>
 
 <div class="container" style="margin-top: 100px">
+	<div>
+		<div class="row">
+			<h4 class="text-center" style="margin: .5em auto;">@ViewBag.Filter Members</h4>
+		</div>
+	</div>
+	<div class="col">
+		<div class="text-center">
+			<div class="dropdown">
+				<button class="btn dropdown-toggle filter-label" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					@ViewBag.Filter
+				</button>
+				<ul class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
+					<li><a asp-controller="Librarian" asp-action="MemberFilter" asp-route-filter="All" class="btn btn-primary">All</a></li>
+					<li><a asp-controller="Librarian" asp-action="MemberFilter" asp-route-filter="Overdue" class="btn btn-primary">Overdue</a></li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
 	<div class="row">
 		<div class="col text-center">
 			<label class="text-danger">@ViewBag.Error</label>
 		</div>
-	</div>
-	<div>
-		<div class="row">
-			<h4 class="text-center" style="margin: .5em auto;">All Members</h4>
-		</div>
-	
-
 	</div>
 
 
@@ -63,23 +75,23 @@
 
 			@foreach (var currentMember in Model)
 			{
-			<tr>
-				<td>
-					@Html.DisplayFor(member => currentMember.Email)
-				</td>
-				<td>
-					@Html.DisplayFor(member => currentMember.First)
-				</td>
-				<td>
-					@Html.DisplayFor(member => currentMember.Last)
-				</td>
-				<td>
-					@Html.DisplayFor(member => currentMember.MemberId)
-				</td>
-				<td>
-					<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
-				</td>
-			</tr>
+				<tr>
+					<td>
+						@Html.DisplayFor(member => currentMember.Email)
+					</td>
+					<td>
+						@Html.DisplayFor(member => currentMember.First)
+					</td>
+					<td>
+						@Html.DisplayFor(member => currentMember.Last)
+					</td>
+					<td>
+						@Html.DisplayFor(member => currentMember.MemberId)
+					</td>
+					<td>
+						<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
+					</td>
+				</tr>
 			}
 		</tbody>
 	</table>

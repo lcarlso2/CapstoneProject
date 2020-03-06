@@ -50,51 +50,6 @@ namespace RentMe.DAL
 			return validUser;
 		}
 
-		public List<RegisteringMember> GetAllMembers()
-		{
-			var customers = new List<RegisteringMember>();
-			try
-			{
-				var conn = DbConnection.GetConnection();
-				using (conn)
-				{
-					conn.Open();
-					var query = "select * from member, user where memberID = userID";
-					using (var cmd = new MySqlCommand(query, conn))
-					{
-						using (var reader = cmd.ExecuteReader())
-						{
-							var emailOrdinal = reader.GetOrdinal("email");
-							var idOrdinal = reader.GetOrdinal("memberID");
-							var fNameOrdinal = reader.GetOrdinal("fname");
-							var lNameOrdinal = reader.GetOrdinal("lname");
-
-							while (reader.Read())
-							{
-								var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
-								var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
-								var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
-								var memberId = reader.GetInt32(idOrdinal);
-
-
-
-								var member = new RegisteringMember
-								{ Email = email, First = fName, Last = lName, MemberId = memberId};
-								customers.Add(member);
-
-
-							}
-						}
-					}
-					conn.Close();
-				}
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			return customers;
-		}
-
+		
 	}
 }

@@ -61,5 +61,29 @@ namespace RentMeTests.MockDal
 			}
 		}
 
+		public List<RegisteringMember> GetAllMembers()
+		{
+			var members = new List<RegisteringMember>();
+
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+			return members;
+		}
+
+
+		public List<RegisteringMember> GetOverdueMembers()
+		{
+			var members = new List<RegisteringMember>();
+
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+			return members;
+		}
 	}
 }
