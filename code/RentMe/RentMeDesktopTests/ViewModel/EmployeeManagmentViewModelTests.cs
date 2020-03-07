@@ -120,7 +120,7 @@ namespace RentMeDesktopTests.ViewModel
                 ThrowError = false
             };
             var viewModel = new EmployeeManagementViewModel(employeeDal);
-            var output = viewModel.GetEmployeeHistory();
+            viewModel.RetrieveEmployeeHistory();
         }
     }
 

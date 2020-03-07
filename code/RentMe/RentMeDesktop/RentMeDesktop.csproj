@@ -132,6 +132,9 @@
       <DependentUpon>AddInventoryItemPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DbError.cs" />
+    <Compile Include="View\EmployeeHistoryPage.xaml.cs">
+      <DependentUpon>EmployeeHistoryPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EmployeeManagementPage.xaml.cs">
       <DependentUpon>EmployeeManagementPage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddInventoryItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EmployeeHistoryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

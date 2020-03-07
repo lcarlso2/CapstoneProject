@@ -25,7 +25,8 @@
         <Button x:Name="backButton" Width="135" Height="45" Content="Back" Margin="476,732,0,0" VerticalAlignment="Top" Click="backButton_Click"/>
         <Button x:Name="addEmployeeButton" Width="135" Height="45" Content="Add Employee" Margin="0,732,0,0" VerticalAlignment="Top" Click="addEmployeeButton_Click" HorizontalAlignment="Center"/>
         <Button x:Name="removeEmployeeButton" Command="{Binding RemoveCommand}" Width="135" Height="45" Content="Remove Employee" Margin="891,732,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="employeeHistoryButton" Content="View Employee History" Width="170" Height="45" Margin="0,803,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Click="employeeHistoryButton_Click"/>
+        <Button x:Name="employeeHistoryButton" IsEnabled="{Binding CanEmployeeHistoryBeClicked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="View Selected Employee History" Width="225" Height="45" Margin="476,806,0,0" VerticalAlignment="Top" Click="employeeHistoryButton_Click"/>
+        <Button x:Name="viewOwnHistoryButton" Content="View Own History" Width="225" Height="45" Margin="801,806,0,0" VerticalAlignment="Top" Click="viewOwnHistoryButton_Click"/>
 
     </Grid>
 </Page>

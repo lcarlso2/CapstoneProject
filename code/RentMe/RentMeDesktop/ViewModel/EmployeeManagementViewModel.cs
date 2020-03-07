@@ -40,6 +40,10 @@ namespace RentMeDesktop.ViewModel
 
 		private IEmployeeDal employeeDal;
 
+		private ObservableCollection<RentalItem> selectedEmployeeHistory;
+
+		private bool canEmployeeHistoryBeClicked;
+
 		/// <summary>
 		/// Gets or sets the employee search term
 		/// </summary>
@@ -156,6 +160,33 @@ namespace RentMeDesktop.ViewModel
 		}
 
 		/// <summary>
+		/// Gets or sets the selected employee history
+		/// </summary>
+		public ObservableCollection<RentalItem> SelectedEmployeeHistory {
+			get => this.selectedEmployeeHistory;
+			set
+			{
+				this.selectedEmployeeHistory = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the view employee history button can be clicked
+		/// </summary>
+		/// @precondition none
+		/// @postcondition the canAddItemBeClicked is set
+		public bool CanEmployeeHistoryBeClicked
+		{
+			get => this.canEmployeeHistoryBeClicked;
+			set
+			{
+				this.canEmployeeHistoryBeClicked = value;
+				this.OnPropertyChanged();
+			}
+		}
+
+		/// <summary>
 		/// The relay command for removing an employee
 		/// </summary>
 		public RelayCommand RemoveCommand { get; set; }
@@ -174,6 +205,7 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.selectedEmployee = value;
+				this.CanEmployeeHistoryBeClicked = (this.SelectedEmployee != null);
 				this.OnPropertyChanged();
 				this.RemoveCommand.OnCanExecuteChanged();
 			}
@@ -220,16 +252,14 @@ namespace RentMeDesktop.ViewModel
 		}
 
 		/// <summary>
-		/// Generates a formatted history for the selected employee
+		/// Sets all rental items associated with selected employee from the db
 		/// </summary>
 		/// @precondition none
-		/// @postcondition none
-		/// <returns>A formatted history of all items associated with the selected employee</returns>
-		public string GetEmployeeHistory()
+		/// @postcondition selectedEmployeeHistory == all items associated with selected employee from the db
+		public void RetrieveEmployeeHistory()
 		{
-			var summaryItems = this.employeeDal.GetEmployeeHistory(this.selectedEmployee.EmployeeId);
-			OutputFormatter formatter = new OutputFormatter();
-			return formatter.GenerateEmployeeHistory(summaryItems);
+			var historyItems = this.employeeDal.GetEmployeeHistory(this.SelectedEmployee.EmployeeId);
+			this.SelectedEmployeeHistory = new ObservableCollection<RentalItem>(historyItems);
 		}
 
 
