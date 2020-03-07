@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 
 using SharedCode.DAL;
 using SharedCode.Model;
-using SharedCode.View;
 
 namespace RentMeDesktop.ViewModel
 {
@@ -30,6 +29,8 @@ namespace RentMeDesktop.ViewModel
         private string type;
 
         private string condition;
+
+        private ObservableCollection<RentalItem> selectedItemHistory;
 
         /// <summary>
         /// Gets or sets the add item can be clicked
@@ -125,6 +126,19 @@ namespace RentMeDesktop.ViewModel
         }
 
         /// <summary>
+		/// Gets or sets the selected item history
+		/// </summary>
+		public ObservableCollection<RentalItem> SelectedItemHistory
+        {
+            get => this.selectedItemHistory;
+            set
+            {
+                this.selectedItemHistory = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// The entire inventory for the app
         /// </summary>
         public ObservableCollection<InventoryItem> Inventory
@@ -196,14 +210,12 @@ namespace RentMeDesktop.ViewModel
         /// <summary>
         /// Gets a detailed history summary of the selected inventory item
         /// </summary>
-        /// <returns>Returns a details string output of the selected inventory item's history</returns>
         /// @precondition none
-		/// @postcondition none
-        public string GetSelectedItemHistorySummary()
+		/// @postcondition selected item history == rental items from the db
+        public void GetSelectedItemHistorySummary()
         {
-            var summaryItems = this.inventoryDal.GetItemHistorySummary(this.selectedInventoryItem.InventoryId);
-            OutputFormatter formatter = new OutputFormatter();
-            return formatter.GenerateHistoryOfInventoryItem(summaryItems);
+            var summaryItems = this.inventoryDal.GetItemHistorySummary(this.SelectedInventoryItem.InventoryId);
+            this.SelectedItemHistory = new ObservableCollection<RentalItem>(summaryItems);
         }
 
 

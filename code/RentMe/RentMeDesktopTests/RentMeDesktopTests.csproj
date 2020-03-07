@@ -127,7 +127,6 @@
     <Compile Include="ViewModel\EmployeeManagmentViewModelTests.cs" />
     <Compile Include="ViewModel\InventoryViewModelTests.cs" />
     <Compile Include="ViewModel\MainPageViewModelTests.cs" />
-    <Compile Include="View\OutputFormatterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml">

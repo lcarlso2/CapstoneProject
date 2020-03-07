@@ -124,9 +124,17 @@ namespace RentMeEmployee.Controllers
 		/// <returns>The employee history view with an error message if something went wrong</returns>
 		public IActionResult EmployeeHistory(int id)
 		{
+			var employeeHistory = new List<RentalItem>();
 			try
 			{
-				var employeeHistory = this.employeeDal.GetEmployeeHistory(id);
+				if(id == -1)
+				{
+					employeeHistory = this.employeeDal.GetEmployeeHistory(HomeController.CurrentEmployee.EmployeeId);
+				} else
+				{
+				    employeeHistory = this.employeeDal.GetEmployeeHistory(id);
+				}
+				
 
 				return View("EmployeeHistory", employeeHistory);
 

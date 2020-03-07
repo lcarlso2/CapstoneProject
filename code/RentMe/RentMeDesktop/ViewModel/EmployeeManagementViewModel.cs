@@ -9,7 +9,6 @@ using RentMeDesktop.Utility;
 using RentMeDesktop.View;
 using SharedCode.DAL;
 using SharedCode.Model;
-using SharedCode.View;
 
 namespace RentMeDesktop.ViewModel
 {
