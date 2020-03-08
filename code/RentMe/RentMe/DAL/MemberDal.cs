@@ -12,7 +12,7 @@ namespace RentMe.DAL
     /// The member dal class responsible for communicating with the DB for member related things 
     /// </summary>
     public class MemberDal : IMemberDal
-	{
+    {
 
         /// <summary>
         /// Adds an address to the db for the given member 
@@ -22,7 +22,7 @@ namespace RentMe.DAL
         /// @precondition none
         /// @postcondition the address is added to the db
         public void AddAddress(Address address, Member member)
-		{
+        {
             try
             {
                 var conn = DbConnection.GetConnection();
@@ -67,62 +67,62 @@ namespace RentMe.DAL
         /// <param name="member"> the member the addresses are being gotten for</param>
         /// <returns>the addresses for the given member</returns>
         public List<Address> GetAddresses(Member member)
-		{
-			var addresses = new List<Address>();
-			try
-			{
-				var conn = DbConnection.GetConnection();
-				using (conn)
-				{
-					conn.Open();
-					var query = "select * from address where memberID = (select memberID from member where email = @memberEmail)";
+        {
+            var addresses = new List<Address>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select * from address where memberID = (select memberID from member where email = @memberEmail) and Deleted = 0";
 
                     using (var cmd = new MySqlCommand(query, conn))
-					{
+                    {
                         cmd.Parameters.AddWithValue("@memberEmail", member.Email);
 
-						using var reader = cmd.ExecuteReader();
-						var addressIdOrdinal = reader.GetOrdinal("addressID");
-						var streetAddressOrdinal = reader.GetOrdinal("address");
-						var stateOrdinal = reader.GetOrdinal("state");
-						var zipOrdinal = reader.GetOrdinal("zip");
+                        using var reader = cmd.ExecuteReader();
+                        var addressIdOrdinal = reader.GetOrdinal("addressID");
+                        var streetAddressOrdinal = reader.GetOrdinal("address");
+                        var stateOrdinal = reader.GetOrdinal("state");
+                        var zipOrdinal = reader.GetOrdinal("zip");
 
 
 
-						while (reader.Read())
-						{
-							var addressId = reader.GetInt32((addressIdOrdinal));
+                        while (reader.Read())
+                        {
+                            var addressId = reader.GetInt32((addressIdOrdinal));
 
-							var streetAddress = reader[streetAddressOrdinal] == DBNull.Value
-								? "null"
-								: reader.GetString(streetAddressOrdinal);
+                            var streetAddress = reader[streetAddressOrdinal] == DBNull.Value
+                                ? "null"
+                                : reader.GetString(streetAddressOrdinal);
 
-							var state = reader[stateOrdinal] == DBNull.Value
-								? "null"
-								: reader.GetString(stateOrdinal);
+                            var state = reader[stateOrdinal] == DBNull.Value
+                                ? "null"
+                                : reader.GetString(stateOrdinal);
 
-							var zip = reader[zipOrdinal] == DBNull.Value
-								? "null"
-								: reader.GetString(zipOrdinal);
+                            var zip = reader[zipOrdinal] == DBNull.Value
+                                ? "null"
+                                : reader.GetString(zipOrdinal);
 
 
 
-							var address = new Address { AddressId = addressId, StreetAddress = streetAddress, State = state, Zip = zip};
+                            var address = new Address { AddressId = addressId, StreetAddress = streetAddress, State = state, Zip = zip };
 
-							addresses.Add(address);
-						}
-					}
-					conn.Close();
-				}
+                            addresses.Add(address);
+                        }
+                    }
+                    conn.Close();
+                }
 
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             return addresses;
-		}
+        }
 
         /// <summary>
         /// Authenticates the member's sign in on the database
@@ -134,35 +134,35 @@ namespace RentMe.DAL
         /// @postcondition the member is signed in or an error is thrown if something goes wrong on the database
         public int Authenticate(string email, string password)
         {
-	        var validUser = 0;
-	        try
-	        {
-		        var conn = DbConnection.GetConnection();
-		        using (conn)
-		        {
-			        conn.Open();
-			        var query = "select count(*) from member, user where member.memberID = user.userID and email = @email and password = @password";
-			        using (var cmd = new MySqlCommand(query, conn))
-			        {
-				        cmd.Parameters.Add("@email", MySqlDbType.VarChar);
-				        cmd.Parameters["@email"].Value = email;
+            var validUser = 0;
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select count(*) from member, user where member.memberID = user.userID and email = @email and password = @password";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.Add("@email", MySqlDbType.VarChar);
+                        cmd.Parameters["@email"].Value = email;
 
-				        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
-				        cmd.Parameters["@password"].Value = password;
+                        cmd.Parameters.Add("@password", MySqlDbType.VarChar);
+                        cmd.Parameters["@password"].Value = password;
 
 
-				        validUser = Convert.ToInt32(cmd.ExecuteScalar());
-			        }
-			        conn.Close();
-		        }
+                        validUser = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    conn.Close();
+                }
 
-	        }
-	        catch (Exception ex)
-	        {
-		        throw ex;
-	        }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-	        return validUser;
+            return validUser;
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace RentMe.DAL
 
                         cmd.Parameters.Add("@email", MySqlDbType.VarChar);
                         cmd.Parameters["@email"].Value = member.Email;
-         
+
 
                         if (cmd.ExecuteNonQuery() != 1)
                         {
@@ -226,7 +226,7 @@ namespace RentMe.DAL
 
                         if (cmd.ExecuteNonQuery() != 1)
                         {
-	                        transaction.Rollback();
+                            transaction.Rollback();
                         }
                         transaction.Commit();
                     }
@@ -292,48 +292,48 @@ namespace RentMe.DAL
         /// <returns>all the members from the db or an error if something went wrong</returns>
         public List<RegisteringMember> GetAllMembers()
         {
-	        var members = new List<RegisteringMember>();
-	        try
-	        {
-		        var conn = DbConnection.GetConnection();
-		        using (conn)
-		        {
-			        conn.Open();
-			        var query = "select * from member, user where memberID = userID";
-			        using (var cmd = new MySqlCommand(query, conn))
-			        {
-				        using (var reader = cmd.ExecuteReader())
-				        {
-					        var emailOrdinal = reader.GetOrdinal("email");
-					        var idOrdinal = reader.GetOrdinal("memberID");
-					        var fNameOrdinal = reader.GetOrdinal("fname");
-					        var lNameOrdinal = reader.GetOrdinal("lname");
+            var members = new List<RegisteringMember>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select * from member, user where memberID = userID";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var emailOrdinal = reader.GetOrdinal("email");
+                            var idOrdinal = reader.GetOrdinal("memberID");
+                            var fNameOrdinal = reader.GetOrdinal("fname");
+                            var lNameOrdinal = reader.GetOrdinal("lname");
 
-					        while (reader.Read())
-					        {
-						        var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
-						        var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
-						        var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
-						        var memberId = reader.GetInt32(idOrdinal);
-
-
-
-						        var member = new RegisteringMember
-							        { Email = email, First = fName, Last = lName, MemberId = memberId };
-						        members.Add(member);
+                            while (reader.Read())
+                            {
+                                var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
+                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var memberId = reader.GetInt32(idOrdinal);
 
 
-					        }
-				        }
-			        }
-			        conn.Close();
-		        }
-	        }
-	        catch (Exception ex)
-	        {
-		        throw ex;
-	        }
-	        return members;
+
+                                var member = new RegisteringMember
+                                { Email = email, First = fName, Last = lName, MemberId = memberId };
+                                members.Add(member);
+
+
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return members;
         }
 
 
@@ -343,52 +343,92 @@ namespace RentMe.DAL
         /// <returns> all members that have overdue rentals or an error if something went wrong with thd DB</returns>
         public List<RegisteringMember> GetOverdueMembers()
         {
-	        var members = new List<RegisteringMember>();
-	        try
-	        {
-		        var conn = DbConnection.GetConnection();
-		        using (conn)
-		        {
-			        conn.Open();
-			        var query = "select email, member.memberID, fname, lname from member, user, rental_transaction, status_history, `status` " +
-			                    "where member.memberID = userID and member.memberID = rental_transaction.memberID " +
-			                    "and rentalTransactionID = rentalID and status_history.statusID = `status`.statusID and returnDateTime < CURDATE() and `status`.`status` != 'Returned' and status_history.statusID = (select max(s1.statusID) from status_history s1 where " +
-			                    "s1.rentalTransactionID = rental_transaction.rentalID);";
+            var members = new List<RegisteringMember>();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "select email, member.memberID, fname, lname from member, user, rental_transaction, status_history, `status` " +
+                                "where member.memberID = userID and member.memberID = rental_transaction.memberID " +
+                                "and rentalTransactionID = rentalID and status_history.statusID = `status`.statusID and returnDateTime < CURDATE() and `status`.`status` != 'Returned' and status_history.statusID = (select max(s1.statusID) from status_history s1 where " +
+                                "s1.rentalTransactionID = rental_transaction.rentalID);";
                     using (var cmd = new MySqlCommand(query, conn))
-			        {
-				        using (var reader = cmd.ExecuteReader())
-				        {
-					        var emailOrdinal = reader.GetOrdinal("email");
-					        var idOrdinal = reader.GetOrdinal("memberID");
-					        var fNameOrdinal = reader.GetOrdinal("fname");
-					        var lNameOrdinal = reader.GetOrdinal("lname");
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var emailOrdinal = reader.GetOrdinal("email");
+                            var idOrdinal = reader.GetOrdinal("memberID");
+                            var fNameOrdinal = reader.GetOrdinal("fname");
+                            var lNameOrdinal = reader.GetOrdinal("lname");
 
-					        while (reader.Read())
-					        {
-						        var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
-						        var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
-						        var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
-						        var memberId = reader.GetInt32(idOrdinal);
-
-
-
-						        var member = new RegisteringMember
-							        { Email = email, First = fName, Last = lName, MemberId = memberId };
-						        members.Add(member);
+                            while (reader.Read())
+                            {
+                                var email = reader[emailOrdinal] == DBNull.Value ? "null" : reader.GetString(emailOrdinal);
+                                var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
+                                var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
+                                var memberId = reader.GetInt32(idOrdinal);
 
 
-					        }
-				        }
-			        }
-			        conn.Close();
-		        }
-	        }
-	        catch (Exception ex)
-	        {
-		        throw ex;
-	        }
+
+                                var member = new RegisteringMember
+                                { Email = email, First = fName, Last = lName, MemberId = memberId };
+                                members.Add(member);
+
+
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
             return members;
+        }
+
+        public void RemoveAddress(string address, string email)
+        {
+            var addressParts = address.Split(' ');
+            var streetAddress = "";
+            for (var i = 0; i < (addressParts.Length - 2); i++)
+            {
+                streetAddress += addressParts[i] + " ";
+            }
+            var state = addressParts[addressParts.Length - 2];
+            var zip = addressParts[addressParts.Length - 1];
+            streetAddress = streetAddress.Trim();
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+                    var query = "update address set Deleted = 1 where (select memberID from member where email = @email)"
+                        + " = memberID and address = @streetAddress and state = @state and zip = @zip;";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@streetAddress", streetAddress);
+                        cmd.Parameters.AddWithValue("@state", state);
+                        cmd.Parameters.AddWithValue("@zip", zip);
+
+                        var reader = cmd.ExecuteReader();
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
         }
     }
 }

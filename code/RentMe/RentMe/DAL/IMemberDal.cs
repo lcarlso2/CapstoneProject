@@ -52,6 +52,15 @@ namespace RentMe.DAL
 		/// @postcondition the email is updated
 		void UpdateEmail(string originalEmail, string updatedEmail);
 
+        /// <summary>
+        /// Removes the address from the users list of addresses
+        /// </summary>
+        /// <param name="address"> The address to remove</param>
+        /// <param name="email"> The email of the current user logged in</param>
+        /// @precondition none
+        /// @postcondition the address is removed
+        void RemoveAddress(string address, string email);
+
 		/// <summary>
 		/// Gets all the members from the db
 		/// </summary>

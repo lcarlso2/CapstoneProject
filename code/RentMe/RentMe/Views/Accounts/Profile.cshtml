@@ -96,10 +96,9 @@
                             @foreach (var address in HomeController.CurrentUser.Addresses)
                             {
 
-
                                 <div class="form-group row">
                                     <div class="col text-center">
-                                        @address.StreetAddress @address.State @address.Zip
+                                        @address.StreetAddress @address.State @address.Zip <a asp-controller="Accounts" asp-action="RemoveAddress" asp-route-address="@address.StreetAddress @address.State @address.Zip" style="color: red; text-decoration: none;">Remove</a>
                                     </div>
                                 </div>
                             }

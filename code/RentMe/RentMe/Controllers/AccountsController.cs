@@ -244,5 +244,35 @@ namespace RentMe.Controllers
 			return View("Profile");
 
 		}
+
+
+        public IActionResult RemoveAddress(string address)
+        {
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                this.memberDal.RemoveAddress(address, HomeController.CurrentUser.Email);
+                var addressParts = address.Split(' ');
+                var streetAddress = "";
+                for (var i = 0; i < (addressParts.Length - 2); i++)
+                {
+                    streetAddress += addressParts[i] + " ";
+                }
+                var state = addressParts[addressParts.Length - 2];
+                var zip = addressParts[addressParts.Length - 1];
+                streetAddress = streetAddress.Trim();
+
+				foreach (var add in HomeController.CurrentUser.Addresses)
+                {
+                    if (add.StreetAddress == streetAddress && add.State == state && add.Zip == zip)
+                    {
+                        HomeController.CurrentUser.Addresses.Remove(add);
+                        break;
+                    }
+                }
+
+			}
+            return View("Profile");
+        }
 	}
 }
