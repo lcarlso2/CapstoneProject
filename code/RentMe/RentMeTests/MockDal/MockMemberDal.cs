@@ -61,6 +61,14 @@ namespace RentMeTests.MockDal
 			}
 		}
 
+        public void RemoveAddress(string address, string email)
+        {
+            if (this.ThrowError)
+            {
+                throw new Exception();
+            }
+        }
+
 		public List<RegisteringMember> GetAllMembers()
 		{
 			var members = new List<RegisteringMember>();
