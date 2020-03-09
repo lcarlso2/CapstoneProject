@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\AccountsController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMe.Controllers
+{
+	/// &lt;summary&gt;
+	/// The AccountsController responsible for all pages that have to do with customer accounts 
+	/// &lt;/summary&gt;
+    public class AccountsController : Controller
+    {
+	    private readonly IRentalDal rentalDal;
+
+
+	    private readonly IMemberDal memberDal;
+
+		/// &lt;summary&gt;
+		/// Creates a new accounts controller with the desired dals
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;memberDal&quot;&gt;The customer dal for communication&lt;/param&gt;
+		/// &lt;param name=&quot;rentalDal&quot;&gt;the rentalDal dal for communication&lt;/param&gt;
+		/// @precondition none
+		/// @postcondition the controller is created with the input dals
+		public AccountsController(IMemberDal memberDal, IRentalDal rentalDal)
+	    {
+		    this.memberDal = memberDal;
+		    this.rentalDal = rentalDal;
+	    }
+
+		/// &lt;summary&gt;
+		/// Creates a new default accounts controller with the default memberDal and rental dals 
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the controller is created with memberDal and RentalDals.
+		[ActivatorUtilitiesConstructor]
+	    public AccountsController()
+	    {
+		    this.memberDal = new MemberDal();
+		    this.rentalDal = new RentalDal();
+	    }
+
+		/// &lt;summary&gt;
+		/// The rental history filter action
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;type&quot;&gt;the type to filter the rentals by&lt;/param&gt;
+		/// &lt;returns&gt;The rental history page with filtered items or the browse page if an error occurs&lt;/returns&gt;
+		public IActionResult RentalFilter(string type)
+	    {
+		    List&lt;RentalItem&gt; media = new List&lt;RentalItem&gt;();
+		    List&lt;RentalItem&gt; sortedMedia = new List&lt;RentalItem&gt;();
+
+		    try
+		    {
+			    media = this.rentalDal.RetrieveAllRentalsByCustomer(HomeController.CurrentUser.Email);
+
+			    if (type == &quot;Date&quot;)
+			    {
+				    sortedMedia = media.OrderBy(item =&gt; item.RentalDate).ToList();
+			    }
+			    else if (type == &quot;Status&quot;)
+			    {
+				    sortedMedia = media.OrderBy(item =&gt; item.Status).ToList();
+			    }
+			    else if (type == &quot;Title&quot;)
+			    {
+				    sortedMedia = media.OrderBy(item =&gt; item.Title).ToList();
+			    }
+			    else
+			    {
+				    sortedMedia = media;
+			    }
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+			    return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+		    }
+
+		    return View(&quot;RentalHistory&quot;, sortedMedia);
+
+	    }
+
+	    /// &lt;summary&gt;
+	    /// The rental history action
+	    /// &lt;/summary&gt;
+	    /// &lt;returns&gt;The rental history page with the list of rented items or an error if something went wrong&lt;/returns&gt;
+	    /// @precondition none
+	    /// @postcondition the rental history page is shown 
+	    public IActionResult RentalHistory()
+	    {
+		    try
+		    {
+			    var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(HomeController.CurrentUser.Email);
+
+			    return View(rentals);
+		    }
+		    catch (Exception ex)
+		    {
+			    ViewBag.ErrorMessage = ex.Message;
+			    ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+			    return View(new List&lt;RentalItem&gt;());
+		    }
+
+	    }
+
+		/// &lt;summary&gt;
+		/// The profile action
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;The profile page with the customer information or an error if something went wrong&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the profile page is shown 
+		public IActionResult Profile()
+		{
+			try
+			{
+				HomeController.CurrentUser.Addresses = this.memberDal.GetAddresses(HomeController.CurrentUser);
+
+				return View(&quot;Profile&quot;);
+
+			}
+			catch (Exception)
+			{
+				ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+				return View(&quot;Profile&quot;);
+			}
+
+		}
+
+		/// &lt;summary&gt;
+		/// The register action result
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;The register page&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the register page is shown
+		[HttpGet]
+	    public IActionResult Register()
+	    {
+		    return View(&quot;Register&quot;);
+	    }
+
+		/// &lt;summary&gt;
+		/// The http post for the register page
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;member&quot;&gt;the member being registered&lt;/param&gt;
+		/// &lt;returns&gt; Registers the member and shows a success message or shows an error message. If
+		/// invalid data is entered then messages are also displayed to notify the user&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the member is added to the DB
+		[HttpPost]
+	    [ValidateAntiForgeryToken]
+	    public IActionResult Register(RegisteringMember member)
+	    {
+		    if (ModelState.IsValid)
+		    {
+			    try
+			    {
+				    this.memberDal.RegisterMember(member);
+			    }
+			    catch (Exception ex)
+			    {
+
+				    ViewBag.ErrorMessage = ex.Message;
+				    return View(member);
+			    }
+
+			    ModelState.Clear();
+			    ViewBag.SuccessMessage = &quot;You&#39;re Registered!&quot;;
+
+			    return View(&quot;Register&quot;, new RegisteringMember());
+		    }
+		    else
+		    {
+			    return View(member);
+		    }
+
+	    }
+
+		/// &lt;summary&gt;
+		/// Adds an address and returns the profile page
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;address&quot;&gt; the address being added&lt;/param&gt;
+		/// &lt;returns&gt;the profile page&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the address is added or an error is displayed if something went wrong 
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddAddress(Address address)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					this.memberDal.AddAddress(address, HomeController.CurrentUser);
+
+					HomeController.CurrentUser.Addresses = this.memberDal.GetAddresses(HomeController.CurrentUser);
+
+					return View(&quot;Profile&quot;);
+				}
+				catch (Exception)
+				{
+					ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+					return View(&quot;Profile&quot;);
+				}
+			}
+			ViewBag.Error = &quot;Invalid Address&quot;;
+			return View(&quot;Profile&quot;);
+
+		}
+
+		/// &lt;summary&gt;
+		/// Gets the partial view for adding an address
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;The partial view for adding an address&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition page being showed is the partial view add address
+		public IActionResult AddAddress()
+		{
+			return PartialView(&quot;AddAddress&quot;);
+		}
+
+		/// &lt;summary&gt;
+		/// Updates the members email that has a matching original email
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;member&quot;&gt; The member object submitted by the form&lt;/param&gt;
+		/// @precondition none
+		/// @postcondition the email is updated
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult UpdateEmail(Member member)
+		{
+			if (!string.IsNullOrEmpty(member.Email))
+			{
+				this.memberDal.UpdateEmail(HomeController.CurrentUser.Email, member.Email);
+				HomeController.CurrentUser.Email = member.Email;
+				
+			}
+			return View(&quot;Profile&quot;);
+
+		}
+
+        /// &lt;summary&gt;
+        /// Removes an address and returns to the profile page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The profile page&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition page being shown is now the profile page
+		public IActionResult RemoveAddress(string address)
+        {
+
+            if (!string.IsNullOrEmpty(address))
+            {
+                this.memberDal.RemoveAddress(address, HomeController.CurrentUser.Email);
+                var addressParts = address.Split(&#39; &#39;);
+                var streetAddress = &quot;&quot;;
+                for (var i = 0; i &lt; (addressParts.Length - 2); i++)
+                {
+                    streetAddress += addressParts[i] + &quot; &quot;;
+                }
+                var state = addressParts[addressParts.Length - 2];
+                var zip = addressParts[addressParts.Length - 1];
+                streetAddress = streetAddress.Trim();
+
+				foreach (var add in HomeController.CurrentUser.Addresses)
+                {
+                    if (add.StreetAddress == streetAddress &amp;&amp; add.State == state &amp;&amp; add.Zip == zip)
+                    {
+                        HomeController.CurrentUser.Addresses.Remove(add);
+                        break;
+                    }
+                }
+
+			}
+            return View(&quot;Profile&quot;);
+        }
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[31,3,31,72,1],[32,6,32,7,1],[33,7,33,34,1],[34,7,34,34,1],[35,6,35,7,1],[43,6,43,33,1],[44,6,44,7,1],[45,7,45,40,1],[46,7,46,40,1],[47,6,47,7,1],[55,6,55,7,1],[56,7,56,55,1],[57,7,57,61,1],[60,7,60,8,1],[61,8,61,94,1],[63,8,63,27,1],[64,8,64,9,1],[65,9,65,45,1],[65,45,65,60,1],[65,60,65,71,1],[65,9,65,71,1],[66,8,66,9,1],[67,13,67,34,1],[68,8,68,9,1],[69,9,69,45,1],[69,45,69,56,1],[69,56,69,67,1],[69,9,69,67,1],[70,8,70,9,1],[71,13,71,33,1],[72,8,72,9,1],[73,9,73,45,1],[73,45,73,55,1],[73,55,73,66,1],[73,9,73,66,1],[74,8,74,9,1],[76,8,76,9,1],[77,9,77,29,1],[78,8,78,9,1],[79,7,79,8,1],[80,7,80,24,1],[81,7,81,8,1],[82,8,82,53,1],[83,8,83,52,1],[86,7,86,49,1],[88,6,88,7,1],[97,6,97,7,1],[99,7,99,8,1],[100,8,100,100,1],[102,8,102,29,1],[104,7,104,27,1],[105,7,105,8,1],[106,8,106,42,1],[107,8,107,55,1],[108,8,108,44,1],[111,6,111,7,1],[120,3,120,4,1],[122,4,122,5,1],[123,5,123,100,1],[125,5,125,28,1],[128,4,128,21,1],[129,4,129,5,1],[130,5,130,52,1],[131,5,131,28,1],[134,3,134,4,1],[144,6,144,7,1],[145,7,145,31,1],[146,6,146,7,1],[159,6,159,7,1],[160,7,160,30,1],[161,7,161,8,1],[163,8,163,9,1],[164,9,164,47,1],[165,8,165,9,1],[166,8,166,28,1],[167,8,167,9,1],[169,9,169,43,1],[170,9,170,29,1],[173,8,173,27,1],[174,8,174,54,1],[176,8,176,57,1],[179,7,179,8,1],[180,8,180,28,1],[183,6,183,7,1],[195,3,195,4,1],[196,4,196,27,1],[197,4,197,5,1],[199,5,199,6,1],[200,6,200,69,1],[202,6,202,101,1],[204,6,204,29,1],[206,5,206,22,1],[207,5,207,6,1],[208,6,208,51,1],[209,6,209,29,1],[212,4,212,38,1],[213,4,213,27,1],[215,3,215,4,1],[224,3,224,4,1],[225,4,225,37,1],[226,3,226,4,1],[237,3,237,4,1],[238,4,238,44,1],[239,4,239,5,1],[240,5,240,80,1],[241,5,241,53,1],[243,4,243,5,1],[244,4,244,27,1],[246,3,246,4,1],[255,9,255,10,0],[257,13,257,48,0],[258,13,258,14,0],[259,17,259,89,0],[260,17,260,55,0],[261,17,261,40,0],[262,22,262,31,0],[262,33,262,62,0],[262,64,262,67,0],[263,17,263,18,0],[264,21,264,60,0],[265,17,265,18,0],[266,17,266,67,0],[267,17,267,65,0],[268,17,268,54,0],[270,5,270,12,0],[270,14,270,21,0],[270,22,270,24,0],[270,25,270,61,0],[271,17,271,18,0],[272,21,272,100,0],[273,21,273,22,0],[274,25,274,74,0],[275,25,275,31,0],[277,17,277,18,0],[279,4,279,5,0],[280,13,280,36,0],[281,9,281,10,0]]);
+    </script>
+  </body>
+</html>

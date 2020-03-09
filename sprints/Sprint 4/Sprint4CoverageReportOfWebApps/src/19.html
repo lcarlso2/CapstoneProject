@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\Member.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of customer object
+	/// &lt;/summary&gt;
+	public class Member
+	{
+		/// &lt;summary&gt;
+		/// Gets or sets the email of the customer
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the email address is set 
+		[Required]
+		[DataType(DataType.EmailAddress)]
+		public string Email { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or set the password
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the address is set
+		[Required]
+		[DataType(DataType.Password)]
+		public string Password { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the list of addresses for the customer
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the addresses are set 
+		public List&lt;Address&gt; Addresses { get; set; }
+
+		/// &lt;summary&gt;
+		/// Creates a new customer object
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the customer is created
+		public Member()
+		{
+			this.Addresses = new List&lt;Address&gt;();
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,25,21,29,1],[21,30,21,34,1],[30,28,30,32,1],[30,33,30,37,1],[37,36,37,40,1],[37,41,37,45,1],[44,3,44,18,1],[45,3,45,4,1],[46,4,46,41,1],[47,3,47,4,1]]);
+    </script>
+  </body>
+</html>

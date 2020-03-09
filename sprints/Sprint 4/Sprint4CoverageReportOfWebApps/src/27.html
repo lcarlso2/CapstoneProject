@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The home controller responsible for the page communication of the Rent Me Application (Member Side).
+    /// &lt;/summary&gt;
+    public class HomeController : Controller
+    {
+
+	    private readonly IMemberDal memberDal;
+
+	    private readonly ILibrarianDal librarianDal;
+
+	    /// &lt;summary&gt;
+        /// The current user that is logged into the system.
+        /// If there is no-one logged in, the user is null.
+        /// &lt;/summary&gt;
+        public static Member CurrentUser;
+
+	    public static Librarian CurrentLibrarian;
+
+        /// &lt;summary&gt;
+        /// Creates a new home controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;memberDal&quot;&gt;The member dal for communication&lt;/param
+        /// &lt;param name=&quot;librarianDal&quot;&gt;The librarian dal for communication&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the input dals
+        public HomeController(IMemberDal memberDal, ILibrarianDal librarianDal)
+        {
+	        this.memberDal = memberDal;
+	        this.librarianDal = librarianDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller with the default customer dal and librarian dal
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the CustomerDal and the librarian dal
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	        this.memberDal = new MemberDal();
+            this.librarianDal = new LibrarianDal();
+        }
+
+        /// &lt;summary&gt;
+        /// The index action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the browse page if someone is logged in, otherwise the index page if no one is logged in.&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition none
+        public IActionResult Index()
+        {
+            if (CurrentUser != null || CurrentLibrarian != null)
+            {
+                return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+            }
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The signout action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page and the state of the system changes to no one being logged in&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the current user is set to null
+        public IActionResult Signout()
+        {
+            CurrentUser = null;
+            CurrentLibrarian = null;
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+
+
+
+        /// &lt;summary&gt;
+        /// The http post for the action result login
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;user&quot;&gt;the user logging in&lt;/param&gt;
+        /// &lt;returns&gt;The browse page if the user is signed in otherwise stays on the index page if the login is invalid or an error occurs&lt;/returns&gt;
+        /// @precondition state of system is that of no one logged in
+        /// @postcondition If the log in is successful then the state of the system changes to that of a valid member
+        [HttpPost]
+        public IActionResult Login(Member user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+	                if (this.memberDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
+		                return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+	                } 
+	                if (this.librarianDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+                        CurrentLibrarian = new Librarian { Email = user.Email, Password = user.Password };
+                        return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The error page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the error page&lt;/returns&gt;
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[36,9,36,80,1],[37,9,37,10,1],[38,10,38,37,1],[39,10,39,43,1],[40,9,40,10,1],[48,9,48,32,1],[49,9,49,10,1],[50,10,50,43,1],[51,13,51,52,1],[52,9,52,10,1],[61,9,61,10,1],[62,13,62,65,1],[63,13,63,14,1],[64,17,64,61,1],[66,13,66,34,1],[67,9,67,10,1],[77,9,77,10,1],[78,13,78,32,1],[79,13,79,37,1],[80,13,80,46,1],[81,9,81,10,1],[95,9,95,10,1],[97,13,97,14,1],[98,17,98,40,1],[99,17,99,18,1],[100,18,100,82,1],[101,18,101,19,1],[102,19,102,91,1],[103,19,103,63,1],[105,18,105,85,1],[106,18,106,19,1],[107,25,107,107,1],[108,25,108,69,1],[110,17,110,18,1],[111,13,111,14,1],[112,13,112,33,1],[113,13,113,14,1],[114,17,114,51,1],[115,17,115,76,1],[116,17,116,38,1],[119,13,119,45,1],[120,13,120,34,1],[121,9,121,10,1],[130,9,130,10,0],[131,13,131,113,0],[132,9,132,10,0]]);
+    </script>
+  </body>
+</html>

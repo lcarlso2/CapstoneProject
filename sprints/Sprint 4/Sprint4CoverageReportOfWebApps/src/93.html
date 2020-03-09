@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\Controllers\HomeControllerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.Controllers;
+using Microsoft.AspNetCore.Mvc;
+using RentMe.Models;
+using RentMeTests.MockDal;
+
+namespace RentMeTests.Controllers
+{
+	/// &lt;summary&gt;
+	/// The test class for the home controller of the RentMe project
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class HomeControllerTests
+	{
+		[TestMethod()]
+		public void IndexTestWithCurrentUser()
+		{
+			var controller = new HomeController();
+			HomeController.CurrentUser = new Member();
+			var result = (RedirectToActionResult)controller.Index();
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+			Assert.AreEqual(&quot;Borrow&quot;, result.ControllerName);
+		}
+
+		[TestMethod()]
+		public void IndexTestWithoutCurrentUser()
+		{
+			HomeController.CurrentUser = null;
+			HomeController.CurrentLibrarian = null;
+		
+			var controller = new HomeController();
+			var result = (ViewResult)controller.Index();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			
+		}
+
+
+		[TestMethod()]
+		public void LoginTestWithValidCustomer()
+		{
+			var customer = new Member
+			{
+				Email = &quot;email&quot;,
+				Password = &quot;password&quot;
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal, new MockLibrarianDal());
+			var result = (RedirectToActionResult) controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+		}
+
+
+		[TestMethod()]
+		public void LoginTestWithValidLibrarian()
+		{
+			var librarian = new Member
+			{
+				Email = &quot;email&quot;,
+				Password = &quot;password&quot;
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 0
+			};
+			var librarianDal = new MockLibrarianDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal, librarianDal);
+			var result = (RedirectToActionResult)controller.Login(librarian);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;Browse&quot;, result.ActionName);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidCustomerLogin()
+		{
+			var customer = new Member
+			{
+				Email = &quot;email&quot;,
+				Password = &quot;password&quot;
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 2
+			};
+			var controller = new HomeController(customerDal, new MockLibrarianDal());
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+		}
+
+		[TestMethod()]
+		public void LoginTestWithInValidCustomer()
+		{
+			var customer = new Member
+			{
+				Email = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 1
+			};
+			var controller = new HomeController(customerDal, new MockLibrarianDal());
+			controller.ModelState.AddModelError(&quot;Test&quot;, &quot;Test&quot;);
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Invalid login&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void LoginTestWithException()
+		{
+			var customer = new Member
+			{
+				Email = &quot;&quot;,
+				Password = &quot;&quot;
+			};
+			var customerDal = new MockMemberDal
+			{
+				AuthenticateValueToReturn = 1,
+				ThrowError = true
+			};
+			var controller = new HomeController(customerDal, new MockLibrarianDal());
+			var result = (ViewResult)controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;Index&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Whoops, try again. Something went wrong.&quot;, result.ViewData[&quot;Error&quot;]);
+
+		}
+
+		
+
+		[TestMethod()]
+		public void SignoutTest()
+		{
+			var controller = new HomeController(new MockMemberDal(), new MockLibrarianDal());
+			var result = (RedirectToActionResult)controller.Signout();
+			Assert.AreEqual(&quot;Index&quot;, result.ActionName);
+			Assert.AreEqual(null, HomeController.CurrentUser);
+
+		}
+
+
+	}
+
+
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,3,17,4,1],[18,4,18,42,1],[19,4,19,46,1],[20,4,20,60,1],[21,4,21,68,1],[22,4,22,49,1],[23,4,23,53,1],[24,3,24,4,1],[28,3,28,4,1],[29,4,29,38,1],[30,4,30,43,1],[32,4,32,42,1],[33,4,33,48,1],[34,4,34,56,1],[35,4,35,46,1],[37,3,37,4,1],[42,3,42,4,1],[43,4,47,6,1],[48,4,51,6,1],[52,4,52,77,1],[53,4,53,69,1],[54,4,54,68,1],[55,4,55,49,1],[56,3,56,4,1],[61,3,61,4,1],[62,4,66,6,1],[67,4,70,6,1],[71,4,74,6,1],[75,4,75,67,1],[76,4,76,69,1],[77,4,77,68,1],[78,4,78,49,1],[79,3,79,4,1],[83,3,83,4,1],[84,4,88,6,1],[89,4,92,6,1],[93,4,93,77,1],[94,4,94,56,1],[95,4,95,56,1],[96,4,96,46,1],[97,4,97,63,1],[98,3,98,4,1],[102,3,102,4,1],[103,4,107,6,1],[108,4,111,6,1],[112,4,112,77,1],[113,4,113,56,1],[114,4,114,56,1],[115,4,115,56,1],[116,4,116,46,1],[117,4,117,63,1],[119,3,119,4,1],[123,3,123,4,1],[124,4,128,6,1],[129,4,133,6,1],[134,4,134,77,1],[135,4,135,56,1],[136,4,136,56,1],[137,4,137,46,1],[138,4,138,90,1],[140,3,140,4,1],[146,3,146,4,1],[147,4,147,85,1],[148,4,148,62,1],[149,4,149,48,1],[150,4,150,54,1],[152,3,152,4,1]]);
+    </script>
+  </body>
+</html>

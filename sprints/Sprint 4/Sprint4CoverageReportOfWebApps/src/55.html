@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeEmployeeTests\Controllers\OrdersControllerTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMeEmployee.Controllers;
+using SharedCode.Model;
+using SharedCode.TestObjects;
+
+namespace RentMeEmployeeTests.Controllers
+{
+	/// &lt;summary&gt;
+	/// The tests class for the orders controller 
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class OrdersControllerTests
+	{
+
+		[TestMethod()]
+		public void ControllerDefaultConstructorTest()
+		{
+	
+			var controller = new OrdersController();
+			Assert.IsInstanceOfType(controller, typeof(OrdersController));
+		}
+
+		[TestMethod()]
+		public void UpdateStatusTestValidOutput()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.UpdateStatus(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var item = (RentalItem)result.Model;
+			Assert.AreEqual(1, item.RentalId);
+		}
+
+
+
+		[TestMethod()]
+		public void UpdateStatusTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.UpdateStatus(1);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+			var item = (RentalItem)result.Model;
+			Assert.AreEqual(0, item.RentalId);
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestValid()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			HomeController.CurrentEmployee = new Employee();
+			var result = (RedirectToActionResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = &quot;Ordered&quot; });
+
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ActionName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestInvalidButNotReturned()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			controller.ModelState.AddModelError(&quot;test&quot;, &quot;test&quot;);
+			HomeController.CurrentEmployee = new Employee();
+			var result = (RedirectToActionResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = &quot;Ordered&quot; });
+
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ActionName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestInvalidButReturned()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			controller.ModelState.AddModelError(&quot;test&quot;, &quot;test&quot;);
+			HomeController.CurrentEmployee = new Employee();
+			var result = (ViewResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = &quot;Returned&quot; });
+
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;UpdateStatus&quot;, result.ViewName);
+			HomeController.CurrentEmployee = null;
+		}
+
+		[TestMethod()]
+		public void ConfirmedUpdateTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.ConfirmedUpdate(new RentalItem());
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;UpdateStatus&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+
+		}
+
+		[TestMethod()]
+		public void EmployeeLandingValidTest()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.EmployeeLanding();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(1, items.Count);
+
+		}
+
+		[TestMethod()]
+		public void EmployeeLandingTestExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal()
+			{
+				ThrowError = true
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.EmployeeLanding();
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(null, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;ErrorMessage&quot;]);
+		}
+
+		[TestMethod()]
+		public void StatusFilterTestAll()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.StatusFilter(&quot;All&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(1, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterTestEmpty()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = false
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.StatusFilter(&quot;&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			var items = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(0, items.Count);
+		}
+
+		[TestMethod()]
+		public void StatusFilterExceptionThrown()
+		{
+			var rentalDal = new MockRentalDal
+			{
+				ThrowError = true
+			};
+			var controller = new OrdersController(rentalDal);
+			var result = (ViewResult)controller.StatusFilter(&quot;&quot;);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual(&quot;EmployeeLanding&quot;, result.ViewName);
+			Assert.AreEqual(&quot;Uh-oh something went wrong&quot;, result.ViewData[&quot;Error&quot;]);
+			var item = (List&lt;RentalItem&gt;)result.Model;
+			Assert.AreEqual(0, item.Count);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,3,21,4,1],[23,4,23,44,1],[24,4,24,66,1],[25,3,25,4,1],[29,3,29,4,1],[30,4,33,6,1],[34,4,34,53,1],[35,4,35,56,1],[36,4,36,56,1],[37,4,37,43,1],[38,4,38,40,1],[39,4,39,38,1],[40,3,40,4,1],[46,3,46,4,1],[47,4,50,6,1],[51,4,51,53,1],[52,4,52,56,1],[53,4,53,56,1],[54,4,54,43,1],[55,4,55,83,1],[56,4,56,40,1],[57,4,57,38,1],[58,3,58,4,1],[62,3,62,4,1],[63,4,66,6,1],[67,4,67,53,1],[68,4,68,52,1],[69,4,69,121,1],[71,4,71,68,1],[72,4,72,58,1],[73,4,73,42,1],[74,3,74,4,1],[78,3,78,4,1],[79,4,82,6,1],[83,4,83,53,1],[84,4,84,56,1],[85,4,85,52,1],[86,4,86,121,1],[88,4,88,68,1],[89,4,89,58,1],[90,4,90,42,1],[91,3,91,4,1],[95,3,95,4,1],[96,4,99,6,1],[100,4,100,53,1],[101,4,101,56,1],[102,4,102,52,1],[103,4,103,110,1],[105,4,105,56,1],[106,4,106,53,1],[107,4,107,42,1],[108,3,108,4,1],[112,3,112,4,1],[113,4,116,6,1],[117,4,117,53,1],[118,4,118,74,1],[119,4,119,56,1],[120,4,120,53,1],[121,4,121,83,1],[123,3,123,4,1],[127,3,127,4,1],[128,4,131,6,1],[132,4,132,53,1],[133,4,133,58,1],[134,4,134,56,1],[135,4,135,43,1],[136,4,136,47,1],[137,4,137,36,1],[139,3,139,4,1],[143,3,143,4,1],[144,4,147,6,1],[148,4,148,53,1],[149,4,149,58,1],[150,4,150,56,1],[151,4,151,43,1],[152,4,152,83,1],[153,3,153,4,1],[157,3,157,4,1],[158,4,161,6,1],[162,4,162,53,1],[163,4,163,60,1],[164,4,164,56,1],[165,4,165,56,1],[166,4,166,47,1],[167,4,167,36,1],[168,3,168,4,1],[172,3,172,4,1],[173,4,176,6,1],[177,4,177,53,1],[178,4,178,57,1],[179,4,179,56,1],[180,4,180,56,1],[181,4,181,47,1],[182,4,182,36,1],[183,3,183,4,1],[187,3,187,4,1],[188,4,191,6,1],[192,4,192,53,1],[193,4,193,57,1],[194,4,194,56,1],[195,4,195,56,1],[196,4,196,76,1],[197,4,197,46,1],[198,4,198,35,1],[199,3,199,4,1]]);
+    </script>
+  </body>
+</html>

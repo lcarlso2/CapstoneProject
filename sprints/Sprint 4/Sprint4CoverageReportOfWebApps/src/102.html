@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeEmployee\Controllers\OrdersController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The OrdersController responsible for all order pages
+	/// &lt;/summary&gt;
+    public class OrdersController : Controller
+    {
+
+	    private readonly IRentalDal rentalDal;
+
+	    /// &lt;summary&gt;
+	    /// The possible status for the current rental item
+	    /// &lt;/summary&gt;
+	    public static List&lt;SelectListItem&gt; Statuses = new List&lt;SelectListItem&gt;();
+
+		/// &lt;summary&gt;
+		/// The possible conditions for the current rental item
+		/// &lt;/summary&gt;
+		public static List&lt;SelectListItem&gt; Conditions = new List&lt;SelectListItem&gt;();
+
+		/// &lt;summary&gt;
+		/// Creates a new default order controller with the default rental dal 
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the controller is created
+		[ActivatorUtilitiesConstructor]
+		public OrdersController()
+	    {
+			this.rentalDal = new RentalDal();
+	    }
+
+		/// &lt;summary&gt;
+		/// Creates a new  order controller with the given dals
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;rentalDal&quot;&gt;the rental dal&lt;/param&gt;
+		/// @precondition none
+		/// @postcondition the controller is created
+		public OrdersController(IRentalDal rentalDal)
+	    {
+		    this.rentalDal = rentalDal;
+	    }
+
+		/// &lt;summary&gt;
+		/// The action result for filtering the rentals by status
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;The given list of rentals on the employee landing page
+		/// based on the desired status or an error message if something goes wrong&lt;/returns&gt;
+		public IActionResult StatusFilter(string status)
+		{
+
+			List&lt;RentalItem&gt; rentals = new List&lt;RentalItem&gt;();
+			try
+			{
+
+				if (status.Equals(&quot;All&quot;))
+				{
+					rentals = new List&lt;RentalItem&gt;(this.rentalDal.RetrieveAllRentedItems());
+				}
+				else
+				{
+					rentals = new List&lt;RentalItem&gt;(this.rentalDal.RetrieveSelectRentedItems(status));
+				}
+			}
+			catch (Exception)
+			{
+				ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+				return View(&quot;EmployeeLanding&quot;, rentals);
+			}
+
+			ViewBag.Status = status;
+			return View(&quot;EmployeeLanding&quot;, rentals);
+
+		}
+
+		/// &lt;summary&gt;
+		/// The employee landing page
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;the employee landing page with an error message if anything went wrong&lt;/returns&gt;
+		public IActionResult EmployeeLanding()
+		{
+			List&lt;RentalItem&gt; items = new List&lt;RentalItem&gt;();
+
+			try
+			{
+				items = this.rentalDal.RetrieveAllRentedItems();
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+			}
+
+			ViewBag.Status = &quot;Select Status&quot;;
+			return View(items);
+		}
+
+		/// &lt;summary&gt;
+		/// The update status action result
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;the id of the order being updated&lt;/param&gt;
+		/// &lt;returns&gt;the update status page with an error message if something went wrong&lt;/returns&gt;
+		public IActionResult UpdateStatus(int? id)
+		{
+			RentalItem item = new RentalItem();
+			try
+			{
+				Statuses.Clear();
+				Conditions.Clear();
+
+				item = this.rentalDal.RetrieveAllRentedItems().First(currentItem =&gt; currentItem.RentalId == id);
+				var statuses = RentalItem.GetPossibleStatuses(item.Status);
+				foreach (var current in statuses)
+				{
+					Statuses.Add(new SelectListItem(current, current));
+				}
+
+				var conditions = InventoryItem.ConditionOptions;
+				Conditions.Add(new SelectListItem(null,null));
+				foreach (var current in conditions)
+				{
+					Conditions.Add(new SelectListItem(current, current));
+				}
+
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+			}
+
+
+			return View(item);
+		}
+
+		/// &lt;summary&gt;
+		/// The http post for the confirm update action
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;borrowedItem&quot;&gt;the borrowed item&lt;/param&gt;
+		/// &lt;returns&gt;the employee landing page or the update status page with an error message if something went wrong&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the status of the RentalItem is changed if no errors occured 
+		[HttpPost]
+		public IActionResult ConfirmedUpdate(RentalItem borrowedItem)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status,
+						HomeController.CurrentEmployee.EmployeeId, borrowedItem.Condition);
+				}
+				else if (!borrowedItem.Status.Equals(&quot;Returned&quot;))
+				{
+					this.rentalDal.UpdateStatus(borrowedItem.RentalId, borrowedItem.Status,
+						HomeController.CurrentEmployee.EmployeeId, borrowedItem.Condition);
+				}
+				else
+				{
+					return View(&quot;UpdateStatus&quot;, borrowedItem);
+				}
+			}
+			catch (Exception)
+			{
+				ViewBag.ErrorMessage = &quot;Uh-oh something went wrong&quot;;
+				return View(&quot;UpdateStatus&quot;, borrowedItem);
+			}
+
+			return RedirectToAction(&quot;EmployeeLanding&quot;);
+		}
+
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[24,6,24,79,1],[29,3,29,78,1],[37,3,37,28,1],[38,6,38,7,1],[39,4,39,37,1],[40,6,40,7,1],[48,3,48,48,1],[49,6,49,7,1],[50,7,50,34,1],[51,6,51,7,1],[59,3,59,4,1],[61,4,61,54,1],[63,4,63,5,1],[65,5,65,30,1],[66,5,66,6,1],[67,6,67,78,1],[68,5,68,6,1],[70,5,70,6,1],[71,6,71,87,1],[72,5,72,6,1],[73,4,73,5,1],[74,4,74,21,1],[75,4,75,5,1],[76,5,76,50,1],[77,5,77,45,1],[80,4,80,28,1],[81,4,81,44,1],[83,3,83,4,1],[90,3,90,4,1],[91,4,91,52,1],[94,4,94,5,1],[95,5,95,53,1],[96,4,96,5,1],[97,4,97,21,1],[98,4,98,5,1],[99,5,99,57,1],[100,4,100,5,1],[102,4,102,37,1],[103,4,103,23,1],[104,3,104,4,1],[112,3,112,4,1],[113,4,113,39,1],[115,4,115,5,1],[116,5,116,22,1],[117,5,117,24,1],[119,5,119,73,1],[119,73,119,99,1],[119,99,119,101,1],[119,5,119,101,1],[120,5,120,64,1],[121,5,121,12,1],[121,14,121,25,1],[121,26,121,28,1],[121,29,121,37,1],[122,5,122,6,1],[123,6,123,57,1],[124,5,124,6,1],[126,5,126,53,1],[127,5,127,51,1],[128,5,128,12,1],[128,14,128,25,1],[128,26,128,28,1],[128,29,128,39,1],[129,5,129,6,1],[130,6,130,59,1],[131,5,131,6,1],[133,4,133,5,1],[134,4,134,21,1],[135,4,135,5,1],[136,5,136,57,1],[137,4,137,5,1],[140,4,140,22,1],[141,3,141,4,1],[152,3,152,4,1],[154,4,154,5,1],[155,5,155,28,1],[156,5,156,6,1],[157,6,158,74,1],[159,5,159,6,1],[160,10,160,54,1],[161,5,161,6,1],[162,6,163,74,1],[164,5,164,6,1],[166,5,166,6,1],[167,6,167,48,1],[169,4,169,5,1],[170,4,170,21,1],[171,4,171,5,1],[172,5,172,57,1],[173,5,173,47,1],[176,4,176,47,1],[177,3,177,4,1]]);
+    </script>
+  </body>
+</html>

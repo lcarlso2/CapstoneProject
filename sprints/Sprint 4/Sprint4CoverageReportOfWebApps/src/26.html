@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\BorrowController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The BorrowController responsible for all pages that have to do with borrowing 
+    /// &lt;/summary&gt;
+    public class BorrowController : Controller
+    {
+	    private const int MAX_NUMBER_OF_BORROWS = 3;
+
+	    private readonly IBorrowDal borrowDal;
+
+	    private readonly IMediaDal mediaDal;
+
+	    private readonly IMemberDal customerDal;
+
+	    public static Media SelectedItem;
+
+        /// &lt;summary&gt;
+        /// Creates a new borrow controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;borrowDal&quot;&gt;the borrow dal for communication&lt;/param&gt;
+        /// &lt;param name=&quot;mediaDal&quot;&gt;the media dal for communication&lt;/param&gt;
+        /// &lt;param name=&quot;customerDal&quot;&gt;the customer dal for communication&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the input dals
+        public BorrowController(IBorrowDal borrowDal, IMediaDal mediaDal, IMemberDal customerDal)
+	    {
+		    this.borrowDal = borrowDal;
+		    this.mediaDal = mediaDal;
+		    this.customerDal = customerDal;
+	    }
+
+        
+
+	    /// &lt;summary&gt;
+	    /// Creates a new default borrow controller with the default borrow, media, and customer dals 
+	    /// &lt;/summary&gt;
+	    /// @precondition none
+	    /// @postcondition the controller is created with new borrowDals, MediaDals, and customer dals.
+	    [ActivatorUtilitiesConstructor]
+	    public BorrowController()
+	    {
+		    this.borrowDal = new BorrowDal();
+		    this.mediaDal = new MediaDal();
+            this.customerDal = new MemberDal();
+	    }
+
+
+        /// &lt;summary&gt;
+        /// The confirm borrow action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the id of the item being borrowed&lt;/param&gt;
+        /// &lt;returns&gt;The confirm borrow screen or if an error occurs redirected to the browse action.
+        /// If the user has too many rentals out then they are directed to the confirm borrow page with a message
+        /// letting them know they have too many rentals &lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition system changes to confirmborrow page
+        public IActionResult ConfirmBorrow(int? id)
+	    {
+		    try
+		    {
+			    HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
+                var media = this.mediaDal.RetrieveAllMedia().First(currentMedia =&gt; currentMedia.InventoryId == id);
+			    SelectedItem = media;
+                if (this.borrowDal.GetNumberOfOpenRentals(HomeController.CurrentUser) &lt; MAX_NUMBER_OF_BORROWS)
+                {
+	                return View(new ConfirmBorrowObject());
+			    }
+
+                return this.handleTooManyOpenRentals();
+
+		    }
+		    catch (Exception)
+		    {
+			    ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+			    return RedirectToAction(&quot;Browse&quot;);
+		    }
+
+	    }
+
+        private IActionResult handleTooManyOpenRentals()
+        {
+	        List&lt;Media&gt; media = new List&lt;Media&gt;();
+	        try
+	        {
+		        media = this.mediaDal.RetrieveAllMedia();
+		        ViewBag.Error = $&quot;Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.&quot;;
+            }
+	        catch (Exception)
+	        {
+		        ViewBag.Error = &quot;Uh-oh. Something went wrong&quot;;
+
+	        }
+	        ViewBag.Type = &quot;Type&quot;;
+	        ViewBag.Category = &quot;Category&quot;;
+            return View(&quot;Browse&quot;, media);
+        }
+
+        /// &lt;summary&gt;
+        /// The confirmed borrow action result
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;item&quot;&gt;the confirmed borrow object for the page&lt;/param&gt;
+        /// &lt;returns&gt;Returns to the browse page if the rental was confirmed, otherwise stays at the confirm page if an error occurs
+        /// with a descriptive error message&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the item is borrowed if everything was correct (address selected, max number of current open rentals
+        /// not reached, and nothing went wrong with the DB connection) and browse page is shown 
+        [HttpPost]
+        public IActionResult ConfirmedBorrow(ConfirmBorrowObject item)
+        {
+	        try
+	        {
+		        if (ModelState.IsValid)
+				{
+		       
+			     
+					this.borrowDal.BorrowItem(HomeController.CurrentUser, SelectedItem, item.AddressId);
+
+					return RedirectToAction(&quot;Browse&quot;);
+
+				}
+                ViewBag.Error = &quot;Please select a shipping address&quot;;
+                return View(&quot;ConfirmBorrow&quot;, item);
+            }
+	        catch (NullReferenceException ex)
+	        {
+		        ViewBag.ErrorMessage = ex.Message;
+		        ViewBag.Error = &quot;Please log in again.&quot;;
+		        return View(&quot;ConfirmBorrow&quot;, item);
+	        }
+	        catch (Exception ex)
+	        {
+		        ViewBag.ErrorMessage = ex.Message;
+		        ViewBag.Error = ex.Message;
+		        return View(&quot;ConfirmBorrow&quot;, item);
+	        }
+        }
+
+        /// &lt;summary&gt;
+        /// The browse action
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The browse page or the browse page with an error message if something went wrong &lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition browse page is shown
+        public IActionResult Browse()
+        {
+            try
+            {
+                var media = this.mediaDal.RetrieveAllMedia();
+                ViewBag.Type = &quot;Type&quot;;
+                ViewBag.Category = &quot;Category&quot;;
+                return View(&quot;Browse&quot;, media);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(new List&lt;Media&gt;());
+            }
+
+        }
+
+
+
+
+        /// &lt;summary&gt;
+        /// The type filter action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;type&quot;&gt;the type to filter the media by&lt;/param&gt;
+        /// &lt;returns&gt;The browse page with filtered items or the browse page with an error message if something went wrong &lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition items are filtered 
+        public IActionResult TypeFilter(string type)
+        {
+            List&lt;Media&gt; media = new List&lt;Media&gt;();
+            try
+            {
+	            if (type == &quot;All&quot;)
+                {
+                    media = this.mediaDal.RetrieveAllMedia();
+                }
+                else
+                {
+                    media = this.mediaDal.RetrieveMediaByType(type);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;Browse&quot;);
+            }
+
+            ViewBag.Category = &quot;Category&quot;;
+            ViewBag.Type = type;
+            return View(&quot;Browse&quot;, media);
+
+        }
+
+
+
+        /// &lt;summary&gt;
+        /// The type category action
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;category&quot;&gt;the category to filter the media by&lt;/param&gt;
+        /// &lt;returns&gt;The browse page with filtered items or the browse page with an error message if something went wrong &lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition items are filtered 
+        public IActionResult CategoryFilter(string category)
+        {
+            List&lt;Media&gt; media = new List&lt;Media&gt;();
+            try
+            {
+                if (category == &quot;All&quot;)
+                {
+                    media = this.mediaDal.RetrieveAllMedia();
+                }
+                else
+                {
+                    media = this.mediaDal.RetrieveMediaByCategory(category);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+                return View(&quot;Browse&quot;);
+            }
+
+            ViewBag.Type = &quot;Type&quot;;
+            ViewBag.Category = category;
+            return View(&quot;Browse&quot;, media);
+
+        }
+
+        /// &lt;summary&gt;
+        /// Adds an address and returns the confirm borrow page
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;address&quot;&gt; the address being added&lt;/param&gt;
+        /// &lt;returns&gt;the confirm borrow page&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the address is added or an error is displayed if something went wrong 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddAddress(Address address)
+        {
+	        if (ModelState.IsValid)
+	        {
+		        try
+				{
+			      this.customerDal.AddAddress(address, HomeController.CurrentUser);
+
+			      HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
+
+			      return View(&quot;ConfirmBorrow&quot;);
+				}
+				catch (Exception)
+				{ 
+					ViewBag.Error = &quot;Uh-oh something went wrong&quot;;
+					return View(&quot;ConfirmBorrow&quot;);
+		        }
+	        }
+	        ViewBag.Error = &quot;Invalid Address&quot;;
+	        return View(&quot;ConfirmBorrow&quot;);
+            
+        }
+
+        /// &lt;summary&gt;
+        /// Gets the partial view for adding an address
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The partial view for adding an address&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition page being showed is the partial view add address
+        public IActionResult AddAddress()
+        {
+	        return PartialView(&quot;AddAddress&quot;);
+        }
+
+
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[34,9,34,98,1],[35,6,35,7,1],[36,7,36,34,1],[37,7,37,32,1],[38,7,38,38,1],[39,6,39,7,1],[49,6,49,31,1],[50,6,50,7,1],[51,7,51,40,1],[52,7,52,38,1],[53,13,53,48,1],[54,6,54,7,1],[67,6,67,7,1],[69,7,69,8,1],[70,8,70,105,1],[71,17,71,84,1],[71,84,71,114,1],[71,114,71,116,1],[71,17,71,116,1],[72,8,72,29,1],[73,17,73,111,1],[74,17,74,18,1],[75,18,75,57,1],[78,17,78,56,1],[81,7,81,24,1],[82,7,82,8,1],[83,8,83,55,1],[84,8,84,42,1],[87,6,87,7,1],[90,9,90,10,1],[91,10,91,48,1],[93,10,93,11,1],[94,11,94,52,1],[95,11,95,137,1],[96,13,96,14,1],[97,10,97,27,0],[98,10,98,11,0],[99,11,99,57,0],[101,10,101,11,0],[102,10,102,32,1],[103,10,103,40,1],[104,13,104,42,1],[105,9,105,10,1],[118,9,118,10,1],[120,10,120,11,1],[121,11,121,34,1],[122,5,122,6,1],[125,6,125,90,1],[127,6,127,40,1],[130,17,130,68,1],[131,17,131,52,1],[133,10,133,43,1],[134,10,134,11,1],[135,11,135,45,1],[136,11,136,50,1],[137,11,137,46,1],[139,10,139,30,1],[140,10,140,11,1],[141,11,141,45,1],[142,11,142,38,1],[143,11,143,46,1],[145,9,145,10,1],[154,9,154,10,1],[156,13,156,14,1],[157,17,157,62,1],[158,17,158,39,1],[159,17,159,47,1],[160,17,160,46,1],[162,13,162,33,1],[163,13,163,14,1],[164,17,164,51,1],[165,17,165,64,1],[166,17,166,48,1],[169,9,169,10,1],[182,9,182,10,1],[183,13,183,51,1],[185,13,185,14,1],[186,14,186,32,1],[187,17,187,18,1],[188,21,188,62,1],[189,17,189,18,1],[191,17,191,18,1],[192,21,192,69,1],[193,17,193,18,1],[194,13,194,14,1],[195,13,195,30,1],[196,13,196,14,1],[197,17,197,62,1],[198,17,198,39,1],[201,13,201,43,1],[202,13,202,33,1],[203,13,203,42,1],[205,9,205,10,1],[217,9,217,10,1],[218,13,218,51,1],[220,13,220,14,1],[221,17,221,39,1],[222,17,222,18,1],[223,21,223,62,1],[224,17,224,18,1],[226,17,226,18,1],[227,21,227,77,1],[228,17,228,18,1],[229,13,229,14,1],[230,13,230,30,1],[231,13,231,14,1],[232,17,232,62,1],[233,17,233,39,1],[236,13,236,35,1],[237,13,237,41,1],[238,13,238,42,1],[240,9,240,10,1],[252,9,252,10,1],[253,10,253,33,1],[254,10,254,11,1],[256,5,256,6,1],[257,10,257,75,1],[259,10,259,107,1],[261,10,261,39,1],[263,5,263,22,1],[264,5,264,6,1],[265,6,265,51,1],[266,6,266,35,1],[269,10,269,44,1],[270,10,270,39,1],[272,9,272,10,1],[281,9,281,10,1],[282,10,282,43,1],[283,9,283,10,1]]);
+    </script>
+  </body>
+</html>
