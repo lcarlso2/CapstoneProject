@@ -391,6 +391,13 @@ namespace RentMe.DAL
             return members;
         }
 
+        /// <summary>
+        /// Removes the specified address from the account with the matching user email
+        /// </summary>
+        /// <param name="address"> The address to remove</param>
+        /// <param name="email"> The email of the account to the remove the address from</param>
+        /// @precondition none
+        /// @postcondition the address is removed
         public void RemoveAddress(string address, string email)
         {
             var addressParts = address.Split(' ');
