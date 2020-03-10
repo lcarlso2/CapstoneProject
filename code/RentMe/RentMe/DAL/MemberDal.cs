@@ -350,7 +350,7 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select email, member.memberID, fname, lname from member, user, rental_transaction, status_history, `status` " +
+                    var query = "select DISTINCT(email), member.memberID, fname, lname from member, user, rental_transaction, status_history, `status` " +
                                 "where member.memberID = userID and member.memberID = rental_transaction.memberID " +
                                 "and rentalTransactionID = rentalID and status_history.statusID = `status`.statusID and returnDateTime < CURDATE() and `status`.`status` != 'Returned' and status_history.statusID = (select max(s1.statusID) from status_history s1 where " +
                                 "s1.rentalTransactionID = rental_transaction.rentalID);";
