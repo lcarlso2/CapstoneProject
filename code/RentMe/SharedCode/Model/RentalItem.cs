@@ -54,7 +54,7 @@ namespace SharedCode.Model
         ///<value>
         ///The return date
         /// </value>
-        [Display(Name = "Return Date")]
+        [Display(Name = "Due Date")]
         public DateTime ReturnDate { get; set; }
 
 
@@ -94,7 +94,7 @@ namespace SharedCode.Model
         /// <summary>
         /// The rental string info
         /// </summary>
-        public string RentalItemInfo => $"Rental ID: {this.RentalId}, Inventory ID: {this.InventoryId}, Category: {this.Category}, Title: {this.Title}\nMember ID: {this.MemberId} Member Email: {this.MemberEmail}\nRental Date: {this.RentalDate}, Return Date: {this.ReturnDate}, Status: {this.Status}\n";
+        public string RentalItemInfo => $"Rental ID: {this.RentalId}, Inventory ID: {this.InventoryId}, Category: {this.Category}, Title: {this.Title}\nMember ID: {this.MemberId} Member Email: {this.MemberEmail}\nRental Date: {this.RentalDate}, Due Date: {this.ReturnDate}, Status: {this.Status}\n";
 
         /// <summary>
         /// Gets the list of possible statuses 

@@ -37,7 +37,7 @@
                         <TextBlock Grid.Column="2" Text="Title" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="3" Text="Category" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="4" Text="Rental Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
-                        <TextBlock Grid.Column="5" Text="Return Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="5" Text="Due Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="6" Text="Order Status" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="7" Text="Update Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                     </Grid>
