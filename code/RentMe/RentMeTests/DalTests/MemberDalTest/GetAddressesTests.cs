@@ -21,7 +21,7 @@ namespace RentMeTests.DalTests.CustomerDalTest
 
 			var result = customerDal.GetAddresses(new Member {Email = "email@email.com"});
 
-			Assert.AreEqual(3, result.Count);
+			Assert.AreEqual(4, result.Count);
 		}
 	}
 }

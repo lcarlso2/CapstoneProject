@@ -106,10 +106,9 @@ namespace RentMeEmployeeTests.Controllers
 
 			var item = new InventoryItem();
 			var controller = new InventoryController(mockInventoryDal);
-			var result = (ViewResult)controller.AddInventory(item);
-			Assert.IsInstanceOfType(result, typeof(ViewResult));
-			Assert.AreEqual(null, result.ViewName);
-			Assert.AreEqual("Item Added!", result.ViewData["SuccessMessage"]);
+			var result = (RedirectToActionResult)controller.AddInventory(item);
+			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+			Assert.AreEqual("ViewInventory", result.ActionName);
 
 		}
 
