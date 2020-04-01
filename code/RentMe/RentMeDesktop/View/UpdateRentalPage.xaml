@@ -21,8 +21,8 @@
         <ComboBox x:Name="comboBox" SelectedItem="{Binding SelectedRental.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,337,0,0" Height="45" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top">
             <ListView/>
         </ComboBox>
-        <TextBlock x:Name="conditionTextBlock" Visibility="{Binding ShouldUpdateConditionShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="-600,436,0,0" Text="Condition:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-        <ComboBox x:Name="conditionComboBox" Visibility="{Binding ShouldUpdateConditionShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Condition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="45" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,427,0,0">
+        <TextBlock x:Name="conditionTextBlock" HorizontalAlignment="Center" Margin="-600,436,0,0" Text="Condition:" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+        <ComboBox x:Name="conditionComboBox" SelectedItem="{Binding Condition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="45" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,427,0,0">
             <ListView/>
         </ComboBox>
         <Button x:Name="cancelButton"  Width="135" Height="45" Content="Cancel" Margin="-250,500,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Click="cancelButton_Click"/>

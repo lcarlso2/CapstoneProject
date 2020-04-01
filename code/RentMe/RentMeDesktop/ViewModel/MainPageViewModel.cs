@@ -103,23 +103,6 @@ namespace RentMeDesktop.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets if the update condition should be shown
-        /// </summary>
-        /// <value>
-        /// true or false if the update condition should be shown
-        /// (True if the item is being returned otherwise false)
-        /// </value>
-        public bool ShouldUpdateConditionShow
-        {
-	        get => this.shouldUpdateConditionShow;
-	        set
-	        {
-		        this.shouldUpdateConditionShow = value;
-		        this.OnPropertyChanged();
-	        }
-        }
-
-        /// <summary>
         /// Gets or sets the rental filters
         /// </summary>
         /// <value>
@@ -186,7 +169,6 @@ namespace RentMeDesktop.ViewModel
             {
                 this.selectedRental = value;
                 this.CanUpdateBeClicked = (this.SelectedRental != null) && !this.SelectedRental.Status.Equals("Returned");
-                this.ShouldUpdateConditionShow = (this.SelectedRental != null) && this.SelectedRental.Status.Equals("Shipped");
                 if (this.SelectedRental != null && this.SelectedRental.Status.Equals("Shipped"))
                 {
 	                this.CanConfirmUpdateBeClicked = !this.Condition.Equals("Select Condition");
