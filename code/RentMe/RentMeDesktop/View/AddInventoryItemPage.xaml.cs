@@ -66,6 +66,7 @@ namespace RentMeDesktop.View
 				try
 				{
 					this.ViewModel.AddInventoryItem();
+					Frame.Navigate(typeof(ViewInventoryPage), this.ViewModel);
 				}
 				catch (Exception)
 				{

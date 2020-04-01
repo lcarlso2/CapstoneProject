@@ -116,8 +116,7 @@ namespace RentMeEmployee.Controllers
 				return View(item);
 			}
 			ModelState.Clear();
-			ViewBag.SuccessMessage = "Item Added!";
-			return View(new InventoryItem());
+			return RedirectToAction("ViewInventory");
 
 		}
 
