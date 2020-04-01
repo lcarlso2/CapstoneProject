@@ -18,12 +18,10 @@
 	<div class="col-sm-3 text-center">
 		<h4>Status</h4>
 	</div>
-	@if (Model.Status == "Shipped" || Model.Status == "Returned")
-	{
-		<div class="col-sm-3 text-center">
-			<h4>Condition</h4>
-		</div>
-	}
+
+	<div class="col-sm-3 text-center">
+		<h4>Condition</h4>
+	</div>
 </div>
 
 @using (Html.BeginForm("ConfirmedUpdate", "Orders", FormMethod.Post))
@@ -47,16 +45,14 @@
 
 		</div>
 		
-		@if (Model.Status == "Shipped" || Model.Status == "Returned")
-		{
+	
 	<div class="col-sm-3 text-center">
 		@Html.DropDownListFor(item => item.Condition, new List<SelectListItem>(OrdersController.Conditions))
 		@Html.ValidationMessageFor(item => item.Condition, "", new { @class = "text-danger" })
 	</div>
-		}
 
 
-			</div>
+	</div>
 	<div class="row">
 		<div class="col">
 			<input type="submit" value="Confirm" class="btn btn-primary btn-block text-uppercase" />

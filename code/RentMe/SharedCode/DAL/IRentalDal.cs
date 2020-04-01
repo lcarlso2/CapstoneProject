@@ -40,6 +40,7 @@ namespace SharedCode.DAL
 		/// <returns>the rows affected</returns>
 		int UpdateStatus(int transactionId, string status, int employeeId, string condition);
 
+
 		/// <summary>
 		/// Gets the history for a specific rental transaction id
 		/// </summary>

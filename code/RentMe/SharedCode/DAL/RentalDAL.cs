@@ -327,6 +327,7 @@ namespace SharedCode.DAL
         /// <param name="transactionId">the rental transaction id</param>
         /// <param name="status"> the status </param>
         /// <param name="employeeId">the employee updating the rental</param>
+        /// <param name="condition">the condition of the rental</param>
         /// <returns>the rows affected or an error if something goes wrong on the database</returns>
         public int UpdateStatus(int transactionId, string status, int employeeId, string condition)
         {
@@ -362,13 +363,14 @@ namespace SharedCode.DAL
 					        if (statusId == 2)
 					        {
 
-						        updateInventoryItemForShippedStatus(transactionId, statusId, cmd, transaction);
+						        updateInventoryItemForShippedStatus(transactionId, cmd, transaction);
+                                updateCondition(transactionId, cmd, transaction, condition);
 					        }
 
 					        if (statusId == 4)
 					        {
 						        insertIntoReturnConditionTable(transactionId, cmd, transaction, condition);
-						        updateInventoryItemForReturnedStatus(transactionId, statusId, cmd, transaction,
+						        updateInventoryItemForReturnedStatus(transactionId, cmd, transaction,
 							        condition);
 					        }
 
@@ -472,7 +474,24 @@ namespace SharedCode.DAL
 
         }
 
-        private static void updateInventoryItemForReturnedStatus(int transactionId, int statusId, MySqlCommand cmd,
+        private static void updateCondition(int transactionId, MySqlCommand cmd,
+	        MySqlTransaction transaction, string condition)
+        {
+	        cmd.Parameters.Clear();
+
+	        cmd.CommandText =
+		        "update inventory_item set `condition` = @condition where inventoryID = (select inventoryID from rental_transaction where rentalID = @transactionId order by rentalID DESC limit 1);";
+	        cmd.Parameters.AddWithValue("@transactionId", transactionId);
+	        cmd.Parameters.AddWithValue("@condition", condition);
+
+
+	        if (cmd.ExecuteNonQuery() != 1)
+	        {
+		        transaction.Rollback();
+	        }
+        }
+
+        private static void updateInventoryItemForReturnedStatus(int transactionId, MySqlCommand cmd,
 	        MySqlTransaction transaction, string condition)
         {
 	       
@@ -506,7 +525,7 @@ namespace SharedCode.DAL
 	        }
         }
 
-        private static void updateInventoryItemForShippedStatus(int transactionId, int statusId, MySqlCommand cmd,
+        private static void updateInventoryItemForShippedStatus(int transactionId, MySqlCommand cmd,
 	        MySqlTransaction transaction)
         {
 	        cmd.Parameters.Clear();
