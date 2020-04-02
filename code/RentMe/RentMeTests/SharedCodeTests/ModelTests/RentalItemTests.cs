@@ -68,7 +68,7 @@ namespace RentMeTests.SharedCodeTests.ModelTests
 				Status = "Ordered"
 			};
 
-			Assert.AreEqual($"Rental ID: {item.RentalId}, Inventory ID: {item.InventoryId}, Category: {item.Category}, Title: {item.Title}\nMember ID: {item.MemberId} Member Email: {item.MemberEmail}\nRental Date: {item.RentalDate}, Return Date: {item.ReturnDate}, Status: {item.Status}\n", item.RentalItemInfo);
+			Assert.AreEqual($"Rental ID: {item.RentalId}, Inventory ID: {item.InventoryId}, Category: {item.Category}, Title: {item.Title}\nMember ID: {item.MemberId} Member Email: {item.MemberEmail}\nRental Date: {item.RentalDate}, Due Date: {item.ReturnDate}, Status: {item.Status}\n", item.RentalItemInfo);
 			
 		}
 

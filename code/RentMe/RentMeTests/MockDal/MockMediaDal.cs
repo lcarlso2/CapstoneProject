@@ -17,13 +17,13 @@ namespace RentMeTests.MockDal
 
 		public List<Media> RetrieveAllMedia()
 		{
-			var media = new List<Media>{new Media{InventoryId = 1}};
+			var media = new List<Media> {new Media {InventoryId = 1}};
 			if (this.ThrowError)
 			{
 				throw new Exception();
 			}
 
-		
+
 			return media;
 		}
 
@@ -31,7 +31,7 @@ namespace RentMeTests.MockDal
 		public List<Media> RetrieveMediaByConditions(string categoryCondition, string typeCondition,
 			string librarianChoice)
 		{
-			var media = new List<Media> { new Media { InventoryId = 1 } };
+			var media = new List<Media> {new Media {InventoryId = 1}};
 			if (this.ThrowError)
 			{
 				throw new Exception();
@@ -58,23 +58,15 @@ namespace RentMeTests.MockDal
 			}
 		}
 
-		public List<Media> RetrieveMediaByCategory(string category)
+		public Media RetrieveMediaById(int id)
 		{
-			var media = new List<Media>();
+			var media =  new Media { InventoryId = 1 };
 			if (this.ThrowError)
 			{
 				throw new Exception();
 			}
-			return media;
-		}
 
-		public List<Media> RetrieveMediaByType(string type)
-		{
-			var media = new List<Media>();
-			if (this.ThrowError)
-			{
-				throw new Exception();
-			}
+
 			return media;
 		}
 	}

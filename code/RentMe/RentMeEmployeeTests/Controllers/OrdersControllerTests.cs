@@ -73,25 +73,9 @@ namespace RentMeEmployeeTests.Controllers
 			HomeController.CurrentEmployee = null;
 		}
 
-		[TestMethod()]
-		public void ConfirmedUpdateTestInvalidButNotReturned()
-		{
-			var rentalDal = new MockRentalDal()
-			{
-				ThrowError = false
-			};
-			var controller = new OrdersController(rentalDal);
-			controller.ModelState.AddModelError("test", "test");
-			HomeController.CurrentEmployee = new Employee();
-			var result = (RedirectToActionResult)controller.ConfirmedUpdate(new RentalItem { RentalId = 1, Status = "Ordered" });
-
-			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("EmployeeLanding", result.ActionName);
-			HomeController.CurrentEmployee = null;
-		}
 
 		[TestMethod()]
-		public void ConfirmedUpdateTestInvalidButReturned()
+		public void ConfirmedUpdateTestInvalid()
 		{
 			var rentalDal = new MockRentalDal()
 			{

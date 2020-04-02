@@ -25,6 +25,15 @@ namespace RentMeTests.Controllers
 		}
 
 		[TestMethod()]
+		public void DefaultControllerTestWithNullSelected()
+		{
+			var controller = new BorrowController();
+			BorrowController.SelectedCategory = null;
+			BorrowController.SelectedType = null;
+			Assert.IsInstanceOfType(controller, typeof(BorrowController));
+		}
+
+		[TestMethod()]
 		public void ConfirmedBorrowTestWithValidInput()
 		{
 			var mockBorrowDal = new MockBorrowDal
@@ -123,7 +132,7 @@ namespace RentMeTests.Controllers
 			var result = (ViewResult)controller.CategoryFilter("Action");
 			Assert.AreEqual("Browse", result.ViewName);
 			var actualList = (List<Media>)result.Model;
-			Assert.AreEqual(0, actualList.Count);
+			Assert.AreEqual(1, actualList.Count);
 
 		}
 
@@ -168,7 +177,7 @@ namespace RentMeTests.Controllers
 			var result = (ViewResult)controller.TypeFilter("Action");
 			Assert.AreEqual("Browse", result.ViewName);
 			var actualList = (List<Media>)result.Model;
-			Assert.AreEqual(0, actualList.Count);
+			Assert.AreEqual(1, actualList.Count);
 
 		}
 
@@ -320,6 +329,85 @@ namespace RentMeTests.Controllers
 			var controller = new BorrowController(new MockBorrowDal(), new MockMediaDal(), new MockMemberDal());
 			var result = (PartialViewResult) controller.AddAddress();
 			Assert.AreEqual("AddAddress", result.ViewName);
+		}
+
+		[TestMethod()]
+		public void AddToLibrariansChoiceValid()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult)controller.AddToLibrariansChoice(1);
+
+			Assert.AreEqual("Browse", result.ViewName);
+			
+
+		}
+
+		[TestMethod()]
+		public void AddToLibrariansChoiceWithException()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult)controller.AddToLibrariansChoice(1);
+			Assert.AreEqual("Browse", result.ViewName);
+			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
+		}
+
+
+		[TestMethod()]
+		public void RemoveFromLibrariansChoiceValid()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult)controller.RemoveFromLibrariansChoice(1);
+			Assert.AreEqual("Browse", result.ViewName);
+		}
+
+		[TestMethod()]
+		public void RemoveFromLibrariansChoiceWithException()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult)controller.RemoveFromLibrariansChoice(1);
+			Assert.AreEqual("Browse", result.ViewName);
+			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
+		}
+
+		[TestMethod()]
+		public void LibrariansChoiceValid()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = false
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult) controller.LibrariansChoice();
+			Assert.AreEqual("Browse", result.ViewName);
+		}
+
+		[TestMethod()]
+		public void LibrariansChoiceWithException()
+		{
+			var mockMediaDal = new MockMediaDal
+			{
+				ThrowError = true
+			};
+			var controller = new BorrowController(new MockBorrowDal(), mockMediaDal, new MockMemberDal());
+			var result = (ViewResult)controller.LibrariansChoice();
+			Assert.AreEqual("Browse", result.ViewName);
+			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
 		}
 
 

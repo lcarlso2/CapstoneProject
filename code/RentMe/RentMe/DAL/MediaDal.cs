@@ -214,13 +214,15 @@ namespace RentMe.DAL
         }
 
         /// <summary>
-        /// Retrieves all media with the given category
+        /// Retrieves the given media item with the given id
         /// </summary>
-        /// <param name="category">the desired category</param>
-        /// <returns>the media matching that category or an error is thrown if something goes wrong on the database</returns>
-        public List<Media> RetrieveMediaByCategory(string category)
+        /// <param name="id"> the inventory id of the item</param>
+        /// <returns>the media item with the given id</returns>
+        /// @precondition none
+        /// @postcondition the desired item is returned or an error is thrown
+        public Media RetrieveMediaById(int id)
         {
-            var mediaItems = new List<Media>();
+            var mediaItem = new Media();
 
             try
             {
@@ -228,82 +230,16 @@ namespace RentMe.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select * from media, inventory_item where Category = @category and media.mediaID = inventory_item.mediaID and inStock = 1";
+                    var query = "select * from inventory_item, media where inventory_item.mediaID = media.mediaID and inventory_item.inventoryID = @inventoryID";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.Add("@category", MySqlDbType.VarChar);
-                        cmd.Parameters["@category"].Value = category;
-
+	                    cmd.Parameters.AddWithValue("@inventoryID", id);
                         using var reader = cmd.ExecuteReader();
-                        var categoryOrdinal = reader.GetOrdinal("Category");
-                        var titleOrdinal = reader.GetOrdinal("Title");
-                        var typeOrdinal = reader.GetOrdinal("Type");
+                        var categoryOrdinal = reader.GetOrdinal("category");
+                        var typeOrdinal = reader.GetOrdinal("type");
+                        var titleOrdinal = reader.GetOrdinal("title");
                         var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
-
-
-
-                        while (reader.Read())
-                        {
-                            var inventoryId = reader.GetInt32((inventoryIdOrdinal));
-
-                            var categoryValue = reader[categoryOrdinal] == DBNull.Value
-                                ? "null"
-                                : reader.GetString(categoryOrdinal);
-
-                            var type = reader[typeOrdinal] == DBNull.Value
-                                ? "null"
-                                : reader.GetString(typeOrdinal);
-
-                            var title = reader[titleOrdinal] == DBNull.Value
-                                ? "null"
-                                : reader.GetString(titleOrdinal);
-
-
-                            var media = new Media { InventoryId = inventoryId, Category = categoryValue, Title = title, Type = type };
-
-                            mediaItems.Add(media);
-
-                        }
-                    }
-                    conn.Close();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return mediaItems;
-        }
-
-        /// <summary>
-        /// Retrieves all media with the given type
-        /// </summary>
-        /// <param name="type">the desired type</param>
-        /// <returns>the media matching that type or an error is thrown if something goes wrong on the database</returns>
-        public List<Media> RetrieveMediaByType(string type)
-        {
-            var mediaItems = new List<Media>();
-
-            try
-            {
-                var conn = DbConnection.GetConnection();
-                using (conn)
-                {
-                    conn.Open();
-                    var query = "select * from media, inventory_item where type = @type and media.mediaID = inventory_item.mediaID and inStock = 1";
-                    using (var cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.Add("@type", MySqlDbType.VarChar);
-                        cmd.Parameters["@type"].Value = type;
-
-                        using var reader = cmd.ExecuteReader();
-                        var categoryOrdinal = reader.GetOrdinal("Category");
-                        var titleOrdinal = reader.GetOrdinal("Title");
-                        var typeOrdinal = reader.GetOrdinal("Type");
-                        var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
-
+                        var isLibrarianChoiceOrdinal = reader.GetOrdinal("isLibrarianChoice");
 
 
 
@@ -315,7 +251,7 @@ namespace RentMe.DAL
                                 ? "null"
                                 : reader.GetString(categoryOrdinal);
 
-                            var typeValue = reader[typeOrdinal] == DBNull.Value
+                            var type = reader[typeOrdinal] == DBNull.Value
                                 ? "null"
                                 : reader.GetString(typeOrdinal);
 
@@ -323,11 +259,11 @@ namespace RentMe.DAL
                                 ? "null"
                                 : reader.GetString(titleOrdinal);
 
+                            var isLibrariansChoice = reader.GetInt32(isLibrarianChoiceOrdinal);
 
-                            var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = typeValue };
 
-                            mediaItems.Add(media);
 
+                            mediaItem = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type, IsLibrariansChoice = isLibrariansChoice == 1 };
                         }
                     }
                     conn.Close();
@@ -339,7 +275,7 @@ namespace RentMe.DAL
                 throw ex;
             }
 
-            return mediaItems;
+            return mediaItem;
         }
 
     }

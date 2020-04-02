@@ -33,7 +33,7 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="inventoryId">the id of the item</param>
 		/// @precondition none
-		/// @postcondition the item is removed 
+		/// @postcondition the item is removed  or an error is thrown
 		void RemoveFromLibrariansChoice(int inventoryId);
 
 
@@ -42,19 +42,17 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <param name="inventoryId">the id of the item</param>
 		/// @precondition none
-		/// @postcondition the item is added 
+		/// @postcondition the item is added  or an error is thrown
 		void AddToLibrariansChoice(int inventoryId);
 
 		/// <summary>
-		/// Retrieves all media in a specific category.
+		/// Retrieves the given media item with the given id
 		/// </summary>
-		/// <returns>All media in that category</returns>
-		List<Media> RetrieveMediaByCategory(string category);
+		/// <param name="id"> the inventory id of the item</param>
+		/// <returns>the media item with the given id</returns>
+		/// @precondition none
+		/// @postcondition the desired item is returned or an error is thrown
+		Media RetrieveMediaById(int id);
 
-		/// <summary>
-		/// Retrieves all media in a specific type.
-		/// </summary>
-		/// <returns>All media in that type</returns>
-		List<Media> RetrieveMediaByType(string type);
 	}
 }

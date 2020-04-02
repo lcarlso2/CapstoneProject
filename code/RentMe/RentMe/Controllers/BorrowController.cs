@@ -135,12 +135,12 @@ namespace RentMe.Controllers
         /// letting them know they have too many rentals </returns>
         /// @precondition none
         /// @postcondition system changes to confirmborrow page
-        public IActionResult ConfirmBorrow(int? id)
+        public IActionResult ConfirmBorrow(int id)
 	    {
 		    try
 		    {
 			    HomeController.CurrentUser.Addresses = this.customerDal.GetAddresses(HomeController.CurrentUser);
-                var media = this.mediaDal.RetrieveAllMedia().First(currentMedia => currentMedia.InventoryId == id);
+			    var media = this.mediaDal.RetrieveMediaById(id);
 			    SelectedItem = media;
                 if (this.borrowDal.GetNumberOfOpenRentals(HomeController.CurrentUser) < MAX_NUMBER_OF_BORROWS)
                 {

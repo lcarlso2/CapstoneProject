@@ -52,7 +52,7 @@ namespace RentMeTests.Controllers
 			var controller = new HomeController(customerDal, new MockLibrarianDal());
 			var result = (RedirectToActionResult) controller.Login(customer);
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("Browse", result.ActionName);
+			Assert.AreEqual("LibrariansChoice", result.ActionName);
 		}
 
 
@@ -75,7 +75,7 @@ namespace RentMeTests.Controllers
 			var controller = new HomeController(customerDal, librarianDal);
 			var result = (RedirectToActionResult)controller.Login(librarian);
 			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("Browse", result.ActionName);
+			Assert.AreEqual("LibrariansChoice", result.ActionName);
 		}
 
 		[TestMethod()]
