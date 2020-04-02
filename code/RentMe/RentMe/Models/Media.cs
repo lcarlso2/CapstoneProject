@@ -43,6 +43,13 @@ namespace RentMe.Models
         public string Type { get; set; }
 
         /// <summary>
+        /// Gets or set the whether or not this item is in the librarians choice
+        /// </summary>
+        /// @precondition none
+        /// @postcondition the value is set
+        public bool IsLibrariansChoice { get; set; }
+
+        /// <summary>
         /// The constructor for the media
         /// </summary>
         /// @precondition none

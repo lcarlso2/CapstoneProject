@@ -27,6 +27,37 @@ namespace RentMeTests.MockDal
 			return media;
 		}
 
+
+		public List<Media> RetrieveMediaByConditions(string categoryCondition, string typeCondition,
+			string librarianChoice)
+		{
+			var media = new List<Media> { new Media { InventoryId = 1 } };
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+
+			return media;
+		}
+
+		public void RemoveFromLibrariansChoice(int inventoryId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
+
+
+		public void AddToLibrariansChoice(int inventoryId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
+
 		public List<Media> RetrieveMediaByCategory(string category)
 		{
 			var media = new List<Media>();

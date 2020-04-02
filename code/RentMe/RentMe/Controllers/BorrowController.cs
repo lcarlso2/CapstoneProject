@@ -23,7 +23,14 @@ namespace RentMe.Controllers
 
 	    public static Media SelectedItem;
 
-        /// <summary>
+	    public static string SelectedType;
+
+	    public static string SelectedCategory;
+
+	    public static string SelectedBrowse;
+
+
+	    /// <summary>
         /// Creates a new borrow controller with the desired dals
         /// </summary>
         /// <param name="borrowDal">the borrow dal for communication</param>
@@ -51,7 +58,72 @@ namespace RentMe.Controllers
 		    this.borrowDal = new BorrowDal();
 		    this.mediaDal = new MediaDal();
             this.customerDal = new MemberDal();
-	    }
+            if (string.IsNullOrEmpty(SelectedCategory))
+            {
+	            SelectedCategory = "All";
+            }
+            if (string.IsNullOrEmpty(SelectedType))
+            {
+	            SelectedType = "All";
+            }
+
+        }
+
+        /// <summary>
+        /// Returns the browse page with the list of media from the librarians choice
+        /// </summary>
+        /// <returns>the browse page with the list of media from the librarians choice or the browse page with an error if something went wrong</returns>
+        /// @precondition none
+        /// @postcondition the browse page is navigated to
+	    public IActionResult LibrariansChoice()
+	    {
+		    SelectedBrowse = "Librarian's Choice";
+            try
+		    {
+			    
+			    var media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
+
+                return View("Browse", media);
+		    }
+		    catch (Exception ex)
+		    {
+			    ViewBag.ErrorMessage = ex.Message;
+			    ViewBag.Error = "Uh-oh.. something went wrong";
+			    return View("Browse",new List<Media>());
+		    }
+        }
+
+        public IActionResult RemoveFromLibrariansChoice(int id)
+        {
+	        var media = new List<Media>();
+            try
+	        {
+                this.mediaDal.RemoveFromLibrariansChoice(id);
+                media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
+            }
+	        catch (Exception)
+	        {
+		        ViewBag.Error = "Uh-oh.. something went wrong";
+                return View("Browse", media);
+	        }
+            return View("Browse", media);
+        }
+
+        public IActionResult AddToLibrariansChoice(int id)
+        {
+	        var media = new List<Media>();
+	        try
+	        {
+		        this.mediaDal.AddToLibrariansChoice(id);
+		        media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
+	        }
+	        catch (Exception)
+	        {
+		        ViewBag.Error = "Uh-oh.. something went wrong";
+		        return View("Browse", media);
+	        }
+            return View("Browse", media);
+        }
 
 
         /// <summary>
@@ -91,17 +163,15 @@ namespace RentMe.Controllers
 	        List<Media> media = new List<Media>();
 	        try
 	        {
-		        media = this.mediaDal.RetrieveAllMedia();
-		        ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
+		        media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
+                ViewBag.Error = $"Looks like you have already rented {MAX_NUMBER_OF_BORROWS} items. Please return something to rent another.";
             }
 	        catch (Exception)
 	        {
 		        ViewBag.Error = "Uh-oh. Something went wrong";
 
 	        }
-	        ViewBag.Type = "Type";
-	        ViewBag.Category = "Category";
-            return View("Browse", media);
+	        return View("Browse", media);
         }
 
         /// <summary>
@@ -152,12 +222,12 @@ namespace RentMe.Controllers
         /// @postcondition browse page is shown
         public IActionResult Browse()
         {
+	        SelectedBrowse = "All";
             try
             {
-                var media = this.mediaDal.RetrieveAllMedia();
-                ViewBag.Type = "Type";
-                ViewBag.Category = "Category";
-                return View("Browse", media);
+	            var media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
+
+	            return View("Browse", media);
             }
             catch (Exception ex)
             {
@@ -180,26 +250,17 @@ namespace RentMe.Controllers
         /// @postcondition items are filtered 
         public IActionResult TypeFilter(string type)
         {
-            List<Media> media = new List<Media>();
+	        SelectedType = type;
+            var media = new List<Media>();
             try
             {
-	            if (type == "All")
-                {
-                    media = this.mediaDal.RetrieveAllMedia();
-                }
-                else
-                {
-                    media = this.mediaDal.RetrieveMediaByType(type);
-                }
+	            media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
             }
             catch (Exception)
             {
                 ViewBag.Error = "Uh-oh something went wrong";
-                return View("Browse");
+                return View("Browse", media);
             }
-
-            ViewBag.Category = "Category";
-            ViewBag.Type = type;
             return View("Browse", media);
 
         }
@@ -215,26 +276,18 @@ namespace RentMe.Controllers
         /// @postcondition items are filtered 
         public IActionResult CategoryFilter(string category)
         {
-            List<Media> media = new List<Media>();
+	        SelectedCategory = category;
+            var media = new List<Media>();
             try
             {
-                if (category == "All")
-                {
-                    media = this.mediaDal.RetrieveAllMedia();
-                }
-                else
-                {
-                    media = this.mediaDal.RetrieveMediaByCategory(category);
-                }
+	            media = this.mediaDal.RetrieveMediaByConditions(SelectedCategory, SelectedType, SelectedBrowse);
             }
             catch (Exception)
             {
                 ViewBag.Error = "Uh-oh something went wrong";
-                return View("Browse");
+                return View("Browse", media);
             }
 
-            ViewBag.Type = "Type";
-            ViewBag.Category = category;
             return View("Browse", media);
 
         }

@@ -100,12 +100,12 @@ namespace RentMe.Controllers
 	                if (this.memberDal.Authenticate(user.Email, user.Password) == 1)
 	                {
 		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
-		                return RedirectToAction("Browse", "Borrow");
+		                return RedirectToAction("LibrariansChoice", "Borrow");
 	                } 
 	                if (this.librarianDal.Authenticate(user.Email, user.Password) == 1)
 	                {
                         CurrentLibrarian = new Librarian { Email = user.Email, Password = user.Password };
-                        return RedirectToAction("Browse", "Borrow");
+                        return RedirectToAction("LibrariansChoice", "Borrow");
                     }
                 }
             }

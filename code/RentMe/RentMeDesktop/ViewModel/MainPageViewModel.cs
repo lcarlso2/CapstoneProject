@@ -76,14 +76,11 @@ namespace RentMeDesktop.ViewModel
 	        {
 		        this.condition = value;
 
-		        if (this.SelectedRental != null && this.SelectedRental.Status.Equals("Shipped"))
+		        if (this.SelectedRental != null)
 		        {
 			        this.CanConfirmUpdateBeClicked = !this.Condition.Equals("Select Condition");
                 }
-		        else
-		        {
-			        this.CanConfirmUpdateBeClicked = true;
-		        }
+		     
                 this.OnPropertyChanged();
 	        }
         }
