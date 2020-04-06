@@ -308,6 +308,7 @@ namespace RentMe.DAL
                             var idOrdinal = reader.GetOrdinal("memberID");
                             var fNameOrdinal = reader.GetOrdinal("fname");
                             var lNameOrdinal = reader.GetOrdinal("lname");
+                            var blacklistedOrdinal = reader.GetOrdinal("blacklisted");
 
                             while (reader.Read())
                             {
@@ -315,11 +316,12 @@ namespace RentMe.DAL
                                 var fName = reader[fNameOrdinal] == DBNull.Value ? "null" : reader.GetString(fNameOrdinal);
                                 var lName = reader[lNameOrdinal] == DBNull.Value ? "null" : reader.GetString(lNameOrdinal);
                                 var memberId = reader.GetInt32(idOrdinal);
+                                var blacklisted = reader.GetInt32(blacklistedOrdinal);
 
 
 
                                 var member = new RegisteringMember
-                                { Email = email, First = fName, Last = lName, MemberId = memberId };
+                                { Email = email, First = fName, Last = lName, MemberId = memberId, IsBlacklisted = blacklisted};
                                 members.Add(member);
 
 

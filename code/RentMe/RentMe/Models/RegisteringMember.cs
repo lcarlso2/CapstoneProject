@@ -68,5 +68,12 @@ namespace RentMe.Models
 		/// @precondition none
 		/// @postcondition the address is set
 		public Address Address { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value for if a member is blacklisted
+        /// </summary>
+        /// @precondition none
+        /// @postcondition the value is set for being blacklisted
+        public int IsBlacklisted { get; set; }
 	}
 }

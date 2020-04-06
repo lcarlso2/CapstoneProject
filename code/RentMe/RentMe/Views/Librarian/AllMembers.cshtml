@@ -64,9 +64,12 @@
 				<th>
 					@Html.DisplayNameFor(member => member.Last)
 				</th>
-				<th>
-					@Html.DisplayNameFor(member => member.MemberId)
-				</th>
+                <th>
+                    @Html.DisplayNameFor(member => member.MemberId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(member => member.IsBlacklisted)
+                </th>
 				<th></th>
 			</tr>
 		</thead>
@@ -75,23 +78,26 @@
 
 			@foreach (var currentMember in Model)
 			{
-				<tr>
-					<td>
-						@Html.DisplayFor(member => currentMember.Email)
-					</td>
-					<td>
-						@Html.DisplayFor(member => currentMember.First)
-					</td>
-					<td>
-						@Html.DisplayFor(member => currentMember.Last)
-					</td>
-					<td>
-						@Html.DisplayFor(member => currentMember.MemberId)
-					</td>
-					<td>
-						<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
-					</td>
-				</tr>
+			<tr>
+				<td>
+					@Html.DisplayFor(member => currentMember.Email)
+				</td>
+				<td>
+					@Html.DisplayFor(member => currentMember.First)
+				</td>
+				<td>
+					@Html.DisplayFor(member => currentMember.Last)
+				</td>
+				<td>
+					@Html.DisplayFor(member => currentMember.MemberId)
+				</td>
+				<td>
+					@Html.DisplayFor(member => currentMember.IsBlacklisted)
+                </td>
+				<td>
+					<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
+				</td>
+			</tr>
 			}
 		</tbody>
 	</table>
