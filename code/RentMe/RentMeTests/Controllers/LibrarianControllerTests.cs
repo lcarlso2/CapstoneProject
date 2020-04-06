@@ -160,7 +160,35 @@ namespace RentMeTests.Controllers
 			Assert.AreEqual(0, members.Count);
 		}
 
+		[TestMethod()]
+		public void TestBlacklistMemberError()
+		{
+			var mockMemberDal = new MockMemberDal()
+			{
+				ThrowError = true
+			};
 
+			var controller = new LibrarianController(mockMemberDal, new MockRentalDal());
+			var result = (ViewResult)controller.BlacklistMember(15);
+			Assert.AreEqual("MemberHistory", result.ViewName);
+			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
+			var rentalItems = (List<RentalItem>)result.Model;
+			Assert.AreEqual(0, rentalItems.Count);
+		}
+
+
+		[TestMethod()]
+		public void TestBlacklistMember()
+		{
+			var mockMemberDal = new MockMemberDal()
+			{
+				ThrowError = false
+			};
+
+			var controller = new LibrarianController(mockMemberDal, new MockRentalDal());
+			var result = (ViewResult)controller.BlacklistMember(15);
+			Assert.AreEqual("AllMembers", result.ViewName);
+		}
 
 	}
 }

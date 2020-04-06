@@ -106,7 +106,6 @@ namespace RentMe.Controllers
             ViewBag.Filter = "All";
 			try
             {
-
                 this.memberDal.UpdateBlacklistStatus(id);
 
 				var members = this.memberDal.GetAllMembers();
