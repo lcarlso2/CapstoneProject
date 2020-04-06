@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using RentMe.DAL;
@@ -100,7 +101,21 @@ namespace RentMe.Controllers
 	                if (this.memberDal.Authenticate(user.Email, user.Password) == 1)
 	                {
 		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
-		                return RedirectToAction("LibrariansChoice", "Borrow");
+
+                        var members = this.memberDal.GetAllMembers();
+                        var member = members.First(curr => curr.Email == user.Email);
+
+                        if (member.IsBlacklisted == 0)
+                        {
+
+                            return RedirectToAction("LibrariansChoice", "Borrow");
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = "Blacklisted";
+                            ViewBag.Error = "Sorry, you have been blacklisted.";
+                            return View("Index");
+                        }
 	                } 
 	                if (this.librarianDal.Authenticate(user.Email, user.Password) == 1)
 	                {
