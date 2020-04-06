@@ -88,8 +88,9 @@ namespace RentMe.Controllers
 		{
 			CurrentMemberEmail = email;
 		    try
-		    {
-			    var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(email);
+			{ 
+
+                var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(email);
 			    return View("MemberHistory", rentals);
 			}
 		    catch (Exception)
@@ -98,6 +99,25 @@ namespace RentMe.Controllers
 			    return View("MemberHistory", new List<RentalItem>());
 			}
 	    }
+
+
+        public IActionResult BlacklistMember(int id)
+        {
+            ViewBag.Filter = "All";
+			try
+            {
+
+                this.memberDal.UpdateBlacklistStatus(id);
+
+				var members = this.memberDal.GetAllMembers();
+                return View("AllMembers", members);
+			}
+            catch (Exception)
+            {
+                ViewBag.Error = "Uh-oh.. something went wrong";
+                return View("MemberHistory", new List<RentalItem>());
+            }
+		}
 
 		/// <summary>
 		/// The view for the details of a given rental
