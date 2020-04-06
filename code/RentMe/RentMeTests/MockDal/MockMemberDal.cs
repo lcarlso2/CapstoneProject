@@ -93,5 +93,13 @@ namespace RentMeTests.MockDal
 
 			return members;
 		}
+
+		public void UpdateBlacklistStatus(int memberID)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
 	}
 }
