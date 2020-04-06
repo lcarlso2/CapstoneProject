@@ -73,5 +73,11 @@ namespace RentMe.DAL
 		/// </summary>
 		/// <returns> all members that have overdue rentals or an error if something went wrong with thd DB</returns>
 		List<RegisteringMember> GetOverdueMembers();
+
+		/// <summary>
+		/// Updates a member's blacklist status. If they are blacklisted it will remove the blacklist and vice versa
+		/// </summary>
+		/// <param name="memberID"></param>
+		void UpdateBlacklistStatus(int memberID);
 	}
 }

@@ -434,7 +434,67 @@ namespace RentMe.DAL
             {
                 throw ex;
             }
+        }
 
+        /// <summary>
+		/// Updates a member's blacklist status. If they are blacklisted it will remove the blacklist and vice versa
+		/// </summary>
+		/// <param name="memberID"></param>
+		public void UpdateBlacklistStatus(int memberID)
+        {
+            var newBlacklistedValue = -1;
+            try
+            {
+                var conn = DbConnection.GetConnection();
+                using (conn)
+                {
+                    conn.Open();
+
+                    using var transaction = conn.BeginTransaction();
+                    var query = "select blacklisted from member where @memberID = memberID";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Transaction = transaction;
+
+                        cmd.Parameters.AddWithValue("@memberID", memberID);
+
+                        using var reader = cmd.ExecuteReader();
+                        var blacklistedOrdinal = reader.GetOrdinal("blacklisted");
+
+                        while (reader.Read())
+                        {
+                            var blacklisted = reader.GetInt32((blacklistedOrdinal));
+                            if (blacklisted == 0)
+                            {
+                                newBlacklistedValue = 1;
+                            } else if (blacklisted == 1)
+                            {
+                                newBlacklistedValue = 0;
+                            }
+                        }
+
+
+                        cmd.CommandText = "update member set blacklisted = @blacklisted where @memberID = memberID";
+
+                        cmd.Parameters.Add("@blacklisted", MySqlDbType.Int32);
+                        cmd.Parameters["@blacklisted"].Value = newBlacklistedValue;
+
+                        if (cmd.ExecuteNonQuery() != 1)
+                        {
+                            transaction.Rollback();
+                        }
+
+                        transaction.Commit();
+                    }
+                    conn.Close();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
         }
     }
