@@ -92,8 +92,15 @@
 					@Html.DisplayFor(member => currentMember.MemberId)
 				</td>
 				<td>
-					@Html.DisplayFor(member => currentMember.IsBlacklisted)
-                </td>
+                    @if (currentMember.IsBlacklisted == 1)
+                    {
+                        <p>Yes</p>
+                    }
+                    else
+                    {
+                        <p>No</p>
+                    }
+				</td>
 				<td>
 					<a asp-controller="Librarian" asp-action="ViewMemberHistory" asp-route-email="@currentMember.Email">History</a>
 				</td>

@@ -321,7 +321,7 @@ namespace RentMe.DAL
 
 
                                 var member = new RegisteringMember
-                                { Email = email, First = fName, Last = lName, MemberId = memberId, IsBlacklisted = blacklisted};
+                                { Email = email, First = fName, Last = lName, MemberId = memberId, IsBlacklisted = blacklisted };
                                 members.Add(member);
 
 
@@ -452,12 +452,10 @@ namespace RentMe.DAL
                 {
                     conn.Open();
 
-                    using var transaction = conn.BeginTransaction();
                     var query = "select blacklisted from member where @memberID = memberID";
 
                     using (var cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Transaction = transaction;
 
                         cmd.Parameters.AddWithValue("@memberID", memberID);
 
@@ -466,32 +464,38 @@ namespace RentMe.DAL
 
                         while (reader.Read())
                         {
+
                             var blacklisted = reader.GetInt32((blacklistedOrdinal));
                             if (blacklisted == 0)
                             {
                                 newBlacklistedValue = 1;
-                            } else if (blacklisted == 1)
+                            }
+                            else if (blacklisted == 1)
                             {
                                 newBlacklistedValue = 0;
                             }
                         }
 
+                        conn.Close();
 
-                        cmd.CommandText = "update member set blacklisted = @blacklisted where @memberID = memberID";
-
-                        cmd.Parameters.Add("@blacklisted", MySqlDbType.Int32);
-                        cmd.Parameters["@blacklisted"].Value = newBlacklistedValue;
-
-                        if (cmd.ExecuteNonQuery() != 1)
-                        {
-                            transaction.Rollback();
-                        }
-
-                        transaction.Commit();
                     }
-                    conn.Close();
 
+                    conn.Open();
+
+                    var secondQuery = "update member set blacklisted = @blacklisted where @memberID = memberID";
+
+                    using (var cmd = new MySqlCommand(secondQuery, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@memberID", memberID);
+                        cmd.Parameters.AddWithValue("@blacklisted", newBlacklistedValue);
+
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+
+                    }
                 }
+
             }
             catch (Exception ex)
             {
