@@ -170,10 +170,10 @@ namespace RentMeTests.Controllers
 
 			var controller = new LibrarianController(mockMemberDal, new MockRentalDal());
 			var result = (ViewResult)controller.BlacklistMember(15);
-			Assert.AreEqual("MemberHistory", result.ViewName);
+			Assert.AreEqual("AllMembers", result.ViewName);
 			Assert.AreEqual("Uh-oh.. something went wrong", result.ViewData["Error"]);
-			var rentalItems = (List<RentalItem>)result.Model;
-			Assert.AreEqual(0, rentalItems.Count);
+			var members = (List<RegisteringMember>)result.Model;
+			Assert.AreEqual(0, members.Count);
 		}
 
 

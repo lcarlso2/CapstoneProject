@@ -38,7 +38,7 @@ namespace RentMeTests.Controllers
 
 
 		[TestMethod()]
-		public void LoginTestWithValidCustomer()
+		public void LoginTestWithInValidCustomer()
 		{
 			var customer = new Member
 			{
@@ -50,9 +50,10 @@ namespace RentMeTests.Controllers
 				AuthenticateValueToReturn = 1
 			};
 			var controller = new HomeController(customerDal, new MockLibrarianDal());
-			var result = (RedirectToActionResult) controller.Login(customer);
-			Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-			Assert.AreEqual("LibrariansChoice", result.ActionName);
+			var result = (ViewResult) controller.Login(customer);
+			Assert.IsInstanceOfType(result, typeof(ViewResult));
+			Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual("Invalid login", result.ViewData["Error"]);
 		}
 
 
@@ -98,7 +99,7 @@ namespace RentMeTests.Controllers
 		}
 
 		[TestMethod()]
-		public void LoginTestWithInValidCustomer()
+		public void LoginTestWithInValidCustomerInfo()
 		{
 			var customer = new Member
 			{
@@ -114,7 +115,7 @@ namespace RentMeTests.Controllers
 			var result = (ViewResult)controller.Login(customer);
 			Assert.IsInstanceOfType(result, typeof(ViewResult));
 			Assert.AreEqual("Index", result.ViewName);
-			Assert.AreEqual("Invalid login", result.ViewData["Error"]);
+            Assert.AreEqual("Invalid login", result.ViewData["Error"]);
 
 		}
 
