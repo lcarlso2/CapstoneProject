@@ -23,8 +23,17 @@ How to Log In:
 
 	Member Web App:
 
+	Member:
+
 	Email- email@email.com
 	Password- password
+	Email- customer1@test.com
+	Password- 1234
+
+	Librarian:
+	Email- librarian@email.com
+	Password- 1234
+
 
 
 
