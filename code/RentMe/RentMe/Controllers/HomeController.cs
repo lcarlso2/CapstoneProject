@@ -103,7 +103,17 @@ namespace RentMe.Controllers
 		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
 
                         var members = this.memberDal.GetAllMembers();
-                        var member = members.First(curr => curr.Email == user.Email);
+                        var member = new RegisteringMember();
+                        try
+                        {
+                            member = members.First(curr => curr.Email == user.Email);
+                        }
+                        catch (Exception e)
+                        {
+                            ViewBag.Error = "Invalid login";
+                            return View("Index");
+                        }
+                        
 
                         if (member.IsBlacklisted == 0)
                         {
