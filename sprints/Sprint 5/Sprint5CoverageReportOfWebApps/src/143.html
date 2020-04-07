@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\DAL\BorrowDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using RentMe.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMe.DAL
+{
+	/// &lt;summary&gt;
+	/// The class responsible for interacting with the database for borrowing items 
+	/// &lt;/summary&gt;
+	public class BorrowDal : IBorrowDal
+	{
+
+		/// &lt;summary&gt;
+		/// Borrows an item from the database. Throws an error if there is an error on the database
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;member&quot;&gt;the member borrowing the item&lt;/param&gt;
+		/// &lt;param name=&quot;media&quot;&gt;the item being borrowed&lt;/param&gt;
+		/// &lt;param name=&quot;addressId&quot;&gt; the id of the address the item is being shipped to &lt;/param&gt;
+		/// &lt;returns&gt;the number of rows altered in the database&lt;/returns&gt;
+		/// @precondition none
+		/// @postcondition the item is borrowed or an error is thrown if something goes wrong on the database
+		public int BorrowItem(Member member, Media media, int addressId)
+		{
+
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					using var transaction = conn.BeginTransaction();
+					var query = &quot;insert into rental_transaction(memberID, rentalDateTime, returnDateTime, inventoryID, addressID) &quot; +
+								&quot;values ((select memberID from member where email = @memberEmail), @rentalDateTime, @returnDateTime, @inventoryID, @addressId)&quot;;
+
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						cmd.Transaction = transaction;
+
+						cmd.Parameters.Add(&quot;@memberEmail&quot;, MySqlDbType.VarChar);
+						cmd.Parameters[&quot;@memberEmail&quot;].Value = member.Email;
+
+						cmd.Parameters.Add(&quot;@rentalDateTime&quot;, MySqlDbType.DateTime);
+						cmd.Parameters[&quot;@rentalDateTime&quot;].Value = DateTime.Now;
+
+						cmd.Parameters.Add(&quot;@returnDateTime&quot;, MySqlDbType.DateTime);
+						cmd.Parameters[&quot;@returnDateTime&quot;].Value = DateTime.Now.AddDays(14);
+
+						cmd.Parameters.Add(&quot;@inventoryID&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@inventoryID&quot;].Value = media.InventoryId;
+
+						cmd.Parameters.Add(&quot;@addressId&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@addressId&quot;].Value = addressId;
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+
+						cmd.Parameters.Clear();
+
+
+						cmd.CommandText = &quot;insert into status_history (rentalTransactionID, statusID, updateDateTime) values (last_insert_id(), @statusID, @updateDateTime);&quot;;
+
+						cmd.Parameters.Add(&quot;@statusID&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@statusID&quot;].Value = 1;
+
+						cmd.Parameters.Add(&quot;@updateDateTime&quot;, MySqlDbType.DateTime);
+						cmd.Parameters[&quot;@updateDateTime&quot;].Value = DateTime.Now;
+
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+
+						cmd.Parameters.Clear();
+
+						cmd.CommandText =
+							&quot;update inventory_item set isRented = true where inventoryID = @inventoryID;&quot;;
+						cmd.Parameters.Add(&quot;@inventoryID&quot;, MySqlDbType.Int32);
+						cmd.Parameters[&quot;@inventoryID&quot;].Value = media.InventoryId;
+
+
+						if (cmd.ExecuteNonQuery() != 1)
+						{
+							transaction.Rollback();
+						}
+
+
+						transaction.Commit();
+					}
+					conn.Close();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return 3;
+		}
+
+		/// &lt;summary&gt;
+		/// Gets the number of open rentals a member has
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;member&quot;&gt;the member being checked &lt;/param&gt;
+		/// &lt;returns&gt;the number of open rentals or an error if something goes wrong &lt;/returns&gt;
+		public int GetNumberOfOpenRentals(Member member)
+		{
+			var count = 0;
+			try
+			{
+				var conn = DbConnection.GetConnection();
+				using (conn)
+				{
+					conn.Open();
+					var query = &quot;select count(*) from rental_transaction &quot; +
+								&quot;r, user, member, media, inventory_item i, status where &quot; +
+								&quot;userID = member.memberID and member.memberID = r.memberID and &quot; +
+								&quot;r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and &quot; +
+								&quot;status.status != &#39;Returned&#39; and &quot; +
+								&quot;status.statusID = (select max(s1.statusID) from status_history s1 &quot; +
+								&quot;where r.rentalID = s1.rentalTransactionID and r.memberId = (select memberID from member where email = @email) &quot; +
+								&quot;group by s1.rentalTransactionID);&quot;;
+
+					using (var cmd = new MySqlCommand(query, conn))
+					{
+						cmd.Parameters.AddWithValue(&quot;@email&quot;, member.Email);
+						count = Convert.ToInt32(cmd.ExecuteScalar());
+					}
+
+					conn.Close();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+			return count;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[28,3,28,4,1],[31,4,31,5,1],[32,5,32,45,1],[33,5,33,17,1],[34,5,34,6,1],[35,6,35,18,1],[36,6,36,54,1],[37,6,38,137,1],[40,13,40,52,1],[41,6,41,7,1],[42,7,42,37,1],[44,7,44,63,1],[45,7,45,59,1],[47,7,47,67,1],[48,7,48,62,1],[50,7,50,67,1],[51,7,51,74,1],[53,7,53,61,1],[54,7,54,64,1],[56,7,56,59,1],[57,7,57,54,1],[59,7,59,38,1],[60,7,60,8,0],[61,8,61,31,0],[62,7,62,8,0],[64,7,64,30,1],[67,7,67,157,1],[69,7,69,58,1],[70,7,70,45,1],[72,7,72,67,1],[73,7,73,62,1],[76,7,76,38,1],[77,7,77,8,0],[78,8,78,31,0],[79,7,79,8,0],[81,7,81,30,1],[83,7,84,86,1],[85,7,85,61,1],[86,7,86,64,1],[89,7,89,38,1],[90,7,90,8,0],[91,8,91,31,0],[92,7,92,8,0],[95,7,95,28,1],[96,6,96,7,1],[97,6,97,19,1],[98,5,98,6,1],[99,4,99,5,1],[100,4,100,24,1],[101,4,101,5,1],[102,5,102,14,1],[105,4,105,13,1],[106,3,106,4,1],[114,3,114,4,1],[115,4,115,18,1],[117,4,117,5,1],[118,5,118,45,1],[119,5,119,17,1],[120,5,120,6,1],[121,6,121,18,1],[122,6,129,45,1],[131,13,131,52,1],[132,6,132,7,1],[133,7,133,59,1],[134,7,134,52,1],[135,6,135,7,1],[137,6,137,19,1],[138,5,138,6,1],[140,4,140,5,1],[141,4,141,24,0],[142,4,142,5,0],[143,5,143,14,0],[146,4,146,17,1],[147,3,147,4,1]]);
+    </script>
+  </body>
+</html>

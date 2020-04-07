@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\SharedCodeTests\ModelTests\RentalItemTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.Model;
+
+namespace RentMeTests.SharedCodeTests.ModelTests
+{
+	/// &lt;summary&gt;
+	/// The test class for the rental item
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class RentalItemTests
+	{
+		[TestMethod()]
+		public void TestCreateRentalItemConstructor()
+		{
+			var item = new RentalItem();
+
+			Assert.AreEqual(null, item.Category);
+			Assert.AreEqual(null, item.MemberEmail);
+			Assert.AreEqual(new DateTime(), item.RentalDate);
+			Assert.AreEqual(new DateTime(), item.ReturnDate);
+			Assert.AreEqual(null, item.Status);
+			Assert.AreEqual(null, item.Title);
+		}
+
+		[TestMethod()]
+		public void TestCreateRentalItemSetters()
+		{
+			var item = new RentalItem
+			{
+				MemberId = 1,
+				RentalId = 1,
+				InventoryId = 1,
+				MemberEmail = &quot;email&quot;,
+				RentalDate = new DateTime(),
+				ReturnDate = new DateTime(),
+				Category = &quot;category&quot;,
+				Title = &quot;title&quot;,
+				Status = &quot;Ordered&quot;
+			};
+
+			Assert.AreEqual(1, item.MemberId);
+			Assert.AreEqual(1, item.RentalId);
+			Assert.AreEqual(new DateTime(), item.RentalDate);
+			Assert.AreEqual(new DateTime(), item.ReturnDate);
+			Assert.AreEqual(1, item.InventoryId);
+			Assert.AreEqual(&quot;email&quot;, item.MemberEmail);
+			Assert.AreEqual(&quot;category&quot;, item.Category);
+			Assert.AreEqual(&quot;title&quot;, item.Title);
+			Assert.AreEqual(&quot;Ordered&quot;, item.Status);
+		}
+
+		[TestMethod()]
+		public void TestCreateRentalItemInfo()
+		{
+			var item = new RentalItem
+			{
+				MemberId = 1,
+				RentalId = 1,
+				InventoryId = 1,
+				MemberEmail = &quot;email&quot;,
+				RentalDate = new DateTime(),
+				ReturnDate = new DateTime(),
+				Category = &quot;category&quot;,
+				Title = &quot;title&quot;,
+				Status = &quot;Ordered&quot;
+			};
+
+			Assert.AreEqual($&quot;Rental ID: {item.RentalId}, Inventory ID: {item.InventoryId}, Category: {item.Category}, Title: {item.Title}\nMember ID: {item.MemberId} Member Email: {item.MemberEmail}\nRental Date: {item.RentalDate}, Due Date: {item.ReturnDate}, Status: {item.Status}\n&quot;, item.RentalItemInfo);
+			
+		}
+
+
+		[TestMethod()]
+		public void TestGetPossibleStatusesWithOrdered()
+		{
+			var expected = new List&lt;string&gt; {&quot;Ordered&quot;, &quot;Shipped&quot;};
+			var actual = RentalItem.GetPossibleStatuses(&quot;Ordered&quot;);
+			Assert.AreEqual(expected.Count, actual.Count);
+			Assert.AreEqual(expected[0], actual[0]);
+			Assert.AreEqual(expected[1], actual[1]);
+		}
+
+		[TestMethod()]
+		public void TestGetPossibleStatusesWithShipped()
+		{
+			var expected = new List&lt;string&gt; { &quot;Shipped&quot;, &quot;Returned&quot; };
+			var actual = RentalItem.GetPossibleStatuses(&quot;Shipped&quot;);
+			Assert.AreEqual(expected.Count, actual.Count);
+			Assert.AreEqual(expected[0], actual[0]);
+			Assert.AreEqual(expected[1], actual[1]);
+		}
+
+		[TestMethod()]
+		public void TestGetPossibleStatusesWithReturned()
+		{
+			var expected = new List&lt;string&gt; { &quot;Returned&quot; };
+			var actual = RentalItem.GetPossibleStatuses(&quot;Returned&quot;);
+			Assert.AreEqual(expected.Count, actual.Count);
+			Assert.AreEqual(expected[0], actual[0]);
+		}
+
+		[TestMethod()]
+		public void TestGetPossibleStatusIdWithOrdered()
+		{
+			Assert.AreEqual(1, RentalItem.GetStatusId(&quot;Ordered&quot;));
+		}
+
+		[TestMethod()]
+		public void TestGetPossibleStatusIdWithShipped()
+		{
+			Assert.AreEqual(2, RentalItem.GetStatusId(&quot;Shipped&quot;));
+		}
+
+		[TestMethod()]
+		public void TestGetPossibleStatusIdWithReturned()
+		{
+			Assert.AreEqual(4, RentalItem.GetStatusId(&quot;Returned&quot;));
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,3,17,4,1],[18,4,18,32,1],[20,4,20,41,1],[21,4,21,44,1],[22,4,22,53,1],[23,4,23,53,1],[24,4,24,39,1],[25,4,25,38,1],[26,3,26,4,1],[30,3,30,4,1],[31,4,42,6,1],[44,4,44,38,1],[45,4,45,38,1],[46,4,46,53,1],[47,4,47,53,1],[48,4,48,41,1],[49,4,49,47,1],[50,4,50,47,1],[51,4,51,41,1],[52,4,52,44,1],[53,3,53,4,1],[57,3,57,4,1],[58,4,69,6,1],[71,4,71,301,1],[73,3,73,4,1],[78,3,78,4,1],[79,4,79,59,1],[80,4,80,59,1],[81,4,81,50,1],[82,4,82,44,1],[83,4,83,44,1],[84,3,84,4,1],[88,3,88,4,1],[89,4,89,62,1],[90,4,90,59,1],[91,4,91,50,1],[92,4,92,44,1],[93,4,93,44,1],[94,3,94,4,1],[98,3,98,4,1],[99,4,99,51,1],[100,4,100,60,1],[101,4,101,50,1],[102,4,102,44,1],[103,3,103,4,1],[107,3,107,4,1],[108,4,108,58,1],[109,3,109,4,1],[113,3,113,4,1],[114,4,114,58,1],[115,3,115,4,1],[119,3,119,4,1],[120,4,120,59,1],[121,3,121,4,1]]);
+    </script>
+  </body>
+</html>

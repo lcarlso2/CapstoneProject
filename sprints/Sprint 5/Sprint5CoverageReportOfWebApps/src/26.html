@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeEmployee\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
+using RentMeEmployee.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMeEmployee.Controllers
+{
+	/// &lt;summary&gt;
+	/// The home controller for the application 
+	/// &lt;/summary&gt;
+	public class HomeController : Controller
+	{
+		private readonly IEmployeeDal employeeDal;
+   
+
+		/// &lt;summary&gt;
+        /// The current employee logged in
+        /// &lt;/summary&gt;
+        public static Employee CurrentEmployee = null;
+
+        /// &lt;summary&gt;
+        /// True if the current user is a manager
+        /// &lt;/summary&gt;
+        public static bool IsManager;
+
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller
+        /// with a default employee dal 
+        /// &lt;/summary&gt;
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	        this.employeeDal = new EmployeeDal();
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new controller with the given dals passed in
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;employeeDal&quot;&gt;The employee dal to be passed in&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition getEmployeeDal() == employeeDal
+        public HomeController(IEmployeeDal employeeDal)
+        {
+	        this.employeeDal = employeeDal;
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for the index page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the index page or the employee landing page if the currentemployee is not null&lt;/returns&gt;
+        public IActionResult Index()
+		{
+			if (CurrentEmployee != null)
+			{
+				return RedirectToAction(&quot;EmployeeLanding&quot;, &quot;Orders&quot;);
+			}
+			else
+			{
+				return View();
+			}
+        }
+
+        /// &lt;summary&gt;
+        /// The sign out action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the current employee is set to null
+        public IActionResult SignOut()
+        {
+            CurrentEmployee = null;
+
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for the get request from the login page 
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the login page&lt;/returns&gt;
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View(&quot;Index&quot;);
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for the post request from the login page
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;employee&quot;&gt;the employee being logged in&lt;/param&gt;
+        /// &lt;returns&gt;the login page. If the credentials provided are valid then the state of the
+        /// system changes to a valid user being logged in&lt;/returns&gt;
+        [HttpPost]
+        public IActionResult Login(BaseEmployee employee)
+        {
+            try
+            {
+
+                if (ModelState.IsValid &amp;&amp; this.employeeDal.Authenticate(employee.Username, employee.Password) == 1)
+                {
+
+                    CurrentEmployee = this.employeeDal.GetCurrentUser(employee.Username, employee.Password);
+                    IsManager = CurrentEmployee.IsManager;
+
+                    return RedirectToAction(&quot;EmployeeLanding&quot;, &quot;Orders&quot;);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+        
+        /// &lt;summary&gt;
+        /// The error page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The error page &lt;/returns&gt;
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[24,9,24,55,1],[37,9,37,32,1],[38,9,38,10,1],[39,10,39,47,1],[40,9,40,10,1],[48,9,48,56,1],[49,9,49,10,1],[50,10,50,41,1],[51,9,51,10,1],[58,3,58,4,1],[59,4,59,32,1],[60,4,60,5,1],[61,5,61,58,1],[64,4,64,5,1],[65,5,65,19,1],[67,9,67,10,1],[76,9,76,10,1],[77,13,77,36,1],[79,13,79,46,1],[80,9,80,10,1],[88,9,88,10,1],[89,13,89,34,1],[90,9,90,10,1],[100,9,100,10,1],[102,13,102,14,1],[104,17,104,116,1],[105,17,105,18,1],[107,21,107,109,1],[108,21,108,59,1],[110,21,110,74,1],[112,13,112,14,1],[113,13,113,30,1],[114,13,114,14,1],[115,17,115,76,1],[116,17,116,38,1],[119,13,119,45,1],[120,13,120,34,1],[121,9,121,10,1],[130,3,130,4,0],[131,4,131,104,0],[132,3,132,4,0]]);
+    </script>
+  </body>
+</html>

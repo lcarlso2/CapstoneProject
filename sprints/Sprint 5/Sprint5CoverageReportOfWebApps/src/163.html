@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\HomeController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Diagnostics;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The home controller responsible for the page communication of the Rent Me Application (Member Side).
+    /// &lt;/summary&gt;
+    public class HomeController : Controller
+    {
+
+	    private readonly IMemberDal memberDal;
+
+	    private readonly ILibrarianDal librarianDal;
+
+	    /// &lt;summary&gt;
+        /// The current user that is logged into the system.
+        /// If there is no-one logged in, the user is null.
+        /// &lt;/summary&gt;
+        public static Member CurrentUser;
+
+	    public static Librarian CurrentLibrarian;
+
+        /// &lt;summary&gt;
+        /// Creates a new home controller with the desired dals
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;memberDal&quot;&gt;The member dal for communication&lt;/param
+        /// &lt;param name=&quot;librarianDal&quot;&gt;The librarian dal for communication&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the input dals
+        public HomeController(IMemberDal memberDal, ILibrarianDal librarianDal)
+        {
+	        this.memberDal = memberDal;
+	        this.librarianDal = librarianDal;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a new default home controller with the default customer dal and librarian dal
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the controller is created with the CustomerDal and the librarian dal
+        [ActivatorUtilitiesConstructor]
+        public HomeController()
+        {
+	        this.memberDal = new MemberDal();
+            this.librarianDal = new LibrarianDal();
+        }
+
+        /// &lt;summary&gt;
+        /// The index action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the browse page if someone is logged in, otherwise the index page if no one is logged in.&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition none
+        public IActionResult Index()
+        {
+            if (CurrentUser != null || CurrentLibrarian != null)
+            {
+                return RedirectToAction(&quot;Browse&quot;, &quot;Borrow&quot;);
+            }
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The signout action result
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The index page and the state of the system changes to no one being logged in&lt;/returns&gt;
+        /// @precondition none
+        /// @postcondition the current user is set to null
+        public IActionResult Signout()
+        {
+            CurrentUser = null;
+            CurrentLibrarian = null;
+            return RedirectToAction(&quot;Index&quot;);
+        }
+
+
+
+
+        /// &lt;summary&gt;
+        /// The http post for the action result login
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;user&quot;&gt;the user logging in&lt;/param&gt;
+        /// &lt;returns&gt;The browse page if the user is signed in otherwise stays on the index page if the login is invalid or an error occurs&lt;/returns&gt;
+        /// @precondition state of system is that of no one logged in
+        /// @postcondition If the log in is successful then the state of the system changes to that of a valid member
+        [HttpPost]
+        public IActionResult Login(Member user)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+	                if (this.memberDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+		                CurrentUser = new Member {Email = user.Email, Password = user.Password};
+
+                        var members = this.memberDal.GetAllMembers();
+                        var member = new RegisteringMember();
+                        try
+                        {
+                            member = members.First(curr =&gt; curr.Email == user.Email);
+                        }
+                        catch (Exception e)
+                        {
+                            ViewBag.Error = &quot;Invalid login&quot;;
+                            return View(&quot;Index&quot;);
+                        }
+                        
+
+                        if (member.IsBlacklisted == 0)
+                        {
+
+                            return RedirectToAction(&quot;LibrariansChoice&quot;, &quot;Borrow&quot;);
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = &quot;Blacklisted&quot;;
+                            ViewBag.Error = &quot;Sorry, you have been blacklisted.&quot;;
+                            return View(&quot;Index&quot;);
+                        }
+	                } 
+	                if (this.librarianDal.Authenticate(user.Email, user.Password) == 1)
+	                {
+                        CurrentLibrarian = new Librarian { Email = user.Email, Password = user.Password };
+                        return RedirectToAction(&quot;LibrariansChoice&quot;, &quot;Borrow&quot;);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                ViewBag.Error = &quot;Whoops, try again. Something went wrong.&quot;;
+                return View(&quot;Index&quot;);
+            }
+
+            ViewBag.Error = &quot;Invalid login&quot;;
+            return View(&quot;Index&quot;);
+        }
+
+
+        /// &lt;summary&gt;
+        /// The error page
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the error page&lt;/returns&gt;
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[37,9,37,80,1],[38,9,38,10,1],[39,10,39,37,1],[40,10,40,43,1],[41,9,41,10,1],[49,9,49,32,1],[50,9,50,10,1],[51,10,51,43,1],[52,13,52,52,1],[53,9,53,10,1],[62,9,62,10,1],[63,13,63,65,1],[64,13,64,14,1],[65,17,65,61,1],[67,13,67,34,1],[68,9,68,10,1],[78,9,78,10,1],[79,13,79,32,1],[80,13,80,37,1],[81,13,81,46,1],[82,9,82,10,1],[96,9,96,10,1],[98,13,98,14,1],[99,17,99,40,1],[100,17,100,18,1],[101,18,101,82,1],[102,18,102,19,1],[103,19,103,91,1],[105,25,105,70,1],[106,25,106,62,1],[108,25,108,26,1],[109,29,109,60,1],[109,60,109,84,0],[109,84,109,86,1],[109,29,109,86,1],[110,25,110,26,0],[111,25,111,44,1],[112,25,112,26,1],[113,29,113,61,1],[114,29,114,50,1],[118,25,118,55,0],[119,25,119,26,0],[121,29,121,83,0],[124,25,124,26,0],[125,29,125,66,0],[126,29,126,81,0],[127,29,127,50,0],[130,18,130,85,1],[131,18,131,19,1],[132,25,132,107,1],[133,25,133,79,1],[135,17,135,18,1],[136,13,136,14,1],[137,13,137,33,1],[138,13,138,14,1],[139,17,139,51,1],[140,17,140,76,1],[141,17,141,38,1],[144,13,144,45,1],[145,13,145,34,1],[146,9,146,10,1],[155,9,155,10,0],[156,13,156,113,0],[157,9,157,10,0]]);
+    </script>
+  </body>
+</html>

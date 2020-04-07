@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\SharedCode\Model\InventoryItem.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace SharedCode.Model
+{
+    /// &lt;summary&gt;
+    /// Template for an inventory item
+    /// &lt;/summary&gt;
+    public class InventoryItem
+    {
+        /// &lt;summary&gt;
+        /// The list of options for categories
+        /// &lt;/summary&gt;
+        public static List&lt;string&gt; CategoryOptions = new List&lt;string&gt;{ &quot;Action&quot;, &quot;Adventure&quot;, &quot;Horror&quot;, &quot;Comedy&quot;, &quot;Romance&quot;};
+
+        /// &lt;summary&gt;
+        /// The list of options for types
+        /// &lt;/summary&gt;
+        public static List&lt;string&gt; TypeOptions = new List&lt;string&gt; { &quot;Movie&quot;, &quot;Book&quot;, &quot;TV Show&quot;};
+
+        /// &lt;summary&gt;
+        /// The list of options for conditions
+        /// &lt;/summary&gt;
+        public static List&lt;string&gt; ConditionOptions = new List&lt;string&gt; { &quot;New&quot;, &quot;Used&quot;, &quot;Poor&quot;, &quot;Damaged&quot; };
+
+        /// &lt;summary&gt;
+        /// The id for an individual inventory item
+        /// &lt;/summary&gt;
+        public int InventoryId { get; set; }
+
+        /// &lt;summary&gt;
+        /// The id for a specific media item
+        /// &lt;/summary&gt;
+        public int MediaId { get; set; }
+
+        /// &lt;summary&gt;
+        /// The condition of the inventory item
+        /// &lt;/summary&gt;
+        [Required]
+        public string Condition { get; set; }
+
+        /// &lt;summary&gt;
+        /// The category of the inventory item
+        /// &lt;/summary&gt;
+        public string Category { get; set; }
+
+        /// &lt;summary&gt;
+        /// The title of the inventory item
+        /// &lt;/summary&gt;
+        [Required]
+        public string Title { get; set; }
+
+        /// &lt;summary&gt;
+        /// The type of the inventory item
+        /// &lt;/summary&gt;
+        public string Type { get; set; }
+
+        /// &lt;summary&gt;
+        /// True if item is rented and false if it is not
+        /// &lt;/summary&gt;
+        [Display(Name = &quot;Is Rented&quot;)]
+        public bool IsRented { get; set; }
+
+        /// &lt;summary&gt;
+        /// True if the item is in stock and false if it is not
+        /// &lt;/summary&gt;
+        [Display(Name = &quot;In Stock&quot;)]
+        public bool InStock { get; set; }
+
+        /// &lt;summary&gt;
+        /// Initializes a new instance of the &lt;see cref=&quot;InventoryItem&quot;/&gt; class.
+        /// &lt;/summary&gt;
+        public InventoryItem()
+        {
+	  
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,9,14,126,0],[14,9,14,126,0],[14,9,14,126,1],[19,9,19,97,0],[19,9,19,97,0],[19,9,19,97,1],[24,9,24,109,0],[24,9,24,109,0],[24,9,24,109,1],[29,34,29,38,1],[29,34,29,38,0],[29,34,29,38,0],[29,39,29,43,1],[29,39,29,43,0],[29,39,29,43,0],[34,30,34,34,0],[34,30,34,34,1],[34,30,34,34,0],[34,35,34,39,1],[34,35,34,39,0],[34,35,34,39,0],[40,35,40,39,1],[40,35,40,39,1],[40,35,40,39,0],[40,40,40,44,0],[40,40,40,44,0],[40,40,40,44,1],[45,34,45,38,1],[45,34,45,38,0],[45,34,45,38,0],[45,39,45,43,0],[45,39,45,43,1],[45,39,45,43,0],[51,31,51,35,0],[51,31,51,35,0],[51,31,51,35,1],[51,36,51,40,0],[51,36,51,40,1],[51,36,51,40,1],[56,30,56,34,0],[56,30,56,34,1],[56,30,56,34,0],[56,35,56,39,0],[56,35,56,39,0],[56,35,56,39,1],[62,32,62,36,1],[62,32,62,36,0],[62,32,62,36,0],[62,37,62,41,0],[62,37,62,41,0],[62,37,62,41,1],[68,31,68,35,0],[68,31,68,35,0],[68,31,68,35,1],[68,36,68,40,0],[68,36,68,40,1],[68,36,68,40,0],[73,9,73,31,1],[73,9,73,31,0],[73,9,73,31,1],[74,9,74,10,1],[74,9,74,10,1],[74,9,74,10,0],[76,9,76,10,1],[76,9,76,10,1],[76,9,76,10,0]]);
+    </script>
+  </body>
+</html>

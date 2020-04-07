@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\MediaDalTest\RemoveFromLibrariansChoiceTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMeTests.DalTests.MediaDalTest
+{
+	/// &lt;summary&gt;
+	/// The test class for removing from librarians choice list
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class RemoveFromLibrariansChoiceTests
+	{
+		[TestMethod()]
+		public void RemoveFromLibrariansChoiceValidTest()
+		{
+			var mediaDal = new MediaDal();
+
+			mediaDal.AddToLibrariansChoice(1);
+			mediaDal.RemoveFromLibrariansChoice(1);
+
+			var media = mediaDal.RetrieveMediaById(1);
+
+			Assert.AreEqual(false, media.IsLibrariansChoice);
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,3,19,4,1],[20,4,20,34,1],[22,4,22,38,1],[23,4,23,43,1],[25,4,25,46,1],[27,4,27,53,1],[28,3,28,4,1]]);
+    </script>
+  </body>
+</html>

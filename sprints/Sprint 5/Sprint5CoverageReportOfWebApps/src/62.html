@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\MockDal\MockMediaDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMeTests.MockDal
+{
+	/// &lt;summary&gt;
+	/// The mock media dal class used for testing purposes 
+	/// &lt;/summary&gt;
+	public class MockMediaDal : IMediaDal
+	{
+
+		public bool ThrowError { get; set; }
+
+
+		public List&lt;Media&gt; RetrieveAllMedia()
+		{
+			var media = new List&lt;Media&gt; {new Media {InventoryId = 1}};
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+
+			return media;
+		}
+
+
+		public List&lt;Media&gt; RetrieveMediaByConditions(string categoryCondition, string typeCondition,
+			string librarianChoice)
+		{
+			var media = new List&lt;Media&gt; {new Media {InventoryId = 1}};
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+
+			return media;
+		}
+
+		public void RemoveFromLibrariansChoice(int inventoryId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
+
+
+		public void AddToLibrariansChoice(int inventoryId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+		}
+
+		public Media RetrieveMediaById(int id)
+		{
+			var media =  new Media { InventoryId = 1 };
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+
+			return media;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,28,15,32,1],[15,33,15,37,1],[19,3,19,4,0],[20,4,20,62,0],[21,4,21,24,0],[22,4,22,5,0],[23,5,23,27,0],[27,4,27,17,0],[28,3,28,4,0],[33,3,33,4,1],[34,4,34,62,1],[35,4,35,24,1],[36,4,36,5,1],[37,5,37,27,1],[41,4,41,17,1],[42,3,42,4,1],[45,3,45,4,1],[46,4,46,24,1],[47,4,47,5,1],[48,5,48,27,1],[50,3,50,4,1],[54,3,54,4,1],[55,4,55,24,1],[56,4,56,5,1],[57,5,57,27,1],[59,3,59,4,1],[62,3,62,4,1],[63,4,63,47,1],[64,4,64,24,1],[65,4,65,5,1],[66,5,66,27,1],[70,4,70,17,1],[71,3,71,4,1]]);
+    </script>
+  </body>
+</html>

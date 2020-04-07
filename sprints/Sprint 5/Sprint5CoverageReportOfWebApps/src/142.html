@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\RegisteringMember.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of the registering customer
+	/// &lt;/summary&gt;
+	public class RegisteringMember : Member
+	{
+		/// &lt;summary&gt;
+		/// Gets or sets the members id
+		/// &lt;/summary&gt;
+		/// &lt;value&gt;
+		///The customer id
+		/// &lt;/value&gt;
+		public int MemberId { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the first name
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the first name is set
+		[Required]
+		[Display(Name = &quot;First Name&quot;)]
+		public string First { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the last name
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the last name is set
+		[Required]
+		[Display(Name = &quot;Last Name&quot;)]
+		public string Last { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm email
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the confirm email is set
+		[Required]
+		[Display(Name = &quot;Confirm Email&quot;)]
+		[DataType(DataType.EmailAddress)]
+		[Compare(&quot;Email&quot;)]
+		public string ConfirmEmail { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the confirm password
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the confirm password is set
+		[Required]
+		[Display(Name = &quot;Confirm Password&quot;)]
+		[DataType(DataType.Password)]
+		[Compare(&quot;Password&quot;)]
+		public string ConfirmPassword { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the Address
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the address is set
+		public Address Address { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the value for if a member is blacklisted
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the value is set for being blacklisted
+        public int IsBlacklisted { get; set; }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,25,20,29,1],[20,30,20,34,1],[29,25,29,29,1],[29,30,29,34,1],[39,24,39,28,1],[39,29,39,33,1],[51,32,51,36,0],[51,37,51,41,1],[62,35,62,39,0],[62,40,62,44,1],[70,28,70,32,1],[70,33,70,37,1],[77,36,77,40,1],[77,41,77,45,1]]);
+    </script>
+  </body>
+</html>

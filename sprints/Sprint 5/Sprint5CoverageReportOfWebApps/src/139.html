@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\Librarian.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of the librarian object
+	/// &lt;/summary&gt;
+	public class Librarian 
+	{
+		/// &lt;summary&gt;
+		/// Gets or sets the email of the librarian
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the email address is set 
+		[Required]
+		public string Email { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or set the password
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the address is set
+		[Required]
+		[DataType(DataType.Password)]
+		public string Password { get; set; }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,25,20,29,0],[20,30,20,34,1],[29,28,29,32,0],[29,33,29,37,1]]);
+    </script>
+  </body>
+</html>

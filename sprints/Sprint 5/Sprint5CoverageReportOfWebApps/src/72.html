@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\MediaDalTest\AddToLibrariansChoiceTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.DAL;
+
+namespace RentMeTests.DalTests.MediaDalTest
+{
+	/// &lt;summary&gt;
+	/// The test class for adding to librarians choice list
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class AddToLibrariansChoiceTests
+	{
+		[TestMethod()]
+		public void AddToLibrariansChoiceValidTest()
+		{
+			var mediaDal = new MediaDal();
+
+			mediaDal.AddToLibrariansChoice(1);
+
+			var mediaAfterAdd = mediaDal.RetrieveMediaById(1);
+
+			mediaDal.RemoveFromLibrariansChoice(1);
+
+			var mediaAfterRemove = mediaDal.RetrieveMediaById(1);
+
+			Assert.AreEqual(true, mediaAfterAdd.IsLibrariansChoice);
+			Assert.AreEqual(false, mediaAfterRemove.IsLibrariansChoice);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,4,1],[19,4,19,34,1],[21,4,21,38,1],[23,4,23,54,1],[25,4,25,43,1],[27,4,27,57,1],[29,4,29,60,1],[30,4,30,64,1],[31,3,31,4,1]]);
+    </script>
+  </body>
+</html>

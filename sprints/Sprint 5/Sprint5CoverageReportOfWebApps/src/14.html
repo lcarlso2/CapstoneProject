@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\SharedCode\TestObjects\MockRentalDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace SharedCode.TestObjects
+{
+	/// &lt;summary&gt;
+	/// The mock rental dal for testing purposes
+	/// &lt;/summary&gt;
+	public class MockRentalDal : IRentalDal
+	{
+
+		public bool ThrowError { get; set; }
+
+		public List&lt;RentalItem&gt; RetrieveAllRentedItems()
+		{
+			var items = new List&lt;RentalItem&gt;{new RentalItem{RentalId = 1, Status = &quot;Ordered&quot;}};
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return items;
+		}
+		public List&lt;RentalItem&gt; RetrieveAllRentalsByCustomer(string email)
+		{
+			var items = new List&lt;RentalItem&gt; { new RentalItem { RentalId = 1, Status = &quot;Ordered&quot;, RentalDate = DateTime.Now, Title = &quot;Test&quot;} };
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return items;
+		}
+
+
+		public List&lt;RentalItem&gt; RetrieveSelectRentedItems(string selectedStatus)
+		{
+			var items = new List&lt;RentalItem&gt;();
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return items;
+		}
+
+
+		public int UpdateStatus(int transactionId, string status, int employeeId, string condition)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+
+			return 1;
+		}
+
+		public List&lt;RentalItem&gt; RetrieveHistoryForRentalTransaction(int rentalId)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return new List&lt;RentalItem&gt;();
+		}
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,28,15,32,1],[15,28,15,32,1],[15,28,15,32,0],[15,33,15,37,1],[15,33,15,37,1],[15,33,15,37,0],[18,3,18,4,1],[18,3,18,4,0],[18,3,18,4,0],[19,4,19,87,1],[19,4,19,87,0],[19,4,19,87,0],[20,4,20,24,1],[20,4,20,24,0],[20,4,20,24,0],[21,4,21,5,0],[21,4,21,5,0],[21,4,21,5,1],[22,5,22,27,0],[22,5,22,27,1],[22,5,22,27,0],[24,4,24,17,0],[24,4,24,17,1],[24,4,24,17,0],[25,3,25,4,0],[25,3,25,4,1],[25,3,25,4,0],[27,3,27,4,0],[27,3,27,4,1],[27,3,27,4,0],[28,4,28,135,1],[28,4,28,135,0],[28,4,28,135,0],[29,4,29,24,1],[29,4,29,24,0],[29,4,29,24,0],[30,4,30,5,1],[30,4,30,5,0],[30,4,30,5,0],[31,5,31,27,0],[31,5,31,27,0],[31,5,31,27,1],[33,4,33,17,0],[33,4,33,17,1],[33,4,33,17,0],[34,3,34,4,0],[34,3,34,4,1],[34,3,34,4,0],[38,3,38,4,1],[38,3,38,4,0],[38,3,38,4,0],[39,4,39,39,0],[39,4,39,39,0],[39,4,39,39,1],[40,4,40,24,0],[40,4,40,24,1],[40,4,40,24,0],[41,4,41,5,0],[41,4,41,5,1],[41,4,41,5,0],[42,5,42,27,0],[42,5,42,27,1],[42,5,42,27,0],[44,4,44,17,0],[44,4,44,17,1],[44,4,44,17,0],[45,3,45,4,1],[45,3,45,4,0],[45,3,45,4,0],[49,3,49,4,0],[49,3,49,4,0],[49,3,49,4,1],[50,4,50,24,0],[50,4,50,24,0],[50,4,50,24,1],[51,4,51,5,0],[51,4,51,5,0],[51,4,51,5,0],[52,5,52,27,0],[52,5,52,27,0],[52,5,52,27,0],[55,4,55,13,1],[55,4,55,13,0],[55,4,55,13,0],[56,3,56,4,1],[56,3,56,4,0],[56,3,56,4,0],[59,3,59,4,0],[59,3,59,4,1],[59,3,59,4,0],[60,4,60,24,1],[60,4,60,24,0],[60,4,60,24,0],[61,4,61,5,0],[61,4,61,5,1],[61,4,61,5,0],[62,5,62,27,0],[62,5,62,27,0],[62,5,62,27,1],[64,4,64,34,1],[64,4,64,34,0],[64,4,64,34,0],[65,3,65,4,0],[65,3,65,4,0],[65,3,65,4,1]]);
+    </script>
+  </body>
+</html>

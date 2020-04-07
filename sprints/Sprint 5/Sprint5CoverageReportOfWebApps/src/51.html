@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\SharedCodeTests\DalTests\InventoryDalTests\GetInventoryItemsTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SharedCode.DAL;
+
+namespace RentMeTests.SharedCodeTests.DalTests.InventoryDalTests
+{
+	/// &lt;summary&gt;
+	/// The test class for get inventory items 
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class GetInventoryItemsTests
+	{
+		[TestMethod()]
+		public void GetInventoryItemsTest()
+		{
+			var inventoryDal = new InventoryDal();
+			var result = inventoryDal.GetInventoryItems();
+
+			Assert.AreEqual(22, result.Count);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,3,17,4,1],[18,4,18,42,1],[19,4,19,50,1],[21,4,21,38,1],[22,3,22,4,1]]);
+    </script>
+  </body>
+</html>

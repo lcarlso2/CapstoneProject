@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\Address.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using RentMe.Controllers;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The address class responsible for keeping track of the address object
+	/// &lt;/summary&gt;
+	public class Address
+	{
+
+		private const int DEFAULT_ID = 2;
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the address id 
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the address id is set
+		[Required]
+		[Range(1, int.MaxValue)]
+		public int AddressId { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the password
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the street address is set 
+		[Required]
+		[Display(Name = &quot;Street Address&quot;)]
+		public string StreetAddress { get; set; }
+
+		/// &lt;summary&gt;
+		/// Gets or sets the state 
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the state is set 
+		[Required]
+		public string State { get; set; }
+
+
+		/// &lt;summary&gt;
+		/// Gets or sets the zip
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition the zip is set
+		[RegularExpression(@&quot;\b\d{5}\b&quot;, ErrorMessage = &quot;Must be five digits&quot;)]
+		[Required]
+		public string Zip { get; set; }
+
+		/// &lt;summary&gt;
+		/// Creates a new address object with the default id
+		/// &lt;/summary&gt;
+		/// @precondition none
+		/// @postcondition a new address object is created 
+		public Address()
+		{
+			this.AddressId = DEFAULT_ID;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[26,26,26,30,1],[26,31,26,35,1],[35,33,35,37,1],[35,38,35,42,1],[43,25,43,29,1],[43,30,43,34,1],[53,23,53,27,1],[53,28,53,32,1],[60,3,60,19,1],[61,3,61,4,1],[62,4,62,32,1],[63,3,63,4,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\MemberDalTest\UpdateBlacklistStatusTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.DAL;
+using RentMe.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace RentMeTests.DalTests.MemberDalTest
+{
+    /// &lt;summary&gt;
+    /// The test class for updating an email for a customer 
+    /// &lt;/summary&gt;
+    [TestClass()]
+    public class UpdateBlacklistStatusTests
+    {
+        [TestMethod()]
+        public void UpdateBlacklistStatus()
+        { 
+            var memberDal = new MemberDal();
+            var members = memberDal.GetAllMembers();
+            var member = members.Where(member =&gt; member.MemberId == 15).First();
+
+            var originalStatus = member.IsBlacklisted;
+            var newStatus = -1;
+            if(originalStatus == 1)
+            {
+                newStatus = 0;
+
+            } else if(originalStatus == 0)
+            {
+                newStatus = 1;
+            }
+
+            memberDal.UpdateBlacklistStatus(15);
+
+            members = memberDal.GetAllMembers();
+            member = members.Where(member =&gt; member.MemberId == 15).First();
+
+            Assert.AreEqual(newStatus, member.IsBlacklisted);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,9,19,10,1],[20,13,20,45,1],[21,13,21,53,1],[22,13,22,50,1],[22,50,22,71,1],[22,71,22,81,1],[22,13,22,81,1],[24,13,24,55,1],[25,13,25,32,1],[26,13,26,36,1],[27,13,27,14,1],[28,17,28,31,1],[30,13,30,14,1],[30,20,30,43,1],[31,13,31,14,1],[32,17,32,31,1],[33,13,33,14,1],[35,13,35,49,1],[37,13,37,49,1],[38,13,38,46,1],[38,46,38,67,1],[38,67,38,77,1],[38,13,38,77,1],[40,13,40,62,1],[41,9,41,10,1]]);
+    </script>
+  </body>
+</html>

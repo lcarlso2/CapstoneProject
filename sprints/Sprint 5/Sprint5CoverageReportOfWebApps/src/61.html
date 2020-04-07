@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\MockDal\MockLibrarianDal.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.Model;
+
+namespace RentMeTests.MockDal
+{
+	/// &lt;summary&gt;
+	/// The mock librarian dal for testing purposes
+	/// &lt;/summary&gt;
+	public class MockLibrarianDal : ILibrarianDal
+	{
+		public int AuthenticateValueToReturn { get; set; }
+
+		public bool ThrowError { get; set; }
+
+		public int Authenticate(string email, string password)
+		{
+			if (this.ThrowError)
+			{
+				throw new Exception();
+			}
+			return AuthenticateValueToReturn;
+		}
+
+		
+
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,42,15,46,1],[15,47,15,51,1],[17,28,17,32,1],[17,33,17,37,0],[20,3,20,4,1],[21,4,21,24,1],[22,4,22,5,0],[23,5,23,27,0],[25,4,25,37,1],[26,3,26,4,1]]);
+    </script>
+  </body>
+</html>

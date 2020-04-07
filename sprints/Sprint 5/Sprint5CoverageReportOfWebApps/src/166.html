@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Controllers\LibrarianController.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using RentMe.DAL;
+using RentMe.Models;
+using SharedCode.DAL;
+using SharedCode.Model;
+
+namespace RentMe.Controllers
+{
+    /// &lt;summary&gt;
+    /// The controller responsible for the librarian pages 
+    /// &lt;/summary&gt;
+    public class LibrarianController : Controller
+    {
+        private readonly IMemberDal memberDal;
+
+        private readonly IRentalDal rentalDal;
+
+
+        /// &lt;summary&gt;
+        /// The current selected members email
+        /// &lt;/summary&gt;
+        public static string CurrentMemberEmail;
+
+        /// &lt;summary&gt;
+        /// The current selected rentals id
+        /// &lt;/summary&gt;
+        public static int CurrentRentalId;
+
+        /// &lt;summary&gt;
+        /// The default constructor for the librarian page which instantiates the default
+        /// member dal and rental dal
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the librarian controller is created with the default dals
+        [ActivatorUtilitiesConstructor]
+        public LibrarianController()
+        {
+            this.memberDal = new MemberDal();
+            this.rentalDal = new RentalDal();
+        }
+
+        /// &lt;summary&gt;
+        /// The constructor for the librarian page where you pass in the desired member dal and rental dal
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;memberDal&quot;&gt; the member dal being passed in&lt;/param&gt;
+        /// &lt;param name=&quot;rentalDal&quot;&gt; the rentalDal dal being passed in&lt;/param&gt;
+        /// @precondition none
+        /// @postcondition the librarian controller is created with the desired dals
+        public LibrarianController(IMemberDal memberDal, IRentalDal rentalDal)
+        {
+            this.memberDal = memberDal;
+            this.rentalDal = rentalDal;
+        }
+
+        /// &lt;summary&gt;
+        /// The action result for viewing all members
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;the all members page with either the members fetched from the db or an error message with an empty list if
+        /// something went wrong when communicating with the db&lt;/returns&gt;
+        public IActionResult ViewAllMembers()
+        {
+            ViewBag.Filter = &quot;All&quot;;
+            try
+            {
+                var members = this.memberDal.GetAllMembers();
+                return View(&quot;AllMembers&quot;, members);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(&quot;AllMembers&quot;, new List&lt;RegisteringMember&gt;());
+            }
+
+        }
+
+        /// &lt;summary&gt;
+        /// The member history page of the member with the selected id
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;email&quot;&gt;the email of the member&lt;/param&gt;
+        /// &lt;returns&gt;the member history page with the history of the member or an error message with an empty list if
+        /// something went wrong when communicating with he db&lt;/returns&gt;
+        public IActionResult ViewMemberHistory(string email)
+        {
+            CurrentMemberEmail = email;
+            try
+            {
+                var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(email);
+                return View(&quot;MemberHistory&quot;, rentals);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(&quot;MemberHistory&quot;, new List&lt;RentalItem&gt;());
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// The member history page with the selected member now blacklisted
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the id of the member to blacklist&lt;/param&gt;
+        /// &lt;returns&gt;The all members page if a valid action. Else returns to the all members page if an error occured.&lt;/returns&gt;
+		public IActionResult BlacklistMember(int id)
+        {
+            ViewBag.Filter = &quot;All&quot;;
+            try
+            {
+                this.memberDal.UpdateBlacklistStatus(id);
+
+                var members = this.memberDal.GetAllMembers();
+                return View(&quot;AllMembers&quot;, members);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(&quot;AllMembers&quot;, new List&lt;RegisteringMember&gt;());
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// The view for the details of a given rental
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;the rental id the details are being displayed for&lt;/param&gt;
+        /// &lt;returns&gt;the detail for the given rental id or the detail view with an error message if something went wrong&lt;/returns&gt;
+        public IActionResult RentalDetails(int id)
+        {
+            CurrentRentalId = id;
+            try
+            {
+                var rentalDetails = this.rentalDal.RetrieveHistoryForRentalTransaction(id);
+                return View(&quot;RentalDetails&quot;, rentalDetails);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(&quot;RentalDetails&quot;, new List&lt;RentalItem&gt;());
+            }
+
+        }
+
+        /// &lt;summary&gt;
+        /// Returns the all member page with a filtered list of members based on the filter
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;filter&quot;&gt;the desired filter&lt;/param&gt;
+        /// &lt;returns&gt;The all member page with either all of the members or the overdue members depending on the selected filter. If an error
+        /// occurs then the allmember page is returned with an empty list of members and an error message&lt;/returns&gt;
+        public IActionResult MemberFilter(string filter)
+        {
+            try
+            {
+                if (filter.Equals(&quot;All&quot;))
+                {
+                    ViewBag.Filter = filter;
+                    var members = this.memberDal.GetAllMembers();
+                    return View(&quot;AllMembers&quot;, members);
+                }
+                else
+                {
+                    ViewBag.Filter = filter;
+                    var members = this.memberDal.GetOverdueMembers();
+                    return View(&quot;AllMembers&quot;, members);
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Filter = filter;
+                ViewBag.Error = &quot;Uh-oh.. something went wrong&quot;;
+                return View(&quot;AllMembers&quot;, new List&lt;RegisteringMember&gt;());
+            }
+
+        }
+
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[41,9,41,37,1],[42,9,42,10,1],[43,13,43,46,1],[44,13,44,46,1],[45,9,45,10,1],[54,9,54,79,1],[55,9,55,10,1],[56,13,56,40,1],[57,13,57,40,1],[58,9,58,10,1],[66,9,66,10,1],[67,13,67,36,1],[69,13,69,14,1],[70,17,70,62,1],[71,17,71,52,1],[73,13,73,30,1],[74,13,74,14,1],[75,17,75,64,1],[76,17,76,74,1],[79,9,79,10,1],[88,9,88,10,1],[89,13,89,40,1],[91,13,91,14,1],[92,17,92,82,1],[93,17,93,55,1],[95,13,95,30,1],[96,13,96,14,1],[97,17,97,64,1],[98,17,98,70,1],[100,9,100,10,1],[108,9,108,10,1],[109,13,109,36,1],[111,13,111,14,1],[112,17,112,58,1],[114,17,114,62,1],[115,17,115,52,1],[117,13,117,30,1],[118,13,118,14,1],[119,17,119,64,1],[120,17,120,74,1],[122,9,122,10,1],[130,9,130,10,1],[131,13,131,34,1],[133,13,133,14,1],[134,17,134,92,1],[135,17,135,61,1],[137,13,137,30,1],[138,13,138,14,1],[139,17,139,64,1],[140,17,140,70,1],[143,9,143,10,1],[152,9,152,10,1],[154,13,154,14,1],[155,17,155,42,1],[156,17,156,18,1],[157,21,157,45,1],[158,21,158,66,1],[159,21,159,56,1],[162,17,162,18,1],[163,21,163,45,1],[164,21,164,70,1],[165,21,165,56,1],[168,13,168,30,1],[169,13,169,14,1],[170,17,170,41,1],[171,17,171,64,1],[172,17,172,74,1],[175,9,175,10,1]]);
+    </script>
+  </body>
+</html>

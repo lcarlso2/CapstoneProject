@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMeTests\DalTests\MemberDalTest\GetAddressesTests.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RentMe.DAL;
+using RentMe.Models;
+
+namespace RentMeTests.DalTests.CustomerDalTest
+{
+	/// &lt;summary&gt;
+	/// The test class for getting the addresses of the customer
+	/// &lt;/summary&gt;
+	[TestClass()]
+	public class GetAddressesTests
+	{
+
+		[TestMethod()]
+		public void GetAddressesTest()
+		{
+			var customerDal = new MemberDal();
+
+			var result = customerDal.GetAddresses(new Member {Email = &quot;email@email.com&quot;});
+
+			Assert.AreEqual(4, result.Count);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,3,19,4,1],[20,4,20,38,1],[22,4,22,82,1],[24,4,24,37,1],[25,3,25,4,1]]);
+    </script>
+  </body>
+</html>

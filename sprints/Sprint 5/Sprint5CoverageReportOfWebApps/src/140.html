@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>D:\Downloads\College Work\CLASSES\Computing Capstone\CS4982CapstoneProject\code\RentMe\RentMe\Models\Media.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace RentMe.Models
+{
+	/// &lt;summary&gt;
+	/// The class responsible for keeping track of the media
+	/// &lt;/summary&gt;
+	/// 
+	[Serializable]
+	public class Media
+	{
+
+        /// &lt;summary&gt;
+        /// Gets or sets the inventory id
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the inventory id is set
+        public int InventoryId { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the title
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the title is set
+        public string Title { get; set; }
+
+
+        /// &lt;summary&gt;
+        /// Gets or sets the category
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the category is set
+        public string Category { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or sets the type
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the type is set
+        public string Type { get; set; }
+
+        /// &lt;summary&gt;
+        /// Gets or set the whether or not this item is in the librarians choice
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition the value is set
+        public bool IsLibrariansChoice { get; set; }
+
+        /// &lt;summary&gt;
+        /// The constructor for the media
+        /// &lt;/summary&gt;
+        /// @precondition none
+        /// @postcondition a new media object is created
+        public Media()
+        {
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,34,21,38,1],[21,39,21,43,1],[28,31,28,35,0],[28,36,28,40,1],[36,34,36,38,0],[36,39,36,43,1],[43,30,43,34,0],[43,35,43,39,1],[50,42,50,46,1],[50,47,50,51,1],[57,9,57,23,1],[58,9,58,10,1],[59,9,59,10,1]]);
+    </script>
+  </body>
+</html>
