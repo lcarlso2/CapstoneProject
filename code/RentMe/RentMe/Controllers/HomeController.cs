@@ -124,6 +124,7 @@ namespace RentMe.Controllers
                         {
                             ViewBag.ErrorMessage = "Blacklisted";
                             ViewBag.Error = "Sorry, you have been blacklisted.";
+                            CurrentUser = null;
                             return View("Index");
                         }
 	                } 
