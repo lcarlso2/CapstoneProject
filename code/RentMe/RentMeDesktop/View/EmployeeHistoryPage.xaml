@@ -23,23 +23,25 @@
                 <DataTemplate>
                     <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Username" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="1" Text="Rental ID" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="2" Text="Title" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                         <TextBlock Grid.Column="3" Text="Category" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
-                        <TextBlock Grid.Column="4" Text="Rental Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
-                        <TextBlock Grid.Column="5" Text="Due Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
-                        <TextBlock Grid.Column="6" Text="Order Status" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
-                        <TextBlock Grid.Column="7" Text="Update Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="4" Text="Condition" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="5" Text="Rental Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="6" Text="Due Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="7" Text="Order Status" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="8" Text="Update Date" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.HeaderTemplate>
@@ -47,23 +49,25 @@
                 <DataTemplate x:Name="TableDataTemplate" x:DataType="local1:RentalItem">
                     <Grid Height="48" AutomationProperties.Name="{x:Bind EmployeeUsername}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
-                            <ColumnDefinition Width="184"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="160"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" VerticalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Text="{x:Bind EmployeeUsername}" />
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind RentalId}"/>
                         <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind Title}"/>
                         <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{x:Bind Category}"/>
-                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Text="{x:Bind RentalDate}"/>
-                        <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{x:Bind ReturnDate}"/>
-                        <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{x:Bind Status}"/>
-                        <TextBlock Grid.Column="7" VerticalAlignment="Center" Text="{x:Bind UpdateDateTime}"/>
+                        <TextBlock Grid.Column="4" VerticalAlignment="Center" Text="{x:Bind Condition}"/>
+                        <TextBlock Grid.Column="5" VerticalAlignment="Center" Text="{x:Bind RentalDate}"/>
+                        <TextBlock Grid.Column="6" VerticalAlignment="Center" Text="{x:Bind ReturnDate}"/>
+                        <TextBlock Grid.Column="7" VerticalAlignment="Center" Text="{x:Bind Status}"/>
+                        <TextBlock Grid.Column="8" VerticalAlignment="Center" Text="{x:Bind UpdateDateTime}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
