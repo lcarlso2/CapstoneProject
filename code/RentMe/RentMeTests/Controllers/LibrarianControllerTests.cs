@@ -70,7 +70,7 @@ namespace RentMeTests.Controllers
 			var result = (ViewResult) controller.ViewMemberHistory("test");
 			Assert.AreEqual("MemberHistory", result.ViewName);
 			var members = (List<RentalItem>)result.Model;
-			Assert.AreEqual(1, members.Count);
+			Assert.AreEqual(0, members.Count);
 		}
 
 		[TestMethod()]

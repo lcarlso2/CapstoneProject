@@ -19,7 +19,7 @@ namespace RentMeTests.DalTests.MediaDalTest
 
 			var result = mediaDal.RetrieveMediaByConditions("All", "All", "All");
 
-			Assert.AreEqual(17, result.Count);
+			Assert.AreEqual(20, result.Count);
 		}
 
 		[TestMethod()]
@@ -29,7 +29,7 @@ namespace RentMeTests.DalTests.MediaDalTest
 
 			var result = mediaDal.RetrieveMediaByConditions("Action", "All", "All");
 
-			Assert.AreEqual(7, result.Count);
+			Assert.AreEqual(8, result.Count);
 		}
 
 		[TestMethod()]
@@ -39,7 +39,7 @@ namespace RentMeTests.DalTests.MediaDalTest
 
 			var result = mediaDal.RetrieveMediaByConditions("All", "Movie", "All");
 
-			Assert.AreEqual(11, result.Count);
+			Assert.AreEqual(14, result.Count);
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace RentMeTests.SharedCodeTests.DalTests.RentalDalTests
 
 			var result = rentalDal.RetrieveHistoryForRentalTransaction(13);
 
-			Assert.AreEqual(3, result.Count);
+			Assert.AreEqual(0, result.Count);
 		}
 	}
 }
