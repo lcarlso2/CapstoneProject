@@ -90,6 +90,8 @@ namespace RentMe.Controllers
             try
             {
                 var rentals = this.rentalDal.RetrieveAllRentalsByCustomer(email);
+                var member = this.memberDal.GetAllMembers().First(current => current.Email.Equals(email));
+                ViewBag.IsBlacklisted = member.IsBlacklisted;
                 return View("MemberHistory", rentals);
             }
             catch (Exception)

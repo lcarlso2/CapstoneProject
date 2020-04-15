@@ -104,12 +104,12 @@
 				<td>
 					@if (currentMember.IsBlacklisted == 1)
 					{
-					    <a asp-controller="Librarian" asp-action="BlacklistMember" asp-route-id="@currentMember.MemberId">Un-Blacklist</a>
+					    <a asp-controller="Librarian" class="btn btn-danger" asp-action="BlacklistMember" asp-route-id="@currentMember.MemberId">Un-Blacklist</a>
 
 					}
 					else
 					{
-						<a asp-controller="Librarian" asp-action="BlacklistMember" asp-route-id="@currentMember.MemberId">Blacklist</a>
+						<a asp-controller="Librarian" class="btn btn-danger" asp-action="BlacklistMember" asp-route-id="@currentMember.MemberId">Blacklist</a>
 
 					}
 				</td>

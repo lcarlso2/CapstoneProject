@@ -42,8 +42,17 @@
 <div class="container body-container">
 
     <div class="row">
-        <div class="col" style="margin: 0 40%; padding-bottom: 1em;">
-            <a asp-controller="Librarian" asp-action="BlacklistMember" asp-route-id="@Model.First().MemberId">Toggle Blacklist</a>
+        <div class="col text-center" style="margin: 0 40%; padding-bottom: 1em;">
+            @if (ViewBag.IsBlacklisted == 1)
+            {
+                <a asp-controller="Librarian" class="btn btn-danger" asp-action="BlacklistMember" asp-route-id="@Model.First().MemberId">Un-Blacklist</a>
+            }
+            else
+            {
+	            <a asp-controller="Librarian" class="btn btn-danger" asp-action="BlacklistMember" asp-route-id="@Model.First().MemberId">Blacklist</a>
+            }
+
+
         </div>
     </div>
 
