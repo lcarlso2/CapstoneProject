@@ -127,7 +127,7 @@ namespace RentMeEmployee.Controllers
 			var employeeHistory = new List<RentalItem>();
 			try
 			{
-				if(id == -1)
+				if (id == -1)
 				{
 					employeeHistory = this.employeeDal.GetEmployeeHistory(HomeController.CurrentEmployee.EmployeeId);
 				} else
@@ -142,7 +142,7 @@ namespace RentMeEmployee.Controllers
 			catch (Exception)
 			{
 				ViewBag.ErrorMessage = "Uh-oh something went wrong";
-				return View("EmployeeHistory");
+				return View("EmployeeHistory", new List<RentalItem>());
 			}
 
 		}

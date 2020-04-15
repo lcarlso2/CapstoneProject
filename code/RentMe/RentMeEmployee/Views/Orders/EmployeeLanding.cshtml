@@ -52,33 +52,37 @@
 		<div>
 			<table class="table">
 				<thead>
-				<tr>
-					<th>
-						@Html.DisplayNameFor(model => model.RentalId)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.InventoryId)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.MemberEmail)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Category)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Title)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.RentalDate)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.ReturnDate)
-					</th>
-					<th>
-						@Html.DisplayNameFor(model => model.Status)
-					</th>
-					<th></th>
-				</tr>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.InventoryId)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.MemberEmail)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Category)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Condition)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Title)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.RentalDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ReturnDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Status)
+						</th>
+						
+						<th></th>
+					</tr>
 				</thead>
 				<tbody>
 				@foreach (var item in Model)
@@ -97,6 +101,9 @@
 							@Html.DisplayFor(modelItem => item.Category)
 						</td>
 						<td>
+							@Html.DisplayFor(modelItem => item.Condition)
+						</td>
+						<td>
 							@Html.DisplayFor(modelItem => item.Title)
 						</td>
 						<td>
@@ -108,6 +115,7 @@
 						<td>
 							@Html.DisplayFor(modelItem => item.Status)
 						</td>
+
 						<td>
 							@{
 								if (item.Status != "Returned")

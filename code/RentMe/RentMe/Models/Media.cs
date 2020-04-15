@@ -43,6 +43,13 @@ namespace RentMe.Models
         public string Type { get; set; }
 
         /// <summary>
+        /// Gets or sets the condition
+        /// </summary>
+        /// @precondition none
+        /// @postcondition the condition is set
+        public string Condition { get; set; }
+
+        /// <summary>
         /// Gets or set the whether or not this item is in the librarians choice
         /// </summary>
         /// @precondition none

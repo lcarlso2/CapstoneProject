@@ -23,7 +23,7 @@
 <div>
     <div class="text-center row">
         <h2 style="margin: .5em auto;">
-            Item History
+	        Employee History
         </h2>
     </div>
 </div>
@@ -45,11 +45,17 @@
                         <th>
                             @Html.DisplayNameFor(model => model.RentalId)
                         </th>
+	                    <th>
+		                    @Html.DisplayNameFor(model => model.InventoryId)
+	                    </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Title)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Condition)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.RentalDate)
@@ -75,11 +81,17 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.RentalId)
                         </td>
+	                    <td>
+		                    @Html.DisplayFor(modelItem => item.InventoryId)
+	                    </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Condition)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RentalDate)

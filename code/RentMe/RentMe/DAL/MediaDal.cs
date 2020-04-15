@@ -37,6 +37,7 @@ namespace RentMe.DAL
                         var titleOrdinal = reader.GetOrdinal("title");
                         var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
                         var isLibrarianChoiceOrdinal = reader.GetOrdinal("isLibrarianChoice");
+                        var conditionOrdinal = reader.GetOrdinal("condition");
 
 
 
@@ -58,9 +59,13 @@ namespace RentMe.DAL
 
                             var isLibrariansChoice = reader.GetInt32(isLibrarianChoiceOrdinal);
 
+                            var condition = reader[conditionOrdinal] == DBNull.Value
+	                            ? "null"
+	                            : reader.GetString(conditionOrdinal);
 
 
-                            var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type , IsLibrariansChoice = isLibrariansChoice == 1 };
+
+                            var media = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type , IsLibrariansChoice = isLibrariansChoice == 1, Condition = condition};
 
                             mediaItems.Add(media);
                         }
@@ -240,6 +245,7 @@ namespace RentMe.DAL
                         var titleOrdinal = reader.GetOrdinal("title");
                         var inventoryIdOrdinal = reader.GetOrdinal("inventoryID");
                         var isLibrarianChoiceOrdinal = reader.GetOrdinal("isLibrarianChoice");
+                        var conditionOrdinal = reader.GetOrdinal("condition");
 
 
 
@@ -259,11 +265,15 @@ namespace RentMe.DAL
                                 ? "null"
                                 : reader.GetString(titleOrdinal);
 
+                            var condition = reader[conditionOrdinal] == DBNull.Value
+	                            ? "null"
+	                            : reader.GetString(conditionOrdinal);
+
                             var isLibrariansChoice = reader.GetInt32(isLibrarianChoiceOrdinal);
 
 
 
-                            mediaItem = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type, IsLibrariansChoice = isLibrariansChoice == 1 };
+                            mediaItem = new Media { InventoryId = inventoryId, Category = category, Title = title, Type = type, IsLibrariansChoice = isLibrariansChoice == 1, Condition = condition};
                         }
                     }
                     conn.Close();

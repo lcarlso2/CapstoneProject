@@ -28,11 +28,12 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, " +
+                    var query = "select DISTINCT r.memberID, email, status_history.`condition`, r.rentalID, r.rentalDateTime, " +
                                 "r.returnDateTime, r.inventoryID, category, title, status from rental_transaction " +
-                                "r, user, member, media, inventory_item i, status where " +
+                                "r, user, member, media, inventory_item i, status, status_history where " +
                                 "userID = member.memberID and member.memberID = r.memberID and " +
-                                "r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+                                "r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and status_history.statusID = status.statusID and " +
+                                "status_history.rentalTransactionID = r.rentalID and " +
                                 "status.statusID = (select max(s1.statusID) from status_history s1 " +
                                 "where r.rentalID = s1.rentalTransactionID " +
                                 "group by s1.rentalTransactionID);";
@@ -50,6 +51,7 @@ namespace SharedCode.DAL
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
+                            var conditionOrdinal = reader.GetOrdinal("condition");
 
 
 
@@ -83,6 +85,10 @@ namespace SharedCode.DAL
                                     ? "null"
                                     : reader.GetString(statusOrdinal);
 
+                                var condition = reader[conditionOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(conditionOrdinal);
+
 
 
                                 var item = new RentalItem
@@ -96,7 +102,7 @@ namespace SharedCode.DAL
                                     Category = category,
                                     Title = title,
                                     Status = status,
-                                    Condition = null
+                                    Condition = condition
                                 };
 
                                 rentedItems.Add(item);
@@ -345,7 +351,7 @@ namespace SharedCode.DAL
 			        using (var transaction = conn.BeginTransaction())
 			        {
 				        var query =
-					        "insert into status_history values (@transactionId, @statusID, @updateDateTime, @employeeID)";
+					        "insert into status_history values (@transactionId, @statusID, @updateDateTime, @employeeID, @condition)";
 
 				        using (var cmd = new MySqlCommand(query, conn))
 				        {
@@ -354,8 +360,9 @@ namespace SharedCode.DAL
 					        cmd.Parameters.AddWithValue("@transactionId", transactionId);
 					        cmd.Parameters.AddWithValue("@updateDateTime", DateTime.Now);
 					        cmd.Parameters.AddWithValue("@employeeID", employeeId);
+					        cmd.Parameters.AddWithValue("@condition", condition);
 
-					        if (cmd.ExecuteNonQuery() != 1)
+                            if (cmd.ExecuteNonQuery() != 1)
 					        {
 						        transaction.Rollback();
 					        }

@@ -20,6 +20,7 @@ namespace SharedCode.Model
         [Display(Name = "Member ID")]
         public int MemberId { get; set; }
 
+
         /// <summary>
         /// Gets or sets the member email that rented the item
         /// </summary>

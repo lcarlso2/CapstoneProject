@@ -92,7 +92,11 @@ namespace SharedCode.DAL
                 using (conn)
                 {
                     conn.Open();
-                    var query = "select r.memberID, email, r.rentalID, r.rentalDateTime, r.returnDateTime, r.inventoryID, category, title, status, s2.updateDateTime from rental_transaction r, user, member, media, inventory_item i, status_history s2, status where userID = member.memberID and member.memberID = r.memberID and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and i.inventoryID = @inventoryId and s2.rentalTransactionID = r.rentalID and s2.statusID = status.statusID";
+                    var query = "select r.memberID, s2.`condition`, email, r.rentalID, r.rentalDateTime, r.returnDateTime, " +
+                                "r.inventoryID, category, title, status, s2.updateDateTime from rental_transaction r, " +
+                                "user, member, media, inventory_item i, status_history s2, status where userID = member.memberID and " +
+                                "member.memberID = r.memberID and r.inventoryID = i.inventoryID and i.mediaID = media.mediaID and " +
+                                "i.inventoryID = @inventoryId and s2.rentalTransactionID = r.rentalID and s2.statusID = status.statusID";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
 
@@ -110,6 +114,7 @@ namespace SharedCode.DAL
                             var categoryOrdinal = reader.GetOrdinal("category");
                             var titleOrdinal = reader.GetOrdinal("title");
                             var statusOrdinal = reader.GetOrdinal("status");
+                            var conditionOrdinal = reader.GetOrdinal("condition");
                             var updateDateTimeOrdinal = reader.GetOrdinal("updateDateTime");
 
                             while (reader.Read())
@@ -124,6 +129,9 @@ namespace SharedCode.DAL
                                 var title = reader[titleOrdinal] == DBNull.Value ? "null" : reader.GetString(titleOrdinal);
                                 var status = reader[statusOrdinal] == DBNull.Value ? "null" : reader.GetString(statusOrdinal);
                                 var updateDateTime = reader.GetDateTime(updateDateTimeOrdinal);
+                                var condition = reader[conditionOrdinal] == DBNull.Value
+	                                ? "null"
+	                                : reader.GetString(conditionOrdinal);
 
 
                                 var rentalItem = new RentalItem
@@ -137,7 +145,8 @@ namespace SharedCode.DAL
                                     Category = category,
                                     Title = title,
                                     Status = status,
-                                    UpdateDateTime = updateDateTime
+                                    UpdateDateTime = updateDateTime,
+                                    Condition = condition
                                 };
 
                                 rentalItems.Add(rentalItem);

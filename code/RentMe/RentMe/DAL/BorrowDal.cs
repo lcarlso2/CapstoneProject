@@ -64,13 +64,16 @@ namespace RentMe.DAL
 						cmd.Parameters.Clear();
 
 
-						cmd.CommandText = "insert into status_history (rentalTransactionID, statusID, updateDateTime) values (last_insert_id(), @statusID, @updateDateTime);";
+						cmd.CommandText = "insert into status_history (rentalTransactionID, statusID, updateDateTime, `condition`) values (last_insert_id(), @statusID, @updateDateTime, @condition);";
 
 						cmd.Parameters.Add("@statusID", MySqlDbType.Int32);
 						cmd.Parameters["@statusID"].Value = 1;
 
 						cmd.Parameters.Add("@updateDateTime", MySqlDbType.DateTime);
 						cmd.Parameters["@updateDateTime"].Value = DateTime.Now;
+
+						cmd.Parameters.Add("@condition", MySqlDbType.VarChar);
+						cmd.Parameters["@condition"].Value = media.Condition;
 
 
 						if (cmd.ExecuteNonQuery() != 1)
