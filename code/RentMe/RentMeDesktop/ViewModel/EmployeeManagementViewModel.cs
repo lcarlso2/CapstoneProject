@@ -43,6 +43,20 @@ namespace RentMeDesktop.ViewModel
 
 		private bool canEmployeeHistoryBeClicked;
 
+		private bool canAddBeClicked;
+
+
+		public bool CanAddBeClicked
+		{
+			get => this.canAddBeClicked;
+			set
+			{
+				this.canAddBeClicked = value;
+				this.OnPropertyChanged();
+
+			}
+		}
+
 		/// <summary>
 		/// Gets or sets the employee search term
 		/// </summary>
@@ -82,8 +96,8 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.fName = value;
+				this.CanAddBeClicked = !string.IsNullOrEmpty(this.FName) && !string.IsNullOrEmpty(this.LName) && !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 				this.OnPropertyChanged();
-				this.AddCommand.OnCanExecuteChanged();
 			}
 		}
 
@@ -96,8 +110,8 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.lName = value;
+				this.CanAddBeClicked = !string.IsNullOrEmpty(this.FName) && !string.IsNullOrEmpty(this.LName) && !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 				this.OnPropertyChanged();
-				this.AddCommand.OnCanExecuteChanged();
 			}
 		}
 
@@ -110,8 +124,8 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.username = value;
+				this.CanAddBeClicked = !string.IsNullOrEmpty(this.FName) && !string.IsNullOrEmpty(this.LName) && !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 				this.OnPropertyChanged();
-				this.AddCommand.OnCanExecuteChanged();
 			}
 		}
 
@@ -124,8 +138,8 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.password = value;
+				this.CanAddBeClicked = !string.IsNullOrEmpty(this.FName) && !string.IsNullOrEmpty(this.LName) && !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 				this.OnPropertyChanged();
-				this.AddCommand.OnCanExecuteChanged();
 			}
 		}
 
@@ -141,8 +155,8 @@ namespace RentMeDesktop.ViewModel
 			set
 			{
 				this.confirmedPassword = value;
+				this.CanAddBeClicked = !string.IsNullOrEmpty(this.FName) && !string.IsNullOrEmpty(this.LName) && !string.IsNullOrEmpty(this.Username) && !string.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
 				this.OnPropertyChanged();
-				this.AddCommand.OnCanExecuteChanged();
 			}
 		}
 		/// <summary>
@@ -190,10 +204,6 @@ namespace RentMeDesktop.ViewModel
 		/// </summary>
 		public RelayCommand RemoveCommand { get; set; }
 
-		/// <summary>
-		/// The relay command for adding an employee
-		/// </summary>
-		public RelayCommand AddCommand { get; set; }
 
 		/// <summary>
 		/// Gets or sets the selected employee
@@ -232,7 +242,6 @@ namespace RentMeDesktop.ViewModel
 		public EmployeeManagementViewModel()
 		{
 			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
-			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
 			this.employeeDal = new EmployeeDal();
 
 		}
@@ -245,7 +254,6 @@ namespace RentMeDesktop.ViewModel
 		public EmployeeManagementViewModel(IEmployeeDal employeeDal)
 		{
 			this.RemoveCommand = new RelayCommand(removeEmployee, canRemoveEmployee);
-			this.AddCommand = new RelayCommand(addEmployee, canAddEmployee);
 			this.employeeDal = employeeDal;
 
 		}
@@ -271,6 +279,16 @@ namespace RentMeDesktop.ViewModel
 		public void RetrieveEmployees(Employee currentEmployee)
 		{
 			this.Employees = new ObservableCollection<Employee>(this.employeeDal.GetEmployees(currentEmployee));
+		}
+
+		/// <summary>
+		/// Adds an employee to the database 
+		/// </summary>
+		public void AddEmployee()
+		{
+			var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
+			this.employeeDal.AddEmployee(employeeToAdd, this.Password);
+			this.resetFields();
 		}
 
 
@@ -302,30 +320,6 @@ namespace RentMeDesktop.ViewModel
 
 		}
 
-		private bool canAddEmployee(object obj)
-		{
-			return !String.IsNullOrEmpty(this.FName) && !String.IsNullOrEmpty(this.LName) && !String.IsNullOrEmpty(this.Username) && !String.IsNullOrEmpty(this.Password) && (this.Password == this.ConfirmedPassword);
-		}
-
-		private async void addEmployee(object obj)
-		{
-			var dialog = new ContentDialog
-			{
-				Title = "Confirm",
-				Content = $"Are you sure you want to add {this.FName} {this.LName}?",
-				CloseButtonText = "Cancel",
-				PrimaryButtonText = "Confirm"
-			};
-			var result = await dialog.ShowAsync();
-			if (result == ContentDialogResult.Primary)
-			{
-				var employeeToAdd = new Employee(this.FName, this.LName, this.Username, this.IsManager);
-				this.employeeDal.AddEmployee(employeeToAdd, this.Password);
-				this.resetFields();
-			}
-
-
-		}
 
 		private void resetFields()
 		{
