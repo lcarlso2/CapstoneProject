@@ -63,6 +63,11 @@ namespace SharedCode.Model
         public bool IsManager { get; set; }
 
         /// <summary>
+        /// Gets the Full name of the employee
+        /// </summary>
+        public string FullName => $"{this.FirstName} {this.LastName}";
+
+        /// <summary>
         /// Gets the employee info string
         /// </summary>
         public string EmployeeInfo => $"Name: {this.FirstName} {this.LastName} \nUsername: {this.Username} \nIs Manager: {this.IsManager} \n";

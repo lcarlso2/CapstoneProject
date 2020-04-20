@@ -7,17 +7,39 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:vm="using:RentMeDesktop.ViewModel"
+    xmlns:model="using:SharedCode.Model"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
         <vm:EmployeeManagementViewModel/>
     </Page.DataContext>
     <Grid>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,75,0,0" Text="Employee Management" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="32"/>
-        <ListView x:Name="rentalListView" ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Visible" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="550" Height="550" Margin="476,151,474,0">
-            <ListView.ItemTemplate>
+        <ListView x:Name="EmployeeHistoryListView" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" Width="1480" Height="550" Margin="0,155,0,0">
+            <ListView.HeaderTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <TextBlock Grid.Column="0" Width="400" Text="{Binding EmployeeInfo}" />
+                    <Grid Padding="12" Background="{ThemeResource SystemBaseLowColor}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="500"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Name" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="1" Text=" Username" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                        <TextBlock Grid.Column="2" Text="Is Manager" Style="{ThemeResource CaptionTextBlockStyle}" FontSize="24" FontWeight="{ThemeResource ComboBoxHeaderThemeFontWeight}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate x:Name="TableDataTemplate" x:DataType="model:Employee">
+                    <Grid Height="48">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="500"/>
+                            <ColumnDefinition Width="500"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind FullName}"/>
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind Username}"/>
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind IsManager}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
