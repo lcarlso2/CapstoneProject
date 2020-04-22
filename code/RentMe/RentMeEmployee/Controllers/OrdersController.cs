@@ -130,6 +130,7 @@ namespace RentMeEmployee.Controllers
 					Conditions.Add(new SelectListItem(current, current));
 				}
 
+				item.Condition = "";
 			}
 			catch (Exception)
 			{
